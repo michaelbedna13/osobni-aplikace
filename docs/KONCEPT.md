@@ -1,6 +1,8 @@
 # Osobní aplikace – koncept
 
-> Stav: **koncept v0.1** · další krok: inspirace pro design → design systém → Fáze 0
+> Stav: **koncept v0.2** · design: [docs/DESIGN.md](DESIGN.md) · další krok: Fáze 0
+>
+> Rozhodnuto: **iPhone**, kód na **GitHubu**, data v **Supabase**, styl **minimalismus + neo brutalismus + Bauhaus**.
 
 ## 1. Co to je
 
@@ -26,8 +28,9 @@ Moduly se dají rozdělit do dvou typů, což výrazně zjednodušuje stavbu:
 
 | Typ | Co to je | Moduly |
 |---|---|---|
-| **Záznamy v čase** (log) | „Něco se stalo v čase X“ → počty, streaky, grafy | Piva, Meditace, Trénink, Finance, Hláškomat |
-| **Sbírky se stavem** (list) | „Položka, kterou chci / mám hotovou“ → seznamy, filtry | Odkazy, Filmy, Knihy, Místa, Přání |
+| **Záznamy v čase** (log) | „Něco se stalo v čase X“ → počty, streaky, grafy | Piva, Meditace, Trénink, Finance, Hláškomat, Deník |
+| **Sbírky se stavem** (list) | „Položka, kterou chci / mám hotovou“ → seznamy, filtry | Odkazy, Filmy, Knihy, Místa, Wishlist, Dárky |
+| **Lidé** | Osoby, na které se ostatní moduly odkazují | Narozeniny, Dárky, autor hlášky, „doporučil mi“ |
 
 ### 2.1 Hláškomat 💬
 Zapisování hlášek – tvých i od kamarádů.
@@ -119,17 +122,44 @@ Watchlist a readlist.
 - Propojení: piva zapsaná s polohou se ukážou na mapě („kde všude jsem pil“)
 - Import uložených míst z Google Maps (Google Takeout → soubor s místy)
 
+### 2.9 Lidé, narozeniny a dárky 🎂🎁
+Přehled o narozeninách kamarádů a nápady na dárky během celého roku.
+
+- **Lidé:** jméno, datum narozenin (rok volitelně → appka ukáže „bude mu 30“), poznámka,
+  fotka, skupina (rodina / kamarádi / práce)
+- **Kalendář narozenin:** seznam „nejbližší narozeniny“ + měsíční přehled; na obrazovce Dnes
+  upozornění pár dní předem
+- **Nápady na dárky:** u každého člověka seznam nápadů (název, odkaz, cena, poznámka)
+  – zapisuješ průběžně, když tě něco napadne
+- Stav dárku: 💡 nápad → 🛒 koupeno → 🎁 darováno (+ rok a příležitost: narozeniny, Vánoce, …)
+  → příště víš, co už dostal
+- **Připomínky na iPhonu:** appka vygeneruje **kalendářový odběr (.ics)**, který si přidáš do
+  Kalendáře na iPhonu → narozeniny se ukážou v nativním kalendáři i s upozorněním.
+  Je to spolehlivější než push notifikace z webu a nic to nestojí.
+- Propojení: lidé jsou společní pro celou appku – autor hlášky, „doporučil mi“ u filmu,
+  s kým jsem byl na pivu (volitelně)
+
+### 2.10 Deník – jedna věta denně 📓
+- Každý den jedno políčko: **jedna věta + nálada 1–5** (tapnutím na tvar)
+- Na obrazovce Dnes jako výzva: „Jaký byl dnešek?“ – vyplníš za 10 sekund
+- Kalendář s náladou po dnech (barevná mozaika roku)
+- **„Před rokem / před dvěma lety“** – co jsi psal tentýž den
+- Volitelně fotka dne
+
+### 2.11 Wishlist 🛍️
+- Věci, co chci koupit: název, odkaz (náhled se stáhne jako u Odkazů), cena, priorita
+- Stav: chci → čekám na slevu → koupeno / už nechci
+- Součet „kolik by stálo všechno“ a napojení na spořicí cíl (Finance)
+- Tip: položku jde „poslat“ do Dárků jako nápad pro sebe (když se tě někdo zeptá, co chceš)
+
 ---
 
-## 3. Co se ještě hodí (návrhy)
+## 3. Co se ještě hodí (další návrhy)
 
 Seřazeno podle poměru užitek / náročnost:
 
 | Nápad | Proč | Náročnost |
 |---|---|---|
-| **Nápady na dárky** 🎁 | Osoba → seznam nápadů během roku, narozeniny s připomínkou. Když přijde čas, nemusíš vymýšlet. | nízká |
-| **Deník – 1 věta denně** 📓 | Nejmenší možný deník + nálada 1–5. Po roce skvělé „před rokem“. | nízká |
-| **Wishlist** 🛍️ | Věci, co chci koupit (odkaz, cena, priorita) – propojitelné se spořicími cíli. | nízká |
 | **Návyky** ✅ | Obecný tracker (voda, protažení, bez telefonu po 22:00). Meditace a trénink jsou vlastně specializované návyky – sdílí stejný systém cílů. | střední |
 | **Recepty** 🍳 | Uložené recepty (i z odkazu) + „co uvařit“. | střední |
 | **Sbírka „poprvé“ / zážitky** 🌟 | Koncerty, akce, zážitky s datem a fotkou – časová osa života. | nízká |
@@ -164,8 +194,8 @@ Spodní lišta, maximálně 5 položek (víc je na mobilu nepřehledné):
 └─────────────────────────────────────────┘
 ```
 
-- **Dnes** – dashboard (viz výše)
-- **Moduly** – mřížka všech modulů; oblíbené nahoře
+- **Dnes** – dashboard (hláška dne, cíle, nejbližší narozeniny, deník)
+- **Moduly** – mřížka všech modulů (každý má vlastní tvar a barvu); oblíbené nahoře
 - **(+)** – rychlé přidání (vysune panel s akcemi)
 - **Mapa** – vlastní záložka, protože je to celoobrazovkový zážitek
 - **Profil** – cíle, nastavení, import/export, odhlášení
@@ -185,7 +215,30 @@ Každá obrazovka má vlastní URL (funguje tlačítko zpět a jde si udělat zk
 | Backend | **Supabase**: Auth, Postgres, Storage, Edge Functions | přihlášení, databáze, fotky, náhledy odkazů |
 | Mapa | MapLibre GL nebo Leaflet + OSM dlaždice | zdarma, bez Google API klíče |
 | Grafy | Recharts (nebo podobná lehká knihovna) | statistiky |
-| Hosting | Vercel / Netlify / Cloudflare Pages | zdarma, automatický deploy z GitHubu |
+| Hosting | **GitHub Pages** + GitHub Actions | zdarma, každý push na `main` = nová verze |
+| Databáze v kódu | Supabase CLI – migrace v `supabase/migrations` | struktura databáze je verzovaná v GitHubu |
+
+### Jak spolu GitHub a Supabase fungují
+
+```
+  iPhone (PWA na ploše)
+        │  načte appku
+        ▼
+  GitHub Pages  ◄── GitHub Actions: build + deploy při každém pushi na main
+        │  čte/zapisuje data (Supabase JS, přihlášený uživatel)
+        ▼
+  Supabase: Auth · Postgres (RLS) · Storage (fotky) · Edge Functions
+        ▲
+        └── GitHub Actions: `supabase db push` – aplikuje nové migrace
+```
+
+- **Repozitář:** `src/` (appka), `supabase/migrations/` (SQL struktura), `supabase/functions/`
+  (náhledy odkazů, kalendář narozenin .ics), `.github/workflows/` (deploy)
+- **Tajné hodnoty:** URL a veřejný (anon) klíč Supabase jdou do GitHub *Variables* – anon klíč je
+  veřejný záměrně, data chrání RLS. Přístupový token Supabase CLI jde do GitHub *Secrets*.
+- **GitHub Pages a routování:** appka poběží na `michaelbedna13.github.io/osobni-aplikace/`
+  (nebo na vlastní doméně). Kvůli statickému hostingu se použije buď hash routing (`/#/piva`),
+  nebo trik s `404.html`. Vlastní doména to zjednoduší.
 
 ### Přihlášení a bezpečnost
 - Supabase Auth – e-mail + heslo nebo magic link; **registrace vypnutá** (účet jen pro tebe)
@@ -223,12 +276,28 @@ places            name, lat, lng, category, status, note, url, visited_at, ratin
 place_lists       name, date_from, date_to, note     (plány / výlety)
 place_list_items  list_id, place_id, order
 
+people            name, birthday (den+měsíc), birth_year (volitelně), group, note, photo_url
+gift_ideas        person_id, title, url, price, note, status (idea/bought/given),
+                  occasion, given_year
+
+journal_entries   date (unikátní), text, mood (1–5), photo_url
+
+wishlist_items    title, url, image_url, price, priority, status, savings_goal_id
+
 goals             module, metric, period, target, direction (min/max), active
 ```
 
 ### Omezení PWA, se kterými počítat
-- **iPhone:** instalace přes Safari → Sdílet → „Přidat na plochu“; notifikace fungují jen
-  u nainstalované PWA; sdílení do appky z menu „Sdílet“ jde jen přes Zkratky
+- **iPhone (tvůj případ):**
+  - instalace: Safari → Sdílet → „Přidat na plochu“ (appka pak běží na celou obrazovku)
+  - **sdílení odkazu z jiné aplikace** (YouTube, Instagram, Safari): iOS neumí poslat odkaz
+    přímo do webové appky → připravím **Zkratku** „Uložit do appky“, která se objeví v menu
+    Sdílet a odkaz uloží
+  - **připomínky narozenin:** přes odběr kalendáře (.ics) – nativní a spolehlivé
+  - push notifikace u nainstalované PWA fungují (iOS 16.4+), ale nejsou potřeba pro MVP
+  - Safari může smazat lokální cache u dlouho nepoužívané appky → data jsou ale v Supabase,
+    takže se nic neztratí
+  - respektovat „bezpečné zóny“ (výřez, Dynamic Island, spodní lišta)
 - **Android:** vše funguje lépe (instalace, sdílení do appky, notifikace)
 - Offline: čtení z cache a frontování zápisů je možné, ale do MVP stačí „funguje online,
   offline se aspoň zobrazí poslední data“
@@ -240,14 +309,16 @@ goals             module, metric, period, target, direction (min/max), active
 **Fáze 0 – Základ**
 Projekt, Supabase, přihlášení, PWA (ikona, splash), design tokeny, navigace, obrazovka Dnes (prázdná kostra).
 
-**Fáze 1 – Rychlé výhry** (jednoduché CRUD moduly, hned použitelné)
-Hláškomat · Piva · Odkazy
+Včetně GitHub Actions (deploy na GitHub Pages, migrace do Supabase).
+
+**Fáze 1 – Rychlé výhry** (jednoduché moduly, hned použitelné)
+Hláškomat · Piva · Odkazy (+ Zkratka pro iPhone) · Lidé, narozeniny a dárky (+ kalendář .ics)
 
 **Fáze 2 – Tracking a cíle**
-Systém cílů a streaků · Meditace (časovač) · Trénink
+Systém cílů a streaků · Deník · Meditace (časovač) · Trénink
 
 **Fáze 3 – Sbírky a mapa**
-Mapa míst + plány · Filmy/seriály/knihy (TMDB, Open Library)
+Mapa míst + plány · Filmy/seriály/knihy (TMDB, Open Library) · Wishlist
 
 **Fáze 4 – Rozšíření**
 Finance (předplatné → spořicí cíle → CSV import) · Import existujících dat · nápady z kapitoly 3
@@ -256,29 +327,16 @@ Finance (předplatné → spořicí cíle → CSV import) · Import existující
 
 ## 8. Otevřené otázky
 
-1. **iPhone, nebo Android?** Ovlivní sdílení do appky a notifikace.
-2. **Jaká data už máš a kde?** (tabulka, poznámky, jiná appka) → připravím import.
-3. **Máš už Supabase projekt**, nebo založit nový?
-4. **Vlastní doména?** (např. `muj.nazev.cz`) – nebo stačí adresa od hostingu.
-5. **Pořadí modulů** – souhlasí Fáze 1 (Hláškomat, Piva, Odkazy)?
+1. ~~iPhone, nebo Android?~~ → **iPhone**
+2. ~~Kde bude kód?~~ → **GitHub + Supabase**
+3. **Jaká data už máš a kde?** (tabulka, poznámky, jiná appka, kontakty s narozeninami) → připravím import.
+4. **Máš už Supabase projekt**, nebo založit nový? (na free tarifu se projekt po týdnu nečinnosti uspí – u denně používané appky to nevadí)
+5. **Vlastní doména?** – jinak `michaelbedna13.github.io/osobni-aplikace`
+6. **Název appky** – zobrazí se pod ikonou na ploše.
 
 ---
 
-## 9. Další krok: inspirace pro design
+## 9. Design
 
-Aplikace, na které se vyplatí podívat (každá dělá jeden z modulů dobře):
-
-| Modul | Inspirace |
-|---|---|
-| Celkový dojem, dashboard | Apple Fitness/Zdraví (kroužky cílů), Bearable, Daylio |
-| Trénink | Hevy, Strong |
-| Meditace | Medito, Oak, Headspace (časovač a streaky) |
-| Odkazy | Raindrop.io, Pinterest, mymind |
-| Piva | Untappd |
-| Filmy / knihy | Letterboxd, StoryGraph |
-| Mapa | Mapstr, Google Maps „Uložené“ |
-| Finance | Bobby (předplatné), Copilot Money |
-
-Kde hledat: **Mobbin** (screenshoty reálných aplikací), **Dribbble**, **Behance**.
-Ideální výstup: 3–5 screenshotů, které se ti líbí, + poznámka *co* se ti na nich líbí
-(barvy, karty, typografie, animace). Z toho pak sestavím design systém.
+Zvolený směr: **clean minimalism + neo brutalism + Bauhaus** → rozpracováno v
+[DESIGN.md](DESIGN.md) a v klikacím náhledu [design/prototyp.html](../design/prototyp.html).
