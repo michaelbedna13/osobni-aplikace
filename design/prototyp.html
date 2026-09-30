@@ -131,9 +131,9 @@
   .quote { background: var(--hlaskomat); }
   .quote p.q { font-family: var(--font-display); font-weight: 500; font-size: 19px; line-height: 1.3; margin-top: 10px; }
   .quote .who { margin-top: 12px; font-weight: 600; }
-  .moods { display: flex; justify-content: space-between; margin-top: 14px; }
-  .mood { background: none; border: 0; padding: 4px; border-radius: 50%; cursor: pointer; }
-  .mood[aria-pressed="true"] { outline: 3px solid var(--ink); outline-offset: 1px; }
+  .grat { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 8px; }
+  .grat li { display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 8px; }
+  .grat span { width: 28px; height: 28px; border: var(--line); border-radius: 50%; background: var(--denik); display: grid; place-items: center; font-weight: 700; font-size: 13px; }
   .input { width: 100%; min-height: 48px; border: var(--line); border-radius: var(--r-btn); padding: 12px 14px; font: inherit; background: var(--ground); }
 
   /* ---------- Moduly ---------- */
@@ -235,17 +235,14 @@
           <span data-sym="lide" data-size="32"></span>
         </div>
 
-        <p class="sec-title">Deník</p>
+        <p class="sec-title">Vděčnost</p>
         <div class="card">
-          <label for="journal" class="small muted">Jaký byl dnešek? Stačí jedna věta.</label>
-          <input id="journal" class="input" style="margin-top:8px" placeholder="Např. ranní běh v mlze, pak pivo s Petrou">
-          <div class="moods" role="group" aria-label="Nálada">
-            <button class="mood" aria-label="Nálada 1 z 5" aria-pressed="false" data-meter="12" data-size="40"></button>
-            <button class="mood" aria-label="Nálada 2 z 5" aria-pressed="false" data-meter="32" data-size="40"></button>
-            <button class="mood" aria-label="Nálada 3 z 5" aria-pressed="false" data-meter="52" data-size="40"></button>
-            <button class="mood" aria-label="Nálada 4 z 5" aria-pressed="true" data-meter="74" data-size="40"></button>
-            <button class="mood" aria-label="Nálada 5 z 5" aria-pressed="false" data-meter="100" data-size="40"></button>
-          </div>
+          <label for="grateful" style="font-weight:700">Za co jsem dnes vděčný?</label>
+          <ol class="grat">
+            <li><span>1</span><input id="grateful" class="input" placeholder="Např. ranní káva na balkoně"></li>
+            <li><span>2</span><input class="input" aria-label="Druhá věc" placeholder="Další věc (nepovinné)"></li>
+          </ol>
+          <p class="small muted" style="margin-top:12px">Před rokem: „Že máma zvládla operaci.“</p>
         </div>
       </div>
       <nav class="tabbar" data-active="dnes"></nav>
@@ -379,7 +376,7 @@
 
 </section>
 
-<footer>Statický náhled. Data jsou smyšlená. Ťuknout jde na „+1 pivo“, na „+1“ v pásu modulů a na náladu v deníku. Pás modulů jde posunout do boku.</footer>
+<footer>Statický náhled. Data jsou smyšlená. Ťuknout jde na „+1 pivo“ a na „+1“ v pásu modulů. Pás modulů jde posunout do boku.</footer>
 
 <script src="symboly.js"></script>
 <script>
@@ -490,11 +487,6 @@
       ? `<svg width="28" height="28" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="#9A9AA2" stroke-width="2" stroke-dasharray="6 6" vector-effect="non-scaling-stroke"/></svg>`
       : meter(done[i] ? 100 : 0, 28, "var(--meditace-deep)")}<span>${d}</span></div>`).join("");
 
-  // nálada
-  document.querySelectorAll(".mood").forEach(b => b.addEventListener("click", () => {
-    document.querySelectorAll(".mood").forEach(x => x.setAttribute("aria-pressed", "false"));
-    b.setAttribute("aria-pressed", "true");
-  }));
 </script>
 </body>
 </html>

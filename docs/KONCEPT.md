@@ -2,6 +2,8 @@
 
 > Stav: **koncept v0.2** · design: [docs/DESIGN.md](DESIGN.md) · další krok: Fáze 0
 >
+> Nápady na další funkce modulů: [NAPADY.md](NAPADY.md)
+>
 > Rozhodnuto: **iPhone**, kód na **GitHubu**, data v **Supabase**, styl **minimalismus + neo brutalismus + Bauhaus**.
 
 ## 1. Co to je
@@ -59,6 +61,8 @@ Měření času a plnění cílů.
 
 - **Časovač** s volitelnou délkou, gongem na začátku/konci, případně intervalovým zvoněním
 - Ruční zápis („meditoval jsem 15 min ráno“)
+- **Historie meditací**: seznam všech sezení (datum, začátek, délka, typ, poznámka) po týdnech,
+  s možností upravit, smazat nebo doplnit zpětně
 - Volitelně: typ (dech, body scan, …), poznámka, nálada před/po (1–5)
 - **Cíle:** „5 meditací týdně“, „60 minut týdně“ → progres kroužek + streak
 - Kalendář s vyplněnými dny
@@ -140,7 +144,8 @@ Přehled o narozeninách kamarádů a nápady na dárky během celého roku.
 - Propojení: lidé jsou společní pro celou appku – autor hlášky, „doporučil mi“ u filmu,
   s kým jsem byl na pivu (volitelně)
 
-### 2.10 Deník – jedna věta denně 📓
+### 2.10 Deník a vděčnost 📓
+- **Za co jsem dnes vděčný?** 1–3 věci denně. Tahle otázka je na obrazovce Dnes.
 - Každý den jedno políčko: **jedna věta + nálada 1–5** (tapnutím na tvar)
 - Na obrazovce Dnes jako výzva: „Jaký byl dnešek?“ – vyplníš za 10 sekund
 - Kalendář s náladou po dnech (barevná mozaika roku)
@@ -175,7 +180,7 @@ Tohle se postaví jednou a všechny moduly to využijí:
 
 - **Obrazovka „Dnes“** – nahoře pás **„Moje moduly“**: připnuté moduly vedle sebe, posun do boku,
   na každé kartě hlavní číslo, plnění cíle a rychlá akce (+1 pivo, spustit meditaci…).
-  Pod ním hláška dne, nejbližší narozeniny a deník.
+  Pod ním hláška dne, nejbližší narozeniny a **„Za co jsem dnes vděčný?“**.
 - **Rychlé přidání (+)** – spodní panel s akcemi: +1 pivo, hláška, odkaz, start meditace,
   start tréninku, místo
 - **Cíle a streaky** – jeden systém pro všechny moduly: *co* (počet/minuty/částka),
@@ -283,7 +288,7 @@ people            name, birthday (den+měsíc), birth_year (volitelně), group, 
 gift_ideas        person_id, title, url, price, note, status (idea/bought/given),
                   occasion, given_year
 
-journal_entries   date (unikátní), text, mood (1–5), photo_url
+journal_entries   date (unikátní), text, mood (1–5), gratitude (1–3 položky), photo_url
 
 wishlist_items    title, url, image_url, price, priority, status, savings_goal_id
 
