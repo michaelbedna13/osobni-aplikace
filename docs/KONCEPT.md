@@ -33,7 +33,8 @@ Moduly se dají rozdělit do dvou typů, což výrazně zjednodušuje stavbu:
 | **Lidé** | Osoby, na které se ostatní moduly odkazují | Narozeniny, Dárky, autor hlášky, „doporučil mi“ |
 
 ### 2.1 Hláškomat 💬
-Zapisování hlášek – tvých i od kamarádů.
+Zapisování hlášek – tvých i od kamarádů. **Už existuje** – převezme se funkčnost a data
+ze stávající verze a jen se napojí na společný vzhled, lidi a přihlášení.
 
 - **MVP:** text, kdo to řekl, kontext („na chatě“), datum, štítky, ⭐ oblíbené
 - Vyhledávání a filtr podle autora
@@ -172,7 +173,9 @@ Doporučuji nepřidávat vše najednou – nejdřív ověřit, které moduly opr
 
 Tohle se postaví jednou a všechny moduly to využijí:
 
-- **Obrazovka „Dnes“** – souhrn dne: hláška dne, progres cílů, dnešní piva, rychlé akce
+- **Obrazovka „Dnes“** – nahoře pás **„Moje moduly“**: připnuté moduly vedle sebe, posun do boku,
+  na každé kartě hlavní číslo, plnění cíle a rychlá akce (+1 pivo, spustit meditaci…).
+  Pod ním hláška dne, nejbližší narozeniny a deník.
 - **Rychlé přidání (+)** – spodní panel s akcemi: +1 pivo, hláška, odkaz, start meditace,
   start tréninku, místo
 - **Cíle a streaky** – jeden systém pro všechny moduly: *co* (počet/minuty/částka),

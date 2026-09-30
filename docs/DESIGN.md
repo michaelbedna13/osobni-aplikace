@@ -1,6 +1,7 @@
-# Design – směr v0.1
+# Design – směr v0.2
 
-Náhled obrazovek: [design/prototyp.html](../design/prototyp.html) (otevři v prohlížeči).
+Náhled obrazovek: [design/prototyp.html](../design/prototyp.html) · symboly: [design/symboly.html](../design/symboly.html)
+(zdroj symbolů pro appku: [design/symboly.js](../design/symboly.js))
 
 ## Zadání
 
@@ -15,12 +16,14 @@ Náhled obrazovek: [design/prototyp.html](../design/prototyp.html) (otevři v pr
 
 ## Principy
 
-1. **Tvar a barva určují modul.** Každý modul má jeden tvar a jednu barvu. Stejný tvar je ikona,
-   „plakát“ v hlavičce modulu i ukazatel plnění cíle (tvar se plní barvou zdola).
+1. **Symbol a barva určují modul.** Každý modul má vlastní symbol složený z geometrických tvarů
+   a barvu, která vystihuje jeho obsah. Symbol je ikona v přehledu, velký „plakát“ v hlavičce
+   modulu a značka v pásu oblíbených.
 2. **Stín = dá se na to ťuknout.** Tvrdý stín 4 px mají jen interaktivní prvky. Po stisku se
    prvek posune o 4 px a stín zmizí („zamáčkne se“). Informace jsou ploché.
 3. **Klidný základ, barva jen tam, kde něco znamená.** Bílé karty na světle šedém podkladu.
-   Plná barva patří hlavičce modulu, hlášce dne a plnění cílů.
+   Plná barva patří hlavičce modulu, hlášce dne a plnění cílů; dlaždice modulů mají barvu
+   zesvětlenou (průhlednost ~35 %).
 4. **Čísla jsou hrdinové.** Počty a časy velkým širokým písmem.
 5. **Jedno výrazné místo na obrazovku.** Na Pivech je to číslo a tlačítko +1, na Meditaci
    kruh časovače. Všechno ostatní je tiché.
@@ -35,13 +38,9 @@ Náhled obrazovek: [design/prototyp.html](../design/prototyp.html) (otevři v pr
 | `--ink-2` | `#4A4A52` | vedlejší text |
 | `--paper` | `#FFFFFF` | karty |
 | `--ground` | `#F3F3EF` | podklad obrazovky |
-| `--yellow` | `#FFD84A` | Piva, Wishlist, tlačítko (+) |
-| `--pink` | `#FFA9C6` | Hláškomat |
-| `--lilac` | `#C3ADF7` | Meditace, Deník |
-| `--lilac-deep` | `#7A5CE6` | plnění časovače meditace |
-| `--sky` | `#A9D1F2` | Lidé, Odkazy, Filmy a knihy |
-| `--mint` | `#A8DB8C` | Místa, Finance, stav „koupeno“ |
-| `--tomato` | `#FF6F4F` | Trénink |
+Barvy modulů jsou v tabulce [Moduly](#moduly) níže. Každý modul má jednu barvu; kde je potřeba
+výraznější výplň (ukazatel na světlém podkladu), má i tmavší variantu:
+`--meditace-deep: #5F9466`, `--denik-deep: #C79A4E`.
 
 Text je na všech barvách modulů černý (kontrast vyhovuje WCAG AA).
 
@@ -66,19 +65,30 @@ Text je na všech barvách modulů černý (kontrast vyhovuje WCAG AA).
 
 ## Moduly
 
-| Modul | Tvar | Barva |
-|---|---|---|
-| Piva | kruh | žlutá |
-| Meditace | kruh | levandulová |
-| Trénink | čtverec | rajčatová |
-| Hláškomat | čtvrtkruh | růžová |
-| Lidé (narozeniny, dárky) | kruh | nebeská |
-| Deník | půlkruh | levandulová |
-| Odkazy | půlkruh | nebeská |
-| Místa | trojúhelník | mátová |
-| Filmy a knihy | čtverec | nebeská |
-| Wishlist | trojúhelník | žlutá |
-| Finance | čtverec | mátová |
+Každá barva je vybraná podle toho, co modul vystihuje. Symboly jsou složené z kruhů, čtverců,
+trojúhelníků a oblouků; černá = obrys a detaily, bílá = „papír“.
+
+| Modul | Symbol | Barva | Proč tahle barva |
+|---|---|---|---|
+| Piva | půllitr s pěnou | jantarová `#F6A623` | ležák v půllitru proti světlu |
+| Hláškomat | bublina s uvozovkami | citronová `#FFE14D` | smích, komiksové bubliny |
+| Trénink | činka | rajčatová `#FF5A3C` | energie, tep, námaha |
+| Meditace | lotos nad hladinou | šalvějová `#A9CBA4` | tlumená zeleň přírody, klid, dech |
+| Lidé a dárky | dárek s mašlí | růžová `#FF9EC4` | oslavy, dort, blízcí lidé |
+| Deník | zápisník se záložkou | kraftová `#E2C48E` | hnědý papír obyčejného zápisníku |
+| Odkazy | dva články řetězu | odkazová modrá `#5B8CFF` | modrá jako odkaz na webu |
+| Místa | špendlík na mapě | tyrkysová `#62D0C4` | moře, obloha, cestování |
+| Filmy a knihy | kniha a filmová cívka | grafitová `#D3D3CD` | černobílý film, tištěná stránka |
+| Wishlist | drahokam | levandulová `#C9B3FF` | fialová = luxus a touha |
+| Finance | mince | zelená `#3EC46D` | „v plusu“, peníze |
+
+## Obrazovka Dnes
+
+- **Pás „Moje moduly“** – karty připnutých modulů vedle sebe, posouvají se do boku (s přichycením
+  na kartu). Každá karta: symbol, hlavní číslo, ukazatel cíle a **rychlá akce** přímo na kartě
+  (Piva „+1“, Meditace a Trénink „spustit“, Hláškomat a Deník „zapsat“).
+- Výběr a pořadí: „Upravit“ nad pásem nebo připnutí v přehledu Moduly (tečka u dlaždice).
+- Pod pásem: hláška dne, nejbližší narozeniny, deník.
 
 ## Pohyb
 
