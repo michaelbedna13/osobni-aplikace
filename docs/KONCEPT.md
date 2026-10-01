@@ -83,16 +83,16 @@ Inspirace, videa, grafika, články.
 - **Sdílení z jiné aplikace přímo do appky** (Web Share Target): na Androidu funguje přímo
   z menu „Sdílet“, na iPhonu přes Zkratku (Shortcuts)
 
-### 2.5 Piva 🍺
-Počítání piv.
+### 2.5 Piva 🍺 ✅ *hotovo*
+Jen počítadlo, každé pivo je půllitr (0,5 l). Druhy piv se nezapisují.
 
-- **Velké tlačítko „+1 pivo“** – jedním tapem hotovo, detaily se dají doplnit později
-- Volitelné detaily: pivo/pivovar, typ (ležák, IPA, …), objem (0,3 / 0,5), cena, hodnocení,
-  **místo** (GPS → propojení s mapou)
-- Oblíbená piva pro rychlý výběr
-- Statistiky: dnes / týden / měsíc / rok, graf po týdnech, nejčastější piva a hospody,
-  útrata za pivo, rekordní den
-- Volitelný cíl typu „max N piv týdně“ (pokud chceš)
+- **Velké tlačítko „+1 pivo“** na stránce Piv i přímo na kartě na obrazovce Dnes;
+  po zápisu jde krok vrátit („Zpět“)
+- Úprava času nebo smazání zápisu, přidání piva zpětně
+- Statistiky: dnes, tento týden, měsíc, letos, celkem; graf tohoto týdne po dnech;
+  posledních 12 týdnů; **podle dne v týdnu** (průměr i celkem, se zvýrazněným dnem, kdy piješ nejvíc);
+  průměr za den a týden, rekordní den a týden
+- Import zálohy z původní appky (čeká se na soubor)
 
 ### 2.6 Finance 💰 – dávají smysl?
 **Ano, ale v „lehké“ verzi.** Plnohodnotné účetnictví výdajů se ručně udržet nedá a

@@ -3,37 +3,45 @@ import { supabase } from "./supabase";
 import { useAuth } from "./auth";
 import { DEFAULT_PINNED, isModuleKey, type ModuleKey } from "./modules";
 
-const LOCAL_KEY = "pinned-modules";
-
-function readLocal(): ModuleKey[] {
-  try {
-    const raw = localStorage.getItem(LOCAL_KEY);
-    const parsed: unknown = raw ? JSON.parse(raw) : null;
-    if (Array.isArray(parsed)) return parsed.filter(isModuleKey);
-  } catch {
-    // localStorage nemusí být dostupný (soukromé okno) – použijeme výchozí výběr
-  }
-  return DEFAULT_PINNED;
+export interface Settings {
+  pinned_modules: ModuleKey[];
 }
 
-function writeLocal(keys: ModuleKey[]) {
+const DEFAULTS: Settings = { pinned_modules: DEFAULT_PINNED };
+const LOCAL_KEY = "settings";
+
+function normalize(raw: Partial<Record<keyof Settings, unknown>> | null | undefined): Settings {
+  return {
+    pinned_modules: Array.isArray(raw?.pinned_modules) ? raw.pinned_modules.filter(isModuleKey) : DEFAULTS.pinned_modules,
+  };
+}
+
+function readLocal(): Settings {
   try {
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(keys));
+    return normalize(JSON.parse(localStorage.getItem(LOCAL_KEY) ?? "null"));
   } catch {
-    // bez úložiště se výběr jen nezapamatuje
+    return DEFAULTS;
   }
 }
 
-/** Moduly připnuté na obrazovce Dnes. S přihlášením se ukládají do Supabase, jinak do prohlížeče. */
-export function usePinnedModules() {
+function writeLocal(settings: Settings) {
+  try {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(settings));
+  } catch {
+    // bez úložiště se nastavení jen nezapamatuje
+  }
+}
+
+/** Uživatelská nastavení. S přihlášením v Supabase (tabulka user_settings), jinak v prohlížeči. */
+export function useSettings() {
   const { session } = useAuth();
   const userId = session?.user.id;
   const queryClient = useQueryClient();
-  const queryKey = ["pinned-modules", userId ?? "local"];
+  const queryKey = ["settings", userId ?? "local"];
 
   const query = useQuery({
     queryKey,
-    queryFn: async (): Promise<ModuleKey[]> => {
+    queryFn: async (): Promise<Settings> => {
       if (!supabase || !userId) return readLocal();
       const { data, error } = await supabase
         .from("user_settings")
@@ -41,30 +49,40 @@ export function usePinnedModules() {
         .eq("user_id", userId)
         .maybeSingle();
       if (error) throw error;
-      return data ? (data.pinned_modules as string[]).filter(isModuleKey) : DEFAULT_PINNED;
+      return normalize(data);
     },
   });
 
+  const settings = query.data ?? DEFAULTS;
+
   const mutation = useMutation({
-    mutationFn: async (keys: ModuleKey[]) => {
-      if (!supabase || !userId) return writeLocal(keys);
-      const { error } = await supabase
-        .from("user_settings")
-        .upsert({ user_id: userId, pinned_modules: keys, updated_at: new Date().toISOString() });
+    mutationFn: async (next: Settings) => {
+      if (!supabase || !userId) return writeLocal(next);
+      const { error } = await supabase.from("user_settings").upsert({ user_id: userId, ...next });
       if (error) throw error;
     },
-    onMutate: async (keys) => {
+    onMutate: async (next) => {
       await queryClient.cancelQueries({ queryKey });
-      const previous = queryClient.getQueryData<ModuleKey[]>(queryKey);
-      queryClient.setQueryData(queryKey, keys);
+      const previous = queryClient.getQueryData<Settings>(queryKey);
+      queryClient.setQueryData(queryKey, next);
       return { previous };
     },
-    onError: (_error, _keys, context) => queryClient.setQueryData(queryKey, context?.previous),
+    onError: (_error, _next, context) => queryClient.setQueryData(queryKey, context?.previous),
   });
 
   return {
-    pinned: query.data ?? DEFAULT_PINNED,
-    setPinned: mutation.mutate,
+    settings,
+    update: (patch: Partial<Settings>) => mutation.mutate({ ...settings, ...patch }),
     error: query.error ?? mutation.error,
+  };
+}
+
+/** Moduly připnuté na obrazovce Dnes. */
+export function usePinnedModules() {
+  const { settings, update, error } = useSettings();
+  return {
+    pinned: settings.pinned_modules,
+    setPinned: (keys: ModuleKey[]) => update({ pinned_modules: keys }),
+    error,
   };
 }

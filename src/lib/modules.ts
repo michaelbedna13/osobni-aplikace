@@ -14,6 +14,8 @@ export interface ModuleDef {
   deep?: string;
   /** Fáze, ve které modul vznikne (viz docs/KONCEPT.md). */
   phase: 1 | 2 | 3 | 4;
+  /** Modul je hotový a má vlastní obrazovku. */
+  ready?: boolean;
   /** Rychlá akce na kartě v pásu „Moje moduly“ a v nabídce (+). */
   quickAction: string;
   /** Co modul bude umět – zobrazuje se, dokud se modul staví. */
@@ -23,8 +25,8 @@ export interface ModuleDef {
 
 export const MODULES: ModuleDef[] = [
   {
-    key: "piva", name: "Piva", color: "#F6A623", phase: 1, quickAction: "Přidat pivo",
-    plan: ["+1 pivo jedním ťuknutím", "Oblíbená piva a hospody", "Statistiky po dnech, týdnech a letech", "Limit na týden"],
+    key: "piva", name: "Piva", color: "#F6A623", phase: 1, ready: true, quickAction: "Přidat pivo",
+    plan: ["+1 pivo jedním ťuknutím", "Statistiky po dnech a týdnech", "Den v týdnu, kdy piju nejvíc"],
     svg: `
       <circle cx="72" cy="58" r="15" fill="W"/>
       <rect x="20" y="30" width="50" height="62" rx="5" fill="M"/>

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Symbol } from "../components/Symbol";
-import { MODULE_BY_KEY } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
+import { ShelfCard } from "./ShelfCard";
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -32,17 +32,7 @@ export function Today() {
           <Link to="/profil#moduly" className="link">Upravit</Link>
         </div>
         <div className="shelf" aria-label="Oblíbené moduly, posuň do boku">
-          {pinned.map((key) => {
-            const m = MODULE_BY_KEY[key];
-            return (
-              <Link key={key} to={`/m/${key}`} className="fav tap" style={{ background: `${m.color}66` }}>
-                <Symbol module={key} size={40} />
-                <span className="fav-name">{m.name}</span>
-                <span className="fav-num">–</span>
-                <span className="fav-sub">Spustí se ve fázi {m.phase}</span>
-              </Link>
-            );
-          })}
+          {pinned.map((key) => <ShelfCard key={key} moduleKey={key} />)}
           <Link to="/profil#moduly" className="fav fav-edit">Přidat modul</Link>
         </div>
       </section>

@@ -16,7 +16,7 @@ export function Modules() {
             {pinned.includes(m.key) && <i className="pin-dot" aria-label="Připnuto" />}
             <Symbol module={m.key} size={48} />
             <b>{m.name}</b>
-            <span>Fáze {m.phase}</span>
+            <span>{m.ready ? "Hotovo" : `Fáze ${m.phase}`}</span>
           </Link>
         ))}
       </div>
