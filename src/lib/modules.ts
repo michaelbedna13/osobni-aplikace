@@ -33,7 +33,7 @@ export const MODULES: ModuleDef[] = [
       <circle cx="30" cy="30" r="11" fill="W"/><circle cx="46" cy="27" r="12" fill="W"/><circle cx="61" cy="30" r="11" fill="W"/>`,
   },
   {
-    key: "hlaskomat", name: "Hláškomat", color: "#FFE14D", phase: 1, quickAction: "Zapsat hlášku",
+    key: "hlaskomat", name: "Hláškomat", color: "#FFE14D", phase: 1, ready: true, quickAction: "Zapsat hlášku",
     plan: ["Převzetí stávajícího Hláškomatu i s hláškami", "Hláška dne", "Autor propojený s modulem Lidé", "Hláška jako obrázek do chatu"],
     svg: `
       <path d="M26 64 L8 94 L48 80 Z" fill="M"/>

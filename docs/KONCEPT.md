@@ -34,15 +34,15 @@ Moduly se dají rozdělit do dvou typů, což výrazně zjednodušuje stavbu:
 | **Sbírky se stavem** (list) | „Položka, kterou chci / mám hotovou“ → seznamy, filtry | Odkazy, Filmy, Knihy, Místa, Wishlist, Dárky |
 | **Lidé** | Osoby, na které se ostatní moduly odkazují | Narozeniny, Dárky, autor hlášky, „doporučil mi“ |
 
-### 2.1 Hláškomat 💬
-Zapisování hlášek – tvých i od kamarádů. **Už existuje** – převezme se funkčnost a data
-ze stávající verze a jen se napojí na společný vzhled, lidi a přihlášení.
+### 2.1 Hláškomat 💬 ✅ *hotovo*
+Převzato z původního Hláškomatu (Netlify), včetně importu zálohy hlášek.
 
-- **MVP:** text, kdo to řekl, kontext („na chatě“), datum, štítky, ⭐ oblíbené
-- Vyhledávání a filtr podle autora
-- **Hláška dne** na úvodní obrazovce (náhodná z archivu)
-- Statistiky: kdo má nejvíc hlášek, hlášky po měsících, „před rokem touhle dobou…“
-- Později: sdílení hlášky jako obrázek (pěkná karta do chatu)
+- Hláška: text, kdo to řekl, kontext, datum, ★ oblíbená
+- Zapsání a úprava hlášky (našeptávání autorů a kontextů podle předchozích hlášek), smazání
+- Hledání bez ohledu na diakritiku, filtry Vše / Oblíbené / podle autora
+- Žebříček „Kdo má nejvíc hlášek“
+- **Hláška dne** na obrazovce Dnes (každý den jiná)
+- Později: autor propojený s modulem Lidé, hláška jako obrázek do chatu
 
 ### 2.2 Trénink 🏋️
 Vlastní tréninky doma – s činkami, bez nich, kardio.
@@ -92,7 +92,7 @@ Jen počítadlo, každé pivo je půllitr (0,5 l). Druhy piv se nezapisují.
 - Statistiky: dnes, tento týden, měsíc, letos, celkem; graf tohoto týdne po dnech;
   posledních 12 týdnů; **podle dne v týdnu** (průměr i celkem, se zvýrazněným dnem, kdy piješ nejvíc);
   průměr za den a týden, rekordní den a týden
-- Import zálohy z původní appky (čeká se na soubor)
+- Import zálohy z původní appky (Profil → Import ze zálohy)
 
 ### 2.6 Finance 💰 – dávají smysl?
 **Ano, ale v „lehké“ verzi.** Plnohodnotné účetnictví výdajů se ručně udržet nedá a

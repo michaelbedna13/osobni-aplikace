@@ -39,6 +39,12 @@ tabulky nahrává integrace Supabase ↔ GitHub.
 2. Sdílet → **Přidat na plochu**
 3. Spusť appku z plochy a přihlas se e-mailem a heslem z kroku 1.2
 
+## 4. Import dat z původních appek
+
+V appce: **Profil → Import ze zálohy → Vybrat soubor** a pak **Importovat**.
+Funguje pro zálohu piv (`piva-….json`) i Hláškomatu (`hlaskomat-zaloha-….json`).
+Import jde spustit opakovaně, nic se nezdvojí.
+
 ## Vývoj na počítači (volitelné)
 
 ```bash

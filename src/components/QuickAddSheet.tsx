@@ -15,7 +15,7 @@ export function QuickAddSheet({ onClose }: { onClose: () => void }) {
             key={m.key}
             className="quick-item tap"
             style={{ background: `${m.color}55` }}
-            onClick={() => { onClose(); navigate(`/m/${m.key}`); }}
+            onClick={() => { onClose(); navigate(m.key === "hlaskomat" ? "/m/hlaskomat?nova=1" : `/m/${m.key}`); }}
           >
             <Symbol module={m.key} size={32} />
             <span>{m.quickAction}</span>

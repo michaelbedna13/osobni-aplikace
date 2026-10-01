@@ -3,6 +3,24 @@ import { Symbol } from "../components/Symbol";
 import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
 import { ShelfCard } from "./ShelfCard";
+import { quoteOfDay, useQuotes } from "../modules/hlaskomat/data";
+import { formatDate } from "../lib/format";
+
+function QuoteOfDay() {
+  const { data: quotes = [] } = useQuotes();
+  const quote = quoteOfDay(quotes);
+  if (!quote) return null;
+  return (
+    <section className="pad">
+      <h2 className="sec-title">Hláška dne</h2>
+      <Link to="/m/hlaskomat" className="card quote-day tap">
+        <Symbol module="hlaskomat" size={32} bg="#FFFFFF" />
+        <p className="quote-day-text">„{quote.text}“</p>
+        <p className="quote-day-who">{[quote.author, quote.context].filter(Boolean).join(", ")}, {formatDate(new Date(quote.said_at), true)}</p>
+      </Link>
+    </section>
+  );
+}
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -37,10 +55,11 @@ export function Today() {
         </div>
       </section>
 
+      <QuoteOfDay />
+
       <section className="pad">
         <h2 className="sec-title">Brzy tady</h2>
         <div className="card soon">
-          <div className="soon-row"><Symbol module="hlaskomat" size={32} /><span>Hláška dne</span></div>
           <div className="soon-row"><Symbol module="lide" size={32} /><span>Nejbližší narozeniny</span></div>
           <div className="soon-row"><Symbol module="denik" size={32} /><span>Za co jsem dnes vděčný?</span></div>
         </div>

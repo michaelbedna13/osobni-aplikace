@@ -1,10 +1,11 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Symbol } from "../components/Symbol";
 import { plural } from "../lib/format";
 import { MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
 import { computeStats, useBeers } from "../modules/piva/data";
 import { useBeerCounter } from "../modules/piva/PivaScreen";
+import { countThisMonth, useQuotes } from "../modules/hlaskomat/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -46,8 +47,22 @@ function PivaCard() {
   );
 }
 
+function HlaskomatCard() {
+  const { data: quotes = [] } = useQuotes();
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="hlaskomat"
+      num={String(quotes.length)}
+      sub={`${plural(quotes.length, ["hláška", "hlášky", "hlášek"])}, tento měsíc ${countThisMonth(quotes)}`}
+      quick={{ label: "Zapsat hlášku", text: "+", run: () => navigate("/m/hlaskomat?nova=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
+  if (moduleKey === "hlaskomat") return <HlaskomatCard />;
   return <Card moduleKey={moduleKey} num="–" sub={`Spustí se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

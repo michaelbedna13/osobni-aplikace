@@ -4,6 +4,7 @@ import { signOut, useAuth } from "../lib/auth";
 import { MODULES, MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
+import { ImportSection } from "./ImportSection";
 
 export function Profile() {
   const { session } = useAuth();
@@ -64,6 +65,8 @@ export function Profile() {
           </>
         )}
       </section>
+
+      <ImportSection />
 
       <p className="muted small version">Verze {__APP_VERSION__}</p>
     </div>
