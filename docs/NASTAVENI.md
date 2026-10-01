@@ -12,8 +12,12 @@ Jednorázové kroky, které musíš udělat ty (vyžadují tvůj účet). Zabere
 3. **Vypni registraci:** Authentication → Sign In / Providers → vypni *Allow new users to sign up*
    (do appky se pak dostaneš jen ty)
 4. **Opiš si hodnoty:**
-   - *Project URL* a veřejný klíč (*publishable* nebo *anon*): Project Settings → API Keys / Data API
-   - *Project ID* (reference): Project Settings → General
+   - *Project ID*: Project Settings → General (je i v adrese: `supabase.com/dashboard/project/<ID>`)
+   - *Project URL*: `https://<Project ID>.supabase.co`
+   - veřejný klíč: Project Settings → API Keys → *Publishable key* (`sb_publishable_…`),
+     případně starší *anon* klíč v záložce *Legacy API Keys*
+   - doporučeno: Authentication → URL Configuration → *Site URL* =
+     `https://michaelbedna13.github.io/osobni-aplikace/`
 5. **Přístupový token pro GitHub:** [supabase.com/dashboard/account/tokens](https://supabase.com/dashboard/account/tokens) → *Generate new token*
 
 ## 2. GitHub
@@ -45,8 +49,10 @@ V repozitáři `osobni-aplikace`:
 > Veřejný klíč Supabase je vidět v kódu stránky. To je v pořádku a tak je to navržené:
 > data chrání pravidla Row Level Security, bez přihlášení nikdo nic nepřečte.
 
-**Záložní cesta pro databázi:** pokud nechceš nastavovat token, otevři v Supabase *SQL Editor*,
-vlož tam obsah souborů ze `supabase/migrations/` (popořadě) a spusť.
+**Tabulky nezakládej ručně.** Vytvoří je GitHub (workflow *Migrace databáze Supabase*).
+Kdyby se stejné SQL spustilo ručně v *SQL Editoru*, automatická migrace by pak skončila chybou,
+protože tabulka už existuje. Ruční cesta má smysl jen tehdy, když `SUPABASE_PROJECT_ID`
+v GitHubu vůbec nenastavíš – pak spouštěj soubory ze `supabase/migrations/` popořadě ručně.
 
 ## 3. iPhone
 
