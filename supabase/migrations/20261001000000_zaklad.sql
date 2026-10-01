@@ -26,6 +26,10 @@ create trigger user_settings_updated_at
 
 alter table public.user_settings enable row level security;
 
+-- Nové tabulky se automaticky nezpřístupňují přes Data API, práva dáváme výslovně.
+-- Anonymní (nepřihlášený) přístup nemá žádná práva.
+grant select, insert, update on public.user_settings to authenticated;
+
 create policy "Vlastník čte svá nastavení"
   on public.user_settings for select
   to authenticated
