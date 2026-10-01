@@ -1,0 +1,2 @@
+# Minimální konfigurace pro Supabase CLI (migrace se nahrávají příkazem `supabase db push`).
+project_id = "osobni-aplikace"

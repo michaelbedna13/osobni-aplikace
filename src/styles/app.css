@@ -1,0 +1,129 @@
+/* Design tokeny – viz docs/DESIGN.md */
+:root {
+  --ink: #000000;
+  --ink-2: #4A4A52;
+  --paper: #FFFFFF;
+  --ground: #F3F3EF;
+  --error: #C4141B;
+  --line: 2px solid var(--ink);
+  --shadow: 4px 4px 0 var(--ink);
+  --r-card: 14px;
+  --r-btn: 12px;
+  --tabbar-h: 76px;
+  --font-display: "Unbounded Variable", system-ui, sans-serif;
+  --font-body: "Onest Variable", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:disabled { cursor: default; opacity: 0.4; }
+:focus-visible { outline: 3px solid #5B8CFF; outline-offset: 2px; }
+.sym * { vector-effect: non-scaling-stroke; }
+.sym-wrap { display: inline-block; flex: none; }
+.sym-wrap svg { display: block; overflow: visible; }
+
+/* ---------- kostra ---------- */
+.app { max-width: 520px; margin: 0 auto; min-height: 100dvh; }
+.app-main { padding-top: env(safe-area-inset-top); padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 24px); }
+.screen { padding-top: 12px; }
+.pad { padding-left: 16px; padding-right: 16px; }
+.muted { color: var(--ink-2); }
+.small { font-size: 14px; }
+.grow { flex: 1; min-width: 0; }
+.splash { min-height: 100dvh; background: var(--ground); }
+.page-title { font-size: 34px; font-weight: 800; line-height: 1.05; margin-bottom: 4px; }
+.sec-row { display: flex; justify-content: space-between; align-items: baseline; margin: 24px 0 12px; }
+.sec-title { font-size: 16px; font-weight: 700; margin: 24px 0 12px; }
+.sec-row .sec-title { margin: 0; }
+.link { font-weight: 600; font-size: 14px; text-underline-offset: 3px; padding: 8px 0; }
+.error { color: var(--error); font-weight: 600; margin: 8px 0; }
+.demo-note { margin-top: 12px; font-size: 14px; color: var(--ink-2); }
+.version { margin: 24px 0; }
+
+/* ---------- komponenty ---------- */
+.card { background: var(--paper); border: var(--line); border-radius: var(--r-card); padding: 16px; }
+.card + .card { margin-top: 16px; }
+.card-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+.sub-title { font-size: 15px; font-weight: 700; margin: 18px 0 6px; }
+.tap { box-shadow: var(--shadow); transition: transform 80ms ease-out, box-shadow 80ms ease-out; }
+.tap:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+@media (prefers-reduced-motion: reduce) { .tap { transition: none; } }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px; border: var(--line); border-radius: var(--r-btn); background: var(--paper); font-weight: 700; text-decoration: none; }
+.btn.dark { background: var(--ink); color: var(--paper); }
+.btn.wide { width: 100%; margin-top: 16px; }
+.chip { display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border: var(--line); border-radius: 999px; background: var(--paper); font-weight: 600; font-size: 14px; white-space: nowrap; }
+.icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border: var(--line); border-radius: 10px; background: var(--paper); }
+.input { width: 100%; min-height: 48px; border: var(--line); border-radius: var(--r-btn); padding: 12px 14px; font: inherit; font-size: 16px; background: var(--ground); }
+.back { width: 40px; height: 40px; border: var(--line); border-radius: 10px; background: var(--paper); display: grid; place-items: center; flex: none; }
+
+/* ---------- spodní lišta ---------- */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  max-width: 520px; margin: 0 auto;
+  background: var(--paper); border-top: var(--line);
+  display: grid; grid-template-columns: repeat(5, 1fr); align-items: end;
+  padding: 8px 8px calc(10px + env(safe-area-inset-bottom));
+}
+.tab { display: grid; justify-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: var(--ink-2); text-decoration: none; padding: 4px 0; min-height: 44px; }
+.tab.on { color: var(--ink); }
+.tab.on svg { stroke-width: 2.5; }
+.tab-add { justify-self: center; margin-top: -30px; width: 60px; height: 60px; border-radius: 50%; border: var(--line); background: #FFE14D; display: grid; place-items: center; }
+
+/* ---------- rychlé přidání ---------- */
+.sheet-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, 0.35); display: flex; align-items: flex-end; justify-content: center; }
+.sheet { width: 100%; max-width: 520px; background: var(--ground); border-top: var(--line); border-radius: 22px 22px 0 0; padding: 10px 16px calc(20px + env(safe-area-inset-bottom)); max-height: 85dvh; overflow-y: auto; animation: sheet-in 180ms ease-out; }
+@keyframes sheet-in { from { transform: translateY(40px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .sheet { animation: none; } }
+.sheet-handle { width: 44px; height: 5px; border-radius: 3px; background: var(--ink); margin: 0 auto 12px; opacity: 0.3; }
+.sheet-title { font-size: 20px; font-weight: 800; margin-bottom: 14px; }
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quick-item { display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 10px 12px; border: var(--line); border-radius: var(--r-card); text-align: left; font-weight: 600; font-size: 14px; line-height: 1.2; }
+
+/* ---------- Dnes ---------- */
+.today-head { display: flex; justify-content: space-between; align-items: flex-start; }
+.today-head h1 { font-size: 34px; font-weight: 800; line-height: 1.05; margin-top: 2px; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; border: var(--line); background: var(--paper); display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; text-decoration: none; }
+.shelf { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; padding: 2px 16px 10px; margin: 0 -16px; scrollbar-width: none; }
+.shelf::-webkit-scrollbar { display: none; }
+.fav { flex: 0 0 148px; scroll-snap-align: start; border: var(--line); border-radius: var(--r-card); padding: 12px; display: flex; flex-direction: column; gap: 6px; min-height: 168px; text-decoration: none; }
+.fav-name { font-weight: 600; font-size: 14px; }
+.fav-num { font-family: var(--font-display); font-size: 26px; font-weight: 800; line-height: 1; margin-top: auto; }
+.fav-sub { font-size: 13px; line-height: 1.2; }
+.fav-edit { border-style: dashed; align-items: center; justify-content: center; color: var(--ink-2); font-weight: 600; }
+.soon { display: grid; gap: 12px; }
+.soon-row { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+
+/* ---------- Moduly ---------- */
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+.tile { position: relative; min-height: 138px; border: var(--line); border-radius: var(--r-card); padding: 12px; display: flex; flex-direction: column; gap: 2px; text-decoration: none; }
+.tile .sym-wrap { margin-bottom: auto; }
+.tile b { font-family: var(--font-display); font-size: 15px; font-weight: 700; line-height: 1.15; margin-top: 10px; }
+.tile span { font-size: 13px; font-weight: 500; }
+.pin-dot { position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); }
+
+/* ---------- stránka modulu ---------- */
+.poster { position: relative; overflow: hidden; border-bottom: var(--line); padding: 8px 16px 28px; min-height: 180px; margin-top: -12px; display: flex; align-items: flex-end; }
+.poster-art { position: absolute; right: -36px; top: -20px; }
+.poster-title { position: relative; display: flex; align-items: center; gap: 10px; }
+.poster-title h1 { font-size: 28px; font-weight: 800; }
+.building { margin-top: 20px; }
+.building h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.building ul { margin: 12px 0 0; padding-left: 20px; display: grid; gap: 6px; }
+
+/* ---------- Profil ---------- */
+.pin-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.pin-list li { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid #D5D5CF; }
+.pin-list li:first-child { border-top: 0; }
+
+/* ---------- Přihlášení ---------- */
+.login { max-width: 420px; margin: 0 auto; min-height: 100dvh; padding: calc(48px + env(safe-area-inset-top)) 16px 32px; display: flex; flex-direction: column; gap: 20px; }
+.login h1 { font-size: 34px; font-weight: 800; }
+.login-symbols { display: flex; gap: 12px; }
+.login-form { display: grid; gap: 8px; }
+.login-form label { font-weight: 600; margin-top: 6px; }

@@ -1,0 +1,41 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { VitePWA } from "vite-plugin-pwa";
+
+// Na GitHub Pages běží appka v podsložce /osobni-aplikace/.
+// S vlastní doménou stačí nastavit VITE_BASE=/ při buildu.
+const base = process.env.VITE_BASE ?? "/osobni-aplikace/";
+const version = `${process.env.npm_package_version ?? "0"}${process.env.GITHUB_SHA ? `+${process.env.GITHUB_SHA.slice(0, 7)}` : ""}`;
+
+export default defineConfig({
+  base,
+  define: { __APP_VERSION__: JSON.stringify(version) },
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: "autoUpdate",
+      includeAssets: ["favicon.svg", "apple-touch-icon.png"],
+      manifest: {
+        name: "Osobní appka",
+        short_name: "Appka",
+        lang: "cs",
+        description: "Hlášky, piva, meditace, tréninky, lidé a další – osobní appka.",
+        theme_color: "#F3F3EF",
+        background_color: "#F3F3EF",
+        display: "standalone",
+        start_url: base,
+        scope: base,
+        icons: [
+          { src: "icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "icon-512.png", sizes: "512x512", type: "image/png" },
+          { src: "icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+        ],
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,png,woff2}"],
+        // Písma pro azbuku a další abecedy se stáhnou jen v případě potřeby.
+        globIgnores: ["**/*cyrillic*", "**/*greek*", "**/*vietnamese*"],
+      },
+    }),
+  ],
+});

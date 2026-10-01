@@ -314,7 +314,7 @@ goals             module, metric, period, target, direction (min/max), active
 
 ## 7. Plán (fáze)
 
-**Fáze 0 – Základ**
+**Fáze 0 – Základ** ✅ *hotovo, zbývá nastavení účtů (viz [NASTAVENI.md](NASTAVENI.md))*
 Projekt, Supabase, přihlášení, PWA (ikona, splash), design tokeny, navigace, obrazovka Dnes (prázdná kostra).
 
 Včetně GitHub Actions (deploy na GitHub Pages, migrace do Supabase).
