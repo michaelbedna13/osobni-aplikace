@@ -15,7 +15,7 @@
   --line: 2px solid var(--edge);
   --shadow: 3px 3px 0 var(--edge);
   --shadow-big: 4px 4px 0 var(--edge);
-  --tabbar-h: 92px;
+  --tabbar-h: 78px;
   --font-pixel: "Jersey 10", system-ui, sans-serif;
   --font-body: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
   --step: steps(3, end);
@@ -26,7 +26,8 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--desk); }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--app-bg); }
+@media (min-width: 560px) { html { background: var(--desk); } }
 body { font-synthesis: none; margin: 0; background: var(--app-bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; }
 h1, h2, h3 { font-family: var(--font-pixel); font-weight: 400; margin: 0; line-height: 1; letter-spacing: 0.01em; }
 p { margin: 0; }
@@ -48,7 +49,8 @@ input, textarea { caret-color: var(--ink); }
   position: relative;
   isolation: isolate;
   background:
-    radial-gradient(90% 300px at 50% 120px, color-mix(in srgb, var(--accent) 7%, transparent), transparent 75%) no-repeat,
+    linear-gradient(var(--app-bg) 0, var(--app-bg) 24px, transparent 120px) no-repeat,
+    radial-gradient(90% 300px at 50% 160px, color-mix(in srgb, var(--accent) 7%, transparent), transparent 75%) no-repeat,
     url("../assets/grain.png") 0 0 / 96px 96px,
     var(--app-bg);
   padding: calc(env(safe-area-inset-top) + 12px) 16px calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 32px);
@@ -145,16 +147,18 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 
 /* ---------- spodní lišta (plovoucí) ---------- */
 .tabbar {
-  position: fixed; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 10;
-  max-width: 496px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 6px;
-  background: var(--paper); border: var(--line); box-shadow: var(--shadow);
+  position: fixed; z-index: 10; left: 0; right: 0; bottom: calc(14px + env(safe-area-inset-bottom));
+  display: flex; justify-content: center; pointer-events: none;
 }
-.tab {
-  display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px;
-  color: var(--slate); text-decoration: none; font-family: var(--font-pixel); font-size: 24px;
+/* kompaktní plovoucí „sklo“ jen s ikonami */
+.tabbar-glass {
+  pointer-events: auto; display: flex; gap: 6px; padding: 6px;
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%);
+  border: var(--line); box-shadow: var(--shadow);
 }
-.tab .sprite { width: 20px; height: 20px; }
+.tab { width: 72px; height: 50px; display: grid; place-items: center; color: var(--slate); text-decoration: none; }
+.tab .sprite { width: 24px; height: 24px; }
 .tab.on { background: var(--lime); color: var(--on-accent); }
 .tab:active { transform: translateY(1px); }
 

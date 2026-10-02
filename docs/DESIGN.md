@@ -175,9 +175,11 @@ Paleta vychází z **Endesga 32**.
   v Profilu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Na později** (jeden neotevřený odkaz denně); hláška dne.
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`);
-  rastr proto nahoře začíná až 56 px pod okrajem, aby pruh a obrazovka na sebe navazovaly.
-- **Spodní lišta**: plovoucí tmavý blok 12 px od okrajů, tři položky (Dnes, Moduly, Profil) s ikonou
-  a popiskem; aktivní položka je limetková s tmavým textem. Rychlé zápisy jsou na kartách na obrazovce Dnes.
+  horních 24 px obrazovky je proto čistá `app-bg` (zrno a záře nastupují plynule do 120 px) a rastr začíná
+  až pod tím, aby pruh a obrazovka splynuly.
+- **Spodní lišta**: kompaktní plovoucí „sklo“ uprostřed dole (průsvitný povrch s rozmazáním, obrys a tvrdý stín),
+  jen tři ikony bez popisků (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní ikona má limetkový
+  čtverec; obrazovky modulů patří pod Moduly. Rychlé zápisy jsou na kartách na obrazovce Dnes.
 
 ## Elevation & Depth
 
