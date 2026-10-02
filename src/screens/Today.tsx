@@ -9,6 +9,8 @@ import { isDemo } from "../lib/supabase";
 import { quoteOfDay, useQuotes } from "../modules/hlaskomat/data";
 import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 import { GratitudeForm } from "../modules/vdecnost/GratitudeForm";
+import { soonOccasions, usePeople } from "../modules/lide/data";
+import { OccasionRow } from "../modules/lide/LideScreen";
 import { ShelfCard } from "./ShelfCard";
 
 function Gratitude() {
@@ -28,6 +30,18 @@ function Gratitude() {
         )}
         <GratitudeForm todayCount={stats.today.length} />
       </div>
+    </section>
+  );
+}
+
+function SoonCelebrating() {
+  const { data: people = [] } = usePeople();
+  const soon = useMemo(() => soonOccasions(people, 7), [people]);
+  if (soon.length === 0) return null;
+  return (
+    <section className="sec" style={{ "--accent": MODULE_BY_KEY.lide.color } as CSSProperties}>
+      <h2>Brzy slaví</h2>
+      <ul className="list">{soon.map((o) => <OccasionRow key={`${o.person.id}-${o.kind}`} o={o} />)}</ul>
     </section>
   );
 }
@@ -77,6 +91,8 @@ export function Today() {
           {pinned.map((key) => <ShelfCard key={key} moduleKey={key} />)}
         </div>
       </section>
+
+      <SoonCelebrating />
 
       <Gratitude />
 

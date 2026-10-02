@@ -171,7 +171,7 @@ Paleta vychází z **Endesga 32**.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
 - Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména limetkově, data z balíčku `namedays-cs`),
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
-  v Profilu); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); hláška dne.
+  v Profilu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); hláška dne.
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`);
   rastr proto nahoře začíná až 56 px pod okrajem, aby pruh a obrazovka na sebe navazovaly.
@@ -206,6 +206,11 @@ Paleta vychází z **Endesga 32**.
 - **Trofeje** (`.trophies`): 2 × 2, rekord zlatě se spritem trofeje.
 - **Karta hlášky** (`.quote-card`): text hlášky a pod ním **uvnitř karty** autor limetkově a kontext s datem
   šedě; hvězdička oblíbené vpravo. Autor nikdy mimo kartu (mezi kartami nebylo jasné, ke které patří).
+- **Oslava** (`OccasionRow`, `.occasion`): blok s datem a dnem v týdnu, jméno, co slaví („30. narozeniny“,
+  „svátek“) a kdy („Dnes“, „Zítra“, „za 3 dny“). Dnešní oslava má podklad v akcentu.
+- **Nápad na dárek** (`.idea-row`): text (+ doména odkazu), odkaz, tlačítko „Dáno“ vpravo.
+- **Spodní panel a potvrzení** se vykreslují do `<body>` (portál), protože `.screen` má kvůli textuře
+  vlastní vrstvení (`isolation: isolate`) a jinak by skončily pod spodní lištou.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

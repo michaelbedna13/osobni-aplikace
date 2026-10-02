@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 export interface ToastAction {
   label: string;
@@ -24,13 +25,15 @@ export function useToast() {
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  const element = toast && (
+  // do <body>, aby toast nebyl pod spodní lištou (obrazovka má vlastní vrstvení kvůli textuře)
+  const element = toast && createPortal(
     <div className="toast" role="status" key={toast.key}>
       <span>{toast.message}</span>
       {toast.actions.map((a) => (
         <button key={a.label} className="toast-action" onClick={() => { setToast(null); a.run(); }}>{a.label}</button>
       ))}
-    </div>
+    </div>,
+    document.body,
   );
 
   return { show, element };

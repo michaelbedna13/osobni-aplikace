@@ -42,7 +42,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Časovač s gongem", "Historie meditací a jejich délky", "Cíl, např. 5× týdně, a série", "Statistiky"]
   },
   {
-    key: "lide", name: "Lidé a dárky", color: "#B55088", deep: "#68386C", light: "#F6757A", phase: 1, quickAction: "Přidat nápad na dárek",
+    key: "lide", name: "Lidé a dárky", color: "#B55088", deep: "#68386C", light: "#F6757A", phase: 1, ready: true, quickAction: "Přidat nápad na dárek",
     plan: ["Narozeniny a jmeniny kamarádů", "Nápady na dárky během roku", "Odběr do Kalendáře v iPhonu", "Poznámky k lidem"]
   },
   {
@@ -76,4 +76,4 @@ export const MODULE_BY_KEY = Object.fromEntries(MODULES.map((m) => [m.key, m])) 
 export const isModuleKey = (value: string | undefined): value is ModuleKey =>
   !!value && value in MODULE_BY_KEY;
 
-export const DEFAULT_PINNED: ModuleKey[] = ["piva", "vdecnost", "meditace", "hlaskomat", "trenink"];
+export const DEFAULT_PINNED: ModuleKey[] = ["piva", "vdecnost", "lide", "meditace", "hlaskomat"];

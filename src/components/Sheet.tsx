@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 interface Props {
   title: string;
@@ -18,13 +19,15 @@ export function Sheet({ title, onClose, children }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  return (
+  // do <body>, aby panel byl nad spodní lištou (obrazovka má vlastní vrstvení kvůli textuře)
+  return createPortal(
     <div className="sheet-backdrop" onClick={onClose}>
       <div ref={panel} className="sheet" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
         <div className="sheet-handle" aria-hidden="true" />
         <h2 className="sheet-title">{title}</h2>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

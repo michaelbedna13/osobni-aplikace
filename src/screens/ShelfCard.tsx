@@ -11,6 +11,7 @@ import { computeMeditationStats, useMeditations } from "../modules/meditace/data
 import { computeStats, useBeers } from "../modules/piva/data";
 import { useBeerCounter } from "../modules/piva/PivaScreen";
 import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
+import { upcomingOccasions, usePeople } from "../modules/lide/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -106,11 +107,26 @@ function VdecnostCard() {
   );
 }
 
+function LideCard() {
+  const { data: people = [] } = usePeople();
+  const next = useMemo(() => upcomingOccasions(people)[0], [people]);
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="lide"
+      num={next ? (next.days === 0 ? "Dnes" : `${next.days} d`) : String(people.length)}
+      sub={next ? `${next.person.name}, ${next.kind === "narozeniny" ? "narozeniny" : "svátek"}` : "lidí, přidej narozeniny"}
+      quick={{ label: "Přidat nápad na dárek", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/lide?napad=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
   if (moduleKey === "hlaskomat") return <HlaskomatCard />;
   if (moduleKey === "meditace") return <MeditaceCard />;
   if (moduleKey === "vdecnost") return <VdecnostCard />;
+  if (moduleKey === "lide") return <LideCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }
