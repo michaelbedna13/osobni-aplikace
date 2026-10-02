@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { NightStars } from "../components/Topbar";
 import { greeting } from "../lib/copy";
 import { formatDate } from "../lib/format";
 import { usePinnedModules } from "../lib/settings";
@@ -34,8 +33,7 @@ export function Today() {
   const date = now.toLocaleDateString("cs-CZ", { day: "numeric", month: "long" });
 
   return (
-    <div className="screen night">
-      <NightStars />
+    <div className="screen">
       <header className="today-head">
         <div>
           <h1>{date}</h1>

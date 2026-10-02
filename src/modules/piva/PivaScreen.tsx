@@ -53,11 +53,11 @@ export function PivaScreen() {
   };
 
   return (
-    <div className="screen module" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+    <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
         <Topbar title="Piva" />
         <div className="hero" aria-live="polite">
-          <span key={jump} className={jump ? "anim-jump" : "anim-bob"}><Sprite name="piva" size={112} /></span>
+          <span key={jump} className={`sprite-tile ${jump ? "anim-jump" : ""}`}><Sprite name="piva" size={96} /></span>
           <Burst trigger={jump} text="+1" />
           <span className="hero-num">{stats.today}</span>
           <span className="hero-cap">{beerHeadline(stats.today)}</span>

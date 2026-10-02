@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from "react";
 import { Sprite } from "../components/Sprite";
-import { NightStars } from "../components/Topbar";
 import { signIn } from "../lib/auth";
 
 export function Login() {
@@ -19,8 +18,7 @@ export function Login() {
   };
 
   return (
-    <div className="screen night">
-      <NightStars />
+    <div className="screen">
       <div className="login">
         <div className="login-cast" aria-hidden="true">
           <Sprite name="piva" size={64} anim="bob" />

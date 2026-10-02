@@ -49,12 +49,12 @@ export function HlaskomatScreen() {
   const podium = [ranking[1], ranking[0], ranking[2]];
 
   return (
-    <div className="screen module" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+    <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
       <Topbar title="Hláškomat" />
 
       <div className="hero">
-        <span key={jump} className={jump ? "anim-jump" : "anim-bob"}><Sprite name="hlaskomat" size={96} /></span>
+        <span key={jump} className={`sprite-tile ${jump ? "anim-jump" : ""}`}><Sprite name="hlaskomat" size={96} /></span>
         <Burst trigger={jump} />
         <span className="hero-num">{quotes.length}</span>
         <span className="hero-cap">{plural(quotes.length, HLASEK)} v archivu</span>

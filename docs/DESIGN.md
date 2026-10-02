@@ -4,9 +4,7 @@ description: Kapesní 8bitová hra o vlastním životě. Každý modul je jiný 
 colors:
   ink: "#181425"
   paper: "#FFFFFF"
-  night: "#262B44"
-  night-deep: "#181425"
-  night-ink: "#C0CBDC"
+  app-bg: "#F2F3F7"
   gold: "#FEE761"
   danger: "#A22633"
   bar-idle: "#C0CBDC"
@@ -115,7 +113,7 @@ components:
     padding: "3px 10px"
 ---
 
-# Design – pixel art (v2.1)
+# Design – pixel art (v2.2, decentní)
 
 Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/lib/sprites.ts`
 (postavičky a ikony), `src/lib/modules.ts` (barvy modulů), `src/lib/copy.ts` (hlas appky).
@@ -123,31 +121,24 @@ Product truth je v `PRODUCT.md`.
 
 ## Overview
 
-Appka je **kapesní 8bitová hra o vlastním životě**. Každý modul je jiný „level“: celá obrazovka
-v plné barvě modulu, uprostřed jeho pixelová postavička, pod ní obří číslo a jedno velké 3D
-tlačítko hlavní akce. Zápis je herní tah s odměnou (postavička poskočí, vyletí „+1“ a pixelové
-konfety, appka řekne vtipnou větu). Statistiky se čtou jako herní skóre: kostičky, které jde
-spočítat okem, žebříčky s korunkou, trofeje.
+Appka je **kapesní 8bitová hra o vlastním životě**, podaná decentně: všude stejné klidné světlé
+pozadí, bílé panely s tenkým černým obrysem a pixelové postavičky. Barva modulu je jen **akcent**:
+dlaždice za postavičkou, podtržení nadpisu, hlavní tlačítko a zvýraznění v grafu. Zápis má
+odměnu (postavička poskočí, vyletí „+1“ a pixelové konfety, appka řekne vtipnou větu).
 
-Odmítáme: samé bílé karty se stejnou ikonou a nadpisem, šedý podklad, tenké grafy bez čísel,
-úřední texty.
-
-Jediná vlastnost převzatá z verze 1 jsou **černé obrysy a tvrdé posunuté stíny**.
+Jediná vlastnost převzatá z verze 1 jsou **černé obrysy a tvrdé posunuté stíny** (teď tenčí: 2 px / 3 px).
 
 ## Colors
 
-Paleta vychází z **Endesga 32** (známá pixel-artová paleta), takže barvy spolu ladí.
+Paleta vychází z **Endesga 32**.
 
-- **Noc** (`night` `#262B44`) je podklad „mimo hru“: Dnes, Moduly, Profil, přihlášení.
-  Text bílý / `night-ink`, akcent `gold`, pixelové hvězdy jen v horní části.
-- **Obrazovka modulu**: nahoře **barevný pás** v plné barvě modulu (postavička, hlavní číslo,
-  hlavní tlačítko), pod ním klidný světlý podklad = barva modulu smíchaná s bílou (16 %).
-  Bílé panely tak na podkladu čistě vystoupí.
-- Každý modul má `color`, `deep` (stínování pixelů, splněné dny) a `light` (odlesky, zamčené
-  dlaždice v nabídce +). Hodnoty v `src/lib/modules.ts`.
-- **Zamčené moduly** jsou v `night-deep` s visacím zámkem.
-- Obrysy a text: `ink` `#181425` (nejtmavší barva palety, ne čistá černá).
-- Grafy: neaktivní hodnoty `bar-idle`, zvýrazněná (dnešek, vítěz) v barvě modulu.
+- **Jedno pozadí pro celou appku**: `app-bg` `#F2F3F7`. Žádné barevné plochy přes celou obrazovku.
+- Text a obrysy `ink` `#181425`, vedlejší text `slate` `#5A6988`.
+- **Barva modulu = akcent (`--accent`)**, použitá decentně a vždy jen na těchto místech:
+  dlaždice za postavičkou (28 % barvy s bílou), podtržení nadpisu obrazovky, hlavní tlačítko,
+  rychlá akce na kartě, zvýrazněná hodnota v grafu, splněné dny u cíle.
+- **Zamčené moduly**: šedá dlaždice, postavička v odstínech šedi, šedý text, ikona zámku.
+- Trofej za rekord má zlatý nádech (`gold` 55 % s bílou).
 
 ## Typography
 
@@ -160,17 +151,18 @@ Paleta vychází z **Endesga 32** (známá pixel-artová paleta), takže barvy s
 ## Layout
 
 - Jeden sloupec, okraj 16 px, max. šířka 520 px (na počítači uprostřed na noční ploše).
-- Obrazovka modulu: **barevný pás** (lišta zpět + název, postavička, obří číslo, popisek,
-  hlavní tlačítko) → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
+- Obrazovka modulu: lišta (zpět + podtržený název) → postavička na barevné dlaždici → obří číslo,
+  popisek → hlavní tlačítko → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
   jen vybrané záložky. Dlouhé obrazovky se tím nescrollují do nekonečna.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
 - Dnes: datum, pozdrav, pás „Moje moduly“ (posun do boku, karty 156 px), hláška dne v bublině.
-- Spodní lišta: 5 položek, uprostřed zlaté tlačítko + (nabídka „Co zapíšeme?“). Respektuje safe area.
+- **Spodní lišta**: plovoucí bílý blok 12 px od okrajů, tři položky (Dnes, Moduly, Profil) s ikonou
+  a popiskem; aktivní položka je černá s bílým textem. Rychlé zápisy jsou na kartách na obrazovce Dnes.
 
 ## Elevation & Depth
 
-- Obrys `3px solid #000` na všem.
-- **Stín = dá se na to ťuknout**: `4px 4px 0 #000`, hlavní tlačítko `6px 6px 0`.
+- Obrys `2px solid ink` na všem.
+- **Stín = dá se na to ťuknout**: `3px 3px 0 ink`, hlavní tlačítko `4px 4px 0`.
   Po stisku se prvek posune o velikost stínu a stín zmizí. Panely s informacemi stín nemají.
 
 ## Shapes
@@ -196,8 +188,9 @@ Paleta vychází z **Endesga 32** (známá pixel-artová paleta), takže barvy s
 - **Trofeje** (`.trophies`): 2 × 2, rekord zlatě se spritem trofeje.
 - **Bublina** (`.bubble`) + **jmenovka** (`.nameplate`) pro hlášky; hvězdička oblíbené vpravo.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
-- **Karta modulu v pásu** (`.fav`): barva modulu, sprite, název, číslo, rychlá akce vpravo nahoře.
+- **Karta modulu v pásu** (`.fav`): bílá, postavička na dlaždici v akcentu, název, číslo, rychlá akce v akcentu vpravo nahoře.
 - **Záložky** (`Tabs`): plná šířka, aktivní černá.
+- **Dlaždice postavičky** (`.sprite-tile`): čtverec s obrysem a akcentem modulu.
 - **Spodní panel** (`Sheet`), **potvrzení** (`useToast`, černý blok se zlatou akcí „Vrátit“).
 
 ### Pohyb
@@ -218,6 +211,6 @@ Kamarád z party: „Dneska zatím na suchu“, „Třetí. Číšník už ví.�
 - **Do:** jedna hlavní akce na obrazovku, největší prvek pod číslem.
 - **Do:** nový modul = nová barva + nový 16 × 16 sprite + vlastní herní metafora statistik.
 - **Do:** čísla vždy v Jersey 10 a s tabulkovými číslicemi.
-- **Don't:** bílé karty na šedém podkladu, zaoblené rohy, měkké stíny, gradienty.
+- **Don't:** plné barevné plochy přes obrazovku, víc než jeden akcent na obrazovce, zaoblené rohy, měkké stíny, gradienty.
 - **Don't:** kreslit ikony znaky (▶ ★) – vždy sprite.
 - **Don't:** nadpisky nad nadpisy, VERZÁLKY jako dekorace.

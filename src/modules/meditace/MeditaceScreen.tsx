@@ -120,7 +120,7 @@ function TimerView({ timer, onPause, onResume, onFinish, onCancel }: {
   const inhale = Math.floor(elapsed / 4) % 2 === 0;
 
   return (
-    <div className="screen" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+    <div className="screen" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <Topbar title="Meditace" back={null} />
       <div className="timer-wrap">
         <div className="ring" role="timer" aria-label={`${timer.plannedSeconds === null ? "Uplynulo" : "Zbývá"} ${mm}:${ss}`}>
@@ -166,11 +166,11 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
   const goalDone = stats.weekCount >= goal;
 
   return (
-    <div className="screen module" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+    <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
         <Topbar title="Meditace" />
         <div className="hero">
-          <span key={celebrate} className={celebrate ? "anim-jump" : "anim-bob"}><Sprite name="meditace" size={96} /></span>
+          <span key={celebrate} className={`sprite-tile ${celebrate ? "anim-jump" : ""}`}><Sprite name="meditace" size={96} /></span>
           <Burst trigger={celebrate} colors={["#FFFFFF", MODULE.deep, "#FEE761"]} />
           <span className="hero-num">{stats.weekCount}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
           <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : "meditací tento týden"}</span>

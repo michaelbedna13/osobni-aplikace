@@ -16,20 +16,3 @@ export function Topbar({ title, back = "/moduly", right }: { title: string; back
     </header>
   );
 }
-
-/** Pixelové hvězdy na noční obrazovce. */
-export function NightStars() {
-  const stars = [
-    { x: "66%", y: "18px", s: 12 }, { x: "54%", y: "64px", s: 16 }, { x: "84%", y: "110px", s: 12 },
-    { x: "70%", y: "150px", s: 10 },
-  ];
-  return (
-    <div className="night-stars" aria-hidden="true">
-      {stars.map((st, i) => (
-        <span key={i} style={{ left: st.x, top: st.y, position: "absolute" }} className={i % 2 ? "twinkle" : undefined}>
-          <Sprite name="sparkle" size={st.s * 2} />
-        </span>
-      ))}
-    </div>
-  );
-}

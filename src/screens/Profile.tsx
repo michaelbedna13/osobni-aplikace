@@ -20,7 +20,7 @@ export function Profile() {
   const add = (key: ModuleKey) => setPinned([...pinned, key]);
 
   return (
-    <div className="screen night">
+    <div className="screen">
       <header className="topbar"><h1>Profil</h1></header>
 
       <section className="sec">
