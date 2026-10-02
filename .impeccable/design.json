@@ -129,7 +129,7 @@
       "refersTo": "panel",
       "description": "Tři čísla vedle sebe pod hlavním tlačítkem.",
       "html": "<div class=\"ds-score\"><div><b>7</b><span>tento týden</span></div><div><b>3</b><span>tento měsíc</span></div><div><b>117</b><span>celkem</span></div></div>",
-      "css": ".ds-score { display: grid; grid-template-columns: repeat(3,1fr); background: #fff; border: 3px solid #000; } .ds-score > div { padding: 10px 6px; text-align: center; display: grid; } .ds-score > div + div { border-left: 3px solid #000; } .ds-score b { font-family: 'Jersey 10', system-ui; font-size: 38px; font-weight: 400; } .ds-score span { font-family: Rubik, system-ui; font-size: 13px; }"
+      "css": ".ds-score { display: grid; grid-template-columns: repeat(3,1fr); background: #fff; border: 3px solid #000; } .ds-score > div { padding: 10px 6px; text-align: center; display: grid; } .ds-score > div + div { border-left: 3px solid #000; } .ds-score b { font-family: 'Jersey 10', system-ui; font-size: 38px; font-weight: 400; } .ds-score span { font-family: "Space Grotesk", system-ui; font-size: 13px; }"
     },
     {
       "name": "Bublina hlášky",

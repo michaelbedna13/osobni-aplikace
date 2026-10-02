@@ -17,7 +17,7 @@
   --shadow-big: 4px 4px 0 var(--edge);
   --tabbar-h: 92px;
   --font-pixel: "Jersey 10", system-ui, sans-serif;
-  --font-body: "Rubik Variable", "Rubik", system-ui, sans-serif;
+  --font-body: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
   --step: steps(3, end);
   /* akcent obrazovky – přepisuje ho modul (decentně: dlaždice, podtržení, hlavní tlačítko, záře pozadí) */
   --accent: var(--lime);

@@ -68,12 +68,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.1
   body:
-    fontFamily: "Rubik Variable, system-ui, sans-serif"
+    fontFamily: "Space Grotesk Variable, system-ui, sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.45
   caption:
-    fontFamily: "Rubik Variable, system-ui, sans-serif"
+    fontFamily: "Space Grotesk Variable, system-ui, sans-serif"
     fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.3
@@ -159,9 +159,9 @@ Paleta vychází z **Endesga 32**.
 
 - **Jersey 10** – nadpisy, čísla, tlačítka, popisky v grafech. Jasně odlišené číslice
   (žádná záměna 5/S, 2/Z), česká diakritika. Jeden řez; nikdy umělé ztučnění (`font-synthesis: none`).
-- **Rubik** – delší text (popisy, vedlejší řádky, data v seznamech).
+- **Space Grotesk** – delší text (popisy, vedlejší řádky, data v seznamech, zapsaný text). Technický grotesk s rovnými tvary, ladí s pixelovým Jersey lépe než zaoblený Rubik.
 - Stupnice velikostí (jen tyto): 104 / 60 / 48 / 36 / 30 / 24 / 20 px pro Jersey 10,
-  16 / 14 px pro Rubik. Žádné nadpisky (eyebrow) nad nadpisy.
+  16 / 14 px pro Space Grotesk. Žádné nadpisky (eyebrow) nad nadpisy.
 
 ## Layout
 

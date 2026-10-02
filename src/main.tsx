@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@fontsource/jersey-10";
-import "@fontsource-variable/rubik";
+import "@fontsource-variable/space-grotesk";
 import "./styles/app.css";
 import { App } from "./App";
 import { AuthProvider } from "./lib/auth";
