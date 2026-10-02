@@ -572,3 +572,9 @@ a.btn-hero { text-decoration: none; }
 .media-head { display: flex; gap: 14px; align-items: flex-start; }
 .media-head > div { display: grid; gap: 6px; }
 .status-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+/* ---------- Wishlist ---------- */
+.wait-tag { display: inline-block; margin-top: 4px; padding: 1px 6px; font-size: 14px; background: var(--surface-2); color: var(--slate); }
+.wait-tag.ready { background: color-mix(in srgb, var(--lime) 18%, var(--paper)); color: var(--lime); }
+.wait-tag.big { display: block; margin-top: 12px; padding: 8px 10px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }

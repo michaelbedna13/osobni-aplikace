@@ -18,6 +18,7 @@ import { computeCornholeStats, useGames } from "../modules/cornhole/data";
 import { useActiveGame } from "../modules/cornhole/active";
 import { useLinks } from "../modules/odkazy/data";
 import { computeMediaStats, useMedia } from "../modules/filmy/data";
+import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -188,6 +189,20 @@ function FilmyCard() {
   );
 }
 
+function WishlistCard() {
+  const { data: wishes = [] } = useWishes();
+  const stats = useMemo(() => computeWishStats(wishes), [wishes]);
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="wishlist"
+      num={String(stats.open)}
+      sub={`přání za ${formatKc(stats.openTotal)}`}
+      quick={{ label: "Přidat přání", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/wishlist?nova=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
@@ -199,5 +214,6 @@ export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "cornhole") return <CornholeCard />;
   if (moduleKey === "odkazy") return <OdkazyCard />;
   if (moduleKey === "filmy") return <FilmyCard />;
+  if (moduleKey === "wishlist") return <WishlistCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

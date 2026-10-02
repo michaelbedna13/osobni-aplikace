@@ -38,7 +38,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Odkazy (ukládání z menu Sdílet přes Zkratku, náhledy, kolekce, obrázky a screenshoty, na později).
   Filmy a knihy (chci / teď / hotovo, hledání s plakáty a obálkami bez registrace, hodnocení,
   kdo doporučil, čtenářská výzva).
-  Plánované: Místa, Wishlist, Finance.
+  Wishlist (cena, priorita, pravidlo 30 dní, koupeno / už nechci a „ušetřeno“).
+  Plánované: Místa, Finance.
 - Obrazovka Dnes: datum a kdo má svátek, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, jeden odkaz „Na později“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.
 

@@ -66,7 +66,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Chci vidět / přečíst", "Hledání s plakáty a obálkami", "Kde film běží", "Čtenářská výzva"]
   },
   {
-    key: "wishlist", name: "Wishlist", color: "#F6757A", deep: "#B55088", light: "#FAD4D6", phase: 3, quickAction: "Přidat přání",
+    key: "wishlist", name: "Wishlist", color: "#F6757A", deep: "#B55088", light: "#FAD4D6", phase: 3, ready: true, quickAction: "Přidat přání",
     plan: ["Věci, co chceš koupit", "Cena a priorita", "Pravidlo 30 dní", "Propojení se spořením"]
   },
   {

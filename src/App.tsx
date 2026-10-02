@@ -17,6 +17,7 @@ import { CornholeScreen } from "./modules/cornhole/CornholeScreen";
 import { GameScreen } from "./modules/cornhole/GameScreen";
 import { OdkazyScreen } from "./modules/odkazy/OdkazyScreen";
 import { FilmyScreen } from "./modules/filmy/FilmyScreen";
+import { WishlistScreen } from "./modules/wishlist/WishlistScreen";
 import { Modules } from "./screens/Modules";
 import { Profile } from "./screens/Profile";
 import { Today } from "./screens/Today";
@@ -46,6 +47,7 @@ export function App() {
           <Route path="m/cornhole/hra" element={<GameScreen />} />
           <Route path="m/odkazy" element={<OdkazyScreen />} />
           <Route path="m/filmy" element={<FilmyScreen />} />
+          <Route path="m/wishlist" element={<WishlistScreen />} />
           <Route path="m/denik" element={<Navigate to="/m/vdecnost" replace />} />
           <Route path="m/:key" element={<ModuleScreen />} />
           <Route path="mapa" element={<ModuleScreen moduleKey="mista" showBack={false} />} />

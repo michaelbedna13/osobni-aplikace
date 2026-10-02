@@ -223,6 +223,8 @@ Paleta vychází z **Endesga 32**.
   web · kdy · kolekce, limetkový čtvereček = „na později“. Detail ve spodním panelu s „Otevřít“.
 - **Plakát / obálka** (`.cover`, 2 : 3) v mřížce po třech (`.poster-grid`), název na 2 řádky; bez obrázku
   dlaždice s názvem. Hodnocení 1–5 hvězdiček (sprite hvězdy, nevybrané šedé).
+- **Přání** (`.wish-card`): jako odkaz, navíc cena · priorita a štítek čekání (`.wait-tag`; po 30 dnech limetkový
+  „pořád to chceš?“).
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
