@@ -3,20 +3,19 @@ name: Osobní appka – pixel
 description: Kapesní 8bitová hra o vlastním životě. Každý modul je jiný level s vlastní barvou a pixelovou ikonou.
 colors:
   ink: "#FEFAE0"
-  paper: "#0A3A22"
-  edge: "#000A02"
+  paper: "#0C2117"
+  edge: "#000502"
   on-accent: "#001600"
   white: "#FFFFFF"
-  app-bg: "#001D00"
-  desk: "#001600"
-  grid: "#0E3317"
+  app-bg: "#020F08"
+  desk: "#000804"
   lime: "#CEF17B"
   gold: "#FEE761"
   danger: "#F6757A"
-  bar-idle: "#2B5A36"
+  bar-idle: "#24402F"
   slate: "#9FB8B8"
-  track: "#04280F"
-  scrim: "rgba(0, 10, 2, 0.75)"
+  track: "#071710"
+  scrim: "rgba(0, 5, 2, 0.75)"
   piva: "#FEAE34"
   piva-deep: "#F77622"
   hlaskomat: "#0099DB"
@@ -115,7 +114,7 @@ components:
     padding: "16px"
 ---
 
-# Design – pixel art (v2.4, tmavě zelená)
+# Design – pixel art (v2.5, tmavě zelená s rastrem)
 
 Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/lib/sprites.ts`
 (ikony modulů a doplňky), `src/lib/modules.ts` (barvy modulů), `src/lib/copy.ts` (hlas appky).
@@ -123,9 +122,9 @@ Product truth je v `PRODUCT.md`.
 
 ## Overview
 
-Appka je **kapesní 8bitová hra o vlastním životě**, podaná decentně: všude stejné velmi tmavě
-zelené pozadí s jemnou tečkovou mřížkou, tmavě zelené panely s téměř černým obrysem a pixelové ikony.
-Barva modulu je jen **akcent**: slabá záře nahoře na pozadí, dlaždice za ikonou, podtržení nadpisu,
+Appka je **kapesní 8bitová hra o vlastním životě**, podaná decentně: všude stejné skoro černé
+zelené pozadí s filmovým zrnem a rastrovým (halftone) mrakem nahoře, tmavě zelené panely s téměř černým obrysem a pixelové ikony.
+Barva modulu je jen **akcent**: rastrový mrak nahoře na pozadí, dlaždice za ikonou, podtržení nadpisu,
 hlavní tlačítko a zvýraznění v grafu. Zápis má
 odměnu (ikona poskočí, vyletí „+1“ a pixelové konfety, appka řekne vtipnou větu).
 
@@ -135,11 +134,15 @@ Jediná vlastnost převzatá z verze 1 jsou **černé obrysy a tvrdé posunuté 
 
 Paleta vychází z **Endesga 32**.
 
-- **Jedno pozadí pro celou appku**: `app-bg` `#001D00` (very deep green) + tečková mřížka `grid`
-  `#0E3317` (12 px) + radiální záře akcentu (16 %) v horní části obrazovky. Na počítači kolem appky
-  `desk` `#001600` (black green).
-- Tmavé téma: text `ink` `#FEFAE0` (cornsilk), povrch panelů `paper` `#0A3A22`, obrysy a stíny
-  `edge` `#000A02`, vedlejší text `slate` `#9FB8B8` (ash gray). Text na akcentu nebo limetce je vždy
+- **Jedno pozadí pro celou appku**: `app-bg` `#020F08` (skoro černá zelená, tmavší a méně sytá než
+  „very deep green“, aby to nepůsobilo bažinatě). Na počítači kolem appky `desk` `#000804`.
+- **Textura pozadí** (soubory ze `scripts/generate-textures.mjs`, výstup je deterministický):
+  - `src/assets/grain.png` – filmové zrno (světlá i tmavá zrnka s průhledností), dlaždice 96 px;
+  - `src/assets/halftone.svg` – rastrový mrak: tečky v šestiúhelníkové síti 8 px, velikost podle šumu,
+    směrem dolů mizí (480 px). Použitý jako maska `.screen::before` vybarvená akcentem, krytí 17 %;
+  - pod rastrem slabá záře akcentu (7 %).
+- Tmavé téma: text `ink` `#FEFAE0` (cornsilk), povrch panelů `paper` `#0C2117`, obrysy a stíny
+  `edge` `#000502`, vedlejší text `slate` `#9FB8B8` (ash gray). Text na akcentu nebo limetce je vždy
   `on-accent` `#001600`.
 - **Zvýraznění UI je limetka** `lime` `#CEF17B` (lime glow): aktivní položka lišty, avatar, jména
   (svátek, autor hlášky), focus. Žlutá `gold` zůstává jen v pixelových předmětech (hvězda, trofej, korunka).
@@ -170,8 +173,8 @@ Paleta vychází z **Endesga 32**.
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
   v Profilu); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); hláška dne.
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
-- Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`); horní okraj obrazovky
-  proto plynule přechází z `app-bg` do mřížky, aby na sebe navazovaly.
+- Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`);
+  rastr proto nahoře začíná až 56 px pod okrajem, aby pruh a obrazovka na sebe navazovaly.
 - **Spodní lišta**: plovoucí tmavý blok 12 px od okrajů, tři položky (Dnes, Moduly, Profil) s ikonou
   a popiskem; aktivní položka je limetková s tmavým textem. Rychlé zápisy jsou na kartách na obrazovce Dnes.
 
@@ -230,7 +233,7 @@ Kamarád z party: „Dneska zatím na suchu“, „Třetí. Číšník už ví.�
 - **Do:** nový modul = nová barva + nový 16 × 16 sprite + vlastní herní metafora statistik.
 - **Do:** čísla vždy v Jersey 10 a s tabulkovými číslicemi.
 - **Don't:** plné barevné plochy přes obrazovku, víc než jeden akcent na obrazovce, zaoblené rohy, měkké stíny.
-  Jediný gradient je záře akcentu v pozadí obrazovky.
+  Jediné gradienty jsou rastr a záře akcentu v pozadí obrazovky.
 - **Don't:** obličeje na ikonách modulů.
 - **Don't:** kreslit ikony znaky (▶ ★) – vždy sprite.
 - **Don't:** nadpisky nad nadpisy, VERZÁLKY jako dekorace.

@@ -2,16 +2,15 @@
 :root {
   /* tmavé téma: --ink = text, --paper = povrch panelů, --edge = obrysy a stíny */
   --ink: #FEFAE0;
-  --paper: #0A3A22;
-  --edge: #000A02;
+  --paper: #0C2117;
+  --edge: #000502;
   --on-accent: #001600;
   --lime: #CEF17B;
   --danger: #F6757A;
-  --app-bg: #001D00;
-  --desk: #001600;
-  --grid: #0E3317;
-  --surface-2: #04280F;
-  --idle: #2B5A36;
+  --app-bg: #020F08;
+  --desk: #000804;
+  --surface-2: #071710;
+  --idle: #24402F;
   --slate: #9FB8B8;
   --line: 2px solid var(--edge);
   --shadow: 3px 3px 0 var(--edge);
@@ -47,13 +46,20 @@ input, textarea { caret-color: var(--ink); }
 .app-main > .screen { flex: 1; }
 .screen {
   position: relative;
+  isolation: isolate;
   background:
-    linear-gradient(var(--app-bg), transparent 64px) no-repeat,
-    radial-gradient(90% 320px at 50% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%) no-repeat,
-    radial-gradient(var(--grid) 1px, transparent 1.5px) 0 0 / 12px 12px,
+    radial-gradient(90% 300px at 50% 120px, color-mix(in srgb, var(--accent) 7%, transparent), transparent 75%) no-repeat,
+    url("../assets/grain.png") 0 0 / 96px 96px,
     var(--app-bg);
   padding: calc(env(safe-area-inset-top) + 12px) 16px calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 32px);
   color: var(--ink);
+}
+/* rastr (halftone) v barvě akcentu nahoře; vzniká ze scripts/generate-textures.mjs */
+.screen::before {
+  content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: 0; height: 480px; pointer-events: none;
+  background: var(--accent); opacity: 0.17;
+  -webkit-mask: url("../assets/halftone.svg") top center / 520px 480px no-repeat;
+  mask: url("../assets/halftone.svg") top center / 520px 480px no-repeat;
 }
 /* hlavička modulu: bez barevné plochy, barva jen jako akcent */
 .band { padding-bottom: 4px; }
@@ -153,7 +159,7 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .tab:active { transform: translateY(1px); }
 
 /* ---------- spodní panel ---------- */
-.sheet-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(0, 10, 2, 0.75); display: flex; align-items: flex-end; justify-content: center; }
+.sheet-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(0, 5, 2, 0.75); display: flex; align-items: flex-end; justify-content: center; }
 .sheet {
   width: 100%; max-width: 520px; max-height: 88dvh; overflow-y: auto;
   background: var(--paper); border-top: var(--line);

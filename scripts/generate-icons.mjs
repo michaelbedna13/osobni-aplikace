@@ -21,7 +21,7 @@ const page = await browser.newPage();
 for (const [name, size, scale] of targets) {
   await page.setViewportSize({ width: size, height: size });
   const inner = Math.round(size * scale);
-  await page.setContent(`<body style="margin:0;background:#001D00;display:grid;place-items:center;height:${size}px">
+  await page.setContent(`<body style="margin:0;background:#020F08;display:grid;place-items:center;height:${size}px">
     <div style="width:${inner}px;height:${inner}px">${square.replace("<svg ", `<svg width="${inner}" height="${inner}" `)}</div></body>`);
   await page.screenshot({ path: new URL(`../public/${name}`, import.meta.url).pathname });
   console.log("✓", name);

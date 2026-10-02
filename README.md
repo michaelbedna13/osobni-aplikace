@@ -33,4 +33,5 @@ supabase/migrations/  struktura databáze (SQL)
 npm run dev        # vývojový server
 npm run build      # kontrola typů + produkční build
 npm run icons      # znovu vygeneruje PNG ikony z public/favicon.svg (potřebuje Playwright)
+node scripts/generate-textures.mjs  # textury pozadí (rastr a zrno) do src/assets
 ```

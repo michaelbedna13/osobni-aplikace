@@ -6,14 +6,13 @@
     "colorMeta": {
       "app-bg": {
         "role": "neutral",
-        "displayName": "Hluboká zelená",
+        "displayName": "Skoro černá zelená",
         "tonalRamp": [
-          "#001600",
-          "#001D00",
-          "#04280F",
-          "#0A3A22",
-          "#0E3317",
-          "#2B5A36"
+          "#000804",
+          "#020F08",
+          "#071710",
+          "#0C2117",
+          "#24402F"
         ]
       },
       "piva": {
@@ -69,12 +68,12 @@
     "shadows": [
       {
         "name": "tap",
-        "value": "3px 3px 0 #000A02",
+        "value": "3px 3px 0 #000502",
         "purpose": "Všechno, na co jde ťuknout."
       },
       {
         "name": "tap-big",
-        "value": "4px 4px 0 #000A02",
+        "value": "4px 4px 0 #000502",
         "purpose": "Hlavní tlačítko obrazovky."
       }
     ],
