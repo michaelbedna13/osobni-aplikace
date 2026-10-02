@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Sprite } from "../components/Sprite";
 import { NightStars } from "../components/Topbar";
 import { greeting } from "../lib/copy";
 import { formatDate } from "../lib/format";
@@ -60,13 +59,6 @@ export function Today() {
 
       <QuoteOfDay />
 
-      <section className="sec">
-        <h2>Brzy tady</h2>
-        <div className="soon">
-          <div className="soon-row"><Sprite name="lide" size={32} /><span>Nejbližší narozeniny</span></div>
-          <div className="soon-row"><Sprite name="denik" size={32} /><span>Za co jsem dnes vděčný?</span></div>
-        </div>
-      </section>
     </div>
   );
 }

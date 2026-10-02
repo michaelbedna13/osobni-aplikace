@@ -2,42 +2,65 @@
 name: Osobní appka – pixel
 description: Kapesní 8bitová hra o vlastním životě. Každý modul je jiný level s vlastní barvou a pixelovou postavičkou.
 colors:
-  ink: "#000000"
+  ink: "#181425"
   paper: "#FFFFFF"
-  night: "#26286B"
-  night-deep: "#17184A"
-  night-ink: "#E9E8FF"
-  gold: "#FFD23F"
-  danger: "#B3001B"
-  bar-idle: "#D9D9E4"
-  piva: "#FFB627"
-  piva-deep: "#C77700"
-  hlaskomat: "#FFE04A"
-  hlaskomat-deep: "#B38A00"
-  meditace: "#9ED9A6"
-  meditace-deep: "#3E8E58"
-  trenink: "#FF6B4A"
-  lide: "#FF8FC7"
-  denik: "#E8B96A"
-  odkazy: "#6C8CFF"
-  mista: "#4FD6C8"
-  filmy: "#B9B6CF"
-  wishlist: "#C59BFF"
-  finance: "#4CD07D"
+  night: "#262B44"
+  night-deep: "#181425"
+  night-ink: "#C0CBDC"
+  gold: "#FEE761"
+  danger: "#A22633"
+  bar-idle: "#C0CBDC"
+  slate: "#5A6988"
+  track: "#E2E7EF"
+  blush: "#F6757A"
+  piva: "#FEAE34"
+  piva-deep: "#F77622"
+  hlaskomat: "#0099DB"
+  hlaskomat-deep: "#124E89"
+  meditace: "#63C74D"
+  meditace-deep: "#3E8948"
+  trenink: "#E43B44"
+  lide: "#B55088"
+  denik: "#E4A672"
+  odkazy: "#2CE8F5"
+  mista: "#C28569"
+  filmy: "#8B9BB4"
+  wishlist: "#F6757A"
+  finance: "#FEE761"
 typography:
-  display:
+  hero:
     fontFamily: "Jersey 10, system-ui, sans-serif"
-    fontSize: "130px"
+    fontSize: "104px"
     fontWeight: 400
     lineHeight: 0.95
-  heading:
+  display-lg:
     fontFamily: "Jersey 10, system-ui, sans-serif"
-    fontSize: "38px"
+    fontSize: "60px"
     fontWeight: 400
     lineHeight: 1
+  display:
+    fontFamily: "Jersey 10, system-ui, sans-serif"
+    fontSize: "48px"
+    fontWeight: 400
+    lineHeight: 1
+  heading:
+    fontFamily: "Jersey 10, system-ui, sans-serif"
+    fontSize: "36px"
+    fontWeight: 400
+    lineHeight: 1
+  title:
+    fontFamily: "Jersey 10, system-ui, sans-serif"
+    fontSize: "30px"
+    fontWeight: 400
+    lineHeight: 1.05
   label:
     fontFamily: "Jersey 10, system-ui, sans-serif"
-    fontSize: "22px"
+    fontSize: "24px"
+    fontWeight: 400
+    lineHeight: 1.1
+  label-sm:
+    fontFamily: "Jersey 10, system-ui, sans-serif"
+    fontSize: "20px"
     fontWeight: 400
     lineHeight: 1.1
   body:
@@ -45,6 +68,11 @@ typography:
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.45
+  caption:
+    fontFamily: "Rubik Variable, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.3
 rounded:
   none: "0px"
 spacing:
@@ -87,7 +115,7 @@ components:
     padding: "3px 10px"
 ---
 
-# Design – pixel art (v2)
+# Design – pixel art (v2.1)
 
 Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/lib/sprites.ts`
 (postavičky a ikony), `src/lib/modules.ts` (barvy modulů), `src/lib/copy.ts` (hlas appky).
@@ -108,29 +136,34 @@ Jediná vlastnost převzatá z verze 1 jsou **černé obrysy a tvrdé posunuté 
 
 ## Colors
 
-- **Noc** (`night` `#26286B`) je podklad „mimo hru“: Dnes, Moduly, Profil, přihlášení.
-  Text na ní bílý / `night-ink`, akcent `gold`, pixelové hvězdy.
-- **Barva modulu zaplavuje celou jeho obrazovku** (jantar Piva, citron Hláškomat, šalvěj Meditace…).
-  Text na barvách modulů je vždy černý.
-- Každý modul má `color`, `deep` (stínování pixelů, výplně ukazatelů, splněné dny) a `light`
-  (odlesky ve spritech, zamčené dlaždice v nabídce +). Hodnoty jsou v `src/lib/modules.ts`.
-- **Zamčené moduly** (ještě nehotové) jsou ve tmavé noci (`night-deep`) s visacím zámkem.
-- Grafy: neaktivní pruhy `bar-idle`, zvýrazněná hodnota (dnešek, vítěz) v barvě modulu.
-- Pozadí obrazovky modulu nese jemnou pixelovou mřížku 16 px – papír na pixel art.
+Paleta vychází z **Endesga 32** (známá pixel-artová paleta), takže barvy spolu ladí.
+
+- **Noc** (`night` `#262B44`) je podklad „mimo hru“: Dnes, Moduly, Profil, přihlášení.
+  Text bílý / `night-ink`, akcent `gold`, pixelové hvězdy jen v horní části.
+- **Obrazovka modulu**: nahoře **barevný pás** v plné barvě modulu (postavička, hlavní číslo,
+  hlavní tlačítko), pod ním klidný světlý podklad = barva modulu smíchaná s bílou (16 %).
+  Bílé panely tak na podkladu čistě vystoupí.
+- Každý modul má `color`, `deep` (stínování pixelů, splněné dny) a `light` (odlesky, zamčené
+  dlaždice v nabídce +). Hodnoty v `src/lib/modules.ts`.
+- **Zamčené moduly** jsou v `night-deep` s visacím zámkem.
+- Obrysy a text: `ink` `#181425` (nejtmavší barva palety, ne čistá černá).
+- Grafy: neaktivní hodnoty `bar-idle`, zvýrazněná (dnešek, vítěz) v barvě modulu.
 
 ## Typography
 
 - **Jersey 10** – nadpisy, čísla, tlačítka, popisky v grafech. Jasně odlišené číslice
   (žádná záměna 5/S, 2/Z), česká diakritika. Jeden řez; nikdy umělé ztučnění (`font-synthesis: none`).
 - **Rubik** – delší text (popisy, vedlejší řádky, data v seznamech).
-- Velikosti: hero číslo 130 px, nadpis obrazovky 38 px, nadpis sekce 25 px, tlačítko 22 px
-  (hlavní 35 px), čísla v kartách 38–48 px. Žádné nadpisky (eyebrow) nad nadpisy.
+- Stupnice velikostí (jen tyto): 104 / 60 / 48 / 36 / 30 / 24 / 20 px pro Jersey 10,
+  16 / 14 px pro Rubik. Žádné nadpisky (eyebrow) nad nadpisy.
 
 ## Layout
 
 - Jeden sloupec, okraj 16 px, max. šířka 520 px (na počítači uprostřed na noční ploše).
-- Obrazovka modulu: lišta (zpět + název) → hero (postavička, obří číslo, popisek, vtipná věta)
-  → hlavní tlačítko přes celou šířku → skóre ve 3 polích → sekce. Mezi sekcemi 28 px.
+- Obrazovka modulu: **barevný pás** (lišta zpět + název, postavička, obří číslo, popisek,
+  hlavní tlačítko) → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
+  jen vybrané záložky. Dlouhé obrazovky se tím nescrollují do nekonečna.
+- Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
 - Dnes: datum, pozdrav, pás „Moje moduly“ (posun do boku, karty 156 px), hláška dne v bublině.
 - Spodní lišta: 5 položek, uprostřed zlaté tlačítko + (nabídka „Co zapíšeme?“). Respektuje safe area.
 
@@ -145,7 +178,9 @@ Jediná vlastnost převzatá z verze 1 jsou **černé obrysy a tvrdé posunuté 
 - Žádné zaoblení (`border-radius: 0`). Tvary skládané z pixelů: bublina hlášky má pixelový ocásek,
   kruh časovače meditace je z 32 čtverečků.
 - **Postavičky a ikony** jsou pixelové sprity v `src/lib/sprites.ts`, kreslené v SVG s
-  `shape-rendering: crispEdges`. Moduly 16 × 16 (piva, hláškomat, meditace, trénink, lidé, deník,
+  `shape-rendering: crispEdges`. Všechny postavičky modulů mají **stejný obličej** (oči 1 × 2 px,
+  růžové tvářičky `blush`, pusa 2 px) a čtyřtónové stínování (obrys, stín, barva, světlo; světlo zleva
+  nahoře). Ikony lišty jsou plné siluety 12 × 12. Moduly 16 × 16 (piva, hláškomat, meditace, trénink, lidé, deník,
   odkazy, místa, filmy, wishlist, finance), doplňky (hvězda, trofej, korunka, zámek, plamen,
   fajfka, jiskra) a ikony 10 × 10 (`i-…`). Velikost vždy násobek mřížky.
 - Žádné emoji ani unicode znaky jako ikony.
@@ -162,6 +197,7 @@ Jediná vlastnost převzatá z verze 1 jsou **černé obrysy a tvrdé posunuté 
 - **Bublina** (`.bubble`) + **jmenovka** (`.nameplate`) pro hlášky; hvězdička oblíbené vpravo.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
 - **Karta modulu v pásu** (`.fav`): barva modulu, sprite, název, číslo, rychlá akce vpravo nahoře.
+- **Záložky** (`Tabs`): plná šířka, aktivní černá.
 - **Spodní panel** (`Sheet`), **potvrzení** (`useToast`, černý blok se zlatou akcí „Vrátit“).
 
 ### Pohyb

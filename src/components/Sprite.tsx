@@ -13,7 +13,7 @@ interface Props {
   label?: string;
 }
 
-const GOLD = { M: "#FFD23F", D: "#C79A00", L: "#FFF1A8" };
+const GOLD = { M: "#FEE761", D: "#F77622", L: "#FFFFFF" };
 
 /** Pixelová postavička nebo ikona. */
 export const Sprite = memo(function Sprite({ name, size = 48, tone, anim, className, label }: Props) {

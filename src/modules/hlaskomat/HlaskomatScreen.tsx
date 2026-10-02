@@ -4,6 +4,7 @@ import { Burst } from "../../components/Burst";
 import { Sheet } from "../../components/Sheet";
 import { Sprite } from "../../components/Sprite";
 import { useToast } from "../../components/Toast";
+import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { quoteSaved } from "../../lib/copy";
 import { formatDate, plural } from "../../lib/format";
@@ -24,6 +25,7 @@ export function HlaskomatScreen() {
   const [filter, setFilter] = useState<Filter>({ kind: "all" });
   const [editing, setEditing] = useState<Quote | "new" | null>(null);
   const [jump, setJump] = useState(0);
+  const [tab, setTab] = useState<"hlasky" | "slava">("hlasky");
   const update = useUpdateQuote();
   const toast = useToast();
 
@@ -47,11 +49,12 @@ export function HlaskomatScreen() {
   const podium = [ranking[1], ranking[0], ranking[2]];
 
   return (
-    <div className="screen" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+    <div className="screen module" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+      <div className="band">
       <Topbar title="Hláškomat" />
 
       <div className="hero">
-        <span key={jump} className={jump ? "anim-jump" : "anim-bob"}><Sprite name="hlaskomat" size={112} /></span>
+        <span key={jump} className={jump ? "anim-jump" : "anim-bob"}><Sprite name="hlaskomat" size={96} /></span>
         <Burst trigger={jump} />
         <span className="hero-num">{quotes.length}</span>
         <span className="hero-cap">{plural(quotes.length, HLASEK)} v archivu</span>
@@ -61,11 +64,20 @@ export function HlaskomatScreen() {
       <button className="btn-hero" onClick={() => setEditing("new")}>
         <Sprite name="i-plus" size={24} /> Zapsat hlášku
       </button>
+      </div>
+
+      <Tabs
+        label="Zobrazení"
+        value={tab}
+        onChange={setTab}
+        items={[{ id: "hlasky", label: "Hlášky" }, { id: "slava", label: "Síň slávy" }]}
+      />
 
       {error && <p className="error">Nepodařilo se načíst hlášky. Zkontroluj připojení.</p>}
 
+      {tab === "hlasky" && (<div className="tab-panel">
       <input
-        className="input search"
+        className="input"
         type="search"
         placeholder="Hledat hlášku, autora nebo kontext"
         aria-label="Hledat"
@@ -73,7 +85,7 @@ export function HlaskomatScreen() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      <div className="chips" role="group" aria-label="Filtr" style={{ marginTop: 12 }}>
+      <div className="chips" role="group" aria-label="Filtr">
         <FilterChip on={filter.kind === "all"} onClick={() => setFilter({ kind: "all" })}>Vše</FilterChip>
         <FilterChip on={filter.kind === "starred"} onClick={() => setFilter({ kind: "starred" })}>
           <Sprite name="i-star" size={16} /> Oblíbené
@@ -117,10 +129,13 @@ export function HlaskomatScreen() {
         </ul>
       )}
 
-      {ranking.length > 1 && (
-        <section className="sec">
-          <h2>Síň slávy</h2>
+      </div>)}
+
+      {tab === "slava" && (
+        <div className="tab-panel">
+          {ranking.length < 2 ? <p className="empty">Síň slávy se otevře, až budou hlášky aspoň od dvou lidí.</p> : (
           <div className="panel">
+            <h3>Kdo má nejvíc hlášek</h3>
             <div className="podium">
               {podium.map((r, i) => r ? (
                 <div key={r.author} className="podium-step">
@@ -138,7 +153,8 @@ export function HlaskomatScreen() {
               </ul>
             )}
           </div>
-        </section>
+          )}
+        </div>
       )}
 
       {editing && (

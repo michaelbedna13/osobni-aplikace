@@ -5,6 +5,7 @@ import { Columns } from "../../components/Charts";
 import { Sheet } from "../../components/Sheet";
 import { Sprite } from "../../components/Sprite";
 import { useToast } from "../../components/Toast";
+import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { meditationDone } from "../../lib/copy";
 import { addDays, relativeTime, startOfWeek, toLocalInput, WEEKDAYS_SHORT } from "../../lib/dates";
@@ -160,137 +161,150 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
   const [minutes, setMinutes] = useState(loadLastMinutes);
   const [editing, setEditing] = useState<Meditation | "new" | null>(null);
   const [goalOpen, setGoalOpen] = useState(false);
+  const [tab, setTab] = useState<"cil" | "statistiky" | "historie">("cil");
   const weeks = useMemo(() => groupByWeek(list.slice(0, 40)), [list]);
   const goalDone = stats.weekCount >= goal;
 
   return (
-    <div className="screen" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
-      <Topbar title="Meditace" />
-
-      <div className="hero">
-        <span key={celebrate} className={celebrate ? "anim-jump" : "anim-bob"}><Sprite name="meditace" size={112} /></span>
-        <Burst trigger={celebrate} colors={["#FFFFFF", MODULE.deep, "#FFE04A"]} />
-        <span className="hero-num">{stats.weekCount}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
-        <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : "meditací tento týden"}</span>
+    <div className="screen module" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+      <div className="band">
+        <Topbar title="Meditace" />
+        <div className="hero">
+          <span key={celebrate} className={celebrate ? "anim-jump" : "anim-bob"}><Sprite name="meditace" size={96} /></span>
+          <Burst trigger={celebrate} colors={["#FFFFFF", MODULE.deep, "#FEE761"]} />
+          <span className="hero-num">{stats.weekCount}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
+          <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : "meditací tento týden"}</span>
+        </div>
+        <div className="durations" role="group" aria-label="Délka meditace">
+          {DURATIONS.map((d) => (
+            <button key={d} className={`chip${minutes === d ? " on" : ""}`} aria-pressed={minutes === d} onClick={() => setMinutes(d)}>
+              {d ? `${d} min` : "Bez limitu"}
+            </button>
+          ))}
+        </div>
+        <button className="btn-hero" onClick={() => onStart(minutes)}>
+          <Sprite name="i-play" size={22} /> Začít
+        </button>
       </div>
-
-      <div className="durations" role="group" aria-label="Délka meditace">
-        {DURATIONS.map((d) => (
-          <button key={d} className={`chip${minutes === d ? " on" : ""}`} aria-pressed={minutes === d} onClick={() => setMinutes(d)}>
-            {d ? `${d} min` : "Bez limitu"}
-          </button>
-        ))}
-      </div>
-      <button className="btn-hero" onClick={() => onStart(minutes)}>
-        <Sprite name="i-play" size={22} /> Začít
-      </button>
 
       {error && <p className="error">Nepodařilo se načíst meditace. Zkontroluj připojení.</p>}
 
-      <section className="sec">
-        <div className="sec-head">
-          <h2>Cíl {goal}× týdně</h2>
-          <button className="link" onClick={() => setGoalOpen(true)}>Změnit</button>
-        </div>
-        <div className="panel">
-          <div className="week-blocks">
-            {WEEKDAYS_SHORT.map((d, i) => {
-              const v = stats.thisWeek[i];
-              return (
-                <div key={d} className="week-block">
-                  <i className={v === null ? "future" : v > 0 ? "done" : undefined}>
-                    {v ? <Sprite name="check" size={28} tone="meditace" /> : null}
-                  </i>
-                  <span className={i === stats.todayIndex ? "today" : undefined}>{d}</span>
-                  <span className="sr-only">{v === null ? "ještě nebylo" : v > 0 ? `${v} min` : "bez meditace"}</span>
-                </div>
-              );
-            })}
-          </div>
-          <p className="goal-line">
-            {stats.weekStreak > 0 && <Sprite name="flame" size={24} tone="trenink" />}
-            {goalDone ? "Splněno! " : `Ještě ${goal - stats.weekCount}× a máš to. `}
-            {stats.weekStreak > 0 && `Série ${stats.weekStreak} ${plural(stats.weekStreak, ["týden", "týdny", "týdnů"])}.`}
-          </p>
-        </div>
-      </section>
+      <Tabs
+        label="Zobrazení"
+        value={tab}
+        onChange={setTab}
+        items={[{ id: "cil", label: "Cíl" }, { id: "statistiky", label: "Statistiky" }, { id: "historie", label: "Historie" }]}
+      />
 
-      {stats.totalCount > 0 && (
-        <>
-          <div className="score">
-            <div><b>{formatNumber(stats.weekMinutes, 0)}</b><span>min tento týden</span></div>
-            <div><b>{formatNumber(stats.monthMinutes, 0)}</b><span>min tento měsíc</span></div>
-            <div><b>{formatNumber(stats.totalMinutes / 60)}</b><span>hodin celkem</span></div>
-          </div>
-
-          <section className="sec">
-            <h2>Minuty za 12 týdnů</h2>
-            <div className="panel">
-              <Columns
-                values={stats.lastWeeks.map((w) => w.minutes)}
-                labels={stats.lastWeeks.map((w, i) => (i === 11 ? "teď" : i % 3 === 2 ? formatDate(w.start) : ""))}
-                highlight={11}
-                color={MODULE.deep}
-                label={`Minuty meditace po týdnech: ${stats.lastWeeks.map((w) => `od ${formatDate(w.start)} ${w.minutes}`).join(", ")}`}
-              />
+      {tab === "cil" && (
+        <div className="tab-panel">
+          <div className="panel">
+            <div className="row-between">
+              <h3>Cíl {goal}× týdně</h3>
+              <button className="link" onClick={() => setGoalOpen(true)}>Změnit</button>
             </div>
-          </section>
-
-          <section className="sec">
-            <h2>Trofeje</h2>
-            <div className="trophies">
-              {stats.longest && (
-                <div className="trophy gold">
-                  <Sprite name="trophy" size={40} />
-                  <b>{formatDuration(stats.longest.duration_s)}</b>
-                  <span>nejdelší ({formatDate(new Date(stats.longest.started_at), true)})</span>
-                </div>
-              )}
-              <div className="trophy">
-                <Sprite name="flame" size={40} tone="trenink" />
-                <b>{stats.weekStreak}</b>
-                <span>{plural(stats.weekStreak, ["týden", "týdny", "týdnů"])} v řadě se splněným cílem</span>
-              </div>
-              <div className="trophy">
-                <b>{formatNumber(stats.averageMinutes, 0)} min</b>
-                <span>průměrná délka</span>
-              </div>
-              <div className="trophy">
-                <b>{stats.totalCount}</b>
-                <span>{plural(stats.totalCount, KRAT)} celkem</span>
-              </div>
+            <div className="week-blocks">
+              {WEEKDAYS_SHORT.map((d, i) => {
+                const v = stats.thisWeek[i];
+                return (
+                  <div key={d} className="week-block">
+                    <i className={v === null ? "future" : v > 0 ? "done" : undefined}>
+                      {v ? <Sprite name="check" size={28} tone="meditace" /> : null}
+                    </i>
+                    <span className={i === stats.todayIndex ? "today" : undefined}>{d}</span>
+                    <span className="sr-only">{v === null ? "ještě nebylo" : v > 0 ? `${v} min` : "bez meditace"}</span>
+                  </div>
+                );
+              })}
             </div>
-          </section>
-        </>
+            <p className="goal-line">
+              {stats.weekStreak > 0 && <Sprite name="flame" size={24} tone="trenink" />}
+              {goalDone ? "Splněno! " : `Ještě ${goal - stats.weekCount}× a máš to. `}
+              {stats.weekStreak > 0 && `Série ${stats.weekStreak} ${plural(stats.weekStreak, ["týden", "týdny", "týdnů"])}.`}
+            </p>
+          </div>
+          {stats.totalCount > 0 && (
+            <div className="score" style={{ marginTop: 0 }}>
+              <div><b>{formatNumber(stats.weekMinutes, 0)}</b><span>min tento týden</span></div>
+              <div><b>{formatNumber(stats.monthMinutes, 0)}</b><span>min tento měsíc</span></div>
+              <div><b>{formatNumber(stats.totalMinutes / 60)}</b><span>hodin celkem</span></div>
+            </div>
+          )}
+        </div>
       )}
 
-      <div className="list-head">
-        <h2>Historie</h2>
-        <button className="link" onClick={() => setEditing("new")}>Přidat zpětně</button>
-      </div>
-      {isLoading ? (
-        <p>Načítám…</p>
-      ) : list.length === 0 ? (
-        <p className="empty">Zatím nic. Vyber délku a dej „Začít“.</p>
-      ) : (
-        weeks.map((w) => (
-          <section key={w.label}>
-            <h3 className="history-label">
-              <span>{w.label}</span><span>{w.items.length}×, {formatDuration(w.seconds)}</span>
-            </h3>
-            <ul className="list">
-              {w.items.map((m) => (
-                <li key={m.id}>
-                  <button className="list-btn" onClick={() => setEditing(m)}>
-                    <Sprite name="meditace" size={24} />
-                    <span className="grow">{relativeTime(new Date(m.started_at))}{m.note ? ` – ${m.note}` : ""}</span>
-                    <b>{formatDuration(m.duration_s)}</b>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
+      {tab === "statistiky" && (
+        <div className="tab-panel">
+          {stats.totalCount === 0 ? <p className="empty">Statistiky se ukážou po první meditaci.</p> : (
+            <>
+              <div className="panel">
+                <h3>Minuty za 12 týdnů</h3>
+                <Columns
+                  values={stats.lastWeeks.map((w) => w.minutes)}
+                  labels={stats.lastWeeks.map((w, i) => (i === 11 ? "teď" : i % 3 === 2 ? formatDate(w.start) : ""))}
+                  highlight={11}
+                  color={MODULE.color}
+                  label={`Minuty meditace po týdnech: ${stats.lastWeeks.map((w) => `od ${formatDate(w.start)} ${w.minutes}`).join(", ")}`}
+                />
+              </div>
+              <div className="trophies">
+                {stats.longest && (
+                  <div className="trophy gold">
+                    <Sprite name="trophy" size={40} />
+                    <b>{formatDuration(stats.longest.duration_s)}</b>
+                    <span>nejdelší ({formatDate(new Date(stats.longest.started_at), true)})</span>
+                  </div>
+                )}
+                <div className="trophy">
+                  <Sprite name="flame" size={40} tone="trenink" />
+                  <b>{stats.weekStreak}</b>
+                  <span>{plural(stats.weekStreak, ["týden", "týdny", "týdnů"])} v řadě se splněným cílem</span>
+                </div>
+                <div className="trophy">
+                  <b>{formatNumber(stats.averageMinutes, 0)} min</b>
+                  <span>průměrná délka</span>
+                </div>
+                <div className="trophy">
+                  <b>{stats.totalCount}</b>
+                  <span>{plural(stats.totalCount, KRAT)} celkem</span>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {tab === "historie" && (
+        <div className="tab-panel">
+          <div className="row-between">
+            <p className="small">Ťukni na meditaci a uprav ji.</p>
+            <button className="link" onClick={() => setEditing("new")}>Přidat zpětně</button>
+          </div>
+          {isLoading ? (
+            <p>Načítám…</p>
+          ) : list.length === 0 ? (
+            <p className="empty">Zatím nic. Vyber délku a dej „Začít“.</p>
+          ) : (
+            weeks.map((w) => (
+              <section key={w.label}>
+                <h3 className="history-label">
+                  <span>{w.label}</span><span>{w.items.length}×, {formatDuration(w.seconds)}</span>
+                </h3>
+                <ul className="list">
+                  {w.items.map((m) => (
+                    <li key={m.id}>
+                      <button className="list-btn" onClick={() => setEditing(m)}>
+                        <Sprite name="meditace" size={24} />
+                        <span className="grow">{relativeTime(new Date(m.started_at))}{m.note ? ` – ${m.note}` : ""}</span>
+                        <b>{formatDuration(m.duration_s)}</b>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          )}
+        </div>
       )}
 
       {editing && <MeditationSheet meditation={editing === "new" ? null : editing} onClose={() => setEditing(null)} />}

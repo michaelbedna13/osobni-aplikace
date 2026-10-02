@@ -17,11 +17,13 @@ export function ModuleScreen({ moduleKey, showBack = true }: { moduleKey?: Modul
   const togglePin = () => setPinned(isPinned ? pinned.filter((k) => k !== key) : [...pinned, key]);
 
   return (
-    <div className="screen" style={{ "--bg": m.color, "--deep": m.deep } as CSSProperties}>
-      <Topbar title={m.name} back={showBack ? "/moduly" : null} />
-      <div className="locked-hero">
-        <Sprite name={key} size={160} anim="bob" />
-        <p className="hero-cap"><Sprite name="lock" size={24} /> Odemkne se ve fázi {m.phase}</p>
+    <div className="screen module" style={{ "--bg": m.color, "--deep": m.deep } as CSSProperties}>
+      <div className="band">
+        <Topbar title={m.name} back={showBack ? "/moduly" : null} />
+        <div className="locked-hero">
+          <Sprite name={key} size={128} anim="bob" />
+          <p className="hero-cap">Odemkne se ve fázi {m.phase}</p>
+        </div>
       </div>
       <section className="sec">
         <h2>Co tu bude</h2>
