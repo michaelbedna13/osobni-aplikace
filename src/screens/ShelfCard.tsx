@@ -14,6 +14,8 @@ import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 import { upcomingOccasions, usePeople } from "../modules/lide/data";
 import { computeTrainingStats, useWorkouts } from "../modules/trenink/data";
 import { useActiveWorkout } from "../modules/trenink/active";
+import { computeCornholeStats, useGames } from "../modules/cornhole/data";
+import { useActiveGame } from "../modules/cornhole/active";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -140,6 +142,22 @@ function TreninkCard() {
   );
 }
 
+function CornholeCard() {
+  const { data: games = [] } = useGames();
+  const stats = useMemo(() => computeCornholeStats(games), [games]);
+  const { active } = useActiveGame();
+  const navigate = useNavigate();
+  const leader = stats.teams[0];
+  return (
+    <Card
+      moduleKey="cornhole"
+      num={String(stats.games)}
+      sub={active ? "hra běží" : leader?.wins ? `${plural(stats.games, ["hra", "hry", "her"])}, vede ${leader.name}` : plural(stats.games, ["hra", "hry", "her"])}
+      quick={{ label: active ? "Pokračovat ve hře" : "Nová hra", text: <Sprite name="i-play" size={20} />, run: () => navigate(active ? "/m/cornhole/hra" : "/m/cornhole?hra=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
@@ -148,5 +166,6 @@ export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "vdecnost") return <VdecnostCard />;
   if (moduleKey === "lide") return <LideCard />;
   if (moduleKey === "trenink") return <TreninkCard />;
+  if (moduleKey === "cornhole") return <CornholeCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

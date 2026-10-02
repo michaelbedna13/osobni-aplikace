@@ -33,6 +33,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Lidé a dárky (narozeniny, jmeniny podle jména, nápady na dárky, export do Kalendáře iPhonu).
   Trénink (doma s jednoručkami a s vlastní vahou: vlastní tréninky ze šablon, série × opakování × kg
   předvyplněné z minula, pauza s pípnutím, rekordy, cíl týdně).
+  Cornhole (rodinné hry: týmy s hráči, 2 a víc týmů, body sčítáním nebo rozdílem, zápis pytlíků
+  na desce / v díře po kolech, do 21, žebříček týmů a hráčů, rekordy).
   Plánované: Odkazy, Místa, Filmy a knihy, Wishlist, Finance.
 - Obrazovka Dnes: datum a kdo má svátek, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.

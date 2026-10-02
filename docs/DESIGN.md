@@ -29,6 +29,7 @@ colors:
   mista: "#C28569"
   filmy: "#8B9BB4"
   wishlist: "#F6757A"
+  cornhole: "#D77643"
   finance: "#FEE761"
 typography:
   hero:
@@ -215,6 +216,9 @@ Paleta vychází z **Endesga 32**.
   odškrtávací čtverec). Odškrtnutá série má limetkový čtverec s fajfkou. Pod lištou se drží **pauza**
   (`.rest-bar`): odpočet s ubývající výplní v akcentu, −15 / +15 / Dál, na konci pípne.
 - **Šablona tréninku** (`.tpl-item`): pořadí šipkami, počet sérií − / +.
+- **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
+  název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře
+  (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

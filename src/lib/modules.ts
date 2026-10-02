@@ -4,7 +4,7 @@
 
 export type ModuleKey =
   | "piva" | "hlaskomat" | "trenink" | "meditace" | "lide" | "vdecnost"
-  | "odkazy" | "mista" | "filmy" | "wishlist" | "finance";
+  | "odkazy" | "mista" | "filmy" | "wishlist" | "finance" | "cornhole";
 
 export interface ModuleDef {
   key: ModuleKey;
@@ -48,6 +48,10 @@ export const MODULES: ModuleDef[] = [
   {
     key: "vdecnost", name: "Vděčnost", color: "#E4A672", deep: "#B86F50", light: "#EAD4AA", phase: 1, ready: true, quickAction: "Zapsat vděčnost",
     plan: ["Za co jsem dnes vděčný?", "Série dní v řadě", "Mozaika posledních týdnů", "Vzpomínka na starší zápis"]
+  },
+  {
+    key: "cornhole", name: "Cornhole", color: "#D77643", deep: "#BE4A2F", light: "#EAD4AA", phase: 1, ready: true, quickAction: "Nová hra",
+    plan: ["Týmy s hráči", "Zápis pytlíků po kolech", "Víc týmů najednou", "Výhry a rekordy"]
   },
   {
     key: "odkazy", name: "Odkazy", color: "#2CE8F5", deep: "#0099DB", light: "#C7F9FC", phase: 1, quickAction: "Uložit odkaz",

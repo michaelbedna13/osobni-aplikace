@@ -13,6 +13,8 @@ import { PersonScreen } from "./modules/lide/PersonScreen";
 import { TreninkScreen } from "./modules/trenink/TreninkScreen";
 import { WorkoutScreen } from "./modules/trenink/WorkoutScreen";
 import { TemplateEditor } from "./modules/trenink/TemplateEditor";
+import { CornholeScreen } from "./modules/cornhole/CornholeScreen";
+import { GameScreen } from "./modules/cornhole/GameScreen";
 import { Modules } from "./screens/Modules";
 import { Profile } from "./screens/Profile";
 import { Today } from "./screens/Today";
@@ -38,6 +40,8 @@ export function App() {
           <Route path="m/trenink" element={<TreninkScreen />} />
           <Route path="m/trenink/trenink" element={<WorkoutScreen />} />
           <Route path="m/trenink/sablona/:id" element={<TemplateEditor />} />
+          <Route path="m/cornhole" element={<CornholeScreen />} />
+          <Route path="m/cornhole/hra" element={<GameScreen />} />
           <Route path="m/denik" element={<Navigate to="/m/vdecnost" replace />} />
           <Route path="m/:key" element={<ModuleScreen />} />
           <Route path="mapa" element={<ModuleScreen moduleKey="mista" showBack={false} />} />
