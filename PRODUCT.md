@@ -36,8 +36,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Cornhole (rodinné hry: týmy s hráči, 2 a víc týmů, body sčítáním nebo rozdílem, zápis pytlíků
   na desce / v díře po kolech, do 21, žebříček týmů a hráčů, rekordy).
   Odkazy (ukládání z menu Sdílet přes Zkratku, náhledy, kolekce, obrázky a screenshoty, na později).
-  Filmy a knihy (chci / teď / hotovo, hledání s plakáty a obálkami bez registrace, hodnocení,
-  kdo doporučil, čtenářská výzva).
+  Filmy a knihy (zapisují se ručně textem: chci / teď / hotovo, hodnocení, kdo doporučil,
+  čtenářská výzva).
   Wishlist (cena, priorita, pravidlo 30 dní, koupeno / už nechci a „ušetřeno“).
   Místa (tmavá mapa z OpenStreetMap, hledání míst, ťuknutí do mapy, seznamy, chci / byl jsem,
   navigace do Apple Map, Mapy.com a Google).

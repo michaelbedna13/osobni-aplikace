@@ -551,25 +551,16 @@ a.btn-hero { text-decoration: none; }
 .challenge-num { font-family: var(--font-pixel); font-size: 24px; margin-top: 6px; }
 .challenge-num b { font-size: 36px; font-weight: 400; }
 .kind-chips { margin-top: 12px; }
-.poster-grid { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 10px; }
-.poster { width: 100%; display: grid; gap: 4px; padding: 0; background: none; border: 0; color: var(--ink); text-align: left; }
-.poster-title { font-family: var(--font-pixel); font-size: 16px; line-height: 1.05; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.poster-meta { font-size: 14px; color: var(--slate); }
-.cover { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border: var(--line); background: var(--surface-2); box-shadow: var(--shadow); }
-.cover-sm { width: 44px; flex: none; box-shadow: none; }
-.cover-lg { width: 110px; flex: none; }
-.cover-empty { display: grid; place-items: center; padding: 6px; overflow: hidden; background: color-mix(in srgb, var(--accent) 22%, var(--paper)); }
-.cover-empty span { font-family: var(--font-pixel); font-size: 16px; line-height: 1; text-align: center; word-break: break-word; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
-.cover-sm.cover-empty span { display: none; }
 .stars { display: inline-flex; gap: 2px; align-items: center; }
 .stars span, .stars button { display: inline-grid; place-items: center; background: none; border: 0; padding: 0; }
 .stars.editable button { width: 44px; height: 44px; }
 .stars span:not(.on) .sprite, .stars button:not(.on) .sprite { filter: grayscale(1); opacity: 0.35; }
-.result-list { margin-top: 10px; }
-.result { min-height: 76px; }
-.result-add { font-family: var(--font-pixel); font-size: 24px; min-width: 36px; text-align: center; }
-.credits { margin-top: 10px; }
 .media-head { display: flex; gap: 14px; align-items: flex-start; }
+.kind-tag { flex: none; min-width: 58px; padding: 2px 6px; text-align: center; font-family: var(--font-pixel); font-size: 16px; border: 2px solid var(--edge); background: var(--surface-2); color: var(--slate); }
+.kind-tag.kind-kniha { color: var(--lime); }
+.kind-tag.kind-serial { color: var(--ink); }
+.media-row { min-height: 60px; }
+.added-note { margin-top: 10px; }
 .media-head > div { display: grid; gap: 6px; }
 .status-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 
@@ -592,6 +583,7 @@ a.btn-hero { text-decoration: none; }
 .map-pin.small { width: 14px; height: 14px; margin: 0; flex: none; box-shadow: none; }
 .map-me { display: block; width: 16px; height: 16px; background: #2CE8F5; border: 3px solid var(--ink); }
 .map-banner { position: absolute; z-index: 500; left: 10px; right: 10px; top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; background: var(--paper); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 20px; }
+.result-list { margin-top: 10px; }
 .place-row.on { background: color-mix(in srgb, var(--accent) 18%, var(--paper)); }
 .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .nav-grid .btn { padding: 0 6px; font-size: 20px; }

@@ -7,25 +7,15 @@ import { Topbar } from "../../components/Topbar";
 import { formatDate, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { useSettings } from "../../lib/settings";
-import { normalize } from "../hlaskomat/data";
 import { usePeople } from "../lide/data";
 import {
   KIND_NAMES, STATUS_NAMES, alreadyHave, computeMediaStats, newMedia, useAddMedia, useDeleteMedia, useMedia, useUpdateMedia, withStatus,
   type MediaItem, type Status,
 } from "./data";
-import { search, type Found, type Kind } from "./search";
+import type { Kind } from "./search";
 
 const MODULE = MODULE_BY_KEY.filmy;
 const KINDS: Kind[] = ["film", "serial", "kniha"];
-
-/** Plakát / obálka; bez obrázku dlaždice s názvem. */
-function Cover({ item, size = "md" }: { item: Pick<MediaItem, "title" | "image_url" | "kind">; size?: "sm" | "md" | "lg" }) {
-  const [broken, setBroken] = useState(false);
-  if (item.image_url && !broken) {
-    return <img className={`cover cover-${size}`} src={item.image_url} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setBroken(true)} />;
-  }
-  return <span className={`cover cover-${size} cover-empty`} aria-hidden="true"><span>{item.title}</span></span>;
-}
 
 function Stars({ value, onChange, size = 28 }: { value: number | null; onChange?: (v: number | null) => void; size?: number }) {
   return (
@@ -49,13 +39,13 @@ export function FilmyScreen() {
   const [params, setParams] = useSearchParams();
   const [tab, setTab] = useState<"chci" | "ted" | "hotovo">("chci");
   const [kind, setKind] = useState<Kind | "vse">("vse");
-  const [sheet, setSheet] = useState<{ kind: "search" } | { kind: "detail"; id: string } | { kind: "goal" } | null>(null);
+  const [sheet, setSheet] = useState<{ kind: "add" } | { kind: "detail"; id: string } | { kind: "goal" } | null>(null);
   const goal = settings.reading_goal;
 
   useEffect(() => {
     if (!params.has("nova")) return;
     setParams({}, { replace: true });
-    setSheet({ kind: "search" });
+    setSheet({ kind: "add" });
   }, [params, setParams]);
 
   const visible = items
@@ -76,7 +66,7 @@ export function FilmyScreen() {
             Letos: {stats.doneThisYear.film} {plural(stats.doneThisYear.film, ["film", "filmy", "filmů"])}, {stats.doneThisYear.serial} {plural(stats.doneThisYear.serial, ["seriál", "seriály", "seriálů"])}, {stats.doneThisYear.kniha} {plural(stats.doneThisYear.kniha, ["kniha", "knihy", "knih"])}
           </p>
         </div>
-        <button className="btn-hero" onClick={() => setSheet({ kind: "search" })}><Sprite name="i-plus" size={24} /> Přidat</button>
+        <button className="btn-hero" onClick={() => setSheet({ kind: "add" })}><Sprite name="i-plus" size={24} /> Přidat</button>
       </div>
 
       {error && <p className="error">Nepodařilo se načíst seznam. Zkontroluj připojení.</p>}
@@ -99,97 +89,71 @@ export function FilmyScreen() {
       {isLoading ? <p className="empty">Načítám…</p> : visible.length === 0 ? (
         <p className="empty">{tab === "chci" ? "Nic na seznamu. Přidej, co chceš vidět nebo přečíst." : tab === "ted" ? "Teď nic nerozkoukáváš." : "Zatím nic dokončeného."}</p>
       ) : (
-        <ul className="poster-grid">
+        <ul className="list">
           {visible.map((m) => (
             <li key={m.id}>
-              <button className="poster" onClick={() => setSheet({ kind: "detail", id: m.id })} aria-label={`${m.title} (${KIND_NAMES[m.kind].one})`}>
-                <Cover item={m} />
-                <span className="poster-title">{m.title}</span>
-                <span className="poster-meta">
-                  {tab === "hotovo" && m.rating ? <Stars value={m.rating} size={12} /> : `${KIND_NAMES[m.kind].one}${m.year ? ` · ${m.year}` : ""}`}
+              <button className="list-btn media-row" onClick={() => setSheet({ kind: "detail", id: m.id })}>
+                <span className={`kind-tag kind-${m.kind}`}>{KIND_NAMES[m.kind].one}</span>
+                <span className="grow">
+                  <b>{m.title}</b>
+                  {(m.creator || m.recommended_by || m.year) && (
+                    <span className="occasion-kind">{[m.creator, m.year, m.recommended_by ? `doporučil(a) ${m.recommended_by}` : null].filter(Boolean).join(" · ")}</span>
+                  )}
                 </span>
+                {tab === "hotovo" && m.rating ? <Stars value={m.rating} size={14} /> : null}
               </button>
             </li>
           ))}
         </ul>
       )}
 
-      {sheet?.kind === "search" && <SearchSheet items={items} onClose={() => setSheet(null)} />}
+      {sheet?.kind === "add" && <AddSheet items={items} onClose={() => setSheet(null)} />}
       {detail && <DetailSheet item={detail} onClose={() => setSheet(null)} />}
       {sheet?.kind === "goal" && <GoalSheet goal={goal} onClose={() => setSheet(null)} onSave={(g) => updateSettings({ reading_goal: g })} />}
     </div>
   );
 }
 
-function SearchSheet({ items, onClose }: { items: MediaItem[]; onClose: () => void }) {
+function AddSheet({ items, onClose }: { items: MediaItem[]; onClose: () => void }) {
   const [kind, setKind] = useState<Kind>("film");
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Found[] | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [creator, setCreator] = useState("");
+  const [status, setStatus] = useState<Status>("chci");
   const [added, setAdded] = useState<string[]>([]);
   const add = useAddMedia();
+  const duplicate = title.trim() && alreadyHave(items, { kind, title: title.trim(), source: "rucne", source_id: null });
 
-  // hledá se chvíli po dopsání
-  useEffect(() => {
-    const q = query.trim();
-    if (q.length < 2) { setResults(null); return; }
-    let cancelled = false;
-    const t = window.setTimeout(async () => {
-      setBusy(true);
-      setErr(null);
-      try {
-        const r = await search(kind, q);
-        if (!cancelled) setResults(r);
-      } catch {
-        if (!cancelled) { setResults([]); setErr("Hledání teď nefunguje. Můžeš přidat ručně."); }
-      } finally {
-        if (!cancelled) setBusy(false);
-      }
-    }, 450);
-    return () => { cancelled = true; window.clearTimeout(t); };
-  }, [kind, query]);
-
-  const addFound = (f: Found) => {
-    add.mutate(newMedia({ ...f }));
-    setAdded((list) => [...list, `${f.source}:${f.source_id}`]);
-  };
-  const addManual = () => {
-    add.mutate(newMedia({ kind, title: query.trim() }));
-    setAdded((list) => [...list, `rucne:${normalize(query.trim())}`]);
+  // po přidání zůstane panel otevřený, ať jde zapsat víc věcí za sebou
+  const save = () => {
+    const t = title.trim();
+    if (!t) return;
+    add.mutate(withStatus(newMedia({ kind, title: t, creator: creator.trim() || null }), status));
+    setAdded((list) => [t, ...list]);
+    setTitle("");
+    setCreator("");
   };
 
   return (
     <Sheet title="Přidat" onClose={onClose}>
       <div className="seg seg-wide" role="group" aria-label="Druh">
-        {KINDS.map((k) => <button key={k} className={`seg-btn${kind === k ? " on" : ""}`} aria-pressed={kind === k} onClick={() => setKind(k)}>{KIND_NAMES[k].one}</button>)}
+        {KINDS.map((k) => <button key={k} type="button" className={`seg-btn${kind === k ? " on" : ""}`} aria-pressed={kind === k} onClick={() => setKind(k)}>{KIND_NAMES[k].one}</button>)}
       </div>
-      <input className="input search" type="search" aria-label="Hledat" placeholder={kind === "kniha" ? "Název knihy nebo autor" : "Název"} value={query} onChange={(e) => setQuery(e.target.value)} />
-      {busy && <p className="small muted">Hledám…</p>}
-      {err && <p className="small muted">{err}</p>}
-      {results && results.length > 0 && (
-        <ul className="list result-list">
-          {results.map((f) => {
-            const have = added.includes(`${f.source}:${f.source_id}`) || alreadyHave(items, f);
-            return (
-              <li key={`${f.source}-${f.source_id}`}>
-                <button className="list-btn result" disabled={have} onClick={() => addFound(f)}>
-                  <Cover item={f} size="sm" />
-                  <span className="grow"><b>{f.title}</b><span className="occasion-kind">{[f.year, f.creator].filter(Boolean).join(" · ")}</span></span>
-                  <span className="result-add">{have ? "Máš" : "+"}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {results && results.length === 0 && !err && <p className="small muted">Nic se nenašlo.</p>}
-      {query.trim().length > 0 && (
-        <button className="btn tap wide" disabled={added.includes(`rucne:${normalize(query.trim())}`)} onClick={addManual}>
-          Přidat ručně: {query.trim()}
-        </button>
-      )}
-      <p className="small muted credits">Hledá v katalogu iTunes (filmy), TVmaze (seriály) a Open Library (knihy).</p>
+      <form onSubmit={(e) => { e.preventDefault(); save(); }}>
+        <label htmlFor="media-title" className="field-label">Název</label>
+        <input id="media-title" className="input" maxLength={300} autoComplete="off" value={title} onChange={(e) => setTitle(e.target.value)} />
+        {duplicate && <p className="small muted">Tohle už v seznamu máš.</p>}
+        <label htmlFor="media-creator" className="field-label">{kind === "kniha" ? "Autor" : kind === "film" ? "Režisér" : "Stanice / platforma"} (nepovinné)</label>
+        <input id="media-creator" className="input" maxLength={200} autoComplete="off" value={creator} onChange={(e) => setCreator(e.target.value)} />
+        <div className="status-grid" role="group" aria-label="Stav">
+          {(["chci", "ted", "hotovo"] as Status[]).map((s) => (
+            <button key={s} type="button" className={`chip${status === s ? " on" : ""}`} aria-pressed={status === s} onClick={() => setStatus(s)}>
+              {s === "chci" ? `Chci ${KIND_NAMES[kind].verb}` : s === "ted" ? KIND_NAMES[kind].now : KIND_NAMES[kind].done}
+            </button>
+          ))}
+        </div>
+        <button className="btn dark tap wide" type="submit" disabled={!title.trim()}>Přidat</button>
+      </form>
+      {added.length > 0 && <p className="small muted added-note">Přidáno: {added.slice(0, 3).join(", ")}{added.length > 3 ? "…" : ""}</p>}
     </Sheet>
   );
 }
@@ -211,12 +175,10 @@ function DetailSheet({ item, onClose }: { item: MediaItem; onClose: () => void }
   return (
     <Sheet title={item.title} onClose={() => { saveText(); onClose(); }}>
       <div className="media-head">
-        <Cover item={item} size="lg" />
         <div>
           <p className="small muted">{[names.one, item.year, item.creator].filter(Boolean).join(" · ")}</p>
           {item.status === "hotovo" && item.finished_at && <p className="small">Dokončeno {formatDate(new Date(item.finished_at), true)}</p>}
-          {item.external_url && <a className="link" href={item.external_url} target="_blank" rel="noreferrer">Víc informací</a>}
-        </div>
+                  </div>
       </div>
 
       <div className="status-grid" role="group" aria-label="Stav">

@@ -221,8 +221,8 @@ Paleta vychází z **Endesga 32**.
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
 - **Odkaz** (`.link-card`): náhled 64 px (obrázek webu / nahraný obrázek / písmeno domény), název na 2 řádky,
   web · kdy · kolekce, limetkový čtvereček = „na později“. Detail ve spodním panelu s „Otevřít“.
-- **Plakát / obálka** (`.cover`, 2 : 3) v mřížce po třech (`.poster-grid`), název na 2 řádky; bez obrázku
-  dlaždice s názvem. Hodnocení 1–5 hvězdiček (sprite hvězdy, nevybrané šedé).
+- **Film / kniha** (`.media-row`): štítek druhu (`.kind-tag`), název, autor / režisér · kdo doporučil; u hotových
+  hodnocení 1–5 hvězdiček (sprite hvězdy, nevybrané šedé). Zapisuje se ručně textem, bez katalogů.
 - **Přání** (`.wish-card`): jako odkaz, navíc cena · priorita a štítek čekání (`.wait-tag`; po 30 dnech limetkový
   „pořád to chceš?“).
 - **Mapa** (`.map-box`, Leaflet + tmavé podklady CARTO): čtvercové pixelové špendlíky v akcentu modulu, navštívená
