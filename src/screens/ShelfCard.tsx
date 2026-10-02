@@ -6,6 +6,9 @@ import { MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
 import { computeStats, useBeers } from "../modules/piva/data";
 import { useBeerCounter } from "../modules/piva/PivaScreen";
 import { countThisMonth, useQuotes } from "../modules/hlaskomat/data";
+import { computeMeditationStats, useMeditations } from "../modules/meditace/data";
+import { useSettings } from "../lib/settings";
+import { unlockAudio } from "../lib/sound";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -60,9 +63,26 @@ function HlaskomatCard() {
   );
 }
 
+function MeditaceCard() {
+  const { data: list = [] } = useMeditations();
+  const { settings } = useSettings();
+  const goal = settings.meditation_weekly_goal;
+  const stats = useMemo(() => computeMeditationStats(list, goal), [list, goal]);
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="meditace"
+      num={`${stats.weekCount} z ${goal}`}
+      sub={stats.weekCount >= goal ? "cíl splněný" : "tento týden"}
+      quick={{ label: "Začít meditaci", text: "▶", run: () => { unlockAudio(); navigate("/m/meditace?start=1"); } }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
   if (moduleKey === "hlaskomat") return <HlaskomatCard />;
+  if (moduleKey === "meditace") return <MeditaceCard />;
   return <Card moduleKey={moduleKey} num="–" sub={`Spustí se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

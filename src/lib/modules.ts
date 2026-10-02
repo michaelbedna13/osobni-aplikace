@@ -53,7 +53,7 @@ export const MODULES: ModuleDef[] = [
       <rect x="80" y="30" width="14" height="40" rx="3" fill="M"/>`,
   },
   {
-    key: "meditace", name: "Meditace", color: "#A9CBA4", deep: "#5F9466", phase: 2, quickAction: "Začít meditaci",
+    key: "meditace", name: "Meditace", color: "#A9CBA4", deep: "#5F9466", phase: 2, ready: true, quickAction: "Začít meditaci",
     plan: ["Časovač s gongem", "Historie meditací a jejich délky", "Cíl, např. 5× týdně, a série", "Statistiky"],
     svg: `
       <path d="M50 22 A36 36 0 0 1 50 82 A36 36 0 0 1 50 22 Z" fill="W" transform="rotate(-55 50 82)"/>

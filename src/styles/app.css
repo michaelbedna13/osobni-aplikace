@@ -217,3 +217,30 @@ textarea.input { resize: vertical; min-height: 88px; line-height: 1.4; }
 .file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 .import-preview { margin-top: 14px; font-weight: 600; }
 .success { color: #1B7A3A; font-weight: 600; margin-top: 12px; }
+
+/* ---------- Meditace ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.durations { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.durations + .plus-one { margin-top: 16px; }
+.goal-card { margin-top: 20px; }
+.week-dots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 4px 0 12px; text-align: center; font-size: 12px; color: var(--ink-2); }
+.week-dot { display: grid; justify-items: center; gap: 4px; }
+.week-dot .today { color: var(--ink); font-weight: 700; }
+.dot { width: 28px; height: 28px; border-radius: 50%; border: var(--line); background: var(--paper); }
+.dot.future { border: 2px dashed #9A9AA2; }
+.history-week { margin-bottom: 16px; }
+.history-label { font-family: var(--font-body); font-size: 15px; font-weight: 700; margin: 0 0 8px; }
+.history-label .muted { font-weight: 500; }
+.meditating { min-height: 100dvh; margin-top: -12px; padding-top: 24px; }
+.meditating .poster-title h1 { font-size: 28px; font-weight: 800; }
+.timer { position: relative; width: 260px; height: 260px; margin: 32px auto 12px; display: grid; place-items: center; }
+.timer svg { position: absolute; inset: 0; }
+.timer-time { position: relative; background: var(--paper); border: var(--line); border-radius: 14px; padding: 8px 16px; text-align: center; }
+.timer-time b { display: block; font-family: var(--font-display); font-size: 40px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.timer-time span { font-size: 13px; font-weight: 600; }
+.timer-state { text-align: center; font-weight: 600; margin-bottom: 20px; }
+.timer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.timer-cancel { display: block; margin: 20px auto 0; }
+.stepper { display: flex; align-items: center; justify-content: center; gap: 24px; margin: 8px 0; }
+.icon-btn.big { width: 56px; height: 56px; font-size: 26px; font-weight: 700; }
+.stepper-value { font-family: var(--font-display); font-size: 40px; font-weight: 800; min-width: 80px; text-align: center; }

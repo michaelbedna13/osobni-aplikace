@@ -56,21 +56,18 @@ Vlastní tréninky doma – s činkami, bez nich, kardio.
   heatmapa aktivity (jako GitHub)
 - Cíl: např. „3 tréninky týdně“
 
-### 2.3 Meditace 🧘
-Měření času a plnění cílů.
+### 2.3 Meditace 🪷 ✅ *hotovo*
 
-- **Časovač** s volitelnou délkou, gongem na začátku/konci, případně intervalovým zvoněním
-- Ruční zápis („meditoval jsem 15 min ráno“)
-- **Historie meditací**: seznam všech sezení (datum, začátek, délka, typ, poznámka) po týdnech,
-  s možností upravit, smazat nebo doplnit zpětně
-- Volitelně: typ (dech, body scan, …), poznámka, nálada před/po (1–5)
-- **Cíle:** „5 meditací týdně“, „60 minut týdně“ → progres kroužek + streak
-- Kalendář s vyplněnými dny
-
-> Technická poznámka: při zamčeném displeji prohlížeč pozastavuje JavaScript. Čas se proto bude
-> počítat z okamžiku startu (ne „tikáním“), aby byl vždy správný. Obrazovku lze držet zapnutou
-> (Wake Lock API). Spolehlivý gong při zamčeném telefonu je u PWA omezený – v konceptu počítám
-> s tím, že telefon během meditace leží se zapnutým (ztmaveným) displejem.
+- **Časovač** 5/10/15/20/30 min nebo bez omezení, gong na začátku a konci, displej zůstává rozsvícený
+- Čas se počítá z časových značek: sedí i po zamčení telefonu nebo zavření appky,
+  meditace se po návratu sama dokončí a uloží
+- Pozastavit / pokračovat, ukončit a uložit, zrušit bez uložení
+- Spuštění jedním ťuknutím z karty na obrazovce Dnes (naposledy zvolená délka)
+- **Historie** po týdnech s délkou každé meditace; úprava, smazání, přidání zpětně, poznámka
+- **Cíl** X× týdně (výchozí 5), tečky dnů tohoto týdne, série týdnů se splněným cílem
+- Statistiky: minuty tento týden a měsíc, hodiny celkem, průměrná a nejdelší meditace,
+  minuty za posledních 12 týdnů
+- Později: dechová cvičení, zápis do Apple Zdraví přes Zkratku
 
 ### 2.4 Odkazy 🔗
 Inspirace, videa, grafika, články.
