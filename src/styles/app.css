@@ -578,3 +578,21 @@ a.btn-hero { text-decoration: none; }
 .wait-tag.ready { background: color-mix(in srgb, var(--lime) 18%, var(--paper)); color: var(--lime); }
 .wait-tag.big { display: block; margin-top: 12px; padding: 8px 10px; }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+
+/* ---------- Místa ---------- */
+.map-wrap { position: relative; margin-top: 14px; }
+.map-box, .map-box.leaflet-container { height: min(52vh, 420px); border: var(--line); box-shadow: var(--shadow); background: var(--app-bg); font-family: var(--font-body); }
+.map-box.picking { cursor: crosshair; outline: 3px dashed var(--lime); outline-offset: -3px; }
+.map-box .leaflet-control-attribution { background: rgba(2, 15, 8, 0.75); color: var(--slate); font-family: var(--font-body); font-size: 14px; line-height: 1.2; }
+.map-box .leaflet-control-attribution a { color: var(--slate); }
+.map-pin { display: block; width: 18px; height: 18px; margin: 3px; background: var(--accent); border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--edge); }
+.map-pin.byl { background: var(--lime); }
+.map-pin.on { width: 24px; height: 24px; margin: 0; outline: 3px solid var(--ink); }
+.map-pin.pending { background: var(--ink); }
+.map-pin.small { width: 14px; height: 14px; margin: 0; flex: none; box-shadow: none; }
+.map-me { display: block; width: 16px; height: 16px; background: #2CE8F5; border: 3px solid var(--ink); }
+.map-banner { position: absolute; z-index: 500; left: 10px; right: 10px; top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; background: var(--paper); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 20px; }
+.place-row.on { background: color-mix(in srgb, var(--accent) 18%, var(--paper)); }
+.nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.nav-grid .btn { padding: 0 6px; font-size: 20px; }
+.link.inline { padding: 0; font-size: 14px; font-family: var(--font-body); }

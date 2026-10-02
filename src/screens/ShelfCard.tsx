@@ -19,6 +19,7 @@ import { useActiveGame } from "../modules/cornhole/active";
 import { useLinks } from "../modules/odkazy/data";
 import { computeMediaStats, useMedia } from "../modules/filmy/data";
 import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
+import { usePlaces } from "../modules/mista/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -203,6 +204,20 @@ function WishlistCard() {
   );
 }
 
+function MistaCard() {
+  const { data: places = [] } = usePlaces();
+  const navigate = useNavigate();
+  const wanted = places.filter((p) => p.status === "chci").length;
+  return (
+    <Card
+      moduleKey="mista"
+      num={String(wanted)}
+      sub={`chci navštívit, ${places.length - wanted} navštíveno`}
+      quick={{ label: "Přidat místo", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/mista?nova=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
@@ -215,5 +230,6 @@ export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "odkazy") return <OdkazyCard />;
   if (moduleKey === "filmy") return <FilmyCard />;
   if (moduleKey === "wishlist") return <WishlistCard />;
+  if (moduleKey === "mista") return <MistaCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

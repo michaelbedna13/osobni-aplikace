@@ -58,7 +58,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Uložení odkazu s náhledem", "Kolekce a moodboardy", "Uložení z menu Sdílet přes Zkratku", "Obrázky a screenshoty"]
   },
   {
-    key: "mista", name: "Místa", color: "#C28569", deep: "#733E39", light: "#E8B796", phase: 3, quickAction: "Přidat místo",
+    key: "mista", name: "Místa", color: "#C28569", deep: "#733E39", light: "#E8B796", phase: 3, ready: true, quickAction: "Přidat místo",
     plan: ["Mapa s místy, kam se chceš podívat", "Seznamy a plány výletů", "Navigace v Apple Mapách nebo Mapy.com", "Import z Google Map"]
   },
   {
