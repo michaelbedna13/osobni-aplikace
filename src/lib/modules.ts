@@ -62,7 +62,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Mapa s místy, kam se chceš podívat", "Seznamy a plány výletů", "Navigace v Apple Mapách nebo Mapy.com", "Import z Google Map"]
   },
   {
-    key: "filmy", name: "Filmy a knihy", color: "#8B9BB4", deep: "#5A6988", light: "#C0CBDC", phase: 3, quickAction: "Přidat film nebo knihu",
+    key: "filmy", name: "Filmy a knihy", color: "#8B9BB4", deep: "#5A6988", light: "#C0CBDC", phase: 3, ready: true, quickAction: "Přidat film nebo knihu",
     plan: ["Chci vidět / přečíst", "Hledání s plakáty a obálkami", "Kde film běží", "Čtenářská výzva"]
   },
   {

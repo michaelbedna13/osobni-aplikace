@@ -17,6 +17,7 @@ import { useActiveWorkout } from "../modules/trenink/active";
 import { computeCornholeStats, useGames } from "../modules/cornhole/data";
 import { useActiveGame } from "../modules/cornhole/active";
 import { useLinks } from "../modules/odkazy/data";
+import { computeMediaStats, useMedia } from "../modules/filmy/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -173,6 +174,20 @@ function OdkazyCard() {
   );
 }
 
+function FilmyCard() {
+  const { data: items = [] } = useMedia();
+  const stats = useMemo(() => computeMediaStats(items), [items]);
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="filmy"
+      num={String(stats.wanted)}
+      sub={stats.inProgress ? `chci, ${stats.inProgress} rozkoukáno` : "na seznamu chci"}
+      quick={{ label: "Přidat film nebo knihu", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/filmy?nova=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
@@ -183,5 +198,6 @@ export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "trenink") return <TreninkCard />;
   if (moduleKey === "cornhole") return <CornholeCard />;
   if (moduleKey === "odkazy") return <OdkazyCard />;
+  if (moduleKey === "filmy") return <FilmyCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

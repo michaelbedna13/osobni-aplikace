@@ -221,6 +221,8 @@ Paleta vychází z **Endesga 32**.
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
 - **Odkaz** (`.link-card`): náhled 64 px (obrázek webu / nahraný obrázek / písmeno domény), název na 2 řádky,
   web · kdy · kolekce, limetkový čtvereček = „na později“. Detail ve spodním panelu s „Otevřít“.
+- **Plakát / obálka** (`.cover`, 2 : 3) v mřížce po třech (`.poster-grid`), název na 2 řádky; bez obrázku
+  dlaždice s názvem. Hodnocení 1–5 hvězdiček (sprite hvězdy, nevybrané šedé).
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
