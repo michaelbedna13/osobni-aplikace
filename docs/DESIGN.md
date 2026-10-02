@@ -227,6 +227,8 @@ Paleta vychází z **Endesga 32**.
   „pořád to chceš?“).
 - **Mapa** (`.map-box`, Leaflet + tmavé podklady CARTO): čtvercové pixelové špendlíky v akcentu modulu, navštívená
   místa limetkově, vybrané s obrysem.
+- **Částky** (`.money`) v pixelovém písmu; „dluží mi“ limetkově, „dlužím“ v barvě `danger`. Předplatné, které se
+  obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

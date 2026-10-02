@@ -70,7 +70,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Věci, co chceš koupit", "Cena a priorita", "Pravidlo 30 dní", "Propojení se spořením"]
   },
   {
-    key: "finance", name: "Finance", color: "#FEE761", deep: "#FEAE34", light: "#FFF7C2", phase: 4, quickAction: "Přidat výdaj",
+    key: "finance", name: "Finance", color: "#FEE761", deep: "#FEAE34", light: "#FFF7C2", phase: 4, ready: true, quickAction: "Přidat výdaj",
     plan: ["Předplatné a jejich obnovy", "Spořicí cíle", "Kdo mi dluží a komu dlužím", "Útrata za piva"]
   },
 ];

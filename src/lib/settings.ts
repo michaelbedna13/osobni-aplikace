@@ -11,9 +11,11 @@ export interface Settings {
   workout_weekly_goal: number;
   /** Čtenářská výzva: počet knih za rok. */
   reading_goal: number;
+  /** Cena jednoho piva (Kč) pro útratu v Financích. */
+  beer_price: number;
 }
 
-const DEFAULTS: Settings = { pinned_modules: DEFAULT_PINNED, meditation_weekly_goal: 5, workout_weekly_goal: 3, reading_goal: 12 };
+const DEFAULTS: Settings = { pinned_modules: DEFAULT_PINNED, meditation_weekly_goal: 5, workout_weekly_goal: 3, reading_goal: 12, beer_price: 55 };
 const LOCAL_KEY = "settings";
 
 function normalize(raw: Partial<Record<keyof Settings, unknown>> | null | undefined): Settings {
@@ -26,6 +28,8 @@ function normalize(raw: Partial<Record<keyof Settings, unknown>> | null | undefi
     workout_weekly_goal:
       typeof raw?.workout_weekly_goal === "number" && raw.workout_weekly_goal > 0 ? raw.workout_weekly_goal : DEFAULTS.workout_weekly_goal,
     reading_goal: typeof raw?.reading_goal === "number" && raw.reading_goal > 0 ? raw.reading_goal : DEFAULTS.reading_goal,
+    // numeric chodí ze Supabase jako text
+    beer_price: raw?.beer_price !== undefined && raw.beer_price !== null && Number.isFinite(Number(raw.beer_price)) ? Number(raw.beer_price) : DEFAULTS.beer_price,
   };
 }
 
@@ -58,7 +62,7 @@ export function useSettings() {
       if (!supabase || !userId) return readLocal();
       const { data, error } = await supabase
         .from("user_settings")
-        .select("pinned_modules, meditation_weekly_goal, workout_weekly_goal, reading_goal")
+        .select("pinned_modules, meditation_weekly_goal, workout_weekly_goal, reading_goal, beer_price")
         .eq("user_id", userId)
         .maybeSingle();
       if (error) throw error;

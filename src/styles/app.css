@@ -596,3 +596,15 @@ a.btn-hero { text-decoration: none; }
 .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .nav-grid .btn { padding: 0 6px; font-size: 20px; }
 .link.inline { padding: 0; font-size: 14px; font-family: var(--font-body); }
+
+/* ---------- Finance ---------- */
+.beer-panel { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 14px; text-align: left; color: var(--ink); }
+.beer-panel b { display: block; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
+.money { font-family: var(--font-pixel); font-size: 20px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.money small { font-size: 14px; color: var(--slate); }
+.money.plus { color: var(--lime); }
+.money.minus { color: var(--danger); }
+.list-btn.soon { background: color-mix(in srgb, var(--accent) 14%, var(--paper)); }
+.list-btn.inactive { opacity: 0.55; }
+.goal-card { width: 100%; display: grid; gap: 6px; text-align: left; color: var(--ink); }
+.goal-card b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }

@@ -41,7 +41,7 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Wishlist (cena, priorita, pravidlo 30 dní, koupeno / už nechci a „ušetřeno“).
   Místa (tmavá mapa z OpenStreetMap, hledání míst, ťuknutí do mapy, seznamy, chci / byl jsem,
   navigace do Apple Map, Mapy.com a Google).
-  Plánované: Finance.
+  Finance (předplatné s obnovami a měsíčním součtem, kdo komu dluží, spořicí cíle, útrata za piva).
 - Obrazovka Dnes: datum a kdo má svátek, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, jeden odkaz „Na později“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.
 

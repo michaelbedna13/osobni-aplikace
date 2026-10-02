@@ -20,6 +20,7 @@ import { useLinks } from "../modules/odkazy/data";
 import { computeMediaStats, useMedia } from "../modules/filmy/data";
 import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
 import { usePlaces } from "../modules/mista/data";
+import { computeFinanceStats, daysUntil, debts, nextRenewal, savings, subscriptions } from "../modules/finance/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -218,18 +219,30 @@ function MistaCard() {
   );
 }
 
+function FinanceCard() {
+  const { data: subs = [] } = subscriptions.useList();
+  const { data: ds = [] } = debts.useList();
+  const { data: goals = [] } = savings.useList();
+  const stats = useMemo(() => computeFinanceStats(subs, ds, goals), [subs, ds, goals]);
+  const navigate = useNavigate();
+  const next = subs.filter((s) => s.active).map((s) => ({ s, d: daysUntil(nextRenewal(s.next_date, s.period)) })).sort((a, b) => a.d - b.d)[0];
+  return (
+    <Card
+      moduleKey="finance"
+      num={`${Math.round(stats.monthlySubs).toLocaleString("cs-CZ")}`}
+      sub={next && next.d <= 7 ? `Kč/měs, ${next.s.name} ${next.d === 0 ? "dnes" : `za ${next.d} d`}` : "Kč měsíčně za předplatné"}
+      quick={{ label: "Přidat předplatné", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/finance?nova=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
+const CARDS: Record<ModuleKey, () => ReactNode> = {
+  piva: PivaCard, hlaskomat: HlaskomatCard, meditace: MeditaceCard, vdecnost: VdecnostCard, lide: LideCard, trenink: TreninkCard,
+  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard,
+};
+
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
-  if (moduleKey === "piva") return <PivaCard />;
-  if (moduleKey === "hlaskomat") return <HlaskomatCard />;
-  if (moduleKey === "meditace") return <MeditaceCard />;
-  if (moduleKey === "vdecnost") return <VdecnostCard />;
-  if (moduleKey === "lide") return <LideCard />;
-  if (moduleKey === "trenink") return <TreninkCard />;
-  if (moduleKey === "cornhole") return <CornholeCard />;
-  if (moduleKey === "odkazy") return <OdkazyCard />;
-  if (moduleKey === "filmy") return <FilmyCard />;
-  if (moduleKey === "wishlist") return <WishlistCard />;
-  if (moduleKey === "mista") return <MistaCard />;
-  return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
+  const Component = CARDS[moduleKey];
+  return <Component />;
 }

@@ -19,6 +19,7 @@ import { OdkazyScreen } from "./modules/odkazy/OdkazyScreen";
 import { FilmyScreen } from "./modules/filmy/FilmyScreen";
 import { WishlistScreen } from "./modules/wishlist/WishlistScreen";
 import { MistaScreen } from "./modules/mista/MistaScreen";
+import { FinanceScreen } from "./modules/finance/FinanceScreen";
 import { Modules } from "./screens/Modules";
 import { Profile } from "./screens/Profile";
 import { Today } from "./screens/Today";
@@ -50,6 +51,7 @@ export function App() {
           <Route path="m/filmy" element={<FilmyScreen />} />
           <Route path="m/wishlist" element={<WishlistScreen />} />
           <Route path="m/mista" element={<MistaScreen />} />
+          <Route path="m/finance" element={<FinanceScreen />} />
           <Route path="m/denik" element={<Navigate to="/m/vdecnost" replace />} />
           <Route path="m/:key" element={<ModuleScreen />} />
           <Route path="mapa" element={<Navigate to="/m/mista" replace />} />
