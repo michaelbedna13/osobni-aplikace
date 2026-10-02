@@ -25,11 +25,9 @@ export function meditationDone(minutes: number) {
   return pick(["Hotovo. Hlava vyvětraná.", "Pěkně jsi to udýchal.", "Klid uložen."]);
 }
 
-export function greeting(now = new Date()) {
-  const h = now.getHours();
-  if (h < 5) return "Ještě vzhůru?";
-  if (h < 10) return "Dobré ráno";
-  if (h < 17) return "Ahoj";
-  if (h < 22) return "Dobrý večer";
-  return "Dobrou noc";
+export function gratitudeSaved(nthToday: number) {
+  if (nthToday === 1) return pick(["Zapsáno. Den má základ.", "První dnešní díky.", "Hezký. Tohle si pamatuj."]);
+  if (nthToday === 2) return pick(["Dvě věci. Dobrá bilance.", "A ještě jedna. Paráda."]);
+  if (nthToday === 3) return pick(["Tři! Tohle je dobrý den.", "Trojka vděčnosti, klasika."]);
+  return pick(["Hojnost. Zapsáno.", "Dneska se daří.", "Další do sbírky."]);
 }

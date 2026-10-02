@@ -106,24 +106,22 @@ export function HlaskomatScreen() {
       ) : (
         <ul className="quote-list">
           {visible.map((q) => (
-            <li key={q.id} className="quote-item">
-              <div className="bubble">
-                <button className="quote-body" onClick={() => setEditing(q)} aria-label={`Upravit hlášku: ${q.text}`}>
-                  <p className="bubble-text">„{q.text}“</p>
-                </button>
-                <button
-                  className={`star-btn${q.starred ? " on" : ""}`}
-                  aria-pressed={q.starred}
-                  aria-label={q.starred ? "Odebrat z oblíbených" : "Přidat do oblíbených"}
-                  onClick={() => update.mutate({ ...q, starred: !q.starred })}
-                >
-                  <Sprite name="i-star" size={22} />
-                </button>
-              </div>
-              <div className="who">
-                {q.author && <span className="nameplate">{q.author}</span>}
-                <span className="small">{[q.context, formatDate(new Date(q.said_at), true)].filter(Boolean).join(", ")}</span>
-              </div>
+            <li key={q.id} className="quote-card">
+              <button className="quote-body" onClick={() => setEditing(q)} aria-label={`Upravit hlášku: ${q.text}`}>
+                <p className="bubble-text">„{q.text}“</p>
+                <p className="quote-meta">
+                  {q.author && <b>{q.author}</b>}
+                  <span>{[q.context, formatDate(new Date(q.said_at), true)].filter(Boolean).join(", ")}</span>
+                </p>
+              </button>
+              <button
+                className={`star-btn${q.starred ? " on" : ""}`}
+                aria-pressed={q.starred}
+                aria-label={q.starred ? "Odebrat z oblíbených" : "Přidat do oblíbených"}
+                onClick={() => update.mutate({ ...q, starred: !q.starred })}
+              >
+                <Sprite name="i-star" size={22} />
+              </button>
             </li>
           ))}
         </ul>

@@ -3,7 +3,7 @@
 // Ve značkách: M = barva modulu, W = papír, K = černá. Náhled všech: design/symboly.html.
 
 export type ModuleKey =
-  | "piva" | "hlaskomat" | "trenink" | "meditace" | "lide" | "denik"
+  | "piva" | "hlaskomat" | "trenink" | "meditace" | "lide" | "vdecnost"
   | "odkazy" | "mista" | "filmy" | "wishlist" | "finance";
 
 export interface ModuleDef {
@@ -46,8 +46,8 @@ export const MODULES: ModuleDef[] = [
     plan: ["Narozeniny a jmeniny kamarádů", "Nápady na dárky během roku", "Odběr do Kalendáře v iPhonu", "Poznámky k lidem"]
   },
   {
-    key: "denik", name: "Deník", color: "#E4A672", deep: "#B86F50", light: "#EAD4AA", phase: 2, quickAction: "Zapsat do deníku",
-    plan: ["Za co jsem dnes vděčný?", "Jedna věta a nálada denně", "Před rokem tentýž den", "Mozaika nálad"]
+    key: "vdecnost", name: "Vděčnost", color: "#E4A672", deep: "#B86F50", light: "#EAD4AA", phase: 1, ready: true, quickAction: "Zapsat vděčnost",
+    plan: ["Za co jsem dnes vděčný?", "Série dní v řadě", "Mozaika posledních týdnů", "Vzpomínka na starší zápis"]
   },
   {
     key: "odkazy", name: "Odkazy", color: "#2CE8F5", deep: "#0099DB", light: "#C7F9FC", phase: 1, quickAction: "Uložit odkaz",
@@ -76,4 +76,4 @@ export const MODULE_BY_KEY = Object.fromEntries(MODULES.map((m) => [m.key, m])) 
 export const isModuleKey = (value: string | undefined): value is ModuleKey =>
   !!value && value in MODULE_BY_KEY;
 
-export const DEFAULT_PINNED: ModuleKey[] = ["piva", "meditace", "trenink", "hlaskomat", "denik"];
+export const DEFAULT_PINNED: ModuleKey[] = ["piva", "vdecnost", "meditace", "hlaskomat", "trenink"];

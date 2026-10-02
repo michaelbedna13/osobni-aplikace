@@ -46,6 +46,7 @@ input, textarea { caret-color: var(--ink); }
 .screen {
   position: relative;
   background:
+    linear-gradient(var(--app-bg), transparent 64px) no-repeat,
     radial-gradient(90% 320px at 50% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%) no-repeat,
     radial-gradient(#2E3350 1px, transparent 1.5px) 0 0 / 12px 12px,
     var(--app-bg);
@@ -103,6 +104,7 @@ input, textarea { caret-color: var(--ink); }
   box-shadow: var(--shadow-big); transition: transform 60ms var(--step), box-shadow 60ms var(--step);
 }
 .btn-hero:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--edge); }
+.btn-hero:disabled { opacity: 1; background: var(--paper); color: var(--slate); box-shadow: none; }
 .chip {
   display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px;
   border: var(--line); background: var(--paper); color: var(--ink); font-family: var(--font-pixel); font-size: 20px; white-space: nowrap;
@@ -199,7 +201,10 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 /* ---------- Dnes ---------- */
 .today-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .today-head h1 { font-size: 60px; }
-.today-head p { font-family: var(--font-pixel); font-size: 24px; color: var(--gold); margin-top: 4px; }
+.today-day { font-family: var(--font-pixel); font-size: 24px; color: var(--slate); margin-top: 4px; }
+.today-day b { font-weight: 400; color: var(--gold); }
+.today-holiday { font-size: 14px; color: var(--slate); margin-top: 2px; }
+.streak { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-pixel); font-size: 24px; color: var(--ink); text-decoration: none; min-height: 44px; }
 .avatar { width: 48px; height: 48px; display: grid; place-items: center; background: var(--gold); color: var(--on-accent); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 30px; text-decoration: none; }
 .demo-note { margin-top: 10px; font-size: 14px; color: var(--slate); }
 .shelf { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 12px; scrollbar-width: none; }
@@ -225,42 +230,14 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .fav.locked .sprite-tile, .tile.locked .sprite-tile { background: var(--surface-2); }
 .fav.locked .sprite-tile .sprite, .tile.locked .sprite-tile .sprite { opacity: 0.6; filter: grayscale(1); }
 .fav.locked .fav-num { color: var(--slate); font-size: 30px; }
-.fav-edit { justify-content: center; align-items: center; text-align: center; background: transparent; border: 2px dashed var(--slate); color: var(--slate); font-family: var(--font-pixel); font-size: 24px; text-decoration: none; }
-.quote-day { position: relative; display: block; text-decoration: none; color: var(--ink); }
-.bubble {
-  position: relative; background: var(--paper); border: var(--line); padding: 18px 18px 16px;
-  margin-bottom: 22px; color: var(--ink);
-}
-.bubble::after {
-  /* pixelový ocásek bubliny */
-  content: ""; position: absolute; left: 22px; bottom: -18px; width: 18px; height: 15px;
-  background:
-    linear-gradient(var(--edge), var(--edge)) 0 0 / 3px 15px no-repeat,
-    linear-gradient(var(--paper), var(--paper)) 3px 0 / 12px 3px no-repeat,
-    linear-gradient(var(--paper), var(--paper)) 3px 3px / 9px 3px no-repeat,
-    linear-gradient(var(--edge), var(--edge)) 15px 0 / 3px 3px no-repeat,
-    linear-gradient(var(--edge), var(--edge)) 12px 3px / 3px 3px no-repeat,
-    linear-gradient(var(--edge), var(--edge)) 9px 6px / 3px 3px no-repeat,
-    linear-gradient(var(--paper), var(--paper)) 3px 6px / 6px 3px no-repeat,
-    linear-gradient(var(--edge), var(--edge)) 6px 9px / 3px 3px no-repeat,
-    linear-gradient(var(--paper), var(--paper)) 3px 9px / 3px 3px no-repeat,
-    linear-gradient(var(--edge), var(--edge)) 3px 12px / 3px 3px no-repeat;
-}
-.bubble-text { font-family: var(--font-pixel); font-size: 30px; line-height: 1.2; }
-.who { display: flex; align-items: center; gap: 10px; margin-top: 2px; }
-.nameplate { display: inline-block; background: var(--gold); color: var(--on-accent); font-family: var(--font-pixel); font-size: 20px; padding: 3px 10px; }
-.soon { display: grid; gap: 10px; }
-.soon-row { display: flex; align-items: center; gap: 12px; font-family: var(--font-pixel); font-size: 20px; }
 
 /* ---------- Moduly ---------- */
-.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
-.tile { position: relative; min-height: 150px; padding: 12px; border: var(--line); background: var(--paper); color: var(--ink); display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
-.tile .sprite-tile { width: 68px; height: 68px; }
-.tile b { font-family: var(--font-pixel); font-size: 24px; margin-top: auto; line-height: 1.1; }
-.tile span { font-size: 14px; font-weight: 500; color: var(--slate); }
-.tile .pin { position: absolute; top: 10px; right: 10px; }
-.tile.locked b, .tile.locked span { color: var(--slate); }
-.tile .lock { position: absolute; top: 10px; right: 10px; }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+.tile { position: relative; padding: 12px 6px 10px; border: var(--line); background: var(--paper); color: var(--ink); display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; text-decoration: none; }
+.tile .sprite-tile { width: 64px; height: 64px; }
+.tile b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; line-height: 1.05; }
+.tile.locked b { color: var(--slate); }
+.tile .pin, .tile .lock { position: absolute; top: 5px; right: 5px; }
 
 /* ---------- hlavička modulu (hero) ---------- */
 .hero { position: relative; display: grid; justify-items: center; text-align: center; margin-top: 16px; }
@@ -323,13 +300,16 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .history-label { display: flex; justify-content: space-between; gap: 8px; font-family: var(--font-pixel); font-size: 20px; margin: 18px 0 8px; }
 .empty { margin-top: 16px; }
 
-/* ---------- Hláškomat ---------- */
-.search { margin-top: 22px; }
-.quote-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 4px; }
-.quote-item { display: grid; }
-.quote-item .bubble { padding: 0; display: flex; align-items: flex-start; }
-.quote-body { flex: 1; min-width: 0; background: none; border: 0; padding: 14px 4px 14px 16px; text-align: left; color: var(--ink); }
+/* ---------- Hláškomat: karta hlášky (autor uvnitř karty) ---------- */
+.quote-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
+.quote-card { display: flex; align-items: flex-start; background: var(--paper); border: var(--line); color: var(--ink); text-decoration: none; }
+a.quote-card { display: grid; gap: 10px; padding: 16px; }
+.quote-body { flex: 1; min-width: 0; display: grid; gap: 8px; background: none; border: 0; padding: 14px 4px 14px 16px; text-align: left; color: var(--ink); }
+.bubble-text { font-family: var(--font-pixel); font-size: 30px; line-height: 1.2; }
 .quote-body .bubble-text { font-size: 24px; }
+.quote-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; font-size: 14px; color: var(--slate); }
+.quote-meta b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--gold); }
+.search { margin-top: 22px; }
 .star-btn { flex: none; width: 52px; height: 52px; background: none; border: 0; display: grid; place-items: center; color: var(--slate); }
 .star-btn.on { color: var(--gold); }
 .star-btn.on .sprite { filter: drop-shadow(0 0 0 var(--gold)); }
@@ -391,3 +371,26 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .panel .row-between { margin-bottom: 4px; }
 .panel .row-between h3 { margin-bottom: 0; }
 .row-between { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+/* ---------- Vděčnost ---------- */
+.thanks-form { display: grid; }
+.thanks-form textarea.input { min-height: 72px; }
+.thanks-form .btn-hero { min-height: 60px; margin-top: 12px; font-size: 30px; }
+.band .thanks-form { margin-top: 18px; }
+.thanks-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; }
+.thanks-list li { display: flex; gap: 10px; line-height: 1.35; }
+.thanks-list li::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: 7px; background: var(--accent); box-shadow: 1px 1px 0 var(--edge); }
+.panel .thanks-list:last-child { margin-bottom: 0; }
+.thanks-item { align-items: flex-start; padding: 14px; line-height: 1.4; }
+.thanks-item .sprite { margin-top: 1px; }
+.mosaic { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 8px; }
+.mosaic-days { display: grid; grid-template-rows: repeat(7, 1fr); gap: 4px; align-items: center; font-family: var(--font-pixel); font-size: 14px; color: var(--slate); }
+.mosaic-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+.mosaic-week { display: grid; gap: 4px; }
+.mosaic i { display: block; aspect-ratio: 1; background: var(--surface-2); border: 2px solid var(--edge); }
+.mosaic i.lvl1 { background: color-mix(in srgb, var(--accent) 45%, var(--paper)); }
+.mosaic i.lvl2 { background: var(--accent); }
+.mosaic i.future { background: transparent; border: 2px dashed var(--idle); }
+.mosaic-legend { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; margin-top: 6px; color: var(--slate); }
+.mosaic-legend i { width: 14px; margin-left: 6px; }
+.mosaic-legend i:first-child { margin-left: 0; }

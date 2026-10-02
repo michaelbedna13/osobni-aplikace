@@ -10,6 +10,7 @@ import { countThisMonth, useQuotes } from "../modules/hlaskomat/data";
 import { computeMeditationStats, useMeditations } from "../modules/meditace/data";
 import { computeStats, useBeers } from "../modules/piva/data";
 import { useBeerCounter } from "../modules/piva/PivaScreen";
+import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -91,10 +92,25 @@ function MeditaceCard() {
   );
 }
 
+function VdecnostCard() {
+  const { data: list = [] } = useGratitude();
+  const stats = useMemo(() => computeGratitudeStats(list), [list]);
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="vdecnost"
+      num={String(stats.today.length)}
+      sub={`${plural(stats.today.length, ["věc", "věci", "věcí"])} dnes${stats.streak ? `, série ${stats.streak}` : ""}`}
+      quick={{ label: "Zapsat vděčnost", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/vdecnost?nova=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
   if (moduleKey === "hlaskomat") return <HlaskomatCard />;
   if (moduleKey === "meditace") return <MeditaceCard />;
+  if (moduleKey === "vdecnost") return <VdecnostCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

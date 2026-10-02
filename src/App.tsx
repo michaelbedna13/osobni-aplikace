@@ -7,6 +7,7 @@ import { ModuleScreen } from "./screens/ModuleScreen";
 import { PivaScreen } from "./modules/piva/PivaScreen";
 import { HlaskomatScreen } from "./modules/hlaskomat/HlaskomatScreen";
 import { MeditaceScreen } from "./modules/meditace/MeditaceScreen";
+import { VdecnostScreen } from "./modules/vdecnost/VdecnostScreen";
 import { Modules } from "./screens/Modules";
 import { Profile } from "./screens/Profile";
 import { Today } from "./screens/Today";
@@ -26,6 +27,8 @@ export function App() {
           <Route path="m/piva" element={<PivaScreen />} />
           <Route path="m/hlaskomat" element={<HlaskomatScreen />} />
           <Route path="m/meditace" element={<MeditaceScreen />} />
+          <Route path="m/vdecnost" element={<VdecnostScreen />} />
+          <Route path="m/denik" element={<Navigate to="/m/vdecnost" replace />} />
           <Route path="m/:key" element={<ModuleScreen />} />
           <Route path="mapa" element={<ModuleScreen moduleKey="mista" showBack={false} />} />
           <Route path="profil" element={<Profile />} />

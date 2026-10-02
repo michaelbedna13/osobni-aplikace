@@ -29,9 +29,11 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
 - PWA přidaná na plochu iPhonu (Safari), běží na celou obrazovku; GitHub Pages + Supabase.
 - Moduly: Piva (počítadlo půllitrů 0,5 l, bez druhů piv; statistiky po dnech, týdnech, podle dne
   v týdnu), Hláškomat (hláška, autor, kontext, datum, oblíbená), Meditace (časovač s gongem,
-  historie délek, týdenní cíl). Plánované: Lidé a dárky (narozeniny + nápady na dárky), Odkazy,
-  Trénink, Deník (vděčnost), Místa, Filmy a knihy, Wishlist, Finance.
-- Obrazovka Dnes: pás připnutých modulů s rychlou akcí, hláška dne.
+  historie délek, týdenní cíl), Vděčnost („Za co jsem dnes vděčný?“, série, mozaika, před rokem).
+  Plánované: Lidé a dárky (narozeniny + nápady na dárky), Odkazy, Trénink, Místa, Filmy a knihy,
+  Wishlist, Finance.
+- Obrazovka Dnes: datum a kdo má svátek, pás připnutých modulů s rychlou akcí, „Za co jsem dnes
+  vděčný?“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.
 
 ## Capabilities and Constraints
 

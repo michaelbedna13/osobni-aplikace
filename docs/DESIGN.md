@@ -24,7 +24,7 @@ colors:
   meditace-deep: "#3E8948"
   trenink: "#E43B44"
   lide: "#B55088"
-  denik: "#E4A672"
+  vdecnost: "#E4A672"
   odkazy: "#2CE8F5"
   mista: "#C28569"
   filmy: "#8B9BB4"
@@ -112,10 +112,6 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.none}"
     padding: "16px"
-  nameplate:
-    backgroundColor: "{colors.gold}"
-    textColor: "{colors.on-accent}"
-    padding: "3px 10px"
 ---
 
 # Design – pixel art (v2.3, tmavá mřížka)
@@ -143,7 +139,7 @@ Paleta vychází z **Endesga 32**.
 - Tmavé téma: text `ink` `#E9ECF5`, povrch panelů `paper` `#262B44`, obrysy a stíny `edge` `#0B0A12`,
   vedlejší text `slate` `#8B9BB4`. Text na akcentu nebo zlatu je vždy `on-accent` `#181425`.
 - Aktivní stav (záložka, čip, segment) = světlý blok `ink` s tmavým textem. Aktivní položka spodní
-  lišty, jmenovka a avatar jsou zlaté.
+  lišty, jméno autora hlášky a avatar jsou zlaté.
 - **Barva modulu = akcent (`--accent`)**, použitá decentně a vždy jen na těchto místech:
   dlaždice za ikonou (30 % barvy s povrchem `paper`), podtržení nadpisu obrazovky, hlavní tlačítko,
   rychlá akce na kartě, zvýrazněná hodnota v grafu, splněné dny u cíle.
@@ -165,7 +161,12 @@ Paleta vychází z **Endesga 32**.
   popisek → hlavní tlačítko → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
   jen vybrané záložky. Dlouhé obrazovky se tím nescrollují do nekonečna.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
-- Dnes: datum, pozdrav, pás „Moje moduly“ (posun do boku, karty 156 px), hláška dne v bublině.
+- Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména zlatě, data z balíčku `namedays-cs`),
+  případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
+  v Profilu); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); hláška dne.
+- Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
+- Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`); horní okraj obrazovky
+  proto plynule přechází z `app-bg` do mřížky, aby na sebe navazovaly.
 - **Spodní lišta**: plovoucí tmavý blok 12 px od okrajů, tři položky (Dnes, Moduly, Profil) s ikonou
   a popiskem; aktivní položka je zlatá s tmavým textem. Rychlé zápisy jsou na kartách na obrazovce Dnes.
 
@@ -195,7 +196,10 @@ Paleta vychází z **Endesga 32**.
 - **Vodorovné pruhy** (`HBars`): dny v týdnu, vítěz v barvě modulu s korunkou; řeší i remízu.
 - **Sloupce** (`Columns`): 12 týdnů s hodnotou nad sloupcem.
 - **Trofeje** (`.trophies`): 2 × 2, rekord zlatě se spritem trofeje.
-- **Bublina** (`.bubble`) + **jmenovka** (`.nameplate`) pro hlášky; hvězdička oblíbené vpravo.
+- **Karta hlášky** (`.quote-card`): text hlášky a pod ním **uvnitř karty** autor zlatě a kontext s datem
+  šedě; hvězdička oblíbené vpravo. Autor nikdy mimo kartu (mezi kartami nebylo jasné, ke které patří).
+- **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
+  (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
 - **Karta modulu v pásu** (`.fav`): tmavý povrch, ikona na dlaždici v akcentu, název, číslo, rychlá akce v akcentu vpravo nahoře.
 - **Záložky** (`Tabs`): plná šířka, aktivní světlá.

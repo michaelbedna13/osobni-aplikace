@@ -14,7 +14,9 @@ const LOCAL_KEY = "settings";
 
 function normalize(raw: Partial<Record<keyof Settings, unknown>> | null | undefined): Settings {
   return {
-    pinned_modules: Array.isArray(raw?.pinned_modules) ? raw.pinned_modules.filter(isModuleKey) : DEFAULTS.pinned_modules,
+    pinned_modules: Array.isArray(raw?.pinned_modules)
+      ? [...new Set(raw.pinned_modules.map((k) => (k === "denik" ? "vdecnost" : k)).filter(isModuleKey))] // Deník se přejmenoval na Vděčnost
+      : DEFAULTS.pinned_modules,
     meditation_weekly_goal:
       typeof raw?.meditation_weekly_goal === "number" && raw.meditation_weekly_goal > 0 ? raw.meditation_weekly_goal : DEFAULTS.meditation_weekly_goal,
   };
