@@ -1,30 +1,40 @@
-import { useMemo } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Symbol } from "../components/Symbol";
+import { Burst } from "../components/Burst";
+import { Sprite } from "../components/Sprite";
 import { plural } from "../lib/format";
 import { MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
-import { computeStats, useBeers } from "../modules/piva/data";
-import { useBeerCounter } from "../modules/piva/PivaScreen";
-import { countThisMonth, useQuotes } from "../modules/hlaskomat/data";
-import { computeMeditationStats, useMeditations } from "../modules/meditace/data";
 import { useSettings } from "../lib/settings";
 import { unlockAudio } from "../lib/sound";
+import { countThisMonth, useQuotes } from "../modules/hlaskomat/data";
+import { computeMeditationStats, useMeditations } from "../modules/meditace/data";
+import { computeStats, useBeers } from "../modules/piva/data";
+import { useBeerCounter } from "../modules/piva/PivaScreen";
 
 interface CardProps {
   moduleKey: ModuleKey;
   num: string;
   sub: string;
-  quick?: { label: string; text: string; run: () => void };
+  quick?: { label: string; text: ReactNode; run: () => void };
+  jump?: number;
 }
 
-function Card({ moduleKey, num, sub, quick }: CardProps) {
+function Card({ moduleKey, num, sub, quick, jump = 0 }: CardProps) {
   const m = MODULE_BY_KEY[moduleKey];
   return (
-    <div className="fav tap" style={{ background: `${m.color}66` }}>
-      <Link to={`/m/${moduleKey}`} className="fav-link" aria-label={`${m.name}: ${num} ${sub}`} />
+    <div className={`fav tap${m.ready ? "" : " locked"}`} style={{ background: m.color }}>
+      <Link to={`/m/${moduleKey}`} className="fav-link" aria-label={`${m.name}: ${num}, ${sub}`} />
       <div className="fav-top">
-        <Symbol module={moduleKey} size={40} />
-        {quick && <button className="fav-quick" aria-label={quick.label} onClick={quick.run}>{quick.text}</button>}
+        <span key={jump} className={jump ? "anim-jump" : undefined} style={{ display: "block" }}>
+          <Sprite name={moduleKey} size={48} />
+        </span>
+        {quick && (
+          <button className="fav-quick" aria-label={quick.label} onClick={quick.run}>
+            {quick.text}
+            <Burst trigger={jump} />
+          </button>
+        )}
+        {!m.ready && <Sprite name="lock" size={24} label="Zamčeno" />}
       </div>
       <span className="fav-name">{m.name}</span>
       <span className="fav-num">{num}</span>
@@ -37,13 +47,15 @@ function PivaCard() {
   const { data: beers = [] } = useBeers();
   const stats = useMemo(() => computeStats(beers), [beers]);
   const counter = useBeerCounter();
+  const [jump, setJump] = useState(0);
   return (
     <>
       <Card
         moduleKey="piva"
-        num={String(stats.week)}
-        sub={`${plural(stats.week, ["pivo", "piva", "piv"])} tento týden, dnes ${stats.today}`}
-        quick={{ label: "Přidat pivo", text: "+1", run: () => counter.addOne(stats.today) }}
+        num={String(stats.today)}
+        sub={`${plural(stats.today, ["pivo", "piva", "piv"])} dnes, týden ${stats.week}`}
+        quick={{ label: "Přidat pivo", text: "+1", run: () => { counter.addOne(stats.today); setJump((j) => j + 1); } }}
+        jump={jump}
       />
       {counter.toast}
     </>
@@ -57,8 +69,8 @@ function HlaskomatCard() {
     <Card
       moduleKey="hlaskomat"
       num={String(quotes.length)}
-      sub={`${plural(quotes.length, ["hláška", "hlášky", "hlášek"])}, tento měsíc ${countThisMonth(quotes)}`}
-      quick={{ label: "Zapsat hlášku", text: "+", run: () => navigate("/m/hlaskomat?nova=1") }}
+      sub={`${plural(quotes.length, ["hláška", "hlášky", "hlášek"])}, měsíc ${countThisMonth(quotes)}`}
+      quick={{ label: "Zapsat hlášku", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/hlaskomat?nova=1") }}
     />
   );
 }
@@ -72,9 +84,9 @@ function MeditaceCard() {
   return (
     <Card
       moduleKey="meditace"
-      num={`${stats.weekCount} z ${goal}`}
-      sub={stats.weekCount >= goal ? "cíl splněný" : "tento týden"}
-      quick={{ label: "Začít meditaci", text: "▶", run: () => { unlockAudio(); navigate("/m/meditace?start=1"); } }}
+      num={`${stats.weekCount}/${goal}`}
+      sub={stats.weekCount >= goal ? "Cíl splněný!" : "tento týden"}
+      quick={{ label: "Začít meditaci", text: <Sprite name="i-play" size={20} />, run: () => { unlockAudio(); navigate("/m/meditace?start=1"); } }}
     />
   );
 }
@@ -84,5 +96,5 @@ export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
   if (moduleKey === "hlaskomat") return <HlaskomatCard />;
   if (moduleKey === "meditace") return <MeditaceCard />;
-  return <Card moduleKey={moduleKey} num="–" sub={`Spustí se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
+  return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

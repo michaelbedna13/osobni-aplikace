@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T17:00:00Z",
+  "title": "Design System: Osobní appka – pixel",
+  "extensions": {
+    "colorMeta": {
+      "night": { "role": "neutral", "displayName": "Noc", "tonalRamp": ["#17184A", "#26286B", "#3A3D8F"] },
+      "gold": { "role": "accent", "displayName": "Zlato" },
+      "piva": { "role": "module", "displayName": "Jantar", "tonalRamp": ["#C77700", "#FFB627", "#FFE08A"] },
+      "hlaskomat": { "role": "module", "displayName": "Citron", "tonalRamp": ["#B38A00", "#FFE04A", "#FFF3A8"] },
+      "meditace": { "role": "module", "displayName": "Šalvěj", "tonalRamp": ["#3E8E58", "#9ED9A6", "#D4F2D9"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Hero číslo", "purpose": "Hlavní číslo modulu (dnes / týden)." },
+      "heading": { "displayName": "Nadpis", "purpose": "Nadpisy obrazovek a hlavní tlačítko." },
+      "label": { "displayName": "Popisek", "purpose": "Tlačítka, čipy, osy grafů." },
+      "body": { "displayName": "Text", "purpose": "Delší text, vedlejší řádky." }
+    },
+    "shadows": [
+      { "name": "tap", "value": "4px 4px 0 #000", "purpose": "Všechno, na co jde ťuknout." },
+      { "name": "tap-big", "value": "6px 6px 0 #000", "purpose": "Hlavní tlačítko obrazovky." }
+    ],
+    "motion": [
+      { "name": "press", "value": "60ms steps(3, end)", "purpose": "Zamáčknutí tlačítka." },
+      { "name": "jump", "value": "600ms steps(6, end)", "purpose": "Postavička po akci." },
+      { "name": "burst", "value": "800ms steps(8, end)", "purpose": "Pixelové konfety." },
+      { "name": "breathe", "value": "8s steps(8, jump-none) infinite", "purpose": "Dýchání při meditaci." }
+    ],
+    "breakpoints": [{ "name": "column", "value": "520px" }]
+  },
+  "components": [
+    {
+      "name": "Hlavní tlačítko",
+      "kind": "button",
+      "refersTo": "button-hero",
+      "description": "Jedna hlavní akce obrazovky.",
+      "html": "<button class=\"ds-btn-hero\">+ 1 pivo</button>",
+      "css": ".ds-btn-hero { width: 100%; min-height: 78px; background: #fff; color: #000; border: 3px solid #000; box-shadow: 6px 6px 0 #000; font-family: 'Jersey 10', system-ui; font-size: 35px; border-radius: 0; transition: transform 60ms steps(3,end), box-shadow 60ms steps(3,end); } .ds-btn-hero:active { transform: translate(6px,6px); box-shadow: 0 0 0 #000; } .ds-btn-hero:focus-visible { outline: 3px dashed #000; outline-offset: 3px; }"
+    },
+    {
+      "name": "Čip",
+      "kind": "chip",
+      "refersTo": "chip-on",
+      "description": "Filtr nebo volba délky; aktivní černý.",
+      "html": "<button class=\"ds-chip\">10 min</button><button class=\"ds-chip on\">15 min</button>",
+      "css": ".ds-chip { min-height: 40px; padding: 0 14px; background: #fff; color: #000; border: 3px solid #000; font-family: 'Jersey 10', system-ui; font-size: 20px; border-radius: 0; margin-right: 8px; } .ds-chip.on { background: #000; color: #fff; } .ds-chip:focus-visible { outline: 3px dashed #000; outline-offset: 3px; }"
+    },
+    {
+      "name": "Skóre",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Tři čísla vedle sebe pod hlavním tlačítkem.",
+      "html": "<div class=\"ds-score\"><div><b>7</b><span>tento týden</span></div><div><b>3</b><span>tento měsíc</span></div><div><b>117</b><span>celkem</span></div></div>",
+      "css": ".ds-score { display: grid; grid-template-columns: repeat(3,1fr); background: #fff; border: 3px solid #000; } .ds-score > div { padding: 10px 6px; text-align: center; display: grid; } .ds-score > div + div { border-left: 3px solid #000; } .ds-score b { font-family: 'Jersey 10', system-ui; font-size: 38px; font-weight: 400; } .ds-score span { font-family: Rubik, system-ui; font-size: 13px; }"
+    },
+    {
+      "name": "Bublina hlášky",
+      "kind": "custom",
+      "refersTo": "nameplate",
+      "description": "Hláška v bublině, autor na černé jmenovce.",
+      "html": "<div class=\"ds-bubble\">„Mít 0,5 na kapse je základ.“</div><span class=\"ds-name\">Dannowski</span>",
+      "css": ".ds-bubble { background: #fff; border: 3px solid #000; padding: 18px; font-family: 'Jersey 10', system-ui; font-size: 28px; margin-bottom: 12px; } .ds-name { display: inline-block; background: #000; color: #fff; font-family: 'Jersey 10', system-ui; font-size: 17px; padding: 3px 10px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Kapesní 8bitová hra o vlastním životě",
+    "overview": "Každý modul je level v plné barvě s pixelovou postavičkou; zápis je herní tah s odměnou, statistiky se čtou jako skóre.",
+    "keyCharacteristics": ["Obrazovky zaplavené barvou modulu", "Pixelové sprity 16×16", "Černé obrysy a tvrdé stíny", "Jersey 10 pro čísla", "Odměna po každé akci"],
+    "rules": [
+      { "name": "Stín = ťuknutí", "body": "Tvrdý stín mají jen interaktivní prvky.", "section": "elevation" },
+      { "name": "Jedna hlavní akce", "body": "Každá obrazovka má jedno velké tlačítko pod hlavním číslem.", "section": "colors" }
+    ],
+    "dos": ["Nový modul = nová barva + sprite + herní metafora statistik"],
+    "donts": ["Zaoblené rohy, měkké stíny, gradienty", "Unicode znaky místo ikon", "Nadpisky nad nadpisy"]
+  }
+}

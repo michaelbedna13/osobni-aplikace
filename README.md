@@ -3,7 +3,7 @@
 Osobní mobilní webová aplikace (PWA pro iPhone) napojená na Supabase a nasazovaná z GitHubu – hlášky, tréninky, meditace, odkazy, piva, lidé a narozeniny, deník, mapa míst a další.
 
 - [Koncept](docs/KONCEPT.md) · [Nápady na funkce](docs/NAPADY.md)
-- [Design](docs/DESIGN.md) · [náhled obrazovek](design/prototyp.html) · [symboly modulů](design/symboly.html)
+- [Design](docs/DESIGN.md) (pixel art) · [produkt](PRODUCT.md)
 - [Nastavení Supabase, GitHub Pages a iPhonu](docs/NASTAVENI.md)
 
 ## Technologie
@@ -20,10 +20,11 @@ src/
   lib/settings.ts     uživatelská nastavení (připnuté moduly)
   components/         lišta, rychlé přidání, symboly, ikony
   screens/            Dnes, Moduly, stránka modulu, Profil, Přihlášení
+  lib/sprites.ts      pixelové postavičky a ikony
+  lib/copy.ts         hlas appky (vtipné texty)
   styles/app.css      design tokeny a styly
 supabase/migrations/  struktura databáze (SQL)
 .github/workflows/    kontrola, nasazení na Pages, migrace Supabase
-design/               statický náhled a symboly (podklad pro design)
 ```
 
 ## Příkazy

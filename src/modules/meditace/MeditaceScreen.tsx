@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import { BarChart } from "../../components/BarChart";
-import { BackIcon } from "../../components/Icons";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Burst } from "../../components/Burst";
+import { Columns } from "../../components/Charts";
 import { Sheet } from "../../components/Sheet";
-import { Symbol } from "../../components/Symbol";
+import { Sprite } from "../../components/Sprite";
 import { useToast } from "../../components/Toast";
+import { Topbar } from "../../components/Topbar";
+import { meditationDone } from "../../lib/copy";
 import { addDays, relativeTime, startOfWeek, toLocalInput, WEEKDAYS_SHORT } from "../../lib/dates";
 import { formatDate, formatNumber, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
@@ -21,6 +23,7 @@ import {
 const MODULE = MODULE_BY_KEY.meditace;
 const DURATIONS = [5, 10, 15, 20, 30, 0]; // 0 = bez omezení
 const KRAT: [string, string, string] = ["meditace", "meditace", "meditací"];
+const SEGMENTS = 32;
 
 export function MeditaceScreen() {
   const [timer, setTimerState] = useState<TimerState | null>(loadTimer);
@@ -40,16 +43,19 @@ export function MeditaceScreen() {
     playGong();
   }, [setTimer]);
 
+  const [celebrate, setCelebrate] = useState(0);
+
   const finish = useCallback((state: TimerState, { gong }: { gong: boolean }) => {
     setTimer(null);
     const seconds = finalSeconds(state);
     if (gong) playGong();
     if (seconds < 30) {
-      toast.show("Meditace kratší než 30 s se neukládá");
+      toast.show("Kratší než 30 s, to se nepočítá");
       return;
     }
     add.mutate({ id: crypto.randomUUID(), started_at: state.startedAt, duration_s: seconds, note: null });
-    toast.show(`Uloženo: ${formatDuration(seconds)}`);
+    toast.show(`${formatDuration(seconds)} uloženo. ${meditationDone(seconds / 60)}`);
+    setCelebrate((c) => c + 1);
   }, [add, setTimer, toast]);
 
   // ?start=1 z obrazovky Dnes spustí meditaci s naposledy zvolenou délkou
@@ -71,7 +77,7 @@ export function MeditaceScreen() {
           onCancel={() => setTimer(null)}
         />
       ) : (
-        <Overview onStart={start} />
+        <Overview onStart={start} celebrate={celebrate} />
       )}
       {toast.element}
     </>
@@ -109,39 +115,44 @@ function TimerView({ timer, onPause, onResume, onFinish, onCancel }: {
   const pct = timer.plannedSeconds === null ? (elapsed % 60) / 60 : Math.min(1, elapsed / timer.plannedSeconds);
   const mm = String(Math.floor(shown / 60)).padStart(2, "0");
   const ss = String(Math.floor(shown % 60)).padStart(2, "0");
+  const lit = Math.round(pct * SEGMENTS);
+  const inhale = Math.floor(elapsed / 4) % 2 === 0;
 
   return (
-    <div className="screen meditating" style={{ background: MODULE.color }}>
-      <div className="pad">
-        <div className="poster-title">
-          <h1>Meditace</h1>
-        </div>
-        <div className="timer" role="timer" aria-label={`${timer.plannedSeconds === null ? "Uplynulo" : "Zbývá"} ${mm}:${ss}`}>
-          <svg viewBox="0 0 100 100" width="260" height="260" aria-hidden="true">
-            <defs><clipPath id="timer-clip"><circle cx="50" cy="50" r="46" /></clipPath></defs>
-            <circle cx="50" cy="50" r="46" fill="#FFFFFF" />
-            <rect x="0" y={100 - pct * 100} width="100" height={pct * 100} fill={MODULE.deep} clipPath="url(#timer-clip)" />
-            <circle cx="50" cy="50" r="46" fill="none" stroke="#000" strokeWidth="2" vectorEffect="non-scaling-stroke" />
-          </svg>
-          <div className="timer-time">
-            <b>{mm}:{ss}</b>
-            <span>{timer.plannedSeconds === null ? "bez omezení" : `z ${formatDuration(timer.plannedSeconds)}`}</span>
+    <div className="screen" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+      <Topbar title="Meditace" back={null} />
+      <div className="timer-wrap">
+        <div className="ring" role="timer" aria-label={`${timer.plannedSeconds === null ? "Uplynulo" : "Zbývá"} ${mm}:${ss}`}>
+          {Array.from({ length: SEGMENTS }, (_, i) => {
+            const a = (i / SEGMENTS) * Math.PI * 2 - Math.PI / 2;
+            return (
+              <i
+                key={i}
+                className={`ring-seg${i < lit ? " on" : ""}`}
+                style={{ transform: `translate(${Math.round(Math.cos(a) * 124)}px, ${Math.round(Math.sin(a) * 124)}px)` }}
+              />
+            );
+          })}
+          <div className="ring-center">
+            <Sprite name="meditace" size={96} anim={running ? "breathe" : undefined} />
+            <span className="timer-time">{mm}:{ss}</span>
+            <span className="timer-of">{timer.plannedSeconds === null ? "bez omezení" : `z ${formatDuration(timer.plannedSeconds)}`}</span>
           </div>
         </div>
-        <p className="timer-state" aria-live="polite">{running ? "Dýchej. Displej zůstane rozsvícený." : "Pozastaveno"}</p>
-        <div className="timer-actions">
-          {running
-            ? <button className="btn tap" onClick={onPause}>Pozastavit</button>
-            : <button className="btn tap" onClick={onResume}>Pokračovat</button>}
-          <button className="btn dark tap" onClick={() => { finishing.current = true; onFinish(true); }}>Ukončit a uložit</button>
-        </div>
-        <button className="link timer-cancel" onClick={onCancel}>Zrušit bez uložení</button>
       </div>
+      <p className="breath" aria-live="off">{running ? (inhale ? "Nádech…" : "Výdech…") : "Pauza. Klidně si protáhni nohy."}</p>
+      <div className="timer-actions">
+        {running
+          ? <button className="btn tap" onClick={onPause}>Pauza</button>
+          : <button className="btn tap" onClick={onResume}>Pokračovat</button>}
+        <button className="btn dark tap" onClick={() => { finishing.current = true; onFinish(true); }}>Hotovo</button>
+      </div>
+      <button className="link timer-cancel" onClick={onCancel}>Zrušit bez uložení</button>
     </div>
   );
 }
 
-function Overview({ onStart }: { onStart: (minutes: number) => void }) {
+function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; celebrate: number }) {
   const { data: list = [], isLoading, error } = useMeditations();
   const { settings, update } = useSettings();
   const goal = settings.meditation_weekly_goal;
@@ -149,134 +160,141 @@ function Overview({ onStart }: { onStart: (minutes: number) => void }) {
   const [minutes, setMinutes] = useState(loadLastMinutes);
   const [editing, setEditing] = useState<Meditation | "new" | null>(null);
   const [goalOpen, setGoalOpen] = useState(false);
-
-  const weeks = useMemo(() => groupByWeek(list.slice(0, 60)), [list]);
+  const weeks = useMemo(() => groupByWeek(list.slice(0, 40)), [list]);
+  const goalDone = stats.weekCount >= goal;
 
   return (
-    <div className="screen">
-      <header className="poster" style={{ background: MODULE.color }}>
-        <span className="poster-art"><Symbol module="meditace" size={170} bg="#FFFFFF" /></span>
-        <div className="quote-hero">
-          <div className="poster-title">
-            <Link to="/moduly" className="back" aria-label="Zpět na moduly"><BackIcon /></Link>
-            <h1>Meditace</h1>
-          </div>
-          <p className="beer-hero-sub">Tento týden {stats.weekCount} z {goal}, {formatDuration(stats.weekMinutes * 60)}</p>
+    <div className="screen" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+      <Topbar title="Meditace" />
+
+      <div className="hero">
+        <span key={celebrate} className={celebrate ? "anim-jump" : "anim-bob"}><Sprite name="meditace" size={112} /></span>
+        <Burst trigger={celebrate} colors={["#FFFFFF", MODULE.deep, "#FFE04A"]} />
+        <span className="hero-num">{stats.weekCount}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
+        <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : "meditací tento týden"}</span>
+      </div>
+
+      <div className="durations" role="group" aria-label="Délka meditace">
+        {DURATIONS.map((d) => (
+          <button key={d} className={`chip${minutes === d ? " on" : ""}`} aria-pressed={minutes === d} onClick={() => setMinutes(d)}>
+            {d ? `${d} min` : "Bez limitu"}
+          </button>
+        ))}
+      </div>
+      <button className="btn-hero" onClick={() => onStart(minutes)}>
+        <Sprite name="i-play" size={22} /> Začít
+      </button>
+
+      {error && <p className="error">Nepodařilo se načíst meditace. Zkontroluj připojení.</p>}
+
+      <section className="sec">
+        <div className="sec-head">
+          <h2>Cíl {goal}× týdně</h2>
+          <button className="link" onClick={() => setGoalOpen(true)}>Změnit</button>
         </div>
-      </header>
-
-      <div className="pad">
-        <div className="durations" role="group" aria-label="Délka meditace">
-          {DURATIONS.map((d) => (
-            <button key={d} className={`chip${minutes === d ? " on" : ""}`} aria-pressed={minutes === d} onClick={() => setMinutes(d)}>
-              {d ? `${d} min` : "Bez omezení"}
-            </button>
-          ))}
-        </div>
-        <button className="plus-one" onClick={() => onStart(minutes)}>
-          <Symbol module="meditace" size={34} /> Začít meditaci
-        </button>
-
-        {error && <p className="error">Nepodařilo se načíst meditace. Zkontroluj připojení.</p>}
-
-        <section className="card goal-card">
-          <div className="row-between">
-            <h2 className="card-title">Cíl: {goal}× týdně</h2>
-            <button className="link" onClick={() => setGoalOpen(true)}>Změnit</button>
-          </div>
-          <div className="week-dots">
+        <div className="panel">
+          <div className="week-blocks">
             {WEEKDAYS_SHORT.map((d, i) => {
               const v = stats.thisWeek[i];
               return (
-                <div key={d} className="week-dot">
-                  <span className={`dot${v === null ? " future" : v > 0 ? " done" : ""}`} style={v ? { background: MODULE.deep } : undefined} aria-hidden="true" />
+                <div key={d} className="week-block">
+                  <i className={v === null ? "future" : v > 0 ? "done" : undefined}>
+                    {v ? <Sprite name="check" size={28} tone="meditace" /> : null}
+                  </i>
                   <span className={i === stats.todayIndex ? "today" : undefined}>{d}</span>
                   <span className="sr-only">{v === null ? "ještě nebylo" : v > 0 ? `${v} min` : "bez meditace"}</span>
                 </div>
               );
             })}
           </div>
-          <p className="muted small">
-            {stats.weekCount >= goal ? "Cíl na tento týden je splněný." : `Do cíle zbývá ${goal - stats.weekCount}×.`}
-            {stats.weekStreak > 0 && ` Série: ${stats.weekStreak} ${plural(stats.weekStreak, ["týden", "týdny", "týdnů"])} v řadě.`}
+          <p className="goal-line">
+            {stats.weekStreak > 0 && <Sprite name="flame" size={24} tone="trenink" />}
+            {goalDone ? "Splněno! " : `Ještě ${goal - stats.weekCount}× a máš to. `}
+            {stats.weekStreak > 0 && `Série ${stats.weekStreak} ${plural(stats.weekStreak, ["týden", "týdny", "týdnů"])}.`}
           </p>
-        </section>
+        </div>
+      </section>
 
-        {stats.totalCount > 0 && (
-          <>
-            <div className="stat-grid">
-              <Stat label="Minut tento týden" value={formatNumber(stats.weekMinutes, 0)} />
-              <Stat label="Minut tento měsíc" value={formatNumber(stats.monthMinutes, 0)} />
-              <Stat label="Hodin celkem" value={formatNumber(stats.totalMinutes / 60)} />
-              <Stat label="Průměrná délka" value={`${formatNumber(stats.averageMinutes, 0)} min`} />
-            </div>
+      {stats.totalCount > 0 && (
+        <>
+          <div className="score">
+            <div><b>{formatNumber(stats.weekMinutes, 0)}</b><span>min tento týden</span></div>
+            <div><b>{formatNumber(stats.monthMinutes, 0)}</b><span>min tento měsíc</span></div>
+            <div><b>{formatNumber(stats.totalMinutes / 60)}</b><span>hodin celkem</span></div>
+          </div>
 
-            <section className="card chart-card">
-              <h2 className="card-title">Minuty za posledních 12 týdnů</h2>
-              <BarChart
+          <section className="sec">
+            <h2>Minuty za 12 týdnů</h2>
+            <div className="panel">
+              <Columns
                 values={stats.lastWeeks.map((w) => w.minutes)}
-                labels={stats.lastWeeks.map((w, i) => (i === 11 ? "Teď" : i % 3 === 2 ? formatDate(w.start) : ""))}
+                labels={stats.lastWeeks.map((w, i) => (i === 11 ? "teď" : i % 3 === 2 ? formatDate(w.start) : ""))}
                 highlight={11}
-                color={MODULE.deep!}
+                color={MODULE.deep}
                 label={`Minuty meditace po týdnech: ${stats.lastWeeks.map((w) => `od ${formatDate(w.start)} ${w.minutes}`).join(", ")}`}
               />
-            </section>
+            </div>
+          </section>
 
-            <section className="card">
-              <h2 className="card-title">Souhrn</h2>
-              <dl className="facts">
-                <div><dt>Meditací celkem</dt><dd>{stats.totalCount}</dd></div>
-                {stats.longest && (
-                  <div><dt>Nejdelší</dt><dd>{formatDuration(stats.longest.duration_s)} <span className="muted small">({formatDate(new Date(stats.longest.started_at), true)})</span></dd></div>
-                )}
-              </dl>
-            </section>
-          </>
-        )}
+          <section className="sec">
+            <h2>Trofeje</h2>
+            <div className="trophies">
+              {stats.longest && (
+                <div className="trophy gold">
+                  <Sprite name="trophy" size={40} />
+                  <b>{formatDuration(stats.longest.duration_s)}</b>
+                  <span>nejdelší ({formatDate(new Date(stats.longest.started_at), true)})</span>
+                </div>
+              )}
+              <div className="trophy">
+                <Sprite name="flame" size={40} tone="trenink" />
+                <b>{stats.weekStreak}</b>
+                <span>{plural(stats.weekStreak, ["týden", "týdny", "týdnů"])} v řadě se splněným cílem</span>
+              </div>
+              <div className="trophy">
+                <b>{formatNumber(stats.averageMinutes, 0)} min</b>
+                <span>průměrná délka</span>
+              </div>
+              <div className="trophy">
+                <b>{stats.totalCount}</b>
+                <span>{plural(stats.totalCount, KRAT)} celkem</span>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
 
-        <div className="row-between list-head">
-          <h2 className="sec-title">Historie</h2>
-          <button className="link" onClick={() => setEditing("new")}>Přidat zpětně</button>
-        </div>
-        {isLoading ? (
-          <p className="muted">Načítám…</p>
-        ) : list.length === 0 ? (
-          <p className="muted">Zatím žádná meditace. Vyber délku a ťukni na „Začít meditaci“.</p>
-        ) : (
-          weeks.map((w) => (
-            <section key={w.label} className="history-week">
-              <h3 className="history-label">
-                {w.label} <span className="muted">{w.items.length} {plural(w.items.length, KRAT)}, {formatDuration(w.seconds)}</span>
-              </h3>
-              <ul className="card list">
-                {w.items.map((m) => (
-                  <li key={m.id}>
-                    <button className="list-btn" onClick={() => setEditing(m)}>
-                      <Symbol module="meditace" size={22} />
-                      <span className="grow">{relativeTime(new Date(m.started_at))}{m.note ? <span className="muted small"> {m.note}</span> : null}</span>
-                      <b>{formatDuration(m.duration_s)}</b>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))
-        )}
+      <div className="list-head">
+        <h2>Historie</h2>
+        <button className="link" onClick={() => setEditing("new")}>Přidat zpětně</button>
       </div>
+      {isLoading ? (
+        <p>Načítám…</p>
+      ) : list.length === 0 ? (
+        <p className="empty">Zatím nic. Vyber délku a dej „Začít“.</p>
+      ) : (
+        weeks.map((w) => (
+          <section key={w.label}>
+            <h3 className="history-label">
+              <span>{w.label}</span><span>{w.items.length}×, {formatDuration(w.seconds)}</span>
+            </h3>
+            <ul className="list">
+              {w.items.map((m) => (
+                <li key={m.id}>
+                  <button className="list-btn" onClick={() => setEditing(m)}>
+                    <Sprite name="meditace" size={24} />
+                    <span className="grow">{relativeTime(new Date(m.started_at))}{m.note ? ` – ${m.note}` : ""}</span>
+                    <b>{formatDuration(m.duration_s)}</b>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      )}
 
       {editing && <MeditationSheet meditation={editing === "new" ? null : editing} onClose={() => setEditing(null)} />}
-      {goalOpen && (
-        <GoalSheet goal={goal} onClose={() => setGoalOpen(false)} onSave={(g) => update({ meditation_weekly_goal: g })} />
-      )}
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="stat">
-      <span className="stat-num">{value}</span>
-      <span className="stat-label">{label}</span>
+      {goalOpen && <GoalSheet goal={goal} onClose={() => setGoalOpen(false)} onSave={(g) => update({ meditation_weekly_goal: g })} />}
     </div>
   );
 }
@@ -343,9 +361,9 @@ function GoalSheet({ goal, onClose, onSave }: { goal: number; onClose: () => voi
   return (
     <Sheet title="Cíl meditací za týden" onClose={onClose}>
       <div className="stepper">
-        <button className="icon-btn big" aria-label="Méně" disabled={value <= 1} onClick={() => setValue((v) => v - 1)}>−</button>
+        <button className="icon-btn big tap" aria-label="Méně" disabled={value <= 1} onClick={() => setValue((v) => v - 1)}>−</button>
         <span className="stepper-value" aria-live="polite">{value}×</span>
-        <button className="icon-btn big" aria-label="Více" disabled={value >= 14} onClick={() => setValue((v) => v + 1)}>+</button>
+        <button className="icon-btn big tap" aria-label="Více" disabled={value >= 14} onClick={() => setValue((v) => v + 1)}>+</button>
       </div>
       <button className="btn dark tap wide" onClick={() => { onSave(value); onClose(); }}>Uložit cíl</button>
     </Sheet>

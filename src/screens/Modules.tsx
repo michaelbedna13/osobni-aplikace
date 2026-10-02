@@ -1,22 +1,23 @@
 import { Link } from "react-router-dom";
-import { Symbol } from "../components/Symbol";
+import { Sprite } from "../components/Sprite";
 import { MODULES } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
 
 export function Modules() {
   const { pinned } = usePinnedModules();
-
   return (
-    <div className="screen pad">
-      <h1 className="page-title">Moduly</h1>
-      <p className="muted">Tečka znamená, že je modul připnutý na obrazovce Dnes.</p>
+    <div className="screen night">
+      <header className="topbar"><h1>Moduly</h1></header>
+      <p className="small muted">Barevné jsou hotové, tmavé se teprve odemknou. Hvězdička = připnuto na Dnes.</p>
       <div className="tiles">
         {MODULES.map((m) => (
-          <Link key={m.key} to={`/m/${m.key}`} className="tile tap" style={{ background: `${m.color}55` }}>
-            {pinned.includes(m.key) && <i className="pin-dot" aria-label="Připnuto" />}
-            <Symbol module={m.key} size={48} />
+          <Link key={m.key} to={`/m/${m.key}`} className={`tile tap${m.ready ? "" : " locked"}`} style={{ background: m.color }}>
+            <Sprite name={m.key} size={56} />
+            {m.ready
+              ? pinned.includes(m.key) && <span className="pin"><Sprite name="star" size={24} label="Připnuto" /></span>
+              : <span className="lock"><Sprite name="lock" size={24} label="Zamčeno" /></span>}
             <b>{m.name}</b>
-            <span>{m.ready ? "Hotovo" : `Fáze ${m.phase}`}</span>
+            <span>{m.ready ? "Hraj" : `Odemkne se ve fázi ${m.phase}`}</span>
           </Link>
         ))}
       </div>

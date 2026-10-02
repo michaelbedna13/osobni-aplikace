@@ -1,0 +1,70 @@
+# Product
+
+<!-- impeccable:product-schema 1 -->
+
+## Platform
+
+web
+
+## Users
+
+Jeden člověk: autor appky (Michael), česky mluvící, iPhone. Appku používá ve všech situacích:
+rychle jednou rukou venku (hospoda, cestou: +1 pivo, zapsat hlášku dřív, než ji zapomene),
+v klidu doma (statistiky, procházení hlášek, nastavení), v ranní a večerní rutině (meditace,
+trénink, deník) a ukazuje ji kamarádům (hlášky, statistiky piv).
+
+## Product Purpose
+
+Osobní „appka na všechno“: jedno místo pro malé každodenní záznamy a jejich statistiky.
+Úspěch = zápis trvá pár vteřin, appka se otevírá ráda, statistiky jsou na první pohled čitelné
+a dají se ukázat kamarádům.
+
+## Positioning
+
+Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastních rituálů a historek
+(piva s kamarády, hlášky party, meditace), postavená přesně na míru jednomu člověku a jeho partě.
+
+## Operating Context
+
+- PWA přidaná na plochu iPhonu (Safari), běží na celou obrazovku; GitHub Pages + Supabase.
+- Moduly: Piva (počítadlo půllitrů 0,5 l, bez druhů piv; statistiky po dnech, týdnech, podle dne
+  v týdnu), Hláškomat (hláška, autor, kontext, datum, oblíbená), Meditace (časovač s gongem,
+  historie délek, týdenní cíl). Plánované: Lidé a dárky (narozeniny + nápady na dárky), Odkazy,
+  Trénink, Deník (vděčnost), Místa, Filmy a knihy, Wishlist, Finance.
+- Obrazovka Dnes: pás připnutých modulů s rychlou akcí, hláška dne.
+
+## Capabilities and Constraints
+
+- React + TypeScript + Vite, plain CSS (`src/styles/app.css`), bez UI knihovny.
+- Data jen přihlášeného uživatele (Supabase RLS); ukázkový režim bez Supabase v prohlížeči.
+- iOS PWA omezení: žádné widgety, zvuk až po ťuknutí, při zamčeném displeji neběží JS.
+- Čeština všude, včetně tvarů slov (1 pivo, 2 piva, 5 piv).
+
+## Brand Commitments
+
+- **Černé obrysy a tvrdé posunuté stíny** (neo brutalismus) zůstávají – jediná výslovně
+  zachovaná vlastnost dosavadního vzhledu. Symboly a barvy modulů se smí změnit.
+- Uživatel má rád: clean minimalism, neo brutalism, Bauhaus; jeho reference (screenshoty):
+  pastelové karty s černým obrysem a tvrdým stínem, obrazovky v plných barvách, hravé ilustrace.
+- „Fun“ podle uživatele: odměny a radost z akce (animace, oslava), plné barvy a velké tvary,
+  hravé „živé“ postavičky/ilustrace, vtipné české texty.
+- Výtky k verzi 1: všechno vypadá stejně (samé bílé karty), nudné a málo barev,
+  statistiky a grafy se špatně čtou.
+
+## Evidence on Hand
+
+- Skutečná data: 110 piv (18. 8.–27. 9. 2026), 18 hlášek party (autoři Mišák, Juza, Jachym…).
+- Žádné vlastní logo ani ilustrace; vše se kreslí v kódu (SVG).
+
+## Product Principles
+
+1. Zápis jedním ťuknutím; hlavní akce každého modulu je vždy největší věc na obrazovce.
+2. Každý modul má na první pohled vlastní tvář – nikdy „samé stejné karty“.
+3. Čísla se čtou bez přemýšlení: jedna hlavní informace na blok, srovnání vyjádřené tvarem, ne tabulkou.
+4. Akce se odmění: každý zápis má viditelnou, hravou odezvu.
+5. Appka mluví jako kamarád z party, ne jako úřad.
+
+## Accessibility & Inclusion
+
+Čitelnost venku na slunci a ve tmě hospody; dotykové cíle min. 44 px; respektovat
+„Omezit pohyb“ v iOS.

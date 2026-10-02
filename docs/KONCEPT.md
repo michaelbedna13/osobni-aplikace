@@ -344,4 +344,4 @@ Finance (předplatné → spořicí cíle → CSV import) · Import existující
 ## 9. Design
 
 Zvolený směr: **clean minimalism + neo brutalism + Bauhaus** → rozpracováno v
-[DESIGN.md](DESIGN.md) a v klikacím náhledu [design/prototyp.html](../design/prototyp.html).
+[DESIGN.md](DESIGN.md) – pixel art (od v2): každý modul je „level“ v plné barvě s pixelovou postavičkou.

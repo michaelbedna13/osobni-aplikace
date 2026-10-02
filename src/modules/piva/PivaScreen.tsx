@@ -1,18 +1,19 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { BarChart } from "../../components/BarChart";
-import { BackIcon } from "../../components/Icons";
+import { useMemo, useState, type CSSProperties } from "react";
+import { Burst } from "../../components/Burst";
+import { BlockStacks, Columns, HBars } from "../../components/Charts";
 import { Sheet } from "../../components/Sheet";
-import { Symbol } from "../../components/Symbol";
+import { Sprite } from "../../components/Sprite";
 import { useToast } from "../../components/Toast";
+import { Topbar } from "../../components/Topbar";
+import { beerCheer, beerHeadline } from "../../lib/copy";
 import { relativeTime, toLocalInput, WEEKDAYS_SHORT } from "../../lib/dates";
 import { formatDate, formatNumber, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { computeStats, newBeer, useAddBeer, useBeers, useDeleteBeer, useUpdateBeer, type Beer } from "./data";
 
-const COLOR = MODULE_BY_KEY.piva.color;
+const MODULE = MODULE_BY_KEY.piva;
 const PIV: [string, string, string] = ["pivo", "piva", "piv"];
-const WEEKDAYS_LONG = ["pondělí", "úterý", "středu", "čtvrtek", "pátek", "sobotu", "neděli"];
+const WEEKDAYS_LONG_CAP = ["Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota", "Neděle"];
 
 /** Hook pro +1 s potvrzením a možností vrátit. Používá ho i karta na obrazovce Dnes. */
 export function useBeerCounter() {
@@ -23,7 +24,7 @@ export function useBeerCounter() {
   const addOne = (todayBefore: number) => {
     const beer = newBeer();
     add.mutate(beer);
-    toast.show(`Zapsáno: ${todayBefore + 1}. pivo dnes`, [{ label: "Zpět", run: () => remove.mutate(beer.id) }]);
+    toast.show(`${todayBefore + 1}. pivo dnes zapsáno`, [{ label: "Vrátit", run: () => remove.mutate(beer.id) }]);
   };
 
   return { addOne, toast: toast.element, error: add.error ?? remove.error };
@@ -35,134 +36,155 @@ export function PivaScreen() {
   const counter = useBeerCounter();
   const [mode, setMode] = useState<"average" | "total">("average");
   const [editing, setEditing] = useState<Beer | "new" | null>(null);
+  const [jump, setJump] = useState(0);
+  const [cheer, setCheer] = useState<string | null>(null);
 
   const weekdayValues = stats.byWeekday.map((d) => (mode === "average" ? d.average : d.total));
   const topDay = weekdayValues.reduce((best, v, i) => (v > weekdayValues[best] ? i : best), 0);
+  const leaders = weekdayValues.map((v, i) => (Math.abs(v - weekdayValues[topDay]) < 0.05 ? i : -1)).filter((i) => i >= 0);
   const hasData = stats.total > 0;
 
+  const addOne = () => {
+    counter.addOne(stats.today);
+    setCheer(beerCheer(stats.today + 1));
+    setJump((j) => j + 1);
+  };
+
   return (
-    <div className="screen">
-      <header className="poster beer-poster" style={{ background: COLOR }}>
-        <span className="poster-art"><Symbol module="piva" size={170} bg="#FFFFFF" /></span>
-        <div className="poster-title">
-          <Link to="/moduly" className="back" aria-label="Zpět na moduly"><BackIcon /></Link>
-          <h1>Piva</h1>
-        </div>
-        <div className="beer-hero" aria-live="polite">
-          <span className="big-num">{stats.today}</span>
-          <span className="beer-hero-sub">{plural(stats.today, PIV)} dnes, tento týden {stats.week}</span>
-        </div>
-      </header>
+    <div className="screen" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+      <Topbar title="Piva" />
 
-      <div className="pad">
-        <button className="plus-one" onClick={() => counter.addOne(stats.today)}>
-          <Symbol module="piva" size={34} /> +1 pivo
-        </button>
+      <div className="hero" aria-live="polite">
+        <span key={jump} className={jump ? "anim-jump" : "anim-bob"}><Sprite name="piva" size={144} /></span>
+        <Burst trigger={jump} text="+1" />
+        <span className="hero-num">{stats.today}</span>
+        <span className="hero-cap">{beerHeadline(stats.today)}</span>
+        <p className="hero-line">{cheer ?? `Tento týden ${stats.week} ${plural(stats.week, PIV)}`}</p>
+      </div>
 
-        {(error || counter.error) && <p className="error">Nepodařilo se načíst nebo uložit data. Zkontroluj připojení.</p>}
+      <button className="btn-hero" onClick={addOne}>
+        <Sprite name="i-plus" size={24} /> 1 pivo
+      </button>
 
-        <div className="stat-grid">
-          <Stat label="Tento týden" value={stats.week} />
-          <Stat label="Tento měsíc" value={stats.month} />
-          <Stat label="Letos" value={stats.year} />
-          <Stat label="Celkem" value={stats.total} />
-        </div>
+      {(error || counter.error) && <p className="error">Nepodařilo se načíst nebo uložit data. Zkontroluj připojení.</p>}
 
-        <section className="card chart-card">
-          <h2 className="card-title">Tento týden</h2>
-          <BarChart
+      <div className="score">
+        <div><b>{stats.week}</b><span>tento týden</span></div>
+        <div><b>{stats.month}</b><span>tento měsíc</span></div>
+        <div><b>{stats.total}</b><span>celkem</span></div>
+      </div>
+
+      <section className="sec">
+        <h2>Tento týden</h2>
+        <div className="panel">
+          <BlockStacks
             values={stats.thisWeek}
             labels={WEEKDAYS_SHORT.map((d, i) => (i === stats.todayIndex ? "Dnes" : d))}
             highlight={stats.todayIndex}
-            color={COLOR}
+            color={MODULE.color}
             label={`Piva tento týden po dnech: ${stats.thisWeek.map((v, i) => `${WEEKDAYS_SHORT[i]} ${v ?? "–"}`).join(", ")}`}
           />
-        </section>
+        </div>
+      </section>
 
-        {hasData && (
-          <>
-            <section className="card chart-card">
-              <div className="row-between">
-                <h2 className="card-title">Podle dne v týdnu</h2>
-                <div className="seg" role="group" aria-label="Zobrazit">
-                  <button className={`seg-btn${mode === "average" ? " on" : ""}`} aria-pressed={mode === "average"} onClick={() => setMode("average")}>Průměr</button>
-                  <button className={`seg-btn${mode === "total" ? " on" : ""}`} aria-pressed={mode === "total"} onClick={() => setMode("total")}>Celkem</button>
-                </div>
+      {hasData && (
+        <>
+          <section className="sec">
+            <div className="sec-head">
+              <h2>Kdy piju nejvíc</h2>
+              <div className="seg" role="group" aria-label="Zobrazit">
+                <button className={`seg-btn${mode === "average" ? " on" : ""}`} aria-pressed={mode === "average"} onClick={() => setMode("average")}>Průměr</button>
+                <button className={`seg-btn${mode === "total" ? " on" : ""}`} aria-pressed={mode === "total"} onClick={() => setMode("total")}>Celkem</button>
               </div>
-              <p className="muted small">
-                Nejvíc piješ v {WEEKDAYS_LONG[topDay]}:{" "}
+            </div>
+            <div className="panel">
+              <h3>
+                {leaders.length > 1
+                  ? `Remíza: ${leaders.map((i) => WEEKDAYS_LONG_CAP[i].toLowerCase()).join(" a ")}, `
+                  : `${WEEKDAYS_LONG_CAP[topDay]} vede: `}
                 {mode === "average"
                   ? `průměrně ${formatNumber(weekdayValues[topDay])} ${plural(weekdayValues[topDay], PIV)}`
                   : `celkem ${weekdayValues[topDay]} ${plural(weekdayValues[topDay], PIV)}`}
-              </p>
-              <BarChart
-                values={weekdayValues}
-                labels={WEEKDAYS_SHORT}
+              </h3>
+              <HBars
+                rows={weekdayValues.map((value, i) => ({ label: WEEKDAYS_SHORT[i], value }))}
                 highlight={topDay}
-                color={COLOR}
-                format={(n) => formatNumber(n)}
-                label={`Piva podle dne v týdnu (${mode === "average" ? "průměr" : "celkem"}): ${weekdayValues.map((v, i) => `${WEEKDAYS_SHORT[i]} ${formatNumber(v)}`).join(", ")}`}
+                color={MODULE.color}
+                digits={mode === "average" ? 1 : 0}
+                badge={<Sprite name="crown" size={28} />}
+                label={`Piva podle dne v týdnu (${mode === "average" ? "průměr" : "celkem"})`}
               />
-            </section>
+            </div>
+          </section>
 
-            <section className="card chart-card">
-              <h2 className="card-title">Posledních 12 týdnů</h2>
-              <BarChart
+          <section className="sec">
+            <h2>Posledních 12 týdnů</h2>
+            <div className="panel">
+              <Columns
                 values={stats.lastWeeks.map((w) => w.count)}
-                labels={stats.lastWeeks.map((w, i) => (i === 11 ? "Teď" : i % 3 === 2 ? formatDate(w.start) : ""))}
+                labels={stats.lastWeeks.map((w, i) => (i === 11 ? "teď" : i % 3 === 2 ? formatDate(w.start) : ""))}
                 highlight={11}
-                color={COLOR}
+                color={MODULE.color}
                 label={`Piva po týdnech: ${stats.lastWeeks.map((w) => `od ${formatDate(w.start)} ${w.count}`).join(", ")}`}
               />
-            </section>
+            </div>
+          </section>
 
-            <section className="card">
-              <h2 className="card-title">Průměr a rekordy</h2>
-              <dl className="facts">
-                <div><dt>Průměrně za den</dt><dd>{formatNumber(stats.perDay)}</dd></div>
-                <div><dt>Průměrně za týden</dt><dd>{formatNumber(stats.perWeek)}</dd></div>
-                {stats.bestDay && <div><dt>Nejvíc za den</dt><dd>{stats.bestDay.count} <span className="muted small">({formatDate(stats.bestDay.date, true)})</span></dd></div>}
-                {stats.bestWeek && <div><dt>Nejvíc za týden</dt><dd>{stats.bestWeek.count} <span className="muted small">(od {formatDate(stats.bestWeek.start, true)})</span></dd></div>}
-                {stats.firstDate && <div><dt>Počítáno od</dt><dd>{formatDate(stats.firstDate, true)}</dd></div>}
-              </dl>
-            </section>
-          </>
-        )}
+          <section className="sec">
+            <h2>Trofeje</h2>
+            <div className="trophies">
+              {stats.bestDay && (
+                <div className="trophy gold">
+                  <Sprite name="trophy" size={40} />
+                  <b>{stats.bestDay.count}</b>
+                  <span>nejvíc za den ({formatDate(stats.bestDay.date, true)})</span>
+                </div>
+              )}
+              {stats.bestWeek && (
+                <div className="trophy">
+                  <Sprite name="star" size={40} />
+                  <b>{stats.bestWeek.count}</b>
+                  <span>nejvíc za týden (od {formatDate(stats.bestWeek.start)})</span>
+                </div>
+              )}
+              <div className="trophy">
+                <b>{formatNumber(stats.perDay)}</b>
+                <span>průměrně za den</span>
+              </div>
+              <div className="trophy">
+                <b>{formatNumber(stats.perWeek)}</b>
+                <span>průměrně za týden</span>
+              </div>
+            </div>
+            {stats.firstDate && <p className="small" style={{ marginTop: 10 }}>Počítáno od {formatDate(stats.firstDate, true)}.</p>}
+          </section>
+        </>
+      )}
 
-        <div className="row-between list-head">
-          <h2 className="sec-title">Poslední zápisy</h2>
-          <button className="link" onClick={() => setEditing("new")}>Přidat zpětně</button>
-        </div>
-        {isLoading ? (
-          <p className="muted">Načítám…</p>
-        ) : hasData ? (
-          <ul className="card list">
-            {beers.slice(0, 20).map((b) => (
-              <li key={b.id}>
-                <button className="list-btn" onClick={() => setEditing(b)}>
-                  <Symbol module="piva" size={22} />
-                  <span className="grow">{relativeTime(new Date(b.drunk_at))}</span>
-                  <span className="muted small">Upravit</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="muted">Zatím žádné pivo. Ťukni na „+1 pivo“.</p>
-        )}
+      <div className="list-head">
+        <h2>Lístek</h2>
+        <button className="link" onClick={() => setEditing("new")}>Přidat zpětně</button>
       </div>
+      {isLoading ? (
+        <p>Načítám…</p>
+      ) : hasData ? (
+        <ul className="list">
+          {beers.slice(0, 12).map((b) => (
+            <li key={b.id}>
+              <button className="list-btn" onClick={() => setEditing(b)}>
+                <Sprite name="piva" size={24} />
+                <span className="grow">{relativeTime(new Date(b.drunk_at))}</span>
+                <span className="small">Upravit</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="empty">Zatím prázdný lístek. Ťukni na „+1 pivo“.</p>
+      )}
 
       {editing && <BeerTimeSheet beer={editing === "new" ? null : editing} onClose={() => setEditing(null)} />}
       {counter.toast}
-    </div>
-  );
-}
-
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="stat">
-      <span className="stat-num">{value}</span>
-      <span className="stat-label">{label}</span>
     </div>
   );
 }

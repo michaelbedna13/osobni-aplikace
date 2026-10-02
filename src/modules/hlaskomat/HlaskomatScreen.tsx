@@ -1,16 +1,18 @@
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import { BackIcon } from "../../components/Icons";
+import { useEffect, useMemo, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Burst } from "../../components/Burst";
 import { Sheet } from "../../components/Sheet";
-import { Symbol } from "../../components/Symbol";
+import { Sprite } from "../../components/Sprite";
 import { useToast } from "../../components/Toast";
+import { Topbar } from "../../components/Topbar";
+import { quoteSaved } from "../../lib/copy";
 import { formatDate, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import {
   authorRanking, countThisMonth, matches, suggestions, useAddQuote, useDeleteQuote, useQuotes, useUpdateQuote, type Quote,
 } from "./data";
 
-const COLOR = MODULE_BY_KEY.hlaskomat.color;
+const MODULE = MODULE_BY_KEY.hlaskomat;
 const HLASEK: [string, string, string] = ["hláška", "hlášky", "hlášek"];
 
 type Filter = { kind: "all" } | { kind: "starred" } | { kind: "author"; author: string };
@@ -21,6 +23,7 @@ export function HlaskomatScreen() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<Filter>({ kind: "all" });
   const [editing, setEditing] = useState<Quote | "new" | null>(null);
+  const [jump, setJump] = useState(0);
   const update = useUpdateQuote();
   const toast = useToast();
 
@@ -40,103 +43,110 @@ export function HlaskomatScreen() {
     if (params.has("nova")) setParams({}, { replace: true });
   };
 
+  // pódium: 2. – 1. – 3.
+  const podium = [ranking[1], ranking[0], ranking[2]];
+
   return (
-    <div className="screen">
-      <header className="poster" style={{ background: COLOR }}>
-        <span className="poster-art"><Symbol module="hlaskomat" size={170} bg="#FFFFFF" /></span>
-        <div className="quote-hero">
-          <div className="poster-title">
-            <Link to="/moduly" className="back" aria-label="Zpět na moduly"><BackIcon /></Link>
-            <h1>Hláškomat</h1>
-          </div>
-          <p className="beer-hero-sub">
-            {quotes.length} {plural(quotes.length, HLASEK)}, tento měsíc {countThisMonth(quotes)}
-          </p>
-        </div>
-      </header>
+    <div className="screen" style={{ "--bg": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
+      <Topbar title="Hláškomat" />
 
-      <div className="pad">
-        <button className="plus-one" onClick={() => setEditing("new")}>
-          <Symbol module="hlaskomat" size={34} /> Zapsat hlášku
-        </button>
+      <div className="hero">
+        <span key={jump} className={jump ? "anim-jump" : "anim-bob"}><Sprite name="hlaskomat" size={112} /></span>
+        <Burst trigger={jump} />
+        <span className="hero-num">{quotes.length}</span>
+        <span className="hero-cap">{plural(quotes.length, HLASEK)} v archivu</span>
+        <p className="hero-line">Tento měsíc přibylo {countThisMonth(quotes)}</p>
+      </div>
 
-        {error && <p className="error">Nepodařilo se načíst hlášky. Zkontroluj připojení.</p>}
+      <button className="btn-hero" onClick={() => setEditing("new")}>
+        <Sprite name="i-plus" size={24} /> Zapsat hlášku
+      </button>
 
-        <input
-          className="input search"
-          type="search"
-          placeholder="Hledat v hláškách, autorech a kontextu"
-          aria-label="Hledat"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      {error && <p className="error">Nepodařilo se načíst hlášky. Zkontroluj připojení.</p>}
 
-        <div className="chips-row" role="group" aria-label="Filtr">
-          <FilterChip on={filter.kind === "all"} onClick={() => setFilter({ kind: "all" })}>Vše</FilterChip>
-          <FilterChip on={filter.kind === "starred"} onClick={() => setFilter({ kind: "starred" })}>★ Oblíbené</FilterChip>
-          {ranking.map(({ author, count }) => (
-            <FilterChip
-              key={author}
-              on={filter.kind === "author" && filter.author === author}
-              onClick={() => setFilter({ kind: "author", author })}
-            >
-              {author} <span className="chip-count">{count}</span>
-            </FilterChip>
-          ))}
-        </div>
+      <input
+        className="input search"
+        type="search"
+        placeholder="Hledat hlášku, autora nebo kontext"
+        aria-label="Hledat"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
-        {isLoading ? (
-          <p className="muted">Načítám…</p>
-        ) : visible.length === 0 ? (
-          <p className="muted empty">
-            {quotes.length === 0 ? "Zatím žádná hláška. Zapiš první, nebo nahraj zálohu v Profilu." : "Tomuhle hledání nic neodpovídá."}
-          </p>
-        ) : (
-          <ul className="quote-list">
-            {visible.map((q) => (
-              <li key={q.id} className="quote-card">
+      <div className="chips" role="group" aria-label="Filtr" style={{ marginTop: 12 }}>
+        <FilterChip on={filter.kind === "all"} onClick={() => setFilter({ kind: "all" })}>Vše</FilterChip>
+        <FilterChip on={filter.kind === "starred"} onClick={() => setFilter({ kind: "starred" })}>
+          <Sprite name="i-star" size={16} /> Oblíbené
+        </FilterChip>
+        {ranking.map(({ author, count }) => (
+          <FilterChip key={author} on={filter.kind === "author" && filter.author === author} onClick={() => setFilter({ kind: "author", author })}>
+            {author} <span className="chip-count">{count}</span>
+          </FilterChip>
+        ))}
+      </div>
+
+      {isLoading ? (
+        <p className="empty">Načítám…</p>
+      ) : visible.length === 0 ? (
+        <p className="empty">
+          {quotes.length === 0 ? "Zatím ticho. Zapiš první hlášku, nebo nahraj zálohu v Profilu." : "Na tohle hledání nic. Zkus jiné slovo."}
+        </p>
+      ) : (
+        <ul className="quote-list">
+          {visible.map((q) => (
+            <li key={q.id} className="quote-item">
+              <div className="bubble">
                 <button className="quote-body" onClick={() => setEditing(q)} aria-label={`Upravit hlášku: ${q.text}`}>
-                  <p className="quote-text">„{q.text}“</p>
-                  <p className="quote-meta">
-                    {[q.author, q.context].filter(Boolean).join(", ")}
-                    <span className="muted"> {formatDate(new Date(q.said_at), true)}</span>
-                  </p>
+                  <p className="bubble-text">„{q.text}“</p>
                 </button>
                 <button
-                  className={`star${q.starred ? " on" : ""}`}
+                  className={`star-btn${q.starred ? " on" : ""}`}
                   aria-pressed={q.starred}
                   aria-label={q.starred ? "Odebrat z oblíbených" : "Přidat do oblíbených"}
                   onClick={() => update.mutate({ ...q, starred: !q.starred })}
                 >
-                  ★
+                  <Sprite name="i-star" size={22} />
                 </button>
-              </li>
-            ))}
-          </ul>
-        )}
+              </div>
+              <div className="who">
+                {q.author && <span className="nameplate">{q.author}</span>}
+                <span className="small">{[q.context, formatDate(new Date(q.said_at), true)].filter(Boolean).join(", ")}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
 
-        {ranking.length > 1 && (
-          <section className="card">
-            <h2 className="card-title">Kdo má nejvíc hlášek</h2>
-            <ol className="ranking">
-              {ranking.slice(0, 8).map(({ author, count }) => (
-                <li key={author}>
-                  <span className="grow">{author}</span>
-                  <span className="rank-bar" aria-hidden="true"><i style={{ width: `${(count / ranking[0].count) * 100}%`, background: COLOR }} /></span>
-                  <b>{count}</b>
-                </li>
-              ))}
-            </ol>
-          </section>
-        )}
-      </div>
+      {ranking.length > 1 && (
+        <section className="sec">
+          <h2>Síň slávy</h2>
+          <div className="panel">
+            <div className="podium">
+              {podium.map((r, i) => r ? (
+                <div key={r.author} className="podium-step">
+                  {i === 1 && <Sprite name="crown" size={40} />}
+                  <span className="podium-name">{r.author}</span>
+                  <span className="podium-block">{r.count}</span>
+                </div>
+              ) : <div key={i} />)}
+            </div>
+            {ranking.length > 3 && (
+              <ul className="rest">
+                {ranking.slice(3, 10).map((r, i) => (
+                  <li key={r.author}><span>{i + 4}. {r.author}</span><b className="num">{r.count}</b></li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+      )}
 
       {editing && (
         <QuoteSheet
           quote={editing === "new" ? null : editing}
           quotes={quotes}
           onClose={closeSheet}
-          onSaved={(text) => toast.show(text)}
+          onSaved={(text, isNew) => { toast.show(text); if (isNew) setJump((j) => j + 1); }}
         />
       )}
       {toast.element}
@@ -152,7 +162,7 @@ function FilterChip({ on, onClick, children }: { on: boolean; onClick: () => voi
 const localDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const today = () => localDay(new Date());
 
-function QuoteSheet({ quote, quotes, onClose, onSaved }: { quote: Quote | null; quotes: Quote[]; onClose: () => void; onSaved: (text: string) => void }) {
+function QuoteSheet({ quote, quotes, onClose, onSaved }: { quote: Quote | null; quotes: Quote[]; onClose: () => void; onSaved: (text: string, isNew: boolean) => void }) {
   const [text, setText] = useState(quote?.text ?? "");
   const [author, setAuthor] = useState(quote?.author ?? "");
   const [context, setContext] = useState(quote?.context ?? "");
@@ -180,7 +190,7 @@ function QuoteSheet({ quote, quotes, onClose, onSaved }: { quote: Quote | null; 
     };
     if (quote) update.mutate(next);
     else add.mutate(next);
-    onSaved(quote ? "Hláška upravena" : "Hláška zapsána");
+    onSaved(quote ? "Hláška upravena" : quoteSaved(), !quote);
     onClose();
   };
 
@@ -208,7 +218,7 @@ function QuoteSheet({ quote, quotes, onClose, onSaved }: { quote: Quote | null; 
 
         <button className="btn dark tap wide" type="submit" disabled={!text.trim()}>{quote ? "Uložit" : "Zapsat hlášku"}</button>
         {quote && (
-          <button type="button" className="btn tap wide" onClick={() => { remove.mutate(quote.id); onSaved("Hláška smazána"); onClose(); }}>
+          <button type="button" className="btn tap wide" onClick={() => { remove.mutate(quote.id); onSaved("Hláška smazána", false); onClose(); }}>
             Smazat hlášku
           </button>
         )}
