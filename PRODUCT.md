@@ -35,9 +35,10 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   předvyplněné z minula, pauza s pípnutím, rekordy, cíl týdně).
   Cornhole (rodinné hry: týmy s hráči, 2 a víc týmů, body sčítáním nebo rozdílem, zápis pytlíků
   na desce / v díře po kolech, do 21, žebříček týmů a hráčů, rekordy).
-  Plánované: Odkazy, Místa, Filmy a knihy, Wishlist, Finance.
+  Odkazy (ukládání z menu Sdílet přes Zkratku, náhledy, kolekce, obrázky a screenshoty, na později).
+  Plánované: Místa, Filmy a knihy, Wishlist, Finance.
 - Obrazovka Dnes: datum a kdo má svátek, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
-  vděčný?“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.
+  vděčný?“, jeden odkaz „Na později“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.
 
 ## Capabilities and Constraints
 

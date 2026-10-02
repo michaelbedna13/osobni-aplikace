@@ -54,7 +54,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Týmy s hráči", "Zápis pytlíků po kolech", "Víc týmů najednou", "Výhry a rekordy"]
   },
   {
-    key: "odkazy", name: "Odkazy", color: "#2CE8F5", deep: "#0099DB", light: "#C7F9FC", phase: 1, quickAction: "Uložit odkaz",
+    key: "odkazy", name: "Odkazy", color: "#2CE8F5", deep: "#0099DB", light: "#C7F9FC", phase: 1, ready: true, quickAction: "Uložit odkaz",
     plan: ["Uložení odkazu s náhledem", "Kolekce a moodboardy", "Uložení z menu Sdílet přes Zkratku", "Obrázky a screenshoty"]
   },
   {

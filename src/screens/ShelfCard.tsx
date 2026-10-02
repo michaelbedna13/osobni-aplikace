@@ -16,6 +16,7 @@ import { computeTrainingStats, useWorkouts } from "../modules/trenink/data";
 import { useActiveWorkout } from "../modules/trenink/active";
 import { computeCornholeStats, useGames } from "../modules/cornhole/data";
 import { useActiveGame } from "../modules/cornhole/active";
+import { useLinks } from "../modules/odkazy/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -158,6 +159,20 @@ function CornholeCard() {
   );
 }
 
+function OdkazyCard() {
+  const { data: links = [] } = useLinks();
+  const navigate = useNavigate();
+  const later = links.filter((l) => !l.read_at).length;
+  return (
+    <Card
+      moduleKey="odkazy"
+      num={String(later)}
+      sub={`na později, celkem ${links.length}`}
+      quick={{ label: "Uložit odkaz", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/odkazy?nova=1") }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
@@ -167,5 +182,6 @@ export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "lide") return <LideCard />;
   if (moduleKey === "trenink") return <TreninkCard />;
   if (moduleKey === "cornhole") return <CornholeCard />;
+  if (moduleKey === "odkazy") return <OdkazyCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

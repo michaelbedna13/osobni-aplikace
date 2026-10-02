@@ -172,7 +172,7 @@ Paleta vychází z **Endesga 32**.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
 - Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména limetkově, data z balíčku `namedays-cs`),
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
-  v Profilu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); hláška dne.
+  v Profilu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Na později** (jeden neotevřený odkaz denně); hláška dne.
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`);
   rastr proto nahoře začíná až 56 px pod okrajem, aby pruh a obrazovka na sebe navazovaly.
@@ -219,6 +219,8 @@ Paleta vychází z **Endesga 32**.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
+- **Odkaz** (`.link-card`): náhled 64 px (obrázek webu / nahraný obrázek / písmeno domény), název na 2 řádky,
+  web · kdy · kolekce, limetkový čtvereček = „na později“. Detail ve spodním panelu s „Otevřít“.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

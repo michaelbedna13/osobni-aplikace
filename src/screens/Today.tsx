@@ -11,6 +11,8 @@ import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 import { GratitudeForm } from "../modules/vdecnost/GratitudeForm";
 import { soonOccasions, usePeople } from "../modules/lide/data";
 import { OccasionRow } from "../modules/lide/LideScreen";
+import { useLinks } from "../modules/odkazy/data";
+import { domainOf } from "../modules/odkazy/util";
 import { ShelfCard } from "./ShelfCard";
 
 function Gratitude() {
@@ -42,6 +44,29 @@ function SoonCelebrating() {
     <section className="sec" style={{ "--accent": MODULE_BY_KEY.lide.color } as CSSProperties}>
       <h2>Brzy slaví</h2>
       <ul className="list">{soon.map((o) => <OccasionRow key={`${o.person.id}-${o.kind}`} o={o} />)}</ul>
+    </section>
+  );
+}
+
+/** Jeden odkaz „na později“ – každý den jiný. */
+function LaterLink() {
+  const { data: links = [] } = useLinks();
+  const later = links.filter((l) => !l.read_at && l.kind === "link");
+  if (later.length === 0) return null;
+  const pick = later[Math.floor(Date.now() / 86_400_000) % later.length];
+  return (
+    <section className="sec" style={{ "--accent": MODULE_BY_KEY.odkazy.color } as CSSProperties}>
+      <div className="sec-head">
+        <h2>Na později</h2>
+        <Link to="/m/odkazy" className="link">Všech {later.length}</Link>
+      </div>
+      <Link to={`/m/odkazy?id=${pick.id}`} className="link-card tap later-card">
+        {pick.image_url ? <img className="link-thumb" src={pick.image_url} alt="" loading="lazy" referrerPolicy="no-referrer" /> : <span className="link-thumb link-letter" aria-hidden="true">{(pick.site ?? domainOf(pick.url ?? "?"))[0]?.toUpperCase()}</span>}
+        <span className="grow">
+          <b>{pick.title ?? pick.url}</b>
+          <span className="occasion-kind">{pick.site ?? domainOf(pick.url ?? "")}</span>
+        </span>
+      </Link>
     </section>
   );
 }
@@ -95,6 +120,8 @@ export function Today() {
       <SoonCelebrating />
 
       <Gratitude />
+
+      <LaterLink />
 
       <QuoteOfDay />
     </div>
