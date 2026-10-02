@@ -10,6 +10,9 @@ import { MeditaceScreen } from "./modules/meditace/MeditaceScreen";
 import { VdecnostScreen } from "./modules/vdecnost/VdecnostScreen";
 import { LideScreen } from "./modules/lide/LideScreen";
 import { PersonScreen } from "./modules/lide/PersonScreen";
+import { TreninkScreen } from "./modules/trenink/TreninkScreen";
+import { WorkoutScreen } from "./modules/trenink/WorkoutScreen";
+import { TemplateEditor } from "./modules/trenink/TemplateEditor";
 import { Modules } from "./screens/Modules";
 import { Profile } from "./screens/Profile";
 import { Today } from "./screens/Today";
@@ -32,6 +35,9 @@ export function App() {
           <Route path="m/vdecnost" element={<VdecnostScreen />} />
           <Route path="m/lide" element={<LideScreen />} />
           <Route path="m/lide/:id" element={<PersonScreen />} />
+          <Route path="m/trenink" element={<TreninkScreen />} />
+          <Route path="m/trenink/trenink" element={<WorkoutScreen />} />
+          <Route path="m/trenink/sablona/:id" element={<TemplateEditor />} />
           <Route path="m/denik" element={<Navigate to="/m/vdecnost" replace />} />
           <Route path="m/:key" element={<ModuleScreen />} />
           <Route path="mapa" element={<ModuleScreen moduleKey="mista" showBack={false} />} />

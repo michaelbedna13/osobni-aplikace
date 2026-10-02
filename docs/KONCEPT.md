@@ -44,7 +44,7 @@ Převzato z původního Hláškomatu (Netlify), včetně importu zálohy hláše
 - **Hláška dne** na obrazovce Dnes (každý den jiná)
 - Později: autor propojený s modulem Lidé, hláška jako obrázek do chatu
 
-### 2.2 Trénink 🏋️
+### 2.2 Trénink 🏋️ ✅ *hotovo (základ)*
 Vlastní tréninky doma – s činkami, bez nich, kardio.
 
 - **Knihovna cviků:** název, kategorie (činky / vlastní váha / kardio / protažení),

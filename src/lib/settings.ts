@@ -7,9 +7,11 @@ export interface Settings {
   pinned_modules: ModuleKey[];
   /** Cíl meditací za týden (počet). */
   meditation_weekly_goal: number;
+  /** Cíl tréninků za týden (počet). */
+  workout_weekly_goal: number;
 }
 
-const DEFAULTS: Settings = { pinned_modules: DEFAULT_PINNED, meditation_weekly_goal: 5 };
+const DEFAULTS: Settings = { pinned_modules: DEFAULT_PINNED, meditation_weekly_goal: 5, workout_weekly_goal: 3 };
 const LOCAL_KEY = "settings";
 
 function normalize(raw: Partial<Record<keyof Settings, unknown>> | null | undefined): Settings {
@@ -19,6 +21,8 @@ function normalize(raw: Partial<Record<keyof Settings, unknown>> | null | undefi
       : DEFAULTS.pinned_modules,
     meditation_weekly_goal:
       typeof raw?.meditation_weekly_goal === "number" && raw.meditation_weekly_goal > 0 ? raw.meditation_weekly_goal : DEFAULTS.meditation_weekly_goal,
+    workout_weekly_goal:
+      typeof raw?.workout_weekly_goal === "number" && raw.workout_weekly_goal > 0 ? raw.workout_weekly_goal : DEFAULTS.workout_weekly_goal,
   };
 }
 
@@ -51,7 +55,7 @@ export function useSettings() {
       if (!supabase || !userId) return readLocal();
       const { data, error } = await supabase
         .from("user_settings")
-        .select("pinned_modules, meditation_weekly_goal")
+        .select("pinned_modules, meditation_weekly_goal, workout_weekly_goal")
         .eq("user_id", userId)
         .maybeSingle();
       if (error) throw error;

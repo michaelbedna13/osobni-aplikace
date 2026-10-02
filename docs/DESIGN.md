@@ -211,6 +211,10 @@ Paleta vychází z **Endesga 32**.
 - **Nápad na dárek** (`.idea-row`): text (+ doména odkazu), odkaz, tlačítko „Dáno“ vpravo.
 - **Spodní panel a potvrzení** se vykreslují do `<body>` (portál), protože `.screen` má kvůli textuře
   vlastní vrstvení (`isolation: isolate`) a jinak by skončily pod spodní lištou.
+- **Trénink – cvik** (`.wx`): panel s názvem, „Minule: …“, řádky sérií (číslo, kg, opakování nebo sekundy,
+  odškrtávací čtverec). Odškrtnutá série má limetkový čtverec s fajfkou. Pod lištou se drží **pauza**
+  (`.rest-bar`): odpočet s ubývající výplní v akcentu, −15 / +15 / Dál, na konci pípne.
+- **Šablona tréninku** (`.tpl-item`): pořadí šipkami, počet sérií − / +.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

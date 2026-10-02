@@ -31,7 +31,9 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   v týdnu), Hláškomat (hláška, autor, kontext, datum, oblíbená), Meditace (časovač s gongem,
   historie délek, týdenní cíl), Vděčnost („Za co jsem dnes vděčný?“, série, mozaika, před rokem),
   Lidé a dárky (narozeniny, jmeniny podle jména, nápady na dárky, export do Kalendáře iPhonu).
-  Plánované: Odkazy, Trénink, Místa, Filmy a knihy, Wishlist, Finance.
+  Trénink (doma s jednoručkami a s vlastní vahou: vlastní tréninky ze šablon, série × opakování × kg
+  předvyplněné z minula, pauza s pípnutím, rekordy, cíl týdně).
+  Plánované: Odkazy, Místa, Filmy a knihy, Wishlist, Finance.
 - Obrazovka Dnes: datum a kdo má svátek, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.
 

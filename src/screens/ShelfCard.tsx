@@ -12,6 +12,8 @@ import { computeStats, useBeers } from "../modules/piva/data";
 import { useBeerCounter } from "../modules/piva/PivaScreen";
 import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 import { upcomingOccasions, usePeople } from "../modules/lide/data";
+import { computeTrainingStats, useWorkouts } from "../modules/trenink/data";
+import { useActiveWorkout } from "../modules/trenink/active";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -121,6 +123,23 @@ function LideCard() {
   );
 }
 
+function TreninkCard() {
+  const { data: workouts = [] } = useWorkouts();
+  const { settings } = useSettings();
+  const goal = settings.workout_weekly_goal;
+  const stats = useMemo(() => computeTrainingStats(workouts, goal), [workouts, goal]);
+  const { active } = useActiveWorkout();
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="trenink"
+      num={`${stats.weekCount}/${goal}`}
+      sub={active ? "trénink běží" : stats.weekCount >= goal ? "Cíl splněný!" : "tento týden"}
+      quick={{ label: active ? "Pokračovat v tréninku" : "Začít trénink", text: <Sprite name="i-play" size={20} />, run: () => { unlockAudio(); navigate(active ? "/m/trenink/trenink" : "/m/trenink?start=1"); } }}
+    />
+  );
+}
+
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "piva") return <PivaCard />;
@@ -128,5 +147,6 @@ export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {
   if (moduleKey === "meditace") return <MeditaceCard />;
   if (moduleKey === "vdecnost") return <VdecnostCard />;
   if (moduleKey === "lide") return <LideCard />;
+  if (moduleKey === "trenink") return <TreninkCard />;
   return <Card moduleKey={moduleKey} num="Zamčeno" sub={`Odemkne se ve fázi ${MODULE_BY_KEY[moduleKey].phase}`} />;
 }

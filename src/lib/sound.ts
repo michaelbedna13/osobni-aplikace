@@ -46,3 +46,21 @@ export function playGong() {
     osc.stop(now + decay + 0.1);
   }
 }
+
+/** Krátké dvojí pípnutí (konec pauzy mezi sériemi). */
+export function playBeep() {
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  for (const [start, freq] of [[0, 880], [0.18, 1175]] as const) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, now + start);
+    g.gain.exponentialRampToValueAtTime(0.12, now + start + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + start + 0.14);
+    osc.connect(g).connect(ctx.destination);
+    osc.start(now + start);
+    osc.stop(now + start + 0.16);
+  }
+}

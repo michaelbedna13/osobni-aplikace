@@ -34,7 +34,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Převzetí stávajícího Hláškomatu i s hláškami", "Hláška dne", "Autor propojený s modulem Lidé", "Hláška jako obrázek do chatu"]
   },
   {
-    key: "trenink", name: "Trénink", color: "#E43B44", deep: "#A22633", light: "#F6757A", phase: 2, quickAction: "Začít trénink",
+    key: "trenink", name: "Trénink", color: "#E43B44", deep: "#A22633", light: "#F6757A", phase: 2, ready: true, quickAction: "Začít trénink",
     plan: ["Knihovna cviků a šablony tréninků", "Předvyplnění z minula", "Časovač pauzy", "Osobní rekordy a progres"]
   },
   {
