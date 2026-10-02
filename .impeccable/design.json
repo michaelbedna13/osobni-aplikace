@@ -1,32 +1,111 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-02T17:00:00Z",
+  "generatedAt": "2026-10-02T18:00:00Z",
   "title": "Design System: Osobní appka – pixel",
   "extensions": {
     "colorMeta": {
-      "night": { "role": "neutral", "displayName": "Noc", "tonalRamp": ["#17184A", "#26286B", "#3A3D8F"] },
-      "gold": { "role": "accent", "displayName": "Zlato" },
-      "piva": { "role": "module", "displayName": "Jantar", "tonalRamp": ["#C77700", "#FFB627", "#FFE08A"] },
-      "hlaskomat": { "role": "module", "displayName": "Citron", "tonalRamp": ["#B38A00", "#FFE04A", "#FFF3A8"] },
-      "meditace": { "role": "module", "displayName": "Šalvěj", "tonalRamp": ["#3E8E58", "#9ED9A6", "#D4F2D9"] }
+      "app-bg": {
+        "role": "neutral",
+        "displayName": "Noc",
+        "tonalRamp": [
+          "#12141F",
+          "#1A1D2B",
+          "#20243A",
+          "#262B44",
+          "#2E3350",
+          "#3A4466"
+        ]
+      },
+      "gold": {
+        "role": "accent",
+        "displayName": "Zlato"
+      },
+      "piva": {
+        "role": "module",
+        "displayName": "Jantar",
+        "tonalRamp": [
+          "#F77622",
+          "#FEAE34",
+          "#FEE761"
+        ]
+      },
+      "hlaskomat": {
+        "role": "module",
+        "displayName": "Moře",
+        "tonalRamp": [
+          "#124E89",
+          "#0099DB",
+          "#2CE8F5"
+        ]
+      },
+      "meditace": {
+        "role": "module",
+        "displayName": "Lotos",
+        "tonalRamp": [
+          "#3E8948",
+          "#63C74D",
+          "#B8E986"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Hero číslo", "purpose": "Hlavní číslo modulu (dnes / týden)." },
-      "heading": { "displayName": "Nadpis", "purpose": "Nadpisy obrazovek a hlavní tlačítko." },
-      "label": { "displayName": "Popisek", "purpose": "Tlačítka, čipy, osy grafů." },
-      "body": { "displayName": "Text", "purpose": "Delší text, vedlejší řádky." }
+      "display": {
+        "displayName": "Hero číslo",
+        "purpose": "Hlavní číslo modulu (dnes / týden)."
+      },
+      "heading": {
+        "displayName": "Nadpis",
+        "purpose": "Nadpisy obrazovek a hlavní tlačítko."
+      },
+      "label": {
+        "displayName": "Popisek",
+        "purpose": "Tlačítka, čipy, osy grafů."
+      },
+      "body": {
+        "displayName": "Text",
+        "purpose": "Delší text, vedlejší řádky."
+      }
     },
     "shadows": [
-      { "name": "tap", "value": "4px 4px 0 #000", "purpose": "Všechno, na co jde ťuknout." },
-      { "name": "tap-big", "value": "6px 6px 0 #000", "purpose": "Hlavní tlačítko obrazovky." }
+      {
+        "name": "tap",
+        "value": "3px 3px 0 #0B0A12",
+        "purpose": "Všechno, na co jde ťuknout."
+      },
+      {
+        "name": "tap-big",
+        "value": "4px 4px 0 #0B0A12",
+        "purpose": "Hlavní tlačítko obrazovky."
+      }
     ],
     "motion": [
-      { "name": "press", "value": "60ms steps(3, end)", "purpose": "Zamáčknutí tlačítka." },
-      { "name": "jump", "value": "600ms steps(6, end)", "purpose": "Postavička po akci." },
-      { "name": "burst", "value": "800ms steps(8, end)", "purpose": "Pixelové konfety." },
-      { "name": "breathe", "value": "8s steps(8, jump-none) infinite", "purpose": "Dýchání při meditaci." }
+      {
+        "name": "press",
+        "value": "60ms steps(3, end)",
+        "purpose": "Zamáčknutí tlačítka."
+      },
+      {
+        "name": "jump",
+        "value": "600ms steps(6, end)",
+        "purpose": "Postavička po akci."
+      },
+      {
+        "name": "burst",
+        "value": "800ms steps(8, end)",
+        "purpose": "Pixelové konfety."
+      },
+      {
+        "name": "breathe",
+        "value": "8s steps(8, jump-none) infinite",
+        "purpose": "Dýchání při meditaci."
+      }
     ],
-    "breakpoints": [{ "name": "column", "value": "520px" }]
+    "breakpoints": [
+      {
+        "name": "column",
+        "value": "520px"
+      }
+    ]
   },
   "components": [
     {
@@ -65,12 +144,32 @@
   "narrative": {
     "northStar": "Kapesní 8bitová hra o vlastním životě",
     "overview": "Každý modul je level v plné barvě s pixelovou postavičkou; zápis je herní tah s odměnou, statistiky se čtou jako skóre.",
-    "keyCharacteristics": ["Obrazovky zaplavené barvou modulu", "Pixelové sprity 16×16", "Černé obrysy a tvrdé stíny", "Jersey 10 pro čísla", "Odměna po každé akci"],
-    "rules": [
-      { "name": "Stín = ťuknutí", "body": "Tvrdý stín mají jen interaktivní prvky.", "section": "elevation" },
-      { "name": "Jedna hlavní akce", "body": "Každá obrazovka má jedno velké tlačítko pod hlavním číslem.", "section": "colors" }
+    "keyCharacteristics": [
+      "Obrazovky zaplavené barvou modulu",
+      "Pixelové sprity 16×16",
+      "Černé obrysy a tvrdé stíny",
+      "Jersey 10 pro čísla",
+      "Odměna po každé akci"
     ],
-    "dos": ["Nový modul = nová barva + sprite + herní metafora statistik"],
-    "donts": ["Zaoblené rohy, měkké stíny, gradienty", "Unicode znaky místo ikon", "Nadpisky nad nadpisy"]
+    "rules": [
+      {
+        "name": "Stín = ťuknutí",
+        "body": "Tvrdý stín mají jen interaktivní prvky.",
+        "section": "elevation"
+      },
+      {
+        "name": "Jedna hlavní akce",
+        "body": "Každá obrazovka má jedno velké tlačítko pod hlavním číslem.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Nový modul = nová barva + sprite + herní metafora statistik"
+    ],
+    "donts": [
+      "Zaoblené rohy, měkké stíny, gradienty",
+      "Unicode znaky místo ikon",
+      "Nadpisky nad nadpisy"
+    ]
   }
 }
