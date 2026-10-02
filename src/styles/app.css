@@ -49,8 +49,7 @@ input, textarea { caret-color: var(--ink); }
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(var(--app-bg) 0, var(--app-bg) 24px, transparent 120px) no-repeat,
-    radial-gradient(90% 300px at 50% 160px, color-mix(in srgb, var(--accent) 7%, transparent), transparent 75%) no-repeat,
+    radial-gradient(90% 300px at 50% 120px, color-mix(in srgb, var(--accent) 7%, transparent), transparent 75%) no-repeat,
     url("../assets/grain.png") 0 0 / 96px 96px,
     var(--app-bg);
   padding: calc(env(safe-area-inset-top) + 12px) 16px calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 32px);

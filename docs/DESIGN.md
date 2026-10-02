@@ -174,9 +174,9 @@ Paleta vychází z **Endesga 32**.
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
   v Profilu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Na později** (jeden neotevřený odkaz denně); hláška dne.
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
-- Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`);
-  horních 24 px obrazovky je proto čistá `app-bg` (zrno a záře nastupují plynule do 120 px) a rastr začíná
-  až pod tím, aby pruh a obrazovka splynuly.
+- Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
+  pozadí s texturou běží až pod něj, obsah odsazuje `env(safe-area-inset-top)`. iOS si styl pamatuje z doby přidání
+  na plochu – po změně je potřeba appku z plochy odebrat a přidat znovu.
 - **Spodní lišta**: kompaktní plovoucí „sklo“ uprostřed dole (průsvitný povrch s rozmazáním, obrys a tvrdý stín),
   jen tři ikony bez popisků (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní ikona má limetkový
   čtverec; obrazovky modulů patří pod Moduly. Rychlé zápisy jsou na kartách na obrazovce Dnes.
