@@ -6,19 +6,15 @@
     "colorMeta": {
       "app-bg": {
         "role": "neutral",
-        "displayName": "Noc",
+        "displayName": "Hluboká zelená",
         "tonalRamp": [
-          "#12141F",
-          "#1A1D2B",
-          "#20243A",
-          "#262B44",
-          "#2E3350",
-          "#3A4466"
+          "#001600",
+          "#001D00",
+          "#04280F",
+          "#0A3A22",
+          "#0E3317",
+          "#2B5A36"
         ]
-      },
-      "gold": {
-        "role": "accent",
-        "displayName": "Zlato"
       },
       "piva": {
         "role": "module",
@@ -46,6 +42,10 @@
           "#63C74D",
           "#B8E986"
         ]
+      },
+      "lime": {
+        "role": "accent",
+        "displayName": "Limetka"
       }
     },
     "typographyMeta": {
@@ -69,12 +69,12 @@
     "shadows": [
       {
         "name": "tap",
-        "value": "3px 3px 0 #0B0A12",
+        "value": "3px 3px 0 #000A02",
         "purpose": "Všechno, na co jde ťuknout."
       },
       {
         "name": "tap-big",
-        "value": "4px 4px 0 #0B0A12",
+        "value": "4px 4px 0 #000A02",
         "purpose": "Hlavní tlačítko obrazovky."
       }
     ],

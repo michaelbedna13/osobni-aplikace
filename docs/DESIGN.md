@@ -2,20 +2,21 @@
 name: Osobní appka – pixel
 description: Kapesní 8bitová hra o vlastním životě. Každý modul je jiný level s vlastní barvou a pixelovou ikonou.
 colors:
-  ink: "#E9ECF5"
-  paper: "#262B44"
-  edge: "#0B0A12"
-  on-accent: "#181425"
+  ink: "#FEFAE0"
+  paper: "#0A3A22"
+  edge: "#000A02"
+  on-accent: "#001600"
   white: "#FFFFFF"
-  app-bg: "#1A1D2B"
-  desk: "#12141F"
-  grid: "#2E3350"
+  app-bg: "#001D00"
+  desk: "#001600"
+  grid: "#0E3317"
+  lime: "#CEF17B"
   gold: "#FEE761"
   danger: "#F6757A"
-  bar-idle: "#3A4466"
-  slate: "#8B9BB4"
-  track: "#20243A"
-  scrim: "rgba(11, 10, 18, 0.7)"
+  bar-idle: "#2B5A36"
+  slate: "#9FB8B8"
+  track: "#04280F"
+  scrim: "rgba(0, 10, 2, 0.75)"
   piva: "#FEAE34"
   piva-deep: "#F77622"
   hlaskomat: "#0099DB"
@@ -114,7 +115,7 @@ components:
     padding: "16px"
 ---
 
-# Design – pixel art (v2.3, tmavá mřížka)
+# Design – pixel art (v2.4, tmavě zelená)
 
 Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/lib/sprites.ts`
 (ikony modulů a doplňky), `src/lib/modules.ts` (barvy modulů), `src/lib/copy.ts` (hlas appky).
@@ -122,8 +123,8 @@ Product truth je v `PRODUCT.md`.
 
 ## Overview
 
-Appka je **kapesní 8bitová hra o vlastním životě**, podaná decentně: všude stejné tmavé
-modrošedé pozadí s jemnou tečkovou mřížkou, tmavé panely s téměř černým obrysem a pixelové ikony.
+Appka je **kapesní 8bitová hra o vlastním životě**, podaná decentně: všude stejné velmi tmavě
+zelené pozadí s jemnou tečkovou mřížkou, tmavě zelené panely s téměř černým obrysem a pixelové ikony.
 Barva modulu je jen **akcent**: slabá záře nahoře na pozadí, dlaždice za ikonou, podtržení nadpisu,
 hlavní tlačítko a zvýraznění v grafu. Zápis má
 odměnu (ikona poskočí, vyletí „+1“ a pixelové konfety, appka řekne vtipnou větu).
@@ -134,17 +135,21 @@ Jediná vlastnost převzatá z verze 1 jsou **černé obrysy a tvrdé posunuté 
 
 Paleta vychází z **Endesga 32**.
 
-- **Jedno pozadí pro celou appku**: `app-bg` `#1A1D2B` + tečková mřížka `grid` `#2E3350` (12 px)
-  + radiální záře akcentu (16 %) v horní části obrazovky. Na počítači kolem appky `desk` `#12141F`.
-- Tmavé téma: text `ink` `#E9ECF5`, povrch panelů `paper` `#262B44`, obrysy a stíny `edge` `#0B0A12`,
-  vedlejší text `slate` `#8B9BB4`. Text na akcentu nebo zlatu je vždy `on-accent` `#181425`.
+- **Jedno pozadí pro celou appku**: `app-bg` `#001D00` (very deep green) + tečková mřížka `grid`
+  `#0E3317` (12 px) + radiální záře akcentu (16 %) v horní části obrazovky. Na počítači kolem appky
+  `desk` `#001600` (black green).
+- Tmavé téma: text `ink` `#FEFAE0` (cornsilk), povrch panelů `paper` `#0A3A22`, obrysy a stíny
+  `edge` `#000A02`, vedlejší text `slate` `#9FB8B8` (ash gray). Text na akcentu nebo limetce je vždy
+  `on-accent` `#001600`.
+- **Zvýraznění UI je limetka** `lime` `#CEF17B` (lime glow): aktivní položka lišty, avatar, jména
+  (svátek, autor hlášky), focus. Žlutá `gold` zůstává jen v pixelových předmětech (hvězda, trofej, korunka).
 - Aktivní stav (záložka, čip, segment) = světlý blok `ink` s tmavým textem. Aktivní položka spodní
-  lišty, jméno autora hlášky a avatar jsou zlaté.
+  lišty, jméno autora hlášky a avatar jsou limetkové.
 - **Barva modulu = akcent (`--accent`)**, použitá decentně a vždy jen na těchto místech:
   dlaždice za ikonou (30 % barvy s povrchem `paper`), podtržení nadpisu obrazovky, hlavní tlačítko,
   rychlá akce na kartě, zvýrazněná hodnota v grafu, splněné dny u cíle.
 - **Zamčené moduly**: dlaždice `track`, ikona v odstínech šedi, šedý text, ikona zámku.
-- Trofej za rekord má zlatý vnitřní rámeček. Nečinné sloupce a kostičky grafů jsou `bar-idle`.
+- Trofej za rekord má limetkový vnitřní rámeček. Nečinné sloupce a kostičky grafů jsou `bar-idle`.
 
 ## Typography
 
@@ -161,14 +166,14 @@ Paleta vychází z **Endesga 32**.
   popisek → hlavní tlačítko → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
   jen vybrané záložky. Dlouhé obrazovky se tím nescrollují do nekonečna.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
-- Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména zlatě, data z balíčku `namedays-cs`),
+- Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména limetkově, data z balíčku `namedays-cs`),
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
   v Profilu); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); hláška dne.
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS je od iOS 26.1 neprůhledný v barvě `theme-color` (`app-bg`); horní okraj obrazovky
   proto plynule přechází z `app-bg` do mřížky, aby na sebe navazovaly.
 - **Spodní lišta**: plovoucí tmavý blok 12 px od okrajů, tři položky (Dnes, Moduly, Profil) s ikonou
-  a popiskem; aktivní položka je zlatá s tmavým textem. Rychlé zápisy jsou na kartách na obrazovce Dnes.
+  a popiskem; aktivní položka je limetková s tmavým textem. Rychlé zápisy jsou na kartách na obrazovce Dnes.
 
 ## Elevation & Depth
 
@@ -196,7 +201,7 @@ Paleta vychází z **Endesga 32**.
 - **Vodorovné pruhy** (`HBars`): dny v týdnu, vítěz v barvě modulu s korunkou; řeší i remízu.
 - **Sloupce** (`Columns`): 12 týdnů s hodnotou nad sloupcem.
 - **Trofeje** (`.trophies`): 2 × 2, rekord zlatě se spritem trofeje.
-- **Karta hlášky** (`.quote-card`): text hlášky a pod ním **uvnitř karty** autor zlatě a kontext s datem
+- **Karta hlášky** (`.quote-card`): text hlášky a pod ním **uvnitř karty** autor limetkově a kontext s datem
   šedě; hvězdička oblíbené vpravo. Autor nikdy mimo kartu (mezi kartami nebylo jasné, ke které patří).
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
@@ -204,7 +209,7 @@ Paleta vychází z **Endesga 32**.
 - **Karta modulu v pásu** (`.fav`): tmavý povrch, ikona na dlaždici v akcentu, název, číslo, rychlá akce v akcentu vpravo nahoře.
 - **Záložky** (`Tabs`): plná šířka, aktivní světlá.
 - **Dlaždice ikony** (`.sprite-tile`): čtverec s obrysem a akcentem modulu.
-- **Spodní panel** (`Sheet`), **potvrzení** (`useToast`, světlý blok se zlatou akcí „Vrátit“).
+- **Spodní panel** (`Sheet`), **potvrzení** (`useToast`, světlý blok s limetkovou akcí „Vrátit“).
 
 ### Pohyb
 
