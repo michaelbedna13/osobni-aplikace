@@ -245,7 +245,7 @@ Paleta vychází z **Endesga 32**.
 - **Karta modulu v pásu** (`.fav`): tmavý povrch, ikona na dlaždici v akcentu, název, číslo, rychlá akce v akcentu vpravo nahoře.
 - **Záložky** (`Tabs`): plná šířka, aktivní světlá.
 - **Dlaždice ikony** (`.sprite-tile`): čtverec s obrysem a akcentem modulu.
-- **Spodní panel** (`Sheet`), **potvrzení** (`useToast`, světlý blok s limetkovou akcí „Vrátit“).
+- **Okno s formulářem** (`Sheet` → `FormWindow`): uprostřed obrazovky, nadpis a křížek, drží se nad klávesnicí, pozadí se neposouvá; **potvrzení** (`useToast`, světlý blok s limetkovou akcí „Vrátit“).
 
 ### Pohyb
 

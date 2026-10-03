@@ -162,15 +162,6 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .tab:active { transform: translateY(1px); }
 
 /* ---------- spodní panel ---------- */
-.sheet-backdrop { position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-h, 100dvh); z-index: 20; background: rgba(0, 5, 2, 0.75); display: flex; align-items: flex-end; justify-content: center; }
-.sheet {
-  width: 100%; max-width: 520px; max-height: 88dvh; overflow-y: auto;
-  background: var(--paper); border-top: var(--line);
-  padding: 14px 16px calc(24px + env(safe-area-inset-bottom));
-  animation: sheet-in 200ms var(--step);
-}
-@keyframes sheet-in { from { transform: translateY(48px); } }
-.sheet-handle { width: 48px; height: 6px; background: var(--slate); margin: 0 auto 14px; }
 .sheet-title { font-size: 30px; margin-bottom: 8px; }
 
 /* ---------- potvrzení ---------- */
@@ -204,7 +195,7 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .twinkle { animation: twinkle 2.4s steps(2, jump-none) infinite; }
 @keyframes twinkle { 50% { opacity: 0.25; } }
 @media (prefers-reduced-motion: reduce) {
-  .anim-bob, .anim-jump, .anim-breathe, .twinkle, .burst, .sheet, .toast { animation: none !important; }
+  .anim-bob, .anim-jump, .anim-breathe, .twinkle, .burst, .modal, .toast { animation: none !important; }
   .burst { display: none; }
   .tap, .btn-hero { transition: none; }
 }
@@ -605,14 +596,15 @@ a.btn-hero { text-decoration: none; }
 .goal-card b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
 
 /* ---------- klávesnice a okna ---------- */
-.kb-open .tabbar, .kb-open .rest-bar, .focus-mode .tabbar { display: none; }
+.kb-open .tabbar, .kb-open .rest-bar, .focus-mode .tabbar, .dialog-open .tabbar { display: none; }
+html.dialog-open, html.dialog-open body { overflow: hidden; }
 .modal-backdrop {
   position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-h, 100dvh); z-index: 25;
   display: grid; place-items: center; padding: 16px; background: rgba(0, 5, 2, 0.8);
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
 .modal {
-  width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; outline: none;
+  width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; overscroll-behavior: contain; outline: none;
   background: var(--paper); border: var(--line); box-shadow: var(--shadow-big); padding: 12px;
   animation: modal-in 160ms var(--step);
 }
@@ -632,6 +624,13 @@ a.btn-hero { text-decoration: none; }
 .modal-edit .field-label:first-child { margin-top: 0; }
 .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
 .modal-row .btn { width: 100%; }
+/* okno s formulářem */
+.form-window { padding: 0; display: flex; flex-direction: column; }
+.form-window-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 12px 10px 16px; background: var(--paper); border-bottom: 2px solid var(--edge); }
+.form-window-head .sheet-title { margin: 0; font-size: 30px; line-height: 1.05; }
+.close-btn { flex: none; font-family: var(--font-pixel); font-size: 30px; line-height: 1; }
+.form-window-body { padding: 4px 16px 18px; }
+.form-window-body > :first-child, .form-window-body > form > :first-child { margin-top: 14px; }
 .tpl-rest { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; font-size: 14px; color: var(--slate); }
 .tpl-rest select.input { width: auto; min-height: 40px; padding: 4px 30px 4px 10px; font-size: 16px; }
 .tpl-rest.between { margin-top: 14px; padding: 10px 12px; background: var(--paper); border: var(--line); }
