@@ -51,6 +51,17 @@ export function LideScreen() {
   const update = useUpdateIdea();
 
   const occasions = useMemo(() => upcomingOccasions(people), [people]);
+  const [sort, setSort] = useState<"narozeniny" | "abeceda">(() => {
+    try { return localStorage.getItem("lide:sort") === "abeceda" ? "abeceda" : "narozeniny"; } catch { return "narozeniny"; }
+  });
+  const changeSort = (s: "narozeniny" | "abeceda") => {
+    setSort(s);
+    try { localStorage.setItem("lide:sort", s); } catch { /* jen se nezapamatuje */ }
+  };
+  // za kolik dní má kdo narozeniny (lidé bez data na konec)
+  const birthdayIn = useMemo(() => new Map(occasions.filter((o) => o.kind === "narozeniny").map((o) => [o.person.id, o])), [occasions]);
+  const sortedPeople = sort === "abeceda" ? people : [...people].sort((a, b) =>
+    (birthdayIn.get(a.id)?.days ?? 9999) - (birthdayIn.get(b.id)?.days ?? 9999) || a.name.localeCompare(b.name, "cs"));
   const next = occasions[0];
   const openIdeas = ideas.filter((i) => !i.given_at);
   const now = new Date();
@@ -127,16 +138,29 @@ export function LideScreen() {
 
       {tab === "lide" && (
         <div className="tab-panel">
+          {people.length > 1 && (
+            <div className="seg seg-wide" role="group" aria-label="Řazení">
+              <button className={`seg-btn${sort === "narozeniny" ? " on" : ""}`} aria-pressed={sort === "narozeniny"} onClick={() => changeSort("narozeniny")}>Nejbližší narozeniny</button>
+              <button className={`seg-btn${sort === "abeceda" ? " on" : ""}`} aria-pressed={sort === "abeceda"} onClick={() => changeSort("abeceda")}>Abecedně</button>
+            </div>
+          )}
           {people.length === 0 ? <p className="empty">Nikdo tu zatím není.</p> : (
             <ul className="list">
-              {people.map((p) => (
-                <li key={p.id}>
-                  <Link to={`/m/lide/${p.id}`} className="list-btn">
-                    <span className="grow"><b>{p.name}</b><span className="occasion-kind">{birthdayText(p)}</span></span>
-                    {ideasFor(p.id).length > 0 && <span className="count-badge"><Sprite name="lide" size={16} />{ideasFor(p.id).length}</span>}
-                  </Link>
-                </li>
-              ))}
+              {sortedPeople.map((p) => {
+                const next = birthdayIn.get(p.id);
+                return (
+                  <li key={p.id}>
+                    <Link to={`/m/lide/${p.id}`} className={`list-btn${next?.days === 0 ? " occasion today" : ""}`}>
+                      <span className="grow">
+                        <b>{p.name}</b>
+                        <span className="occasion-kind">{birthdayText(p)}{next?.age ? ` · bude ${next.age}` : ""}</span>
+                      </span>
+                      {ideasFor(p.id).length > 0 && <span className="count-badge"><Sprite name="lide" size={16} />{ideasFor(p.id).length}</span>}
+                      {sort === "narozeniny" && next && <span className="occasion-when">{whenLabel(next.days)}</span>}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

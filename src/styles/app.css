@@ -481,7 +481,7 @@ a.btn-hero { text-decoration: none; }
 .team-pick.on { background: color-mix(in srgb, var(--accent) 20%, var(--paper)); }
 .pick-order { width: 28px; font-family: var(--font-pixel); font-size: 24px; text-align: right; }
 .seg-wide { display: flex; width: 100%; }
-.seg-wide .seg-btn { flex: 1; min-height: 44px; font-size: 24px; }
+.seg-wide .seg-btn { flex: 1; min-height: 44px; font-size: 20px; }
 .mode-hint { margin-top: 6px; }
 .game-mode { font-family: var(--font-pixel); font-size: 16px; color: var(--slate); text-align: right; max-width: 90px; line-height: 1.1; }
 .ch-teams { display: grid; gap: 12px; margin-top: 16px; }
