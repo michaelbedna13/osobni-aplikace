@@ -7,6 +7,8 @@ export interface Store<T extends { id: string }> {
   insert(row: T): Promise<void>;
   /** Vloží řádky; řádky s už existujícím id přeskočí (import je tak opakovatelný). */
   insertMissing(rows: T[]): Promise<void>;
+  /** Vloží nové řádky a existující (podle id) přepíše. */
+  upsert(rows: T[]): Promise<void>;
   update(id: string, patch: Partial<T>): Promise<void>;
   remove(id: string): Promise<void>;
 }
@@ -27,6 +29,12 @@ export function createStore<T extends { id: string }>(table: string, column: key
       async insertMissing(rows) {
         for (let i = 0; i < rows.length; i += 500) {
           const { error } = await db.from(table).upsert(rows.slice(i, i + 500), { onConflict: "id", ignoreDuplicates: true });
+          if (error) throw error;
+        }
+      },
+      async upsert(rows) {
+        for (let i = 0; i < rows.length; i += 500) {
+          const { error } = await db.from(table).upsert(rows.slice(i, i + 500), { onConflict: "id" });
           if (error) throw error;
         }
       },
@@ -70,6 +78,10 @@ export function createStore<T extends { id: string }>(table: string, column: key
       const existing = read();
       const ids = new Set(existing.map((r) => r.id));
       write([...existing, ...rows.filter((r) => !ids.has(r.id))]);
+    },
+    async upsert(rows) {
+      const ids = new Set(rows.map((r) => r.id));
+      write([...read().filter((r) => !ids.has(r.id)), ...rows]);
     },
     async update(id, patch) {
       write(read().map((r) => (r.id === id ? { ...r, ...patch } : r)));

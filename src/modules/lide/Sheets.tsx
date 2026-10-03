@@ -29,6 +29,8 @@ export function PersonSheet({ person, people, onClose, onSaved }: {
   const [year, setYear] = useState(person?.birth_year ? String(person.birth_year) : "");
   const [useNameday, setUseNameday] = useState(person ? person.nameday !== null : true);
   const [note, setNote] = useState(person?.note ?? "");
+  // svátek podle jiného jména (přezdívky: Honza → Jan, Bětka → Alžběta)
+  const [svatekName, setSvatekName] = useState("");
   const add = useAddPerson();
   const update = useUpdatePerson();
   const remove = useDeletePerson();
@@ -41,7 +43,8 @@ export function PersonSheet({ person, people, onClose, onSaved }: {
     return authorRanking(quotes).map((r) => r.author).filter((a) => !known.has(normalize(a))).slice(0, 12);
   }, [quotes, people]);
 
-  const nameday = person?.nameday && normalize(person.name.split(" ")[0]) === normalize(name.trim().split(" ")[0]) ? person.nameday : namedayFor(name);
+  const byName = person?.nameday && normalize(person.name.split(" ")[0]) === normalize(name.trim().split(" ")[0]) ? person.nameday : namedayFor(name);
+  const nameday = svatekName.trim() ? namedayFor(svatekName) : byName;
   const yearNum = year ? Number(year) : null;
   const dayValid = !day === !month && (!day || Number(day) <= new Date(2000, Number(month), 0).getDate());
   const yearValid = yearNum === null || (Number.isInteger(yearNum) && yearNum >= 1900 && yearNum <= new Date().getFullYear());
@@ -92,11 +95,16 @@ export function PersonSheet({ person, people, onClose, onSaved }: {
       {!dayValid && <p className="error">Vyber den i měsíc (a takový den, který v měsíci je).</p>}
       {!yearValid && <p className="error">Rok zadej celý, třeba 1996.</p>}
 
-      {nameday && (
-        <label className="check">
-          <input type="checkbox" checked={useNameday} onChange={(e) => setUseNameday(e.target.checked)} />
-          Slaví jmeniny {formatNameday(nameday)}
-        </label>
+      <label className="check">
+        <input type="checkbox" checked={useNameday} onChange={(e) => setUseNameday(e.target.checked)} />
+        Slaví jmeniny{nameday ? ` ${formatNameday(nameday)}` : ""}
+      </label>
+      {useNameday && (
+        <>
+          <label htmlFor="person-svatek" className="field-label">Svátek podle jména</label>
+          <input id="person-svatek" className="input" autoComplete="off" placeholder={name.trim().split(" ")[0] || "Třeba Jan"} value={svatekName} onChange={(e) => setSvatekName(e.target.value)} />
+          <p className="small muted">{svatekName.trim() && !nameday ? "Tohle jméno v kalendáři není." : "Vyplň, když se svátek řídí jiným jménem (Honza → Jan, Lily → Linda)."}</p>
+        </>
       )}
 
       <label htmlFor="person-note" className="field-label">Poznámka</label>

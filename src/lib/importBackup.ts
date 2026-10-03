@@ -84,7 +84,7 @@ export async function backupToQuotes(quotes: OldQuote[]): Promise<Quote[]> {
 const BIRTH = /^(?:(\d{4})-)?(\d{2})-(\d{2})$/;
 const MD = /^\d{2}-\d{2}$/;
 
-/** Lidé ze zálohy; id podle jména, takže opakovaný import nikoho nezdvojí. Jmeniny: ze zálohy, jinak podle jména. */
+/** Lidé ze zálohy; id podle jména, takže opakovaný import nikoho nezdvojí (údaje se přepíšou). Jmeniny: ze zálohy, jinak podle jména. */
 export async function backupToPeople(rows: PersonRow[]): Promise<Person[]> {
   return Promise.all(rows.map(async (r) => {
     const name = r.name.trim();

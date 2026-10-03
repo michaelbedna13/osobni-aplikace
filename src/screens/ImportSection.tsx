@@ -45,7 +45,13 @@ export function ImportSection() {
         await queryClient.invalidateQueries({ queryKey: ["beers"] });
         setState({ step: "done", message: `Hotovo: ${backup.total} ${plural(backup.total, ["pivo", "piva", "piv"])} je v appce.` });
       } else if (backup.kind === "lide") {
-        await peopleStore.insertMissing(await backupToPeople(backup.people));
+        // u lidí import údaje opraví; poznámku a datum přidání zachová
+        const existing = new Map((await peopleStore.list("1970-01-01T00:00:00.000Z")).map((p) => [p.id, p]));
+        const people = (await backupToPeople(backup.people)).map((p) => {
+          const old = existing.get(p.id);
+          return old ? { ...p, note: p.note ?? old.note, created_at: old.created_at } : p;
+        });
+        await peopleStore.upsert(people);
         await queryClient.invalidateQueries({ queryKey: ["people"] });
         setState({ step: "done", message: `Hotovo: ${backup.people.length} ${plural(backup.people.length, ["člověk", "lidé", "lidí"])} je v Lidech a dárcích.` });
       } else {
