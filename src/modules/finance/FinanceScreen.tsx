@@ -33,9 +33,11 @@ export function FinanceScreen() {
   >(null);
 
   useEffect(() => {
-    if (!params.has("nova")) return;
+    const t = params.get("tab");
+    if (t === "dluhy" || t === "sporeni" || t === "predplatne") setTab(t);
+    else if (params.has("nova")) setSheet({ kind: "sub", item: null });
+    else return;
     setParams({}, { replace: true });
-    setSheet({ kind: "sub", item: null });
   }, [params, setParams]);
 
   const year = new Date().getFullYear();

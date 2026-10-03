@@ -674,9 +674,37 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .idea-body { font-size: 14px; color: var(--slate); white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .idea-star { position: absolute; top: 10px; right: 10px; }
 .meaning { width: 100%; display: grid; gap: 8px; padding: 12px 14px; text-align: left; background: var(--paper); border: var(--line); color: var(--ink); }
-.meaning.open { box-shadow: inset 4px 0 0 var(--accent); }
+.meaning.open { background: color-mix(in srgb, var(--accent) 10%, var(--paper)); }
 .meaning.mine .meaning-cat { color: var(--lime); }
 .meaning-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .meaning-head b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; line-height: 1.1; }
 .meaning-cat { flex: none; font-size: 14px; color: var(--slate); }
 .meaning-body { line-height: 1.45; }
+
+/* ---------- Dnes: počasí, souhrn, dluhy ---------- */
+.weather, .weather-empty { margin-top: 16px; }
+.weather-empty { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; color: var(--ink); }
+.weather-empty b { display: block; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
+.weather-now { display: flex; align-items: center; gap: 12px; }
+.weather-temp { font-family: var(--font-pixel); font-size: 60px; font-weight: 400; line-height: 0.9; }
+.weather-desc { display: grid; gap: 2px; font-size: 14px; color: var(--slate); min-width: 0; }
+.weather-desc b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; color: var(--ink); }
+.weather-hours { list-style: none; margin: 14px 0 0; padding: 10px 0 0; border-top: 2px solid var(--idle); display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; }
+.weather-hours li { display: grid; justify-items: center; gap: 4px; font-size: 14px; color: var(--slate); }
+.weather-hours b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--ink); }
+.weather-hours small { font-size: 14px; color: var(--accent); }
+.weather-days { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.weather-days li { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 4px; background: var(--surface-2); font-size: 14px; }
+.weather-days li span:first-child { font-family: var(--font-pixel); font-size: 16px; text-transform: capitalize; }
+.weather-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; color: var(--slate); }
+.day-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 14px; }
+.sum-tile { display: grid; justify-items: center; gap: 2px; padding: 8px 2px; background: var(--paper); border: var(--line); color: var(--slate); text-decoration: none; }
+.sum-tile b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; line-height: 1; color: var(--ink); }
+.sum-tile span { font-size: 14px; line-height: 1.1; }
+.sum-tile.done { background: color-mix(in srgb, var(--accent) 16%, var(--paper)); }
+.sum-tile:not(.done) .sprite { filter: grayscale(1); opacity: 0.55; }
+.debt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.debt-col { display: grid; gap: 6px; align-content: start; }
+.debt-col p { display: flex; justify-content: space-between; gap: 6px; }
+.debt-col p span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.debt-grid .panel + .panel { margin-top: 0; }

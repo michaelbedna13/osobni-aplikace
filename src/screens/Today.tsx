@@ -14,6 +14,7 @@ import { OccasionRow } from "../modules/lide/LideScreen";
 import { useLinks } from "../modules/odkazy/data";
 import { domainOf } from "../modules/odkazy/util";
 import { ShelfCard } from "./ShelfCard";
+import { DaySummary, DebtsToday, WeatherCard } from "./TodayWidgets";
 
 function Gratitude() {
   const { data: list = [] } = useGratitude();
@@ -110,6 +111,9 @@ export function Today() {
 
       {isDemo && <p className="demo-note">Ukázkový režim: data se ukládají jen v tomhle prohlížeči.</p>}
 
+      <WeatherCard />
+      <DaySummary />
+
       <section className="sec">
         <h2>Moje moduly</h2>
         <div className="shelf" aria-label="Oblíbené moduly, posuň do boku">
@@ -120,6 +124,8 @@ export function Today() {
       <SoonCelebrating />
 
       <Gratitude />
+
+      <DebtsToday />
 
       <LaterLink />
 

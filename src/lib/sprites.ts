@@ -7,7 +7,8 @@ import type { ModuleKey } from "./modules";
 
 export type SpriteName =
   | ModuleKey | "star" | "trophy" | "crown" | "lock" | "heart" | "flame" | "check" | "sparkle"
-  | "i-home" | "i-grid" | "i-map" | "i-user" | "i-plus" | "i-back" | "i-up" | "i-down" | "i-star" | "i-play" | "i-copy" | "i-share" | "i-edit" | "i-trash";
+  | "i-home" | "i-grid" | "i-map" | "i-user" | "i-plus" | "i-back" | "i-up" | "i-down" | "i-star" | "i-play" | "i-copy" | "i-share" | "i-edit" | "i-trash"
+  | "w-sun" | "w-partly" | "w-cloud" | "w-rain" | "w-snow" | "w-storm" | "w-fog" | "w-moon";
 
 export const SPRITES: Record<SpriteName, string[]> = {
   piva: [
@@ -557,6 +558,102 @@ export const SPRITES: Record<SpriteName, string[]> = {
     ".C......C.",
     ".CCCCCCCC.",
   ],
+  "w-sun": [
+    "....YY....",
+    ".Y..YY..Y.",
+    "..YYYYYY..",
+    "..YYYYYY..",
+    "YYYYYYYYYY",
+    "YYYYYYYYYY",
+    "..YYYYYY..",
+    "..YYYYYY..",
+    ".Y..YY..Y.",
+    "....YY....",
+  ],
+  "w-moon": [
+    "...YYYY...",
+    "..YYY.....",
+    ".YYY......",
+    ".YYY......",
+    "YYYY......",
+    "YYYY......",
+    ".YYYY.....",
+    ".YYYYY..Y.",
+    "..YYYYYYY.",
+    "...YYYYY..",
+  ],
+  "w-partly": [
+    ".Y..Y.....",
+    "..YYYY....",
+    "YYYYYYY...",
+    "..YYAAAA..",
+    ".YYAWWWWA.",
+    "..AWWWWWWA",
+    ".AWWWWWWWA",
+    "AWWWWWWWWA",
+    "AAAAAAAAAA",
+    "..........",
+  ],
+  "w-cloud": [
+    "..........",
+    "....AAA...",
+    "...AWWWA..",
+    "..AWWWWWA.",
+    ".AAWWWWWWA",
+    "AWWWWWWWWA",
+    "AWWWWWWWWA",
+    "AAAAAAAAAA",
+    "..........",
+    "..........",
+  ],
+  "w-rain": [
+    "....AAA...",
+    "...AWWWA..",
+    ".AAWWWWWA.",
+    "AWWWWWWWWA",
+    "AAAAAAAAAA",
+    "..........",
+    ".B..B..B..",
+    "B..B..B...",
+    ".B..B..B..",
+    "B..B..B...",
+  ],
+  "w-snow": [
+    "....AAA...",
+    "...AWWWA..",
+    ".AAWWWWWA.",
+    "AWWWWWWWWA",
+    "AAAAAAAAAA",
+    "..........",
+    ".W...W..W.",
+    "WWW.WWW...",
+    ".W...W..W.",
+    "...W...WWW",
+  ],
+  "w-storm": [
+    "....NNN...",
+    "...NAAAN..",
+    ".NNAAAAAN.",
+    "NAAAAAAAAN",
+    "NNNNYYNNNN",
+    "....YY....",
+    "...YY.....",
+    "..YYYYY...",
+    "....YY....",
+    "...YY.....",
+  ],
+  "w-fog": [
+    "..........",
+    "AAAAAAA...",
+    "..........",
+    "..AAAAAAAA",
+    "..........",
+    "AAAAAAAAA.",
+    "..........",
+    ".AAAAAAAAA",
+    "..........",
+    "AAAAAA....",
+  ],
   "i-play": [
     "CC..........",
     "CCCC........",
@@ -598,7 +695,7 @@ export interface SpriteColors {
 }
 
 const FIXED: Record<string, string> = {
-  K: "#181425", W: "#FFFFFF", R: "#E43B44", P: "#F6757A", Y: "#FEE761", A: "#C0CBDC", N: "#5A6988", C: "currentColor",
+  K: "#181425", W: "#FFFFFF", R: "#E43B44", P: "#F6757A", Y: "#FEE761", A: "#C0CBDC", N: "#5A6988", B: "#2CE8F5", C: "currentColor",
 };
 
 export const spriteSize = (name: SpriteName) => ({ w: SPRITES[name][0].length, h: SPRITES[name].length });

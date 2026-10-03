@@ -174,7 +174,9 @@ Paleta vychází z **Endesga 32**.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
 - Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména limetkově, data z balíčku `namedays-cs`),
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
-  v Profilu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Na později** (jeden neotevřený odkaz denně); hláška dne.
+  v Profilu); nad pásem **počasí** (Open-Meteo, modely DWD ICON a ECMWF; poloha nebo město, uložené
+  v prohlížeči; teď, 12 hodin po 2 h, 3 dny) a **souhrn dne** (5 dlaždic: piva, vděčnost, meditace, trénink, dech;
+  splněné s podkladem v barvě modulu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Dluhy** (dluží mně / dlužím já po lidech); **Na později** (jeden neotevřený odkaz denně); hláška dne.
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
   pozadí s texturou běží až pod něj, obsah odsazuje `env(safe-area-inset-top)`. iOS si styl pamatuje z doby přidání
