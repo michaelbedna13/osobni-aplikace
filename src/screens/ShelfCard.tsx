@@ -20,6 +20,7 @@ import { useLinks } from "../modules/odkazy/data";
 import { computeMediaStats, useMedia } from "../modules/filmy/data";
 import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
 import { usePlaces } from "../modules/mista/data";
+import { computeBreathStats, useBreathSessions } from "../modules/dech/data";
 import { computeFinanceStats, daysUntil, debts, nextRenewal, savings, subscriptions } from "../modules/finance/data";
 
 interface CardProps {
@@ -237,9 +238,23 @@ function FinanceCard() {
 }
 
 /** Karta modulu v pásu „Moje moduly“ na obrazovce Dnes. */
+function DechCard() {
+  const { data: sessions = [] } = useBreathSessions();
+  const stats = useMemo(() => computeBreathStats(sessions), [sessions]);
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="dech"
+      num={String(stats.weekMinutes)}
+      sub={`min tento týden${stats.bestHold ? `, rekord ${Math.floor(stats.bestHold / 60)}:${String(stats.bestHold % 60).padStart(2, "0")}` : ""}`}
+      quick={{ label: "Krabicové dýchání", text: <Sprite name="i-play" size={20} />, run: () => { unlockAudio(); navigate("/m/dech?cviceni=krabice"); } }}
+    />
+  );
+}
+
 const CARDS: Record<ModuleKey, () => ReactNode> = {
   piva: PivaCard, hlaskomat: HlaskomatCard, meditace: MeditaceCard, vdecnost: VdecnostCard, lide: LideCard, trenink: TreninkCard,
-  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard,
+  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard,
 };
 
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {

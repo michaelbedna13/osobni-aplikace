@@ -30,6 +30,7 @@ colors:
   filmy: "#8B9BB4"
   wishlist: "#F6757A"
   cornhole: "#D77643"
+  dech: "#73BED3"
   finance: "#FEE761"
 typography:
   hero:
@@ -231,6 +232,10 @@ Paleta vychází z **Endesga 32**.
   místa limetkově, vybrané s obrysem.
 - **Částky** (`.money`) v pixelovém písmu; „dluží mi“ limetkově, „dlužím“ v barvě `danger`. Předplatné, které se
   obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.
+- **Dechová kostka** (`.orb`): čtverec v akcentu, při nádechu se v pixelových krocích zvětšuje, při výdechu zmenšuje,
+  při zadržení má čárkovaný obrys; uprostřed odpočet. Během cvičení je spodní lišta schovaná (`.focus-mode`).
+- **Okno** (`Modal`) uprostřed obrazovky pro detail hlášky: „obrazovka“ s textem a řada akcí (Top, Kopie, Sdílet,
+  Upravit, Smazat). Při psaní se lišta schová (`.kb-open`) a okna i panely se drží nad klávesnicí.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

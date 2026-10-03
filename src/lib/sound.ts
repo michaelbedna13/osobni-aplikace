@@ -64,3 +64,19 @@ export function playBeep() {
     osc.stop(now + start + 0.16);
   }
 }
+
+/** Jemný tón (změna fáze dechu). */
+export function playTone(freq: number, seconds = 0.35, volume = 0.08) {
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = "sine";
+  osc.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, now);
+  g.gain.exponentialRampToValueAtTime(volume, now + 0.03);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + seconds);
+  osc.connect(g).connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + seconds + 0.05);
+}
