@@ -37,6 +37,8 @@ colors:
   cornhole: "#D77643"
   dech: "#73BED3"
   untrois: "#CEF17B"
+  skore: "#A884F3"
+  skore-deep: "#5E3FA8"
   finance: "#FEE761"
 typography:
   hero:
@@ -230,6 +232,10 @@ Paleta vychází z **Endesga 32**.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
+- **Skóre na hry** (`.sc-*`): seznam hráčů (`.sc-row`, kdo je na řadě má rámeček v barvě hráče, vypadlý je
+  přeškrtnutý), pod ním panel se vstupem bez systémové klávesnice: číselník (`.sc-grid.keypad`, displej `.sc-display`,
+  u šipek rychlé náhozy `.sc-quick`), u mölkky tlačítka 0–12, u pétanque výběr týmu a 1–6. Pod tím poslední zápisy
+  (`.sc-log`) nebo tabulka kol u vlastní hry. Výhra = panel s pytlíkem vítěze, „Uložit a odveta“ / „Uložit a konec“.
 - **Cornhole v mobilu** (`.ch-mobile`): hra pro 2–6 hráčů na jednom telefonu. Hřiště je plátno v nízkém rozlišení
   (1 herní pixel = 2 body), kreslené po řádcích celými pixely: tráva v pruzích (`grass`, `grass-stripe`),
   dřevěná deska (`wood`, `wood-dark`, `wood-edge`), černá díra, pytlíky jako kvádry v barvě hráče se stínem

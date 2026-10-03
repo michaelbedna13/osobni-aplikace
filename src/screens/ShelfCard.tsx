@@ -16,6 +16,9 @@ import { computeTrainingStats, useWorkouts } from "../modules/trenink/data";
 import { useActiveWorkout } from "../modules/trenink/active";
 import { computeCornholeStats, useGames } from "../modules/cornhole/data";
 import { useActiveGame } from "../modules/cornhole/active";
+import { useActiveScoreGame } from "../modules/skore/active";
+import { computeScoreStats, useScoreGames } from "../modules/skore/data";
+import { KINDS } from "../modules/skore/rules";
 import { useLinks } from "../modules/odkazy/data";
 import { computeMediaStats, useMedia } from "../modules/filmy/data";
 import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
@@ -165,6 +168,22 @@ function CornholeCard() {
   );
 }
 
+function SkoreCard() {
+  const { data: games = [] } = useScoreGames();
+  const stats = useMemo(() => computeScoreStats(games), [games]);
+  const { active } = useActiveScoreGame();
+  const navigate = useNavigate();
+  const leader = stats.players[0];
+  return (
+    <Card
+      moduleKey="skore"
+      num={String(stats.games)}
+      sub={active ? `${KINDS[active.kind].name.toLowerCase()} běží` : leader?.wins ? `${plural(stats.games, ["hra", "hry", "her"])}, vede ${leader.name}` : plural(stats.games, ["hra", "hry", "her"])}
+      quick={{ label: active ? "Pokračovat ve hře" : "Nová hra", text: <Sprite name="i-play" size={20} />, run: () => navigate(active ? "/m/skore/hra" : "/m/skore?nova=1") }}
+    />
+  );
+}
+
 function OdkazyCard() {
   const { data: links = [] } = useLinks();
   const navigate = useNavigate();
@@ -270,7 +289,7 @@ function UntroisCard() {
 
 const CARDS: Record<ModuleKey, () => ReactNode> = {
   piva: PivaCard, hlaskomat: HlaskomatCard, meditace: MeditaceCard, vdecnost: VdecnostCard, lide: LideCard, trenink: TreninkCard,
-  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard, untrois: UntroisCard,
+  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard, untrois: UntroisCard, skore: SkoreCard,
 };
 
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {

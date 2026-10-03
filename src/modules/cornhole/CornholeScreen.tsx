@@ -14,7 +14,7 @@ import { MODE_NAMES, totals, type Mode } from "./scoring";
 import { NewGameSheet, TeamSheet } from "./Sheets";
 
 const MODULE = MODULE_BY_KEY.cornhole;
-const HER: [string, string, string] = ["hra", "hry", "her"];
+const ODEHRANO: [string, string, string] = ["hra odehrána", "hry odehrány", "her odehráno"];
 const VYHER: [string, string, string] = ["výhra", "výhry", "výher"];
 
 const pct = (wins: number, games: number) => (games ? `${Math.round((wins / games) * 100)} %` : "–");
@@ -57,7 +57,7 @@ export function CornholeScreen() {
         <div className="hero">
           <span className="sprite-tile"><Sprite name="cornhole" size={96} /></span>
           <span className="hero-num">{stats.games}</span>
-          <span className="hero-cap">{plural(stats.games, HER)} odehráno</span>
+          <span className="hero-cap">{plural(stats.games, ODEHRANO)}</span>
           <p className="hero-line">{leader && leader.wins > 0 ? `Nejvíc výher: ${leader.name} (${leader.wins})` : "Hoď první pytlík."}</p>
         </div>
         {active ? (

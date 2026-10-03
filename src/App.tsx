@@ -16,6 +16,8 @@ import { TemplateEditor } from "./modules/trenink/TemplateEditor";
 import { CornholeScreen } from "./modules/cornhole/CornholeScreen";
 import { GameScreen } from "./modules/cornhole/GameScreen";
 import { MobileGameScreen } from "./modules/cornhole/MobileGame";
+import { PlayScreen } from "./modules/skore/PlayScreen";
+import { SkoreScreen } from "./modules/skore/SkoreScreen";
 import { OdkazyScreen } from "./modules/odkazy/OdkazyScreen";
 import { FilmyScreen } from "./modules/filmy/FilmyScreen";
 import { WishlistScreen } from "./modules/wishlist/WishlistScreen";
@@ -51,6 +53,8 @@ export function App() {
           <Route path="m/cornhole" element={<CornholeScreen />} />
           <Route path="m/cornhole/hra" element={<GameScreen />} />
           <Route path="m/cornhole/mobil" element={<MobileGameScreen />} />
+          <Route path="m/skore" element={<SkoreScreen />} />
+          <Route path="m/skore/hra" element={<PlayScreen />} />
           <Route path="m/odkazy" element={<OdkazyScreen />} />
           <Route path="m/filmy" element={<FilmyScreen />} />
           <Route path="m/wishlist" element={<WishlistScreen />} />
