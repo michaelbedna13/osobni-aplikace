@@ -34,3 +34,19 @@ describe("převod", () => {
     expect(q).toMatchObject({ text: "Mít 0,5 na kapse je základ.", author: "Dannowski", context: null, said_at: "2026-08-13T20:46:01.199Z", starred: true });
   });
 });
+
+describe("import lidí", () => {
+  it("rozpozná zálohu lidí a doplní jmeniny", async () => {
+    const { backupToPeople } = await import("./importBackup");
+    const b = parseBackup({ kind: "lide", people: [{ name: "Jáchym Navrátil", birth: "2001-11-12" }, { name: "Bětka Kadlecová", birth: "06-05", nameday: "11-19" }, { name: "Lily", nameday: null }, { foo: 1 }] });
+    expect(b.kind).toBe("lide");
+    if (b.kind !== "lide") return;
+    const people = await backupToPeople(b.people);
+    expect(people).toHaveLength(3);
+    expect(people[0]).toMatchObject({ name: "Jáchym Navrátil", birth_day: 12, birth_month: 11, birth_year: 2001, nameday: "08-16" });
+    expect(people[1]).toMatchObject({ birth_day: 5, birth_month: 6, birth_year: null, nameday: "11-19" });
+    expect(people[2]).toMatchObject({ birth_day: null, nameday: null });
+    const again = await backupToPeople(b.people);
+    expect(again[0].id).toBe(people[0].id);
+  });
+});

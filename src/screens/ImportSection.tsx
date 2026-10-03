@@ -1,12 +1,14 @@
 import { useState, type ChangeEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { backupToBeers, backupToQuotes, parseBackup, type Backup } from "../lib/importBackup";
+import { backupToBeers, backupToPeople, backupToQuotes, parseBackup, type Backup } from "../lib/importBackup";
+import type { Person } from "../modules/lide/data";
 import { formatDate, plural } from "../lib/format";
 import { createStore } from "../lib/db";
 import type { Beer } from "../modules/piva/data";
 import { QUOTES_KEY, store as quoteStore } from "../modules/hlaskomat/data";
 
 const beerStore = createStore<Beer>("beers", "drunk_at");
+const peopleStore = createStore<Person>("people", "created_at");
 
 type State =
   | { step: "idle" }
@@ -26,7 +28,7 @@ export function ImportSection() {
     if (!file) return;
     try {
       const backup = parseBackup(JSON.parse(await file.text()));
-      if (backup.kind === "unknown") setState({ step: "error", message: "Tenhle soubor nevypadá jako záloha Piv ani Hláškomatu." });
+      if (backup.kind === "unknown") setState({ step: "error", message: "Tenhle soubor nevypadá jako záloha Piv, Hláškomatu ani lidí." });
       else setState({ step: "ready", backup });
     } catch {
       setState({ step: "error", message: "Soubor se nepodařilo přečíst. Musí to být záloha ve formátu JSON." });
@@ -42,6 +44,10 @@ export function ImportSection() {
         await beerStore.insertMissing(await backupToBeers(backup.days));
         await queryClient.invalidateQueries({ queryKey: ["beers"] });
         setState({ step: "done", message: `Hotovo: ${backup.total} ${plural(backup.total, ["pivo", "piva", "piv"])} je v appce.` });
+      } else if (backup.kind === "lide") {
+        await peopleStore.insertMissing(await backupToPeople(backup.people));
+        await queryClient.invalidateQueries({ queryKey: ["people"] });
+        setState({ step: "done", message: `Hotovo: ${backup.people.length} ${plural(backup.people.length, ["člověk", "lidé", "lidí"])} je v Lidech a dárcích.` });
       } else {
         await quoteStore.insertMissing(await backupToQuotes(backup.quotes));
         await queryClient.invalidateQueries({ queryKey: QUOTES_KEY });
@@ -56,7 +62,7 @@ export function ImportSection() {
     <section className="sec">
       <h2>Import ze zálohy</h2>
       <div className="panel">
-      <p className="small">Záloha z původní appky na piva nebo z Hláškomatu (soubor .json). Když import spustíš znovu, nic se nezdvojí.</p>
+      <p className="small">Záloha z původní appky na piva, z Hláškomatu nebo seznam lidí (soubor .json). Když import spustíš znovu, nic se nezdvojí.</p>
       <label className="btn tap wide file-btn">
         Vybrat soubor
         <input type="file" accept="application/json,.json" onChange={onFile} />
@@ -67,6 +73,8 @@ export function ImportSection() {
           <p>
             {state.backup.kind === "piva"
               ? `Piva: ${state.backup.total} ${plural(state.backup.total, ["pivo", "piva", "piv"])} ve ${state.backup.days.length} dnech (${formatDate(new Date(`${state.backup.days[0].day}T12:00`), true)} až ${formatDate(new Date(`${state.backup.days[state.backup.days.length - 1].day}T12:00`), true)})`
+              : state.backup.kind === "lide"
+              ? `Lidé: ${state.backup.people.length} (${state.backup.people.slice(0, 3).map((p) => p.name).join(", ")}${state.backup.people.length > 3 ? "…" : ""})`
               : `Hláškomat: ${state.backup.quotes.length} ${plural(state.backup.quotes.length, ["hláška", "hlášky", "hlášek"])}`}
           </p>
           <button className="btn dark tap wide" onClick={run}>Importovat</button>
