@@ -535,6 +535,13 @@ a.btn-hero { text-decoration: none; }
 .ch-pips { display: flex; gap: 4px; }
 .ch-pips i { width: 10px; height: 10px; border: 2px solid var(--edge); background: var(--surface-2); }
 .ch-pips i.full { background: var(--team); }
+.ch-board-score.many { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 6px; }
+.ch-board-score.many .ch-player { grid-template-columns: minmax(0, 1fr) auto; padding: 4px 8px; }
+.ch-board-score.many .ch-name { grid-column: 1 / -1; font-size: 16px; }
+.ch-board-score.many .ch-points { grid-row: auto; order: 2; font-size: 30px; line-height: 1; }
+.ch-board-score.many .ch-pips { gap: 3px; }
+.ch-board-score.many .ch-pips i { width: 8px; height: 8px; }
+.ch-standings .rank { min-width: 24px; font-family: var(--font-pixel); font-size: 20px; color: var(--slate); }
 .ch-arena { position: relative; flex: 1; min-height: 0; margin: 10px -16px 0; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; border-top: var(--line); border-bottom: var(--line); background: #0E2719; }
 .ch-arena canvas { display: block; image-rendering: pixelated; }
 .ch-wind { position: absolute; top: 8px; right: 10px; padding: 2px 8px; background: rgba(0, 5, 2, 0.7); font-family: var(--font-pixel); font-size: 20px; color: var(--ink); pointer-events: none; }

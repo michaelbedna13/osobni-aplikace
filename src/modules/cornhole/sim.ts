@@ -7,7 +7,9 @@ export const HOLE = { x: 0, y: BOARD.back - 0.23, r: 0.076 };
 export const BAG_R = 0.075;
 export const BAG_T = 0.04;
 export const BAGS_EACH = 4;
-export const THROWS = BAGS_EACH * 2;
+export const MAX_PLAYERS = 6;
+/** Počet hodů v kole: každý hráč má 4 pytlíky. */
+export const throwsFor = (players: number) => BAGS_EACH * players;
 
 const G = 9.81;
 const ELEVATION = (32 * Math.PI) / 180;
@@ -24,7 +26,8 @@ const RESTITUTION = 0.5;
 export const WIND_LEVELS = [0, 0.25, 0.5, 0.8];
 
 export type BagState = "flight" | "board" | "hole" | "ground";
-export type Player = 0 | 1;
+/** Index hráče (0 až počet hráčů − 1). */
+export type Player = number;
 
 export interface Bag {
   owner: Player;
@@ -186,9 +189,9 @@ export function simulate(bags: Bag[], wind = 0, dt = 1 / 120): SimEvent[] {
   return all;
 }
 
-/** Výsledek kola pro oba hráče: kolik pytlíků zůstalo na desce a kolik spadlo do díry. */
-export function countRound(bags: Bag[]): Throw[] {
-  const out: Throw[] = [{ board: 0, hole: 0 }, { board: 0, hole: 0 }];
+/** Výsledek kola pro každého hráče: kolik pytlíků zůstalo na desce a kolik spadlo do díry. */
+export function countRound(bags: Bag[], players: number): Throw[] {
+  const out: Throw[] = Array.from({ length: players }, () => ({ board: 0, hole: 0 }));
   for (const b of bags) {
     if (b.state === "board") out[b.owner].board++;
     if (b.state === "hole") out[b.owner].hole++;
@@ -196,5 +199,5 @@ export function countRound(bags: Bag[]): Throw[] {
   return out;
 }
 
-/** Kdo hází n-tý pytlík kola (střídají se, začíná starter). */
-export const throwerAt = (n: number, starter: Player): Player => (n % 2 === 0 ? starter : ((1 - starter) as Player));
+/** Kdo hází n-tý pytlík kola (střídají se dokola, začíná starter). */
+export const throwerAt = (n: number, starter: Player, players: number): Player => (starter + n) % players;

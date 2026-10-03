@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { BAG_R, BOARD, HOLE, countRound, launch, simulate, throwerAt, type Bag } from "./sim";
 
 const steady = () => 0.5;
-const resting = (owner: 0 | 1, x: number, y: number, state: Bag["state"] = "board"): Bag => ({ owner, x, y, z: 0.2, vx: 0, vy: 0, vz: 0, state, moving: false });
+const resting = (owner: number, x: number, y: number, state: Bag["state"] = "board"): Bag => ({ owner, x, y, z: 0.2, vx: 0, vy: 0, vz: 0, state, moving: false });
 
 describe("hod", () => {
   it("slabý hod skončí před deskou, silný za ní", () => {
@@ -59,12 +59,13 @@ describe("srážky", () => {
 });
 
 describe("kolo", () => {
-  it("spočítá desku a díru pro oba hráče", () => {
+  it("spočítá desku a díru pro každého hráče", () => {
     const bags = [resting(0, 0, 8.6), resting(0, 0, 9, "hole"), resting(1, 0.1, 8.7), resting(1, 0.5, 7, "ground")];
-    expect(countRound(bags)).toEqual([{ board: 1, hole: 1 }, { board: 1, hole: 0 }]);
+    expect(countRound(bags, 3)).toEqual([{ board: 1, hole: 1 }, { board: 1, hole: 0 }, { board: 0, hole: 0 }]);
   });
 
-  it("hráči se střídají od toho, kdo začíná", () => {
-    expect([0, 1, 2, 3].map((n) => throwerAt(n, 1))).toEqual([1, 0, 1, 0]);
+  it("hráči se střídají dokola od toho, kdo začíná", () => {
+    expect([0, 1, 2, 3].map((n) => throwerAt(n, 1, 2))).toEqual([1, 0, 1, 0]);
+    expect([0, 1, 2, 3, 4].map((n) => throwerAt(n, 2, 3))).toEqual([2, 0, 1, 2, 0]);
   });
 });

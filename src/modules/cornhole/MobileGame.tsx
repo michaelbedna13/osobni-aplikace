@@ -2,18 +2,19 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerE
 import { useNavigate } from "react-router-dom";
 import { Burst } from "../../components/Burst";
 import { Sheet } from "../../components/Sheet";
+import { Sprite } from "../../components/Sprite";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { playTone, unlockAudio } from "../../lib/sound";
 import { usePeople } from "../lide/data";
 import { TEAM_COLORS, useTeams } from "./data";
 import {
-  addResult, headToHead, loadMatch, loadResults, loadSetup, newMatch, rollWind, saveMatch, saveSetup, windForce,
+  addResult, headToHead, loadMatch, loadResults, loadSetup, modeOf, newMatch, nextStarter, rollWind, saveMatch, saveSetup, windForce,
   type MobileMatch, type MobileSetup,
 } from "./mobile";
 import { drawScene, makeView, type View } from "./render";
-import { rawPoints, roundScores, totals, winnerOf } from "./scoring";
-import { BAGS_EACH, THROWS, countRound, launch, settled, step, throwerAt, type Bag, type Player, type SimEvent } from "./sim";
+import { MODE_HINTS, MODE_NAMES, rawPoints, roundScores, standings, totals, winnerOf, type Mode } from "./scoring";
+import { BAGS_EACH, MAX_PLAYERS, countRound, launch, settled, step, throwerAt, throwsFor, type Bag, type Player, type SimEvent } from "./sim";
 
 const MODULE = MODULE_BY_KEY.cornhole;
 const DT = 1 / 120;
@@ -43,7 +44,7 @@ export function MobileGameScreen() {
         <Play
           key={match.started_at}
           initial={match}
-          onRematch={(m, loser) => start({ names: m.names, colors: m.colors, target: m.target, wind: m.wind }, loser)}
+          onRematch={(m, loser) => start({ names: m.names, colors: m.colors, mode: modeOf(m), target: m.target, wind: m.wind }, loser)}
           onQuit={() => { saveMatch(null); setMatch(null); }}
         />
       ) : (
@@ -59,25 +60,48 @@ function Setup({ onStart }: { onStart: (s: MobileSetup) => void }) {
   const [setup, setSetup] = useState<MobileSetup>(loadSetup);
   const [editing, setEditing] = useState<Player | null>(null);
   const results = useMemo(loadResults, []);
-  const [a, b] = headToHead(results, setup.names);
+  const wins = headToHead(results, setup.names);
+  const count = setup.names.length;
+
+  // při přechodu mezi dvěma a třemi hráči se přepne i počítání (pak si ho jde zvolit ručně)
+  const withCount = (s: MobileSetup, names: string[], colors: string[]): MobileSetup => {
+    const mode = names.length >= 3 && s.names.length === 2 ? "soucet" : names.length === 2 && s.names.length >= 3 ? "rozdil" : s.mode;
+    return { ...s, names, colors, mode };
+  };
+  const addPlayer = () => setSetup((s) => withCount(s, [...s.names, `Hráč ${s.names.length + 1}`], [...s.colors, TEAM_COLORS.find((c) => !s.colors.includes(c)) ?? TEAM_COLORS[0]]));
+  const removePlayer = (p: Player) => setSetup((s) => withCount(s, s.names.filter((_, i) => i !== p), s.colors.filter((_, i) => i !== p)));
 
   return (
     <>
       <Topbar title="Cornhole v mobilu" back="/m/cornhole" />
-      <p className="hero-line ch-intro">Dva hráči, jeden telefon. Házíte střídavě, každý má 4 pytlíky na kolo.</p>
+      <p className="hero-line ch-intro">Jeden telefon, 2 až {MAX_PLAYERS} hráčů. Házíte dokola, každý má 4 pytlíky na kolo.</p>
 
       <div className="ch-duel">
-        {([0, 1] as Player[]).map((p) => (
+        {setup.names.map((name, p) => (
           <button key={p} className="ch-slot" style={{ "--team": setup.colors[p] } as CSSProperties} onClick={() => setEditing(p)}>
             <span className="bag big" style={{ background: setup.colors[p] }} aria-hidden="true" />
-            <b>{setup.names[p]}</b>
+            <b>{name}</b>
             <span className="small muted">změnit</span>
           </button>
         ))}
-        <span className="ch-vs" aria-hidden="true">vs</span>
+        {count === 2 && <span className="ch-vs" aria-hidden="true">vs</span>}
       </div>
-      {a + b > 0 && <p className="ch-h2h">Vzájemně <b>{a} : {b}</b></p>}
+      {count < MAX_PLAYERS && (
+        <button className="btn tap wide" onClick={addPlayer}><Sprite name="i-plus" size={20} /> Přidat hráče</button>
+      )}
+      {wins.some((w) => w > 0) && (
+        <p className="ch-h2h">
+          {count === 2 ? <>Vzájemně <b>{wins[0]} : {wins[1]}</b></> : <>Výhry v téhle partě: {setup.names.map((n, i) => `${n} ${wins[i]}`).join(" · ")}</>}
+        </p>
+      )}
 
+      <span className="field-label">Počítání bodů</span>
+      <div className="seg seg-wide" role="group" aria-label="Počítání bodů">
+        {(["rozdil", "soucet"] as Mode[]).map((m) => (
+          <button key={m} className={`seg-btn${setup.mode === m ? " on" : ""}`} aria-pressed={setup.mode === m} onClick={() => setSetup((s) => ({ ...s, mode: m }))}>{MODE_NAMES[m]}</button>
+        ))}
+      </div>
+      <p className="small muted mode-hint">{MODE_HINTS[setup.mode]}</p>
       <span className="field-label">Hraje se do</span>
       <div className="seg seg-wide" role="group" aria-label="Hraje se do">
         {[11, 21].map((t) => (
@@ -96,7 +120,7 @@ function Setup({ onStart }: { onStart: (s: MobileSetup) => void }) {
         <ul>
           <li>Polož prst kamkoli na hřiště, <b>táhni dolů</b> a pusť. Čím dál táhneš, tím silnější hod.</li>
           <li>Míříš opačně, jako prakem: táhni doleva a pytlík poletí doprava.</li>
-          <li>Deska 1 bod, díra 3 body. Body se v kole ruší, připíše si je jen lepší z vás.</li>
+          <li>Deska 1 bod, díra 3 body. {setup.mode === "rozdil" ? "Body se v kole ruší, připíše si je jen nejlepší." : "Každý si přičte, co hodil."}</li>
           <li>Pytlíky na desce můžeš trefit a shodit, nebo dorazit do díry.</li>
         </ul>
       </div>
@@ -108,29 +132,35 @@ function Setup({ onStart }: { onStart: (s: MobileSetup) => void }) {
           setup={setup}
           player={editing}
           onClose={() => setEditing(null)}
-          onSave={(name, color) => setSetup((s) => {
-            const names = [...s.names] as [string, string];
-            const colors = [...s.colors] as [string, string];
-            names[editing] = name;
-            colors[editing] = color;
-            return { ...s, names, colors };
-          })}
+          onRemove={count > 2 ? () => removePlayer(editing) : undefined}
+          onSave={(name, color) => setSetup((s) => ({
+            ...s,
+            names: s.names.map((n, i) => (i === editing ? name : n)),
+            colors: s.colors.map((c, i) => (i === editing ? color : c)),
+          }))}
         />
       )}
     </>
   );
 }
 
-function PlayerSheet({ setup, player, onClose, onSave }: { setup: MobileSetup; player: Player; onClose: () => void; onSave: (name: string, color: string) => void }) {
+function PlayerSheet({ setup, player, onClose, onSave, onRemove }: {
+  setup: MobileSetup;
+  player: Player;
+  onClose: () => void;
+  onSave: (name: string, color: string) => void;
+  onRemove?: () => void;
+}) {
   const [name, setName] = useState(setup.names[player]);
   const [color, setColor] = useState(setup.colors[player]);
   const { data: teams = [] } = useTeams();
   const { data: people = [] } = usePeople();
-  const other = setup.names[1 - player];
+  const taken = setup.colors.filter((_, i) => i !== player);
   const suggestions = useMemo(() => {
+    const others = setup.names.filter((_, i) => i !== player);
     const names = new Set([...teams.flatMap((t) => t.players), ...people.map((p) => p.name)]);
-    return [...names].filter((n) => n !== other).sort((x, y) => x.localeCompare(y, "cs")).slice(0, 16);
-  }, [teams, people, other]);
+    return [...names].filter((n) => !others.includes(n)).sort((x, y) => x.localeCompare(y, "cs")).slice(0, 16);
+  }, [teams, people, setup.names, player]);
 
   const save = (n = name) => {
     onSave(n.trim() || `Hráč ${player + 1}`, color);
@@ -150,11 +180,12 @@ function PlayerSheet({ setup, player, onClose, onSave }: { setup: MobileSetup; p
       )}
       <span className="field-label">Barva pytlíků</span>
       <div className="swatches" role="radiogroup" aria-label="Barva">
-        {TEAM_COLORS.filter((c) => c !== setup.colors[1 - player]).map((c) => (
+        {TEAM_COLORS.filter((c) => !taken.includes(c)).map((c) => (
           <button key={c} type="button" role="radio" aria-checked={color === c} aria-label={c} className={`swatch${color === c ? " on" : ""}`} style={{ background: c }} onClick={() => setColor(c)} />
         ))}
       </div>
       <button className="btn dark tap wide" onClick={() => save()}>Hotovo</button>
+      {onRemove && <button className="btn tap wide" onClick={() => { onRemove(); onClose(); }}>Odebrat hráče</button>}
     </Sheet>
   );
 }
@@ -172,7 +203,7 @@ const sounds: Record<SimEvent, () => void> = {
 };
 
 const phaseOf = (m: MobileMatch): Phase =>
-  winnerOf(m.rounds, "rozdil", 2, m.target) !== null ? "over" : m.thrown >= THROWS ? "round" : "aim";
+  winnerOf(m.rounds, modeOf(m), m.names.length, m.target) !== null ? "over" : m.thrown >= throwsFor(m.names.length) ? "round" : "aim";
 
 function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch: (m: MobileMatch, loser: Player) => void; onQuit: () => void }) {
   const navigate = useNavigate();
@@ -193,9 +224,11 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
   phaseRef.current = phase;
   dragRef.current = drag;
 
-  const scores = totals(game.rounds, "rozdil", 2);
-  const winner = winnerOf(game.rounds, "rozdil", 2, game.target);
-  const thrower = throwerAt(Math.min(game.thrown, THROWS - 1), game.starter);
+  const n = game.names.length;
+  const mode = modeOf(game);
+  const scores = totals(game.rounds, mode, n);
+  const winner = winnerOf(game.rounds, mode, n, game.target);
+  const thrower = throwerAt(Math.min(game.thrown, throwsFor(n) - 1), game.starter, n);
   const left = (p: Player) => BAGS_EACH - game.bags.filter((b) => b.owner === p).length - (phase === "flight" && thrower === p ? 1 : 0);
   const lastRound = game.rounds.at(-1);
 
@@ -209,18 +242,16 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
   const onSettled = () => {
     const g = gameRef.current;
     const bags = structuredClone(bagsRef.current);
+    const count = g.names.length;
     const thrown = g.thrown + 1;
-    if (thrown < THROWS) {
+    if (thrown < throwsFor(count)) {
       commit({ ...g, bags, thrown }, "aim");
       return;
     }
-    const rounds = [...g.rounds, countRound(bags)];
+    const rounds = [...g.rounds, countRound(bags, count)];
     const next = { ...g, bags, thrown, rounds };
-    const win = winnerOf(rounds, "rozdil", 2, g.target);
-    if (win !== null) {
-      const final = totals(rounds, "rozdil", 2) as [number, number];
-      addResult({ date: new Date().toISOString(), names: g.names, scores: final, winner: win as Player });
-    }
+    const win = winnerOf(rounds, modeOf(g), count, g.target);
+    if (win !== null) addResult({ date: new Date().toISOString(), names: g.names, scores: totals(rounds, modeOf(g), count), winner: win });
     commit(next, win !== null ? "over" : "round");
   };
   const settledRef = useRef(onSettled);
@@ -228,11 +259,10 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
 
   const nextRound = () => {
     const g = gameRef.current;
-    const gained = roundScores(g.rounds[g.rounds.length - 1], "rozdil");
-    const scorer = gained.findIndex((v) => v > 0);
     bagsRef.current = [];
-    // začíná ten, kdo v kole bodoval
-    commit({ ...g, bags: [], thrown: 0, starter: scorer >= 0 ? (scorer as Player) : g.starter, windLevel: rollWind(g.wind) }, "aim");
+    // začíná ten, kdo byl v kole nejlepší
+    const starter = nextStarter(g.rounds[g.rounds.length - 1], modeOf(g), g.starter);
+    commit({ ...g, bags: [], thrown: 0, starter, windLevel: rollWind(g.wind) }, "aim");
   };
 
   // velikost plátna: 1 herní pixel = 2 body obrazovky
@@ -289,7 +319,8 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
       const ctx = canvas?.getContext("2d");
       if (!ctx || !view) return;
       const d = dragRef.current;
-      const p = throwerAt(Math.min(g.thrown, THROWS - 1), g.starter);
+      const count = g.names.length;
+      const p = throwerAt(Math.min(g.thrown, throwsFor(count) - 1), g.starter, count);
       drawScene(ctx, view, bagsRef.current, g.colors, now / 1000, phaseRef.current === "aim" && d ? { ...d, color: g.colors[p] } : null);
     };
     raf = requestAnimationFrame(frame);
@@ -323,9 +354,9 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
     setDrag(null);
     if (!m || m.power < MIN_POWER || phaseRef.current !== "aim") return;
     const g = gameRef.current;
-    const p = throwerAt(g.thrown, g.starter);
+    const p = throwerAt(g.thrown, g.starter, g.names.length);
     bagsRef.current = [...bagsRef.current, launch(p, m.power, m.aim)];
-    const lastPower = [...g.lastPower] as MobileMatch["lastPower"];
+    const lastPower = g.names.map((_, i) => g.lastPower[i] ?? null);
     lastPower[p] = m.power;
     setGame({ ...g, lastPower });
     setPhase("flight");
@@ -336,14 +367,16 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
   };
 
   const wind = game.windLevel;
-  const ghost = game.lastPower[thrower];
+  const ghost = game.lastPower[thrower] ?? null;
+  const order = standings(scores);
+  const last = order[order.length - 1];
 
   return (
     <>
-      <Topbar title={phase === "over" ? "Konec hry" : `Kolo ${game.rounds.length + (phase === "round" ? 0 : 1)}`} back="/m/cornhole" right={<span className="game-mode">do {game.target}</span>} />
+      <Topbar title={phase === "over" ? "Konec hry" : `Kolo ${game.rounds.length + (phase === "round" ? 0 : 1)}`} back="/m/cornhole" right={<span className="game-mode">{MODE_NAMES[mode]} do {game.target}</span>} />
 
-      <div className="ch-board-score">
-        {([0, 1] as Player[]).map((p) => (
+      <div className={`ch-board-score${n > 2 ? " many" : ""}`} style={{ "--cols": n === 4 ? 4 : Math.min(n, 3) } as CSSProperties}>
+        {game.names.map((_, p) => (
           <div key={p} className={`ch-player${phase !== "over" && phase !== "round" && thrower === p ? " on" : ""}${winner === p ? " won" : ""}`} style={{ "--team": game.colors[p] } as CSSProperties}>
             <span className="ch-name"><span className="bag small" style={{ background: game.colors[p] }} aria-hidden="true" />{game.names[p]}</span>
             <span className="ch-points">{scores[p]}</span>
@@ -393,9 +426,20 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
             <Burst trigger={1} text="Výhra!" />
             <span className="bag big" style={{ background: game.colors[winner] }} aria-hidden="true" />
             <h2>Vyhrává {game.names[winner]}</h2>
-            <p className="ch-final">{scores[0]} : {scores[1]}</p>
-            {lastRound && <RoundLine game={game} round={lastRound} />}
-            <button className="btn-hero" onClick={() => onRematch(game, (1 - winner) as Player)}>Odveta</button>
+            {n === 2 ? <p className="ch-final">{scores[0]} : {scores[1]}</p> : (
+              <ol className="ch-round ch-standings">
+                {order.map((p, i) => (
+                  <li key={p}>
+                    <span className="rank">{i + 1}.</span>
+                    <span className="bag small" style={{ background: game.colors[p] }} aria-hidden="true" />
+                    <span className="grow">{game.names[p]}</span>
+                    <b>{scores[p]}</b>
+                  </li>
+                ))}
+              </ol>
+            )}
+            {n === 2 && lastRound && <RoundLine game={game} round={lastRound} />}
+            <button className="btn-hero" onClick={() => onRematch(game, last)}>Odveta</button>
             <button className="btn tap wide" onClick={() => { onQuit(); navigate("/m/cornhole"); }}>Hotovo</button>
           </div>
         )}
@@ -409,10 +453,10 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
 }
 
 function RoundLine({ game, round }: { game: MobileMatch; round: MobileMatch["rounds"][number] }) {
-  const gained = roundScores(round, "rozdil");
+  const gained = roundScores(round, modeOf(game));
   return (
     <ul className="ch-round">
-      {([0, 1] as Player[]).map((p) => (
+      {game.names.map((_, p) => (
         <li key={p}>
           <span className="bag small" style={{ background: game.colors[p] }} aria-hidden="true" />
           <span className="grow">{game.names[p]}</span>

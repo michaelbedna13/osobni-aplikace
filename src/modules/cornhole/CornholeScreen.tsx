@@ -68,7 +68,7 @@ export function CornholeScreen() {
           </button>
         )}
         <button className="btn tap wide ch-mobile-link" onClick={() => navigate("/m/cornhole/mobil")}>
-          <Sprite name="cornhole" size={24} /> Hra v mobilu pro dva
+          <Sprite name="cornhole" size={24} /> Hra v mobilu
         </button>
       </div>
 

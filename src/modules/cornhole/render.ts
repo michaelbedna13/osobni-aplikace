@@ -180,7 +180,7 @@ function drawAim(ctx: CanvasRenderingContext2D, v: View, a: Aim) {
   ctx.fillRect(hx - 2, hy - 2, 4, 4);
 }
 
-export function drawScene(ctx: CanvasRenderingContext2D, v: View, bags: Bag[], colors: [string, string], time: number, aim: Aim | null) {
+export function drawScene(ctx: CanvasRenderingContext2D, v: View, bags: Bag[], colors: string[], time: number, aim: Aim | null) {
   drawGrass(ctx, v);
   const behind = bags.filter((b) => b.state === "ground" && b.y > BOARD.back);
   const front = bags.filter((b) => b.state === "ground" && b.y <= BOARD.back);

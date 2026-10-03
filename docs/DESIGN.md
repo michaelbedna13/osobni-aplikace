@@ -230,10 +230,10 @@ Paleta vychází z **Endesga 32**.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
-- **Cornhole v mobilu** (`.ch-mobile`): hra pro dva na jednom telefonu. Hřiště je plátno v nízkém rozlišení
+- **Cornhole v mobilu** (`.ch-mobile`): hra pro 2–6 hráčů na jednom telefonu. Hřiště je plátno v nízkém rozlišení
   (1 herní pixel = 2 body), kreslené po řádcích celými pixely: tráva v pruzích (`grass`, `grass-stripe`),
   dřevěná deska (`wood`, `wood-dark`, `wood-edge`), černá díra, pytlíky jako kvádry v barvě hráče se stínem
-  v letu. Nad hřištěm skóre obou hráčů (`.ch-player`, kdo hází má rámeček v barvě pytlíků, čtverečky = pytlíky
+  v letu. Nad hřištěm skóre hráčů (`.ch-player`; od tří hráčů zhuštěně ve 3–4 sloupcích, kdo hází má rámeček v barvě pytlíků, čtverečky = pytlíky
   v ruce). V hřišti vítr vpravo nahoře, síla hodu vlevo (`.ch-power`, čárka = minulý hod), dole kdo hází.
   Ovládání prakem: táhni dolů a pusť. Konec kola a výhra jsou panely uprostřed hřiště. Spodní lišta se skryje.
 - **Odkaz** (`.link-card`): náhled 64 px (obrázek webu / nahraný obrázek / písmeno domény), název na 2 řádky,
