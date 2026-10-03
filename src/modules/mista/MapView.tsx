@@ -15,7 +15,10 @@ interface Props {
 
 const icon = (cls: string) => L.divIcon({ className: "", html: `<span class="map-pin ${cls}"></span>`, iconSize: [24, 24], iconAnchor: [12, 24] });
 
-/** Mapa (Leaflet + tmavé podklady CARTO z OpenStreetMap). */
+/**
+ * Mapa (Leaflet + podklady OpenStreetMap, bez klíče). Dlaždice jsou světlé,
+ * do tmavého vzhledu je převádí CSS filtr na .leaflet-tile-pane.
+ */
 export function MapView({ places, selectedId, pending, me, onSelect, onPick }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
@@ -27,10 +30,10 @@ export function MapView({ places, selectedId, pending, me, onSelect, onPick }: P
   useEffect(() => {
     if (!box.current) return;
     const m = L.map(box.current, { zoomControl: false, attributionControl: true }).setView([49.8, 15.5], 7);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    m.attributionControl.setPrefix(false);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
-      subdomains: "abcd",
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>',
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(m);
     m.on("click", (e: L.LeafletMouseEvent) => pickRef.current?.(e.latlng.lat, e.latlng.lng));
     layer.current = L.layerGroup().addTo(m);

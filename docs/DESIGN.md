@@ -242,7 +242,7 @@ Paleta vychází z **Endesga 32**.
   hodnocení 1–5 hvězdiček (sprite hvězdy, nevybrané šedé). Zapisuje se ručně textem, bez katalogů.
 - **Přání** (`.wish-card`): jako odkaz, navíc cena · priorita a štítek čekání (`.wait-tag`; po 30 dnech limetkový
   „pořád to chceš?“).
-- **Mapa** (`.map-box`, Leaflet + tmavé podklady CARTO): čtvercové pixelové špendlíky v akcentu modulu, navštívená
+- **Mapa** (`.map-box`, Leaflet + podklady OpenStreetMap bez klíče, ztmavené CSS filtrem do zelena): čtvercové pixelové špendlíky v akcentu modulu, navštívená
   místa limetkově, vybrané s obrysem.
 - **Částky** (`.money`) v pixelovém písmu; „dluží mi“ limetkově, „dlužím“ v barvě `danger`. Předplatné, které se
   obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.

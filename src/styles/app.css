@@ -617,6 +617,8 @@ a.btn-hero { text-decoration: none; }
 /* ---------- Místa ---------- */
 .map-wrap { position: relative; margin-top: 14px; }
 .map-box, .map-box.leaflet-container { height: min(52vh, 420px); border: var(--line); box-shadow: var(--shadow); background: var(--app-bg); font-family: var(--font-body); }
+/* světlé dlaždice OpenStreetMap převedené do tmavé zelené */
+.map-box .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(1.7) contrast(0.75) saturate(0.4) sepia(0.35) hue-rotate(75deg); }
 .map-box.picking { cursor: crosshair; outline: 3px dashed var(--lime); outline-offset: -3px; }
 .map-box .leaflet-control-attribution { background: rgba(2, 15, 8, 0.75); color: var(--slate); font-family: var(--font-body); font-size: 14px; line-height: 1.2; }
 .map-box .leaflet-control-attribution a { color: var(--slate); }
