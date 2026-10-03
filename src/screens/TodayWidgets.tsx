@@ -144,7 +144,6 @@ export function WeatherCard() {
       )}
       <div className="weather-foot">
         <button className="link inline" onClick={() => setPicking(true)}>{place.name}</button>
-        <span>Open-Meteo · DWD ICON, ECMWF</span>
       </div>
       {picking && <PlaceSheet onClose={() => setPicking(false)} onChoose={choose} onRemove={() => { savePlace(null); setPlace(null); setPicking(false); }} />}
     </section>
@@ -186,6 +185,8 @@ function PlaceSheet({ onClose, onChoose, onRemove }: { onClose: () => void; onCh
         </ul>
       ) : <p className="small muted">Nic se nenašlo.</p>)}
       {onRemove && <button className="link" onClick={onRemove}>Vypnout počasí</button>}
+      {/* licence dat CC BY 4.0 vyžaduje uvedení zdroje – stačí tady, mimo hlavní obrazovku */}
+      <p className="weather-credit">Data o počasí: <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo.com</a> (CC BY 4.0), modely DWD ICON a ECMWF</p>
     </Sheet>
   );
 }

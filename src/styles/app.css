@@ -708,3 +708,5 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .debt-col p { display: flex; justify-content: space-between; gap: 6px; }
 .debt-col p span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .debt-grid .panel + .panel { margin-top: 0; }
+.weather-credit { margin-top: 14px; font-size: 14px; color: var(--idle); }
+.weather-credit a { color: inherit; }
