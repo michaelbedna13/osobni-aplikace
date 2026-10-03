@@ -11,7 +11,7 @@ import { MODULE_BY_KEY } from "../../lib/modules";
 import { useSettings } from "../../lib/settings";
 import { useActiveWorkout } from "./active";
 import {
-  computeTrainingStats, doneSetCount, formatKg, formatSeconds, formatSet, personalRecords, prefillSets, useDeleteWorkout, useExercises,
+  computeTrainingStats, doneSetCount, estimateTemplate, formatMinutes, formatKg, formatSeconds, formatSet, personalRecords, prefillSets, useDeleteWorkout, useExercises,
   useTemplates, useWorkouts, workoutVolume, type Workout, type WorkoutTemplate,
 } from "./data";
 
@@ -51,7 +51,7 @@ export function TreninkScreen() {
       name: t?.name ?? "Trénink",
       template_id: t?.id ?? null,
       started_at: new Date().toISOString(),
-      exercises: t ? t.items.map((it) => ({ exercise_id: it.exercise_id, sets: prefillSets(it.exercise_id, it.sets, workouts) })) : [],
+      exercises: t ? t.items.map((it) => ({ exercise_id: it.exercise_id, sets: prefillSets(it.exercise_id, it.sets, workouts), ...(it.rest_s !== undefined ? { rest_s: it.rest_s } : {}) })) : [],
       rest_until: null,
       rest_total: 0,
     });
@@ -105,7 +105,7 @@ export function TreninkScreen() {
                       <span className="grow">
                         <b>{t.name}</b>
                         <span className="occasion-kind">
-                          {t.items.length} {plural(t.items.length, ["cvik", "cviky", "cviků"])}
+                          {t.items.length} {plural(t.items.length, ["cvik", "cviky", "cviků"])} · ≈ {formatMinutes(estimateTemplate(t.items, byId, workouts, t.rest_between_s).total)}
                           {last ? ` · naposledy ${relativeTime(new Date(last.started_at)).toLowerCase()}` : ""}
                         </span>
                       </span>

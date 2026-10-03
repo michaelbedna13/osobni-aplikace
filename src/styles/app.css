@@ -632,3 +632,8 @@ a.btn-hero { text-decoration: none; }
 .modal-edit .field-label:first-child { margin-top: 0; }
 .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
 .modal-row .btn { width: 100%; }
+.tpl-rest { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; font-size: 14px; color: var(--slate); }
+.tpl-rest select.input { width: auto; min-height: 40px; padding: 4px 30px 4px 10px; font-size: 16px; }
+.tpl-rest.between { margin-top: 14px; padding: 10px 12px; background: var(--paper); border: var(--line); }
+.estimate { display: grid; gap: 2px; margin-top: 14px; }
+.estimate b { font-family: var(--font-pixel); font-size: 48px; font-weight: 400; line-height: 1; }

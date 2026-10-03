@@ -52,3 +52,18 @@ describe("trénink", () => {
     expect(addSet(done, 0).exercises[0].sets[1]).toEqual(set(20, 10, false));
   });
 });
+
+describe("odhad délky tréninku", () => {
+  it("série, pauzy mezi sériemi a mezi cviky", async () => {
+    const { estimateTemplate, formatMinutes } = await import("./data");
+    const { BUILTIN_EXERCISES } = await import("./exercises");
+    const byId = new Map(BUILTIN_EXERCISES.map((e) => [e.id, e]));
+    // tlaky (pauza 120 s) 3 série + prkno (výdrž) 2 série s vlastní pauzou 30 s, mezi cviky 60 s
+    const est = estimateTemplate([{ exercise_id: "b-db-bench", sets: 3 }, { exercise_id: "b-plank", sets: 2, rest_s: 30 }], byId, [], 60);
+    expect(est.work).toBe(3 * 40 + 2 * 45);
+    expect(est.rest).toBe(2 * 120 + 30 + 60);
+    expect(est.total).toBe(540);
+    expect(formatMinutes(est.total)).toBe("9 min");
+    expect(formatMinutes(75 * 60)).toBe("1 h 15 min");
+  });
+});

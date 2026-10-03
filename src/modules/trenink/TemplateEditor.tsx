@@ -3,7 +3,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Sprite } from "../../components/Sprite";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
-import { useAddTemplate, useDeleteTemplate, useExercises, useTemplates, useUpdateTemplate, type TemplateItem } from "./data";
+import { DEFAULT_REST_BETWEEN, estimateTemplate, formatMinutes, setSeconds, useAddTemplate, useDeleteTemplate, useExercises, useTemplates, useUpdateTemplate, useWorkouts, type TemplateItem, type WorkoutTemplate } from "./data";
 import { ExercisePicker } from "./ExercisePicker";
 
 const MODULE = MODULE_BY_KEY.trenink;
@@ -17,11 +17,17 @@ export function TemplateEditor() {
   return <Editor key={existing?.id ?? "nova"} initial={existing ?? null} />;
 }
 
-function Editor({ initial }: { initial: { id: string; name: string; items: TemplateItem[]; created_at: string } | null }) {
+const REST_OPTIONS = [0, 30, 45, 60, 90, 120, 150, 180, 240, 300];
+const restLabel = (s: number) => (s === 0 ? "bez pauzy" : s < 60 ? `${s} s` : s % 60 ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")} min` : `${s / 60} min`);
+
+function Editor({ initial }: { initial: WorkoutTemplate | null }) {
   const [name, setName] = useState(initial?.name ?? "");
   const [items, setItems] = useState<TemplateItem[]>(initial?.items ?? []);
   const [picking, setPicking] = useState(false);
+  const [restBetween, setRestBetween] = useState(initial?.rest_between_s ?? DEFAULT_REST_BETWEEN);
   const { byId } = useExercises();
+  const { data: workouts = [] } = useWorkouts();
+  const estimate = estimateTemplate(items, byId, workouts, restBetween);
   const add = useAddTemplate();
   const update = useUpdateTemplate();
   const remove = useDeleteTemplate();
@@ -38,7 +44,7 @@ function Editor({ initial }: { initial: { id: string; name: string; items: Templ
   });
 
   const save = () => {
-    const t = { id: initial?.id ?? crypto.randomUUID(), name: name.trim(), items, created_at: initial?.created_at ?? new Date().toISOString() };
+    const t = { id: initial?.id ?? crypto.randomUUID(), name: name.trim(), items, rest_between_s: restBetween, created_at: initial?.created_at ?? new Date().toISOString() };
     if (initial) update.mutate(t);
     else add.mutate(t);
     navigate("/m/trenink", { replace: true });
@@ -66,6 +72,13 @@ function Editor({ initial }: { initial: { id: string; name: string; items: Templ
                   <span>{it.sets} {it.sets === 1 ? "série" : it.sets < 5 ? "série" : "sérií"}</span>
                   <button className="icon-btn" aria-label="Více sérií" disabled={it.sets >= 10} onClick={() => change(i, { sets: it.sets + 1 })}>+</button>
                 </div>
+                <label className="tpl-rest">
+                  <span>Pauza</span>
+                  <select className="input" value={it.rest_s ?? byId.get(it.exercise_id)?.rest_s ?? 90} onChange={(e) => change(i, { rest_s: Number(e.target.value) })}>
+                    {REST_OPTIONS.map((s) => <option key={s} value={s}>{restLabel(s)}</option>)}
+                  </select>
+                </label>
+                <span className="small muted">≈ {formatMinutes(it.sets * setSeconds(byId.get(it.exercise_id), workouts) + Math.max(0, it.sets - 1) * (it.rest_s ?? byId.get(it.exercise_id)?.rest_s ?? 90))}</span>
               </div>
               <button className="link" onClick={() => setItems((list) => list.filter((_, j) => j !== i))}>Odebrat</button>
             </li>
@@ -73,6 +86,23 @@ function Editor({ initial }: { initial: { id: string; name: string; items: Templ
         </ol>
       )}
       <button className="btn tap wide" onClick={() => setPicking(true)}><Sprite name="i-plus" size={20} /> Přidat cvik</button>
+
+      {items.length > 1 && (
+        <label className="tpl-rest between">
+          <span>Pauza mezi cviky</span>
+          <select className="input" value={restBetween} onChange={(e) => setRestBetween(Number(e.target.value))}>
+            {REST_OPTIONS.map((s) => <option key={s} value={s}>{restLabel(s)}</option>)}
+          </select>
+        </label>
+      )}
+
+      {items.length > 0 && (
+        <div className="panel estimate" aria-live="polite">
+          <span className="small muted">Celkem i s pauzami</span>
+          <b>≈ {formatMinutes(estimate.total)}</b>
+          <span className="small">cvičení {formatMinutes(estimate.work)} + pauzy {formatMinutes(estimate.rest)}</span>
+        </div>
+      )}
       <button className="btn-hero" disabled={!valid} onClick={save}>Uložit trénink</button>
       {initial && (
         <button className="btn tap wide" onClick={() => {

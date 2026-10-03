@@ -85,7 +85,7 @@ export function WorkoutScreen() {
             isFirst={ex === 0}
             isLast={ex === active.exercises.length - 1}
             onChange={(set, patch) => update((w) => setField(w, ex, set, patch))}
-            onToggle={(set) => { unlockAudio(); update((w) => toggleDone(w, ex, set, exercise?.rest_s ?? 90)); }}
+            onToggle={(set) => { unlockAudio(); update((w) => toggleDone(w, ex, set, we.rest_s ?? exercise?.rest_s ?? 90)); }}
             onAddSet={() => update((w) => addSet(w, ex))}
             onRemoveSet={() => update((w) => removeSet(w, ex))}
             onMove={(dir) => update((w) => moveExercise(w, ex, dir))}

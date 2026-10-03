@@ -14,6 +14,8 @@ export interface SetEntry {
 export interface WorkoutExercise {
   exercise_id: string;
   sets: SetEntry[];
+  /** Pauza po sérii podle tréninku (jinak výchozí pauza cviku). */
+  rest_s?: number;
 }
 
 export interface Workout {
@@ -29,12 +31,16 @@ export interface Workout {
 export interface TemplateItem {
   exercise_id: string;
   sets: number;
+  /** Pauza mezi sériemi; když chybí, platí výchozí pauza cviku. */
+  rest_s?: number;
 }
 
 export interface WorkoutTemplate {
   id: string;
   name: string;
   items: TemplateItem[];
+  /** Pauza mezi cviky (s). */
+  rest_between_s?: number;
   created_at: string;
 }
 
@@ -86,7 +92,7 @@ export const useAddExercise = () =>
 export const useAddTemplate = () =>
   useListMutation<WorkoutTemplate, WorkoutTemplate>(KEYS.templates, byName, (t) => templateStore.insert(t), (l, t) => [...l, t]);
 export const useUpdateTemplate = () =>
-  useListMutation<WorkoutTemplate, WorkoutTemplate>(KEYS.templates, byName, ({ id, name, items }) => templateStore.update(id, { name, items }), (l, t) => l.map((x) => (x.id === t.id ? t : x)));
+  useListMutation<WorkoutTemplate, WorkoutTemplate>(KEYS.templates, byName, ({ id, name, items, rest_between_s }) => templateStore.update(id, { name, items, rest_between_s }), (l, t) => l.map((x) => (x.id === t.id ? t : x)));
 export const useDeleteTemplate = () =>
   useListMutation<WorkoutTemplate, string>(KEYS.templates, byName, (id) => templateStore.remove(id), (l, id) => l.filter((t) => t.id !== id));
 export const useAddWorkout = () =>
@@ -235,4 +241,38 @@ export function formatSet(s: SetEntry) {
   if (s.seconds) return formatSeconds(s.seconds);
   if (s.weight) return `${s.weight.toLocaleString("cs-CZ")} × ${s.reps ?? 0}`;
   return `${s.reps ?? 0}×`;
+}
+
+// ---------- odhad délky tréninku ----------
+
+export const DEFAULT_REST_BETWEEN = 120;
+/** Odhad doby jedné série s opakováním (s). */
+const REP_SET_S = 40;
+
+/** Doba jedné série: u výdrže podle posledního tréninku (jinak 45 s), jinak ~40 s. */
+export function setSeconds(e: Exercise | undefined, workouts: Workout[]): number {
+  if (e?.kind !== "time") return REP_SET_S;
+  const last = lastSetsFor(e.id, workouts).map((s) => s.seconds ?? 0).filter(Boolean);
+  return last.length ? Math.round(last.reduce((a, b) => a + b, 0) / last.length) : 45;
+}
+
+export interface Estimate { work: number; rest: number; total: number }
+
+/** Odhad délky tréninku: série + pauzy mezi sériemi + pauzy mezi cviky (v sekundách). */
+export function estimateTemplate(items: TemplateItem[], byId: Map<string, Exercise>, workouts: Workout[], restBetween = DEFAULT_REST_BETWEEN): Estimate {
+  let work = 0;
+  let rest = 0;
+  items.forEach((it, i) => {
+    const e = byId.get(it.exercise_id);
+    work += it.sets * setSeconds(e, workouts);
+    rest += Math.max(0, it.sets - 1) * (it.rest_s ?? e?.rest_s ?? 90);
+    if (i < items.length - 1) rest += restBetween;
+  });
+  return { work, rest, total: work + rest };
+}
+
+/** „~35 min“, „~1 h 10 min“ */
+export function formatMinutes(seconds: number) {
+  const m = Math.max(1, Math.round(seconds / 60));
+  return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60} min` : ""}`;
 }
