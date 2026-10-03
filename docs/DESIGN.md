@@ -16,6 +16,11 @@ colors:
   slate: "#9FB8B8"
   track: "#071710"
   scrim: "rgba(0, 5, 2, 0.75)"
+  grass: "#0E2719"
+  grass-stripe: "#12301F"
+  wood: "#E4A672"
+  wood-dark: "#B86F50"
+  wood-edge: "#733E39"
   piva: "#FEAE34"
   piva-deep: "#F77622"
   hlaskomat: "#0099DB"
@@ -225,6 +230,12 @@ Paleta vychází z **Endesga 32**.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
+- **Cornhole v mobilu** (`.ch-mobile`): hra pro dva na jednom telefonu. Hřiště je plátno v nízkém rozlišení
+  (1 herní pixel = 2 body), kreslené po řádcích celými pixely: tráva v pruzích (`grass`, `grass-stripe`),
+  dřevěná deska (`wood`, `wood-dark`, `wood-edge`), černá díra, pytlíky jako kvádry v barvě hráče se stínem
+  v letu. Nad hřištěm skóre obou hráčů (`.ch-player`, kdo hází má rámeček v barvě pytlíků, čtverečky = pytlíky
+  v ruce). V hřišti vítr vpravo nahoře, síla hodu vlevo (`.ch-power`, čárka = minulý hod), dole kdo hází.
+  Ovládání prakem: táhni dolů a pusť. Konec kola a výhra jsou panely uprostřed hřiště. Spodní lišta se skryje.
 - **Odkaz** (`.link-card`): náhled 64 px (obrázek webu / nahraný obrázek / písmeno domény), název na 2 řádky,
   web · kdy · kolekce, limetkový čtvereček = „na později“. Detail ve spodním panelu s „Otevřít“.
 - **Film / kniha** (`.media-row`): štítek druhu (`.kind-tag`), název, autor / režisér · kdo doporučil; u hotových

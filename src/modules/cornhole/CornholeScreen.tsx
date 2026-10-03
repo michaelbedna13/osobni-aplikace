@@ -67,6 +67,9 @@ export function CornholeScreen() {
             <Sprite name="i-play" size={24} /> {teams.length ? "Nová hra" : "Založit první tým"}
           </button>
         )}
+        <button className="btn tap wide ch-mobile-link" onClick={() => navigate("/m/cornhole/mobil")}>
+          <Sprite name="cornhole" size={24} /> Hra v mobilu pro dva
+        </button>
       </div>
 
       {error && <p className="error">Nepodařilo se načíst data. Zkontroluj připojení.</p>}

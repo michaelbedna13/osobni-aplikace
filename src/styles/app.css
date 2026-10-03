@@ -510,6 +510,49 @@ a.btn-hero { text-decoration: none; }
 .rounds tbody th { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--slate); }
 .rounds td b { display: block; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
 .rounds td span { font-size: 14px; color: var(--slate); white-space: nowrap; }
+
+/* Cornhole v mobilu: hra pro dva na jednom telefonu */
+.ch-mobile-link { margin-top: 10px; }
+.screen.ch-mobile { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; padding-bottom: calc(env(safe-area-inset-bottom) + 8px); }
+.ch-mobile:has(.ch-intro) { height: auto; min-height: 100dvh; overflow: visible; }
+.ch-intro { margin-top: 12px; }
+.ch-duel { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.ch-slot { display: grid; justify-items: center; gap: 2px; padding: 16px 8px 12px; background: color-mix(in srgb, var(--team) 14%, var(--paper)); border: var(--line); box-shadow: var(--shadow); color: var(--ink); }
+.ch-slot b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; line-height: 1.1; overflow-wrap: anywhere; }
+.ch-vs { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 0 6px; background: var(--edge); font-family: var(--font-pixel); font-size: 20px; color: var(--lime); }
+.ch-h2h { margin-top: 10px; text-align: center; color: var(--slate); }
+.ch-h2h b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; color: var(--ink); }
+.ch-rules { margin-top: 20px; }
+.ch-rules ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px; }
+.ch-rules li { color: var(--slate); }
+.ch-rules b { color: var(--ink); font-weight: 600; }
+.ch-board-score { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.ch-player { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0 8px; padding: 6px 10px; background: var(--paper); border: var(--line); }
+.ch-player.on { background: color-mix(in srgb, var(--team) 22%, var(--paper)); outline: 2px solid var(--team); outline-offset: -4px; }
+.ch-player.won { background: color-mix(in srgb, var(--team) 30%, var(--paper)); }
+.ch-name { font-family: var(--font-pixel); font-size: 20px; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ch-points { grid-row: span 2; font-family: var(--font-pixel); font-size: 48px; line-height: 1; font-variant-numeric: tabular-nums; }
+.ch-pips { display: flex; gap: 4px; }
+.ch-pips i { width: 10px; height: 10px; border: 2px solid var(--edge); background: var(--surface-2); }
+.ch-pips i.full { background: var(--team); }
+.ch-arena { position: relative; flex: 1; min-height: 0; margin: 10px -16px 0; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; border-top: var(--line); border-bottom: var(--line); background: #0E2719; }
+.ch-arena canvas { display: block; image-rendering: pixelated; }
+.ch-wind { position: absolute; top: 8px; right: 10px; padding: 2px 8px; background: rgba(0, 5, 2, 0.7); font-family: var(--font-pixel); font-size: 20px; color: var(--ink); pointer-events: none; }
+.ch-power { position: absolute; left: 10px; bottom: 16px; width: 14px; height: 40%; border: var(--line); background: rgba(0, 5, 2, 0.6); pointer-events: none; }
+.ch-power-fill { position: absolute; left: 0; right: 0; bottom: 0; }
+.ch-power-ghost { position: absolute; left: -6px; right: -6px; height: 2px; background: var(--ink); }
+.ch-hint { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); padding: 4px 10px; white-space: nowrap; background: rgba(0, 5, 2, 0.75); border: 2px solid var(--team); font-size: 14px; color: var(--slate); pointer-events: none; }
+.ch-hint b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--ink); }
+.ch-overlay { position: absolute; left: 16px; right: 16px; top: 50%; transform: translateY(-50%); box-shadow: var(--shadow-big); text-align: center; }
+.ch-overlay.win-panel { margin-top: 0; box-shadow: inset 0 0 0 3px var(--team), var(--shadow-big); }
+.ch-overlay h2 { font-size: 36px; }
+.ch-overlay .bag.big { display: block; }
+.ch-final { font-family: var(--font-pixel); font-size: 48px; line-height: 1; margin-top: 4px; }
+.ch-round { list-style: none; margin: 12px 0 4px; padding: 0; display: grid; gap: 8px; text-align: left; }
+.ch-round li { display: flex; align-items: center; gap: 8px; }
+.ch-round li b { min-width: 24px; text-align: right; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
+.ch-gain { font-family: var(--font-pixel); font-size: 20px; color: var(--lime); }
+.ch-quit { align-self: center; margin-top: 4px; font-size: 16px; color: var(--slate); }
 .game-actions { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; margin-top: 18px; }
 .ranking { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .ranking li { display: flex; align-items: center; gap: 8px; }

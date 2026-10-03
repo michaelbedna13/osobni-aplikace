@@ -34,7 +34,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Trénink (doma s jednoručkami a s vlastní vahou: vlastní tréninky ze šablon, série × opakování × kg
   předvyplněné z minula, pauza s pípnutím, rekordy, cíl týdně).
   Cornhole (rodinné hry: týmy s hráči, 2 a víc týmů, body sčítáním nebo rozdílem, zápis pytlíků
-  na desce / v díře po kolech, do 21, žebříček týmů a hráčů, rekordy).
+  na desce / v díře po kolech, do 21, žebříček týmů a hráčů, rekordy; k tomu hra Cornhole v mobilu
+  pro dva na jednom telefonu: házení prstem, vítr, body se ruší, bilance mezi hráči).
   Odkazy (ukládání z menu Sdílet přes Zkratku, náhledy, kolekce, obrázky a screenshoty, na později).
   Filmy a knihy (zapisují se ručně textem: chci / teď / hotovo, hodnocení, kdo doporučil,
   čtenářská výzva).
