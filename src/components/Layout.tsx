@@ -1,4 +1,5 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { useKeyboardAware } from "../lib/keyboard";
 import type { SpriteName } from "../lib/sprites";
 import { Sprite } from "./Sprite";
 
@@ -11,6 +12,7 @@ const tabs: { to: string; label: string; icon: SpriteName; match: (path: string)
 
 export function Layout() {
   const { pathname } = useLocation();
+  useKeyboardAware();
   return (
     <div className="app">
       <main className="app-main">

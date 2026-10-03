@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Burst } from "../../components/Burst";
-import { Sheet } from "../../components/Sheet";
+import { Modal } from "../../components/Modal";
 import { Sprite } from "../../components/Sprite";
 import { useToast } from "../../components/Toast";
 import { Tabs } from "../../components/Tabs";
@@ -107,7 +107,7 @@ export function HlaskomatScreen() {
         <ul className="quote-list">
           {visible.map((q) => (
             <li key={q.id} className="quote-card">
-              <button className="quote-body" onClick={() => setEditing(q)} aria-label={`Upravit hlášku: ${q.text}`}>
+              <button className="quote-body" onClick={() => setEditing(q)} aria-label={`Otevřít hlášku: ${q.text}`}>
                 <p className="bubble-text">„{q.text}“</p>
                 <p className="quote-meta">
                   {q.author && <b>{q.author}</b>}
@@ -156,7 +156,7 @@ export function HlaskomatScreen() {
       )}
 
       {editing && (
-        <QuoteSheet
+        <QuoteModal
           quote={editing === "new" ? null : editing}
           quotes={quotes}
           onClose={closeSheet}
@@ -176,17 +176,19 @@ function FilterChip({ on, onClick, children }: { on: boolean; onClick: () => voi
 const localDay = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const today = () => localDay(new Date());
 
-function QuoteSheet({ quote, quotes, onClose, onSaved }: { quote: Quote | null; quotes: Quote[]; onClose: () => void; onSaved: (text: string, isNew: boolean) => void }) {
+function QuoteModal({ quote, quotes, onClose, onSaved }: { quote: Quote | null; quotes: Quote[]; onClose: () => void; onSaved: (text: string, isNew: boolean) => void }) {
+  const [mode, setMode] = useState<"view" | "edit">(quote ? "view" : "edit");
   const [text, setText] = useState(quote?.text ?? "");
   const [author, setAuthor] = useState(quote?.author ?? "");
   const [context, setContext] = useState(quote?.context ?? "");
   const [day, setDay] = useState(quote ? localDay(new Date(quote.said_at)) : today());
-  const [starred, setStarred] = useState(quote?.starred ?? false);
   const add = useAddQuote();
   const update = useUpdateQuote();
   const remove = useDeleteQuote();
   const authors = useMemo(() => suggestions(quotes, "author"), [quotes]);
   const contexts = useMemo(() => suggestions(quotes, "context"), [quotes]);
+  // pořadové číslo hlášky (od nejstarší)
+  const number = quote ? [...quotes].sort((a, b) => a.said_at.localeCompare(b.said_at)).findIndex((q) => q.id === quote.id) + 1 : quotes.length + 1;
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -200,43 +202,83 @@ function QuoteSheet({ quote, quotes, onClose, onSaved }: { quote: Quote | null; 
       author: author.trim() || null,
       context: context.trim() || null,
       said_at: saidAt,
-      starred,
+      starred: quote?.starred ?? false,
     };
     if (quote) update.mutate(next);
     else add.mutate(next);
     onSaved(quote ? "Hláška upravena" : quoteSaved(), !quote);
-    onClose();
+    if (quote) setMode("view");
+    else onClose();
+  };
+
+  const shareText = quote ? `„${quote.text}“${quote.author ? ` – ${quote.author}` : ""}${quote.context ? ` (${quote.context})` : ""}` : "";
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      onSaved("Zkopírováno", false);
+    } catch {
+      window.prompt("Zkopíruj:", shareText);
+    }
+  };
+  const share = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ text: shareText }); } catch { /* zrušeno */ }
+    } else void copy();
   };
 
   return (
-    <Sheet title={quote ? "Upravit hlášku" : "Nová hláška"} onClose={onClose}>
-      <form className="form" onSubmit={submit}>
-        <label htmlFor="q-text" className="field-label">Hláška</label>
-        <textarea id="q-text" className="input" rows={3} required value={text} onChange={(e) => setText(e.target.value)} />
+    <Modal label={quote ? `Hláška: ${quote.text}` : "Nová hláška"} onClose={onClose}>
+      {mode === "view" && quote ? (
+        <>
+          <div className="modal-screen">
+            <div className="modal-head"><span>#{String(number).padStart(3, "0")}</span><span>{formatDate(new Date(quote.said_at), true)}</span></div>
+            <p className="modal-quote">„{quote.text}“</p>
+            <div className="modal-meta">
+              {quote.author && <b>{quote.author}</b>}
+              {quote.context && <span>{quote.context}</span>}
+            </div>
+          </div>
+          <div className="modal-actions">
+            <button className={quote.starred ? "on" : ""} aria-pressed={quote.starred} onClick={() => update.mutate({ ...quote, starred: !quote.starred })}>
+              <Sprite name="i-star" size={20} />Top
+            </button>
+            <button onClick={() => void copy()}><Sprite name="i-copy" size={20} />Kopie</button>
+            <button onClick={() => void share()}><Sprite name="i-share" size={20} />Sdílet</button>
+            <button onClick={() => setMode("edit")}><Sprite name="i-edit" size={20} />Upravit</button>
+            <button className="danger" onClick={() => {
+              if (!window.confirm("Smazat hlášku?")) return;
+              remove.mutate(quote.id);
+              onSaved("Hláška smazána", false);
+              onClose();
+            }}><Sprite name="i-trash" size={20} />Smazat</button>
+          </div>
+        </>
+      ) : (
+        <form className="modal-screen modal-edit form" onSubmit={submit}>
+          <div className="modal-head"><span>{quote ? `Úprava #${String(number).padStart(3, "0")}` : "Nová hláška"}</span><span>{formatDate(new Date(`${day}T12:00:00`), true)}</span></div>
+          <label htmlFor="q-text" className="sr-only">Hláška</label>
+          <textarea id="q-text" className="input" rows={3} required placeholder="Co padlo?" value={text} onChange={(e) => setText(e.target.value)} />
 
-        <label htmlFor="q-author" className="field-label">Kdo to řekl</label>
-        <input id="q-author" className="input" list="q-authors" autoComplete="off" value={author} onChange={(e) => setAuthor(e.target.value)} />
-        <datalist id="q-authors">{authors.map((a) => <option key={a} value={a} />)}</datalist>
+          <label htmlFor="q-author" className="field-label">Kdo to řekl</label>
+          <input id="q-author" className="input" list="q-authors" autoComplete="off" value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <datalist id="q-authors">{authors.map((a) => <option key={a} value={a} />)}</datalist>
+          {!author && authors.length > 0 && (
+            <div className="chips">{authors.slice(0, 8).map((a) => <button key={a} type="button" className="chip" onClick={() => setAuthor(a)}>{a}</button>)}</div>
+          )}
 
-        <label htmlFor="q-context" className="field-label">Kontext</label>
-        <input id="q-context" className="input" list="q-contexts" autoComplete="off" placeholder="Např. Afterka u Jáchyma" value={context} onChange={(e) => setContext(e.target.value)} />
-        <datalist id="q-contexts">{contexts.map((c) => <option key={c} value={c} />)}</datalist>
+          <label htmlFor="q-context" className="field-label">Kontext</label>
+          <input id="q-context" className="input" list="q-contexts" autoComplete="off" placeholder="Např. Afterka u Jáchyma" value={context} onChange={(e) => setContext(e.target.value)} />
+          <datalist id="q-contexts">{contexts.map((c) => <option key={c} value={c} />)}</datalist>
 
-        <label htmlFor="q-day" className="field-label">Kdy</label>
-        <input id="q-day" className="input" type="date" max={today()} value={day} onChange={(e) => setDay(e.target.value)} />
+          <label htmlFor="q-day" className="field-label">Kdy</label>
+          <input id="q-day" className="input" type="date" max={today()} value={day} onChange={(e) => setDay(e.target.value)} />
 
-        <label className="check">
-          <input type="checkbox" checked={starred} onChange={(e) => setStarred(e.target.checked)} />
-          Oblíbená
-        </label>
-
-        <button className="btn dark tap wide" type="submit" disabled={!text.trim()}>{quote ? "Uložit" : "Zapsat hlášku"}</button>
-        {quote && (
-          <button type="button" className="btn tap wide" onClick={() => { remove.mutate(quote.id); onSaved("Hláška smazána", false); onClose(); }}>
-            Smazat hlášku
-          </button>
-        )}
-      </form>
-    </Sheet>
+          <div className="modal-row">
+            <button type="button" className="btn tap" onClick={() => (quote ? setMode("view") : onClose())}>Zrušit</button>
+            <button className="btn dark tap" type="submit" disabled={!text.trim()}>{quote ? "Uložit" : "Zapsat"}</button>
+          </div>
+        </form>
+      )}
+    </Modal>
   );
 }

@@ -7,7 +7,7 @@ import type { ModuleKey } from "./modules";
 
 export type SpriteName =
   | ModuleKey | "star" | "trophy" | "crown" | "lock" | "heart" | "flame" | "check" | "sparkle"
-  | "i-home" | "i-grid" | "i-map" | "i-user" | "i-plus" | "i-back" | "i-up" | "i-down" | "i-star" | "i-play";
+  | "i-home" | "i-grid" | "i-map" | "i-user" | "i-plus" | "i-back" | "i-up" | "i-down" | "i-star" | "i-play" | "i-copy" | "i-share" | "i-edit" | "i-trash";
 
 export const SPRITES: Record<SpriteName, string[]> = {
   piva: [
@@ -472,6 +472,54 @@ export const SPRITES: Record<SpriteName, string[]> = {
     ".CCC..CCC.",
     ".CC....CC.",
     "..........",
+  ],
+  "i-copy": [
+    "..........",
+    "...CCCCCCC",
+    "...C.....C",
+    "CCCCCCC..C",
+    "C.....C..C",
+    "C.....C..C",
+    "C.....CCCC",
+    "C.....C...",
+    "C.....C...",
+    "CCCCCCC...",
+  ],
+  "i-share": [
+    "....CC....",
+    "...CCCC...",
+    "..CCCCCC..",
+    "....CC....",
+    "....CC....",
+    "CC..CC..CC",
+    "CC..CC..CC",
+    "CC......CC",
+    "CCCCCCCCCC",
+    "CCCCCCCCCC",
+  ],
+  "i-edit": [
+    "........CC",
+    ".......CCC",
+    "......CCC.",
+    ".....CCC..",
+    "....CCC...",
+    "...CCC....",
+    "..CCC.....",
+    ".CCC......",
+    "CCC.......",
+    "CCCC......",
+  ],
+  "i-trash": [
+    "...CCCC...",
+    "CCCCCCCCCC",
+    "..........",
+    ".CCCCCCCC.",
+    ".C.C..C.C.",
+    ".C.C..C.C.",
+    ".C.C..C.C.",
+    ".C.C..C.C.",
+    ".C......C.",
+    ".CCCCCCCC.",
   ],
   "i-play": [
     "CC..........",
