@@ -666,3 +666,18 @@ a.btn-hero { text-decoration: none; }
 .breath-player .btn-hero { margin-top: 6px; }
 .holds { margin-top: 4px; }
 @media (prefers-reduced-motion: reduce) { .orb { transition: none; } }
+
+/* ---------- 13 – Untrois ---------- */
+.idea-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.idea-card { position: relative; width: 100%; display: grid; gap: 6px; padding: 14px; text-align: left; background: var(--paper); border: var(--line); box-shadow: var(--shadow); color: var(--ink); }
+.idea-card b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; line-height: 1.1; padding-right: 26px; }
+.idea-cat { justify-self: start; padding: 1px 6px; font-family: var(--font-pixel); font-size: 14px; color: var(--on-accent); background: var(--accent); }
+.idea-body { font-size: 14px; color: var(--slate); white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.idea-star { position: absolute; top: 10px; right: 10px; }
+.meaning { width: 100%; display: grid; gap: 8px; padding: 12px 14px; text-align: left; background: var(--paper); border: var(--line); color: var(--ink); }
+.meaning.open { box-shadow: inset 4px 0 0 var(--accent); }
+.meaning.mine .meaning-cat { color: var(--lime); }
+.meaning-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.meaning-head b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; line-height: 1.1; }
+.meaning-cat { flex: none; font-size: 14px; color: var(--slate); }
+.meaning-body { line-height: 1.45; }

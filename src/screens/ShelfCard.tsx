@@ -21,6 +21,7 @@ import { computeMediaStats, useMedia } from "../modules/filmy/data";
 import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
 import { usePlaces } from "../modules/mista/data";
 import { computeBreathStats, useBreathSessions } from "../modules/dech/data";
+import { daysUntil as daysTo13, nextFriday13, useUntroisNotes } from "../modules/untrois/data";
 import { computeFinanceStats, daysUntil, debts, nextRenewal, savings, subscriptions } from "../modules/finance/data";
 
 interface CardProps {
@@ -252,9 +253,24 @@ function DechCard() {
   );
 }
 
+function UntroisCard() {
+  const { data: notes = [] } = useUntroisNotes();
+  const navigate = useNavigate();
+  const ideas = notes.filter((n) => n.kind === "napad").length;
+  const d = daysTo13(nextFriday13());
+  return (
+    <Card
+      moduleKey="untrois"
+      num={String(ideas)}
+      sub={`nápadů · pátek 13. ${d === 0 ? "dnes!" : `za ${d} d`}`}
+      quick={{ label: "Zapsat nápad", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/untrois?nova=1") }}
+    />
+  );
+}
+
 const CARDS: Record<ModuleKey, () => ReactNode> = {
   piva: PivaCard, hlaskomat: HlaskomatCard, meditace: MeditaceCard, vdecnost: VdecnostCard, lide: LideCard, trenink: TreninkCard,
-  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard,
+  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard, untrois: UntroisCard,
 };
 
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {

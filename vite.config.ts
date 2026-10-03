@@ -16,10 +16,10 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "apple-touch-icon.png"],
       manifest: {
-        name: "Osobní appka",
-        short_name: "Appka",
+        name: "Untrois",
+        short_name: "Untrois",
         lang: "cs",
-        description: "Hlášky, piva, meditace, tréninky, lidé a další – osobní appka.",
+        description: "Untrois – osobní appka: hlášky, piva, meditace, tréninky, lidé a další.",
         theme_color: "#020F08",
         background_color: "#020F08",
         display: "standalone",

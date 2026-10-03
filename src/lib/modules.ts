@@ -4,7 +4,7 @@
 
 export type ModuleKey =
   | "piva" | "hlaskomat" | "trenink" | "meditace" | "lide" | "vdecnost"
-  | "odkazy" | "mista" | "filmy" | "wishlist" | "finance" | "cornhole" | "dech";
+  | "odkazy" | "mista" | "filmy" | "wishlist" | "finance" | "cornhole" | "dech" | "untrois";
 
 export interface ModuleDef {
   key: ModuleKey;
@@ -25,6 +25,10 @@ export interface ModuleDef {
 }
 
 export const MODULES: ModuleDef[] = [
+  {
+    key: "untrois", name: "13 – Untrois", color: "#CEF17B", deep: "#7BA33A", light: "#EEFBC9", phase: 1, ready: true, quickAction: "Zapsat nápad",
+    plan: ["Nápady na brand", "Co všechno znamená číslo 13", "Odpočet do pátku 13."]
+  },
   {
     key: "piva", name: "Piva", color: "#FEAE34", deep: "#F77622", light: "#FEE761", phase: 1, ready: true, quickAction: "Přidat pivo",
     plan: ["+1 pivo jedním ťuknutím", "Statistiky po dnech a týdnech", "Den v týdnu, kdy piju nejvíc"]

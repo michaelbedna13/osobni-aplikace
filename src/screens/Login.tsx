@@ -26,7 +26,7 @@ export function Login() {
           <Sprite name="hlaskomat" size={64} anim="bob" />
           <Sprite name="lide" size={64} />
         </div>
-        <h1>Osobní appka</h1>
+        <h1>Untrois</h1>
         <form className="panel login-form form" onSubmit={submit}>
           <label htmlFor="email" className="field-label">E-mail</label>
           <input id="email" className="input" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
