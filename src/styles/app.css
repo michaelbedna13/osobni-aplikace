@@ -65,6 +65,30 @@ input, textarea { caret-color: var(--ink); }
   mask: url("../assets/halftone.svg") top center / 520px 480px no-repeat;
 }
 /* hlavička modulu: bez barevné plochy, barva jen jako akcent */
+/* pozadí „světlo“ / „vzor“ / „obojí“ (Profil → Pozadí, atribut data-bg na <html>) */
+html:not([data-bg="tecky"]) .screen { background: url("../assets/grain-strong.png") 0 0 / 128px 128px, var(--app-bg); }
+html:not([data-bg="tecky"]) .screen::before { display: none; }
+html[data-bg="vzor"] .screen::before, html[data-bg="oboje"] .screen::before {
+  display: block; position: fixed; inset: 0; height: auto; opacity: 0.075;
+  -webkit-mask: url("../assets/squiggle.svg") 0 0 / 330px 330px repeat;
+  mask: url("../assets/squiggle.svg") 0 0 / 330px 330px repeat;
+}
+html[data-bg="svetlo"] .screen::after, html[data-bg="oboje"] .screen::after {
+  content: ""; position: fixed; z-index: -2; left: -45vw; top: -30vh; width: 140vw; height: 120vh; pointer-events: none;
+  background:
+    url("../assets/grain-strong.png") 0 0 / 128px 128px,
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 60%, var(--ink)) 0%, color-mix(in srgb, var(--accent) 55%, transparent) 30%, color-mix(in srgb, var(--accent) 18%, transparent) 62%, transparent 100%);
+  opacity: 0.34; transform: rotate(-32deg) scaleX(0.55);
+}
+html[data-bg="oboje"] .screen::after { opacity: 0.26; }
+.bg-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bg-option { display: grid; gap: 6px; padding: 8px; background: var(--paper); border: var(--line); color: var(--ink); font-family: var(--font-pixel); font-size: 20px; text-align: center; }
+.bg-option.on { outline: 3px solid var(--lime); outline-offset: 2px; }
+.bg-swatch { display: block; height: 72px; border: var(--line); background: url("../assets/grain-strong.png") 0 0 / 128px 128px, var(--app-bg); position: relative; overflow: hidden; }
+.bg-svetlo .bg-swatch, .bg-oboje .bg-swatch { background: url("../assets/grain-strong.png") 0 0 / 128px 128px, radial-gradient(40% 90% at 35% 30%, color-mix(in srgb, var(--lime) 45%, transparent), transparent), var(--app-bg); }
+.bg-vzor .bg-swatch::after, .bg-oboje .bg-swatch::after { content: ""; position: absolute; inset: 0; background: var(--lime); opacity: 0.12; -webkit-mask: url("../assets/squiggle.svg") 0 0 / 160px 160px repeat; mask: url("../assets/squiggle.svg") 0 0 / 160px 160px repeat; }
+.bg-tecky .bg-swatch { background: url("../assets/grain.png") 0 0 / 96px 96px, var(--app-bg); }
+.bg-tecky .bg-swatch::after { content: ""; position: absolute; inset: 0; background: var(--lime); opacity: 0.25; -webkit-mask: url("../assets/halftone.svg") top center / 260px 240px no-repeat; mask: url("../assets/halftone.svg") top center / 260px 240px no-repeat; }
 .band { padding-bottom: 4px; }
 .module .topbar h1 { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 6px; text-underline-offset: 7px; }
 .sprite-tile { display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 30%, var(--paper)); border: var(--line); }

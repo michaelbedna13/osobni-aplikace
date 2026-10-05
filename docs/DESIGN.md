@@ -156,6 +156,11 @@ Paleta vychází z **Endesga 32**.
   - `src/assets/halftone.svg` – rastrový mrak: tečky v šestiúhelníkové síti 8 px, velikost podle šumu,
     směrem dolů mizí (480 px). Použitý jako maska `.screen::before` vybarvená akcentem, krytí 17 %;
   - pod rastrem slabá záře akcentu (7 %).
+  - **Volba pozadí** (Profil → Pozadí, `html[data-bg]`, uloženo v zařízení): „Světlo a vzor“ (výchozí), „Světlo“,
+    „Vzor“, „Tečky“ (původní rastr výše). Nové varianty používají hustší zrno `grain-strong.png` (128 px);
+    *světlo* je zrnitý šikmý paprsek v barvě akcentu (`.screen::after`, pevně k obrazovce, krytí 26–34 %);
+    *vzor* jsou oblé tahy jako „čmáranice“ (U, S, C, L, kroužky, tečky, dlouhé tvary přes dvě buňky) ze
+    `src/assets/squiggle.svg` (dlaždice 600 px, šířka tahu 30), maska `.screen::before` v barvě akcentu, krytí 7,5 %.
 - Tmavé téma: text `ink` `#FEFAE0` (cornsilk), povrch panelů `paper` `#0C2117`, obrysy a stíny
   `edge` `#000502`, vedlejší text `slate` `#9FB8B8` (ash gray). Text na akcentu nebo limetce je vždy
   `on-accent` `#001600`.

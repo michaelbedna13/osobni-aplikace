@@ -75,4 +75,78 @@ writeFileSync(new URL("grain.png", out), Buffer.concat([
   Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
   chunk("IHDR", ihdr), chunk("IDAT", deflateSync(raw, { level: 9 })), chunk("IEND", Buffer.alloc(0)),
 ]));
-console.log(`✓ halftone.svg (${circles.length} teček), grain.png`);
+// --- hustší zrno pro pozadí „světlo“ a „vzor“ (jako film) ---
+let seed2 = 13;
+const rand2 = () => ((seed2 = (seed2 * 1664525 + 1013904223) >>> 0) / 4294967296);
+const raw2 = Buffer.alloc(N * (1 + N * 2));
+for (let y = 0; y < N; y++) {
+  raw2[y * (1 + N * 2)] = 0;
+  for (let x = 0; x < N; x++) {
+    const v = rand2();
+    const o = y * (1 + N * 2) + 1 + x * 2;
+    raw2[o] = v < 0.5 ? 0 : 255;
+    raw2[o + 1] = Math.round(v < 0.5 ? (0.5 - v) * 2 * 70 : (v - 0.5) * 2 * 46);
+  }
+}
+writeFileSync(new URL("grain-strong.png", out), Buffer.concat([
+  Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+  chunk("IHDR", ihdr), chunk("IDAT", deflateSync(raw2, { level: 9 })), chunk("IEND", Buffer.alloc(0)),
+]));
+
+// --- vzor: oblé „čmáranice“ (U, S, C, L, kroužky, tečky) v mřížce, dlaždice na sebe navazuje ---
+let seed3 = 1313;
+const rand3 = () => ((seed3 = (seed3 * 1664525 + 1013904223) >>> 0) / 4294967296);
+// tvary v poli 100 × 100 (malé) a 200 × 100 (dlouhé přes dvě buňky)
+const GLYPHS = [
+  "M22 14 V56 Q22 86 50 86 Q78 86 78 56 V14",
+  "M78 18 Q24 10 24 36 Q24 50 50 50 Q76 50 76 66 Q76 90 20 82",
+  "M80 22 Q16 8 14 50 Q16 92 80 78",
+  "M22 12 V80 H82",
+  "M50 50 h0.1",
+  "M50 50 m-24 0 a24 24 0 1 0 48 0 a24 24 0 1 0 -48 0",
+  "M70 12 V58 Q70 88 42 88 Q20 88 20 66",
+  "M12 34 Q34 10 50 46 Q66 82 88 60",
+  "M28 50 h0.1 M72 50 h0.1",
+  "M26 16 V84 M72 50 h0.1",
+  "M14 22 H64 Q86 22 86 46 Q86 70 62 70 H36",
+  "M20 80 Q20 20 50 20 Q80 20 80 50 Q80 66 64 66",
+];
+const LONG = [
+  "M14 26 H150 Q186 26 186 50 Q186 74 150 74 H40",
+  "M16 50 H184",
+  "M20 24 V56 Q20 80 50 80 H150 Q180 80 180 56 V24",
+  "M16 70 Q50 14 100 50 Q150 86 184 30",
+  "M18 30 H120 Q150 30 150 56 Q150 80 176 80 M178 22 h0.1",
+];
+const CELL = 100, CELLS = 6;
+const used = Array.from({ length: CELLS }, () => Array(CELLS).fill(false));
+const parts = [];
+const pick = (list) => list[Math.floor(rand3() * list.length)];
+for (let cy = 0; cy < CELLS; cy++) {
+  for (let cx = 0; cx < CELLS; cx++) {
+    if (used[cy][cx]) continue;
+    used[cy][cx] = true;
+    const tilt = ((rand3() - 0.5) * 16).toFixed(1);
+    const scale = (0.95 + rand3() * 0.15).toFixed(2);
+    const flip = rand3() < 0.5 ? -1 : 1;
+    const right = cx + 1 < CELLS && !used[cy][cx + 1];
+    const down = cy + 1 < CELLS && !used[cy + 1][cx];
+    if ((right || down) && rand3() < 0.42) {
+      // dlouhý tvar přes dvě buňky, vodorovně nebo svisle
+      const horiz = right && (!down || rand3() < 0.5);
+      if (horiz) used[cy][cx + 1] = true; else used[cy + 1][cx] = true;
+      const x = cx * CELL + (horiz ? CELL : CELL / 2), y = cy * CELL + (horiz ? CELL / 2 : CELL);
+      const rot = (horiz ? 0 : 90) + (rand3() < 0.5 ? 180 : 0);
+      parts.push(`<path transform="translate(${x} ${y}) rotate(${rot + Number(tilt) / 2}) scale(${flip * Number(scale)} ${scale}) translate(-100 -50)" d="${pick(LONG)}"/>`);
+    } else {
+      const rot = Math.floor(rand3() * 4) * 90 + Number(tilt);
+      const x = cx * CELL + CELL / 2, y = cy * CELL + CELL / 2;
+      parts.push(`<path transform="translate(${x} ${y}) rotate(${rot}) scale(${flip * Number(scale)} ${scale}) translate(-50 -50)" d="${pick(GLYPHS)}"/>`);
+    }
+  }
+}
+const T = CELL * CELLS;
+writeFileSync(new URL("squiggle.svg", out),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${T} ${T}"><g fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-linejoin="round">${parts.join("")}</g></svg>\n`);
+
+console.log(`✓ halftone.svg (${circles.length} teček), grain.png, grain-strong.png, squiggle.svg`);
