@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
 import { Sprite } from "../../components/Sprite";
@@ -8,7 +8,9 @@ import {
   distanceKm, formatKm, navLinks, newPlace, reverseName, searchPlaces, useAddPlace, useDeletePlace, usePlaces, useUpdatePlace,
   type FoundPlace, type Place,
 } from "./data";
-import { MapView } from "./MapView";
+
+// knihovna mapy je velká, načte se až s obrazovkou Míst
+const MapView = lazy(() => import("./MapView"));
 
 const MODULE = MODULE_BY_KEY.mista;
 type Filter = { kind: "all" } | { kind: "chci" } | { kind: "byl" } | { kind: "list"; name: string };
@@ -68,7 +70,9 @@ export function MistaScreen() {
       <Topbar title="Místa" right={<button className="link" onClick={locate}>Kde jsem</button>} />
 
       <div className="map-wrap">
-        <MapView places={visible} selectedId={selected} pending={pending} me={me} onSelect={onSelect} onPick={picking ? onPick : undefined} />
+        <Suspense fallback={<div className="map-box" aria-hidden="true" />}>
+          <MapView places={visible} selectedId={selected} pending={pending} me={me} onSelect={onSelect} onPick={picking ? onPick : undefined} />
+        </Suspense>
         {picking && (
           <div className="map-banner">
             <span>Ťukni do mapy, kde to je</span>
@@ -104,7 +108,7 @@ export function MistaScreen() {
           {visible.map((p) => (
             <li key={p.id}>
               <button className={`list-btn place-row${p.id === selected ? " on" : ""}`} onClick={() => onSelect(p.id)}>
-                <span className={`map-pin small ${p.status}`} aria-hidden="true" />
+                <span className={`map-dot small ${p.status}`} aria-hidden="true" />
                 <span className="grow">
                   <b>{p.name}</b>
                   <span className="occasion-kind">{[p.list, p.address].filter(Boolean).join(" · ") || (p.status === "byl" ? "navštíveno" : "chci navštívit")}</span>

@@ -662,18 +662,32 @@ a.btn-hero { text-decoration: none; }
 
 /* ---------- Místa ---------- */
 .map-wrap { position: relative; margin-top: 14px; }
-.map-box, .map-box.leaflet-container { height: min(52vh, 420px); border: var(--line); box-shadow: var(--shadow); background: var(--app-bg); font-family: var(--font-body); }
-/* světlé dlaždice OpenStreetMap převedené do tmavé zelené */
-.map-box .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(1.7) contrast(0.75) saturate(0.4) sepia(0.35) hue-rotate(75deg); }
-.map-box.picking { cursor: crosshair; outline: 3px dashed var(--lime); outline-offset: -3px; }
-.map-box .leaflet-control-attribution { background: rgba(2, 15, 8, 0.75); color: var(--slate); font-family: var(--font-body); font-size: 14px; line-height: 1.2; }
-.map-box .leaflet-control-attribution a { color: var(--slate); }
-.map-pin { display: block; width: 18px; height: 18px; margin: 3px; background: var(--accent); border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--edge); }
-.map-pin.byl { background: var(--lime); }
-.map-pin.on { width: 24px; height: 24px; margin: 0; outline: 3px solid var(--ink); }
-.map-pin.pending { background: var(--ink); }
-.map-pin.small { width: 14px; height: 14px; margin: 0; flex: none; box-shadow: none; }
-.map-me { display: block; width: 16px; height: 16px; background: #2CE8F5; border: 3px solid var(--ink); }
+.map-box { height: min(52vh, 420px); border: var(--line); box-shadow: var(--shadow); background: #0B2016; font-family: var(--font-body); }
+.map-box.picking, .map-box.picking .maplibregl-canvas { cursor: crosshair; }
+.map-box.picking { outline: 3px dashed var(--lime); outline-offset: -3px; }
+.map-box .maplibregl-ctrl.maplibregl-ctrl-attrib { background: rgba(2, 15, 8, 0.75); color: var(--slate); font-size: 14px; line-height: 1.3; }
+.map-box .maplibregl-ctrl-attrib a { color: var(--slate); }
+.map-box .maplibregl-ctrl-attrib .maplibregl-ctrl-attrib-button { filter: invert(1); background-color: transparent; }
+.map-box .maplibregl-ctrl-attrib.maplibregl-compact { min-height: 24px; }
+/* značky míst: kulaté body, vybrané místo větší a s názvem */
+.map-dot { position: relative; display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 3px solid var(--ink); box-shadow: 0 0 0 2px var(--edge); cursor: pointer; }
+.map-dot.byl { width: 12px; height: 12px; border-width: 2px; background: var(--slate); }
+.map-dot.on { z-index: 2; width: 22px; height: 22px; box-shadow: 0 0 0 2px var(--edge), 0 0 0 7px color-mix(in srgb, var(--accent) 35%, transparent); }
+.map-dot.byl.on { box-shadow: 0 0 0 2px var(--edge), 0 0 0 7px color-mix(in srgb, var(--slate) 35%, transparent); }
+.map-dot.pending { background: var(--ink); border-color: var(--accent); color: var(--ink); }
+.map-dot.me { width: 14px; height: 14px; background: #2CE8F5; color: #2CE8F5; cursor: default; }
+.map-dot.pending::after, .map-dot.me::after {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid currentColor;
+  animation: map-pulse 1.6s ease-out infinite;
+}
+@keyframes map-pulse { from { transform: scale(0.8); opacity: 0.8; } to { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .map-dot::after { animation: none; opacity: 0.5; } }
+.map-dot-label {
+  position: absolute; left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%); max-width: 220px; overflow: hidden; text-overflow: ellipsis;
+  padding: 2px 8px; white-space: nowrap; background: var(--paper); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 20px; color: var(--ink); pointer-events: none;
+}
+.map-dot.small { width: 14px; height: 14px; flex: none; box-shadow: none; cursor: inherit; }
+.map-dot.small.byl { width: 14px; height: 14px; }
 .map-banner { position: absolute; z-index: 500; left: 10px; right: 10px; top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; background: var(--paper); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 20px; }
 .result-list { margin-top: 10px; }
 .place-row.on { background: color-mix(in srgb, var(--accent) 18%, var(--paper)); }

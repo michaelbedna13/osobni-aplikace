@@ -1,7 +1,8 @@
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef } from "react";
 import type { Place } from "./data";
+import { MAP_STYLE } from "./mapStyle";
 
 interface Props {
   places: Place[];
@@ -13,62 +14,112 @@ interface Props {
   onPick?: (lat: number, lng: number) => void;
 }
 
-const icon = (cls: string) => L.divIcon({ className: "", html: `<span class="map-pin ${cls}"></span>`, iconSize: [24, 24], iconAnchor: [12, 24] });
+function dot(cls: string, label?: string) {
+  const el = document.createElement("span");
+  el.className = `map-dot ${cls}`;
+  if (label) {
+    const tag = document.createElement("span");
+    tag.className = "map-dot-label";
+    tag.textContent = label;
+    el.appendChild(tag);
+  }
+  return el;
+}
 
-/**
- * Mapa (Leaflet + podklady OpenStreetMap, bez klíče). Dlaždice jsou světlé,
- * do tmavého vzhledu je převádí CSS filtr na .leaflet-tile-pane.
- */
-export function MapView({ places, selectedId, pending, me, onSelect, onPick }: Props) {
+/** Mapa (MapLibre + vlastní zjednodušený styl nad podklady OpenFreeMap / OpenStreetMap). */
+export default function MapView({ places, selectedId, pending, me, onSelect, onPick }: Props) {
   const box = useRef<HTMLDivElement>(null);
-  const map = useRef<L.Map | null>(null);
-  const layer = useRef<L.LayerGroup | null>(null);
+  const map = useRef<maplibregl.Map | null>(null);
+  const markers = useRef<maplibregl.Marker[]>([]);
   const fitted = useRef(false);
+  const ready = useRef(false);
+  const onReady = useRef<(() => void) | null>(null);
   const pickRef = useRef(onPick);
+  const selectRef = useRef(onSelect);
   pickRef.current = onPick;
+  selectRef.current = onSelect;
 
   useEffect(() => {
     if (!box.current) return;
-    const m = L.map(box.current, { zoomControl: false, attributionControl: true }).setView([49.8, 15.5], 7);
-    m.attributionControl.setPrefix(false);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(m);
-    m.on("click", (e: L.LeafletMouseEvent) => pickRef.current?.(e.latlng.lat, e.latlng.lng));
-    layer.current = L.layerGroup().addTo(m);
+    // nová mapa (i při opětovném připojení komponenty) se znovu napasuje na místa
+    fitted.current = false;
+    ready.current = false;
+    const m = new maplibregl.Map({
+      container: box.current,
+      style: MAP_STYLE,
+      center: [15.5, 49.8],
+      zoom: 6,
+      attributionControl: { compact: true },
+      dragRotate: false,
+      pitchWithRotate: false,
+      touchPitch: false,
+      fadeDuration: 0,
+    });
+    m.touchZoomRotate.disableRotation();
+    m.keyboard.disableRotation();
+    m.on("click", (e) => pickRef.current?.(e.lngLat.lat, e.lngLat.lng));
+    // zdroj dat jen jako malé „i“ v rohu, rozbalí se ťuknutím
+    m.once("load", () => {
+      box.current?.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+      ready.current = true;
+      onReady.current?.();
+      onReady.current = null;
+    });
     map.current = m;
-    return () => { m.remove(); map.current = null; };
+    return () => {
+      m.remove();
+      map.current = null;
+    };
   }, []);
 
   useEffect(() => {
     const m = map.current;
-    const g = layer.current;
-    if (!m || !g) return;
-    g.clearLayers();
-    for (const p of places) {
-      L.marker([p.lat, p.lng], { icon: icon(`${p.status}${p.id === selectedId ? " on" : ""}`), title: p.name, zIndexOffset: p.id === selectedId ? 1000 : 0 })
-        .on("click", () => onSelect(p.id))
-        .addTo(g);
+    if (!m) return;
+    markers.current.forEach((mk) => mk.remove());
+    markers.current = [];
+    const add = (el: HTMLElement, lng: number, lat: number) => markers.current.push(new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat([lng, lat]).addTo(m));
+
+    // vybrané místo navrch (přidává se poslední)
+    const ordered = [...places].sort((a, b) => Number(a.id === selectedId) - Number(b.id === selectedId));
+    for (const p of ordered) {
+      const on = p.id === selectedId;
+      const el = dot(`${p.status}${on ? " on" : ""}`, on ? p.name : undefined);
+      el.setAttribute("role", "button");
+      el.setAttribute("aria-label", p.name);
+      el.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        selectRef.current(p.id);
+      });
+      add(el, p.lng, p.lat);
     }
-    if (pending) L.marker([pending.lat, pending.lng], { icon: icon("pending"), zIndexOffset: 2000 }).addTo(g);
-    if (me) L.marker([me.lat, me.lng], { icon: L.divIcon({ className: "", html: '<span class="map-me"></span>', iconSize: [16, 16] }), interactive: false }).addTo(g);
+    if (pending) add(dot("pending"), pending.lng, pending.lat);
+    if (me) add(dot("me"), me.lng, me.lat);
+
     if (!fitted.current && places.length) {
       fitted.current = true;
-      m.fitBounds(L.latLngBounds(places.map((p) => [p.lat, p.lng] as [number, number])).pad(0.2), { maxZoom: 13 });
+      const bounds = new maplibregl.LngLatBounds();
+      places.forEach((p) => bounds.extend([p.lng, p.lat]));
+      const fit = () => m.fitBounds(bounds, { padding: 48, maxZoom: 13, duration: 0 });
+      // hned (kamera se nastaví i před načtením podkladů) a pro jistotu ještě po načtení
+      fit();
+      if (!ready.current) onReady.current = fit;
     }
-  }, [places, selectedId, pending, me, onSelect]);
+  }, [places, selectedId, pending, me]);
 
-  // vybrané místo nebo nový bod do středu
+  // vybrané místo, nový bod nebo moje poloha do středu
+  const flyTo = (lat: number, lng: number, zoom: number) => {
+    const m = map.current;
+    if (m) m.flyTo({ center: [lng, lat], zoom: Math.max(m.getZoom(), zoom), duration: 600 });
+  };
   useEffect(() => {
     const p = places.find((x) => x.id === selectedId);
-    if (p) map.current?.flyTo([p.lat, p.lng], Math.max(map.current.getZoom(), 13), { duration: 0.6 });
+    if (p) flyTo(p.lat, p.lng, 13);
   }, [selectedId, places]);
   useEffect(() => {
-    if (pending) map.current?.flyTo([pending.lat, pending.lng], Math.max(map.current.getZoom(), 14), { duration: 0.6 });
+    if (pending) flyTo(pending.lat, pending.lng, 14);
   }, [pending]);
   useEffect(() => {
-    if (me) map.current?.flyTo([me.lat, me.lng], 13, { duration: 0.6 });
+    if (me) flyTo(me.lat, me.lng, 13);
   }, [me]);
 
   return <div ref={box} className={`map-box${onPick ? " picking" : ""}`} role="application" aria-label="Mapa míst" />;

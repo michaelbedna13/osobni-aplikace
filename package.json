@@ -16,14 +16,13 @@
     "@fontsource/jersey-10": "^5.3.0",
     "@supabase/supabase-js": "^2.117.2",
     "@tanstack/react-query": "^5.104.0",
-    "leaflet": "^1.9.4",
+    "maplibre-gl": "^5.24.0",
     "namedays-cs": "^2.0.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.22",
     "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

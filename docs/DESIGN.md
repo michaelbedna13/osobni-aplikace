@@ -248,8 +248,11 @@ Paleta vychází z **Endesga 32**.
   hodnocení 1–5 hvězdiček (sprite hvězdy, nevybrané šedé). Zapisuje se ručně textem, bez katalogů.
 - **Přání** (`.wish-card`): jako odkaz, navíc cena · priorita a štítek čekání (`.wait-tag`; po 30 dnech limetkový
   „pořád to chceš?“).
-- **Mapa** (`.map-box`, Leaflet + podklady OpenStreetMap bez klíče, ztmavené CSS filtrem do zelena): čtvercové pixelové špendlíky v akcentu modulu, navštívená
-  místa limetkově, vybrané s obrysem.
+- **Mapa** (`.map-box`, MapLibre + vektorové podklady OpenFreeMap bez klíče, vlastní zjednodušený styl v `mista/mapStyle.ts`):
+  tmavě zelená zem, tyrkysově tmavá voda, jemná zeleň, silnice jako světlejší zelené čáry, jen názvy obcí, žádné
+  body zájmu. Značky (`.map-dot`) jsou kulaté body s krémovým okrajem: „chci“ v barvě modulu, navštívené menší
+  šedomodré, vybrané větší se světelným kruhem a jmenovkou v pixelovém písmu, nový bod a moje poloha pulzují.
+  Zdroj dat je schovaný pod malým „i“ v rohu.
 - **Částky** (`.money`) v pixelovém písmu; „dluží mi“ limetkově, „dlužím“ v barvě `danger`. Předplatné, které se
   obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.
 - **Dechová kostka** (`.orb`): čtverec v akcentu, při nádechu se v pixelových krocích zvětšuje, při výdechu zmenšuje,
