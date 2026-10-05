@@ -18,6 +18,8 @@ import { GameScreen } from "./modules/cornhole/GameScreen";
 import { MobileGameScreen } from "./modules/cornhole/MobileGame";
 import { PlayScreen } from "./modules/skore/PlayScreen";
 import { SkoreScreen } from "./modules/skore/SkoreScreen";
+import { PlayScreen as ChessPlayScreen } from "./modules/sachy/PlayScreen";
+import { SachyScreen } from "./modules/sachy/SachyScreen";
 import { OdkazyScreen } from "./modules/odkazy/OdkazyScreen";
 import { FilmyScreen } from "./modules/filmy/FilmyScreen";
 import { WishlistScreen } from "./modules/wishlist/WishlistScreen";
@@ -55,6 +57,8 @@ export function App() {
           <Route path="m/cornhole/mobil" element={<MobileGameScreen />} />
           <Route path="m/skore" element={<SkoreScreen />} />
           <Route path="m/skore/hra" element={<PlayScreen />} />
+          <Route path="m/sachy" element={<SachyScreen />} />
+          <Route path="m/sachy/hra" element={<ChessPlayScreen />} />
           <Route path="m/odkazy" element={<OdkazyScreen />} />
           <Route path="m/filmy" element={<FilmyScreen />} />
           <Route path="m/wishlist" element={<WishlistScreen />} />

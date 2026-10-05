@@ -4,7 +4,7 @@
 
 export type ModuleKey =
   | "piva" | "hlaskomat" | "trenink" | "meditace" | "lide" | "vdecnost"
-  | "odkazy" | "mista" | "filmy" | "wishlist" | "finance" | "cornhole" | "dech" | "untrois" | "skore";
+  | "odkazy" | "mista" | "filmy" | "wishlist" | "finance" | "cornhole" | "dech" | "untrois" | "skore" | "sachy";
 
 export interface ModuleDef {
   key: ModuleKey;
@@ -64,6 +64,10 @@ export const MODULES: ModuleDef[] = [
   {
     key: "skore", name: "Šipky", color: "#A884F3", deep: "#5E3FA8", light: "#D9C8FB", phase: 1, ready: true, quickAction: "Nová hra",
     plan: ["301, 501 a 701", "Zavírání na double nebo master", "Co hodit na zavření", "Legy, průměry a rekordy"]
+  },
+  {
+    key: "sachy", name: "Šachy", color: "#C0CBDC", deep: "#5A6988", light: "#E4ECF5", phase: 1, ready: true, quickAction: "Nová partie",
+    plan: ["Dva hráči na jednom telefonu", "Šachové hodiny: bullet, blitz, rapid", "Hra přes stůl nebo s otáčením desky", "Historie partií a zápis"]
   },
   {
     key: "odkazy", name: "Odkazy", color: "#2CE8F5", deep: "#0099DB", light: "#C7F9FC", phase: 1, ready: true, quickAction: "Uložit odkaz",

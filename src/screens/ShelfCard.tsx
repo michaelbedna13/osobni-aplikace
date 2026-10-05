@@ -18,6 +18,8 @@ import { computeCornholeStats, useGames } from "../modules/cornhole/data";
 import { useActiveGame } from "../modules/cornhole/active";
 import { useActiveDarts } from "../modules/skore/active";
 import { computeDartStats, useDartGames } from "../modules/skore/data";
+import { useActiveChess } from "../modules/sachy/active";
+import { loadHistory } from "../modules/sachy/game";
 import { useLinks } from "../modules/odkazy/data";
 import { computeMediaStats, useMedia } from "../modules/filmy/data";
 import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
@@ -183,6 +185,20 @@ function SkoreCard() {
   );
 }
 
+function SachyCard() {
+  const { game } = useActiveChess();
+  const history = useMemo(loadHistory, [game]);
+  const navigate = useNavigate();
+  return (
+    <Card
+      moduleKey="sachy"
+      num={String(history.length)}
+      sub={game ? "partie běží" : plural(history.length, ["partie", "partie", "partií"])}
+      quick={{ label: game ? "Pokračovat v partii" : "Nová partie", text: <Sprite name="i-play" size={20} />, run: () => navigate(game ? "/m/sachy/hra" : "/m/sachy?nova=1") }}
+    />
+  );
+}
+
 function OdkazyCard() {
   const { data: links = [] } = useLinks();
   const navigate = useNavigate();
@@ -292,7 +308,7 @@ function UntroisCard() {
 
 const CARDS: Record<ModuleKey, () => ReactNode> = {
   piva: PivaCard, hlaskomat: HlaskomatCard, meditace: MeditaceCard, vdecnost: VdecnostCard, lide: LideCard, trenink: TreninkCard,
-  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard, untrois: UntroisCard, skore: SkoreCard,
+  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard, untrois: UntroisCard, skore: SkoreCard, sachy: SachyCard,
 };
 
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {

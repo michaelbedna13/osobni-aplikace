@@ -39,6 +39,11 @@ colors:
   untrois: "#CEF17B"
   skore: "#A884F3"
   skore-deep: "#5E3FA8"
+  sachy: "#C0CBDC"
+  sachy-deep: "#5A6988"
+  board-light: "#B9C79E"
+  board-dark: "#4E7A55"
+  piece-black: "#1B2A22"
   finance: "#FEE761"
 typography:
   hero:
@@ -232,6 +237,10 @@ Paleta vychází z **Endesga 32**.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
+- **Šachy** (`.sh-*`): šachovnice v zelených tónech (`board-light`, `board-dark`) s pixelovými figurkami 12 × 12
+  (bílé krémové, černé `piece-black`, obě s černým obrysem). Vybrané pole limetkové, poslední tah žlutě, šach červeně,
+  možné tahy čtverečkem, braní rámečkem. Nad a pod deskou panel hráče (`.sh-player`: jméno, sebrané figury, převaha,
+  hodiny `.sh-clock`, běžící hodiny inverzně, pod 20 s červeně). Při hře přes stůl je horní panel otočený o 180°.
 - **Šipky** (`.sc-*`, modul `skore`): seznam hráčů (`.sc-row`, kdo hází má rámeček v barvě hráče; zbývající body,
   průměr, legy jako čtverečky `.sc-legs`, u ostatních hráčů cesta na zavření `.sc-route`). Pod tím panel: kdo hází,
   návrh zavření (`.sc-checkout`), přepínač Po šipkách / Součtem. Po šipkách: tři políčka náhozu (`.sc-dart`), Double /

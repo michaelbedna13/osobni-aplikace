@@ -38,6 +38,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   pro 2–6 hráčů na jednom telefonu: házení prstem, vítr, body rozdílem nebo sčítáním, bilance party).
   Šipky (301 / 501 / 701, zavírání libovolně, na double nebo master, legy, zadávání po šipkách nebo součtem,
   návrh co hodit na zavření, průměry, žebříček a rekordy).
+  Šachy (dva hráči na jednom telefonu, přes stůl nebo s otáčením desky, šachové hodiny bullet / blitz / rapid
+  s přídavkem, pauza, vrácení tahu, remíza a vzdání, historie partií se zápisem PGN).
   Odkazy (ukládání z menu Sdílet přes Zkratku, náhledy, kolekce, obrázky a screenshoty, na později).
   Filmy a knihy (zapisují se ručně textem: chci / teď / hotovo, hodnocení, kdo doporučil,
   čtenářská výzva).
