@@ -9,6 +9,9 @@ import { relativeTime, WEEKDAYS_SHORT } from "../../lib/dates";
 import { formatDate, formatNumber, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { useSettings } from "../../lib/settings";
+import { SOUND_NAMES, playSound, unlockAudio } from "../../lib/sound";
+import { soundPrefs, useSoundPrefs } from "../../lib/soundPrefs";
+import { SoundPicker } from "../../components/SoundPicker";
 import { useActiveWorkout } from "./active";
 import {
   computeTrainingStats, doneSetCount, estimateTemplate, formatMinutes, formatKg, formatSeconds, formatSet, personalRecords, prefillSets, useDeleteWorkout, useExercises,
@@ -33,6 +36,8 @@ export function TreninkScreen() {
   const [params, setParams] = useSearchParams();
   const [tab, setTab] = useState<"treninky" | "tyden" | "historie" | "rekordy">("treninky");
   const [starting, setStarting] = useState(false);
+  const [soundsOpen, setSoundsOpen] = useState(false);
+  const { prefs, update: updateSounds } = useSoundPrefs();
   const [goalOpen, setGoalOpen] = useState(false);
   const [detail, setDetail] = useState<Workout | null>(null);
   const goalDone = stats.weekCount >= goal;
@@ -47,6 +52,8 @@ export function TreninkScreen() {
 
   const begin = (t: WorkoutTemplate | null) => {
     if (active && !window.confirm("Už máš rozdělaný trénink. Zahodit ho a začít nový?")) return;
+    unlockAudio();
+    playSound(soundPrefs().workoutStart);
     start({
       name: t?.name ?? "Trénink",
       template_id: t?.id ?? null,
@@ -81,6 +88,9 @@ export function TreninkScreen() {
         ) : (
           <button className="btn-hero" onClick={() => setStarting(true)}><Sprite name="i-play" size={24} /> Začít trénink</button>
         )}
+        <button className="link sound-link" onClick={() => setSoundsOpen(true)}>
+          Zvuky: začátek {SOUND_NAMES[prefs.workoutStart].toLowerCase()} · pauza {SOUND_NAMES[prefs.restEnd].toLowerCase()} · konec {SOUND_NAMES[prefs.workoutEnd].toLowerCase()}
+        </button>
       </div>
 
       {error && <p className="error">Nepodařilo se načíst tréninky. Zkontroluj připojení.</p>}
@@ -209,6 +219,15 @@ export function TreninkScreen() {
         </div>
       )}
 
+      {soundsOpen && (
+        <Sheet title="Zvuky tréninku" onClose={() => setSoundsOpen(false)}>
+          <p className="small muted">Ťuknutím zvuk vybereš a rovnou uslyšíš. Na iPhonu musí být vypnutý tichý režim.</p>
+          <SoundPicker label="Začátek tréninku" value={prefs.workoutStart} onChange={(v) => updateSounds({ workoutStart: v })} />
+          <SoundPicker label="Konec pauzy mezi sériemi" value={prefs.restEnd} onChange={(v) => updateSounds({ restEnd: v })} />
+          <SoundPicker label="Konec tréninku" value={prefs.workoutEnd} onChange={(v) => updateSounds({ workoutEnd: v })} />
+          <button className="btn dark tap wide" onClick={() => setSoundsOpen(false)}>Hotovo</button>
+        </Sheet>
+      )}
       {starting && (
         <Sheet title="Začít trénink" onClose={() => setStarting(false)}>
           {templates.length > 0 && (

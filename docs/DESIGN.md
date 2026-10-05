@@ -237,6 +237,9 @@ Paleta vychází z **Endesga 32**.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře
   (max. 4 pytlíky). Výhra = panel s pytlíkem vítěze a „Uložit hru“; tabulka průběhu (`.rounds`).
+- **Zvuky** (`SoundPicker`, `.sound-chips`): výběr zvuku jako čipy, ťuknutí vybere a hned přehraje. Zvuky se
+  syntetizují ve Web Audio (gong, tibetská mísa, zvonek, tři zvonky, dřívko, pípnutí, fanfára). Odkaz „Zvuky: …“
+  pod hlavním tlačítkem Meditace a Tréninku (`.sound-link`). Nastavení je v zařízení (localStorage `zvuky`).
 - **Šachy** (`.sh-*`): šachovnice v zelených tónech (`board-light`, `board-dark`) s pixelovými figurkami 12 × 12
   (bílé krémové, černé `piece-black`, obě s černým obrysem). Vybrané pole limetkové, poslední tah žlutě, šach červeně,
   možné tahy čtverečkem, braní rámečkem. Nad a pod deskou panel hráče (`.sh-player`: jméno, sebrané figury, převaha,

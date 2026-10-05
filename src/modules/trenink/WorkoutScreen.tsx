@@ -5,7 +5,8 @@ import { Sprite } from "../../components/Sprite";
 import { Topbar } from "../../components/Topbar";
 import { formatNumber, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
-import { playBeep, unlockAudio } from "../../lib/sound";
+import { playSound, unlockAudio } from "../../lib/sound";
+import { soundPrefs } from "../../lib/soundPrefs";
 import { useWakeLock } from "../../lib/wakeLock";
 import { addSet, moveExercise, removeExercise, removeSet, setField, toggleDone, useActiveWorkout, type ActiveWorkout } from "./active";
 import { doneSetCount, formatSet, lastSetsFor, newRecords, prefillSets, useAddWorkout, useExercises, useWorkouts, workoutVolume, type SetEntry, type Workout } from "./data";
@@ -63,6 +64,7 @@ export function WorkoutScreen() {
     const records = newRecords(workout, workouts).map((r) => ({ name: byId.get(r.exercise_id)?.name ?? "Cvik", text: r.text }));
     add.mutate(workout);
     clear();
+    playSound(soundPrefs().workoutEnd);
     setSummary({ workout, records });
   };
 
@@ -120,7 +122,7 @@ function RestBar({ active, update }: { active: ActiveWorkout; update: (fn: (w: A
     if (active.rest_until && left <= 0) {
       // po návratu do appky po dlouhé době už nepípat
       if (left > -5000) {
-        playBeep();
+        playSound(soundPrefs().restEnd);
         navigator.vibrate?.(200);
       }
       update((w) => ({ ...w, rest_until: null }));

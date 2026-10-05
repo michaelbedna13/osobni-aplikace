@@ -566,6 +566,8 @@ a.btn-hero { text-decoration: none; }
 .sc-after { min-width: 72px; text-align: right; }
 .sc-after.win { color: var(--lime); font-family: var(--font-pixel); font-size: 20px; }
 .sc-after.bust { color: var(--danger); }
+.sound-link { display: block; margin: 8px auto 0; font-size: 16px; color: var(--slate); text-align: center; }
+.sound-chips { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0 0 6px; }
 .sc-cancel { display: block; margin: 16px auto 0; font-size: 16px; color: var(--slate); }
 
 /* ---------- Šachy ---------- */

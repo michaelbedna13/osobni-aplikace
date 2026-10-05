@@ -12,7 +12,9 @@ import { addDays, relativeTime, startOfWeek, toLocalInput, WEEKDAYS_SHORT } from
 import { formatDate, formatNumber, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { useSettings } from "../../lib/settings";
-import { playGong, unlockAudio } from "../../lib/sound";
+import { playSound, unlockAudio, SOUND_NAMES } from "../../lib/sound";
+import { soundPrefs, useSoundPrefs } from "../../lib/soundPrefs";
+import { SoundPicker } from "../../components/SoundPicker";
 import { useWakeLock } from "../../lib/wakeLock";
 import {
   computeMeditationStats, formatDuration, useAddMeditation, useDeleteMeditation, useMeditations, useUpdateMeditation, type Meditation,
@@ -41,7 +43,7 @@ export function MeditaceScreen() {
     unlockAudio();
     saveLastMinutes(minutes);
     setTimer(startTimer(minutes ? minutes * 60 : null));
-    playGong();
+    playSound(soundPrefs().medStart);
   }, [setTimer]);
 
   const [celebrate, setCelebrate] = useState(0);
@@ -49,7 +51,7 @@ export function MeditaceScreen() {
   const finish = useCallback((state: TimerState, { gong }: { gong: boolean }) => {
     setTimer(null);
     const seconds = finalSeconds(state);
-    if (gong) playGong();
+    if (gong) playSound(soundPrefs().medEnd);
     if (seconds < 30) {
       toast.show("Kratší než 30 s, to se nepočítá");
       return;
@@ -94,6 +96,8 @@ function TimerView({ timer, onPause, onResume, onFinish, onCancel }: {
 }) {
   const [now, setNow] = useState(Date.now());
   const finishing = useRef(false);
+  const { prefs } = useSoundPrefs();
+  const bell = useRef<number | null>(null);
   const running = timer.runningSince !== null;
   useWakeLock(running);
 
@@ -110,6 +114,18 @@ function TimerView({ timer, onPause, onResume, onFinish, onCancel }: {
     const overdue = timer.plannedSeconds !== null && elapsedSeconds(timer, now) - timer.plannedSeconds > 5;
     onFinish(!overdue);
   }, [now, timer, onFinish]);
+
+  // zvonek během meditace každých N minut (ne těsně před koncem)
+  useEffect(() => {
+    if (!running || !prefs.medInterval) return;
+    const e = elapsedSeconds(timer, now);
+    const k = Math.floor(e / (prefs.medInterval * 60));
+    if (bell.current === null) bell.current = k;
+    if (k > bell.current) {
+      bell.current = k;
+      if (timer.plannedSeconds === null || e < timer.plannedSeconds - 10) playSound(prefs.medIntervalSound);
+    }
+  }, [now, running, timer, prefs.medInterval, prefs.medIntervalSound]);
 
   const elapsed = elapsedSeconds(timer, now);
   const shown = timer.plannedSeconds === null ? elapsed : Math.max(0, timer.plannedSeconds - elapsed);
@@ -161,6 +177,8 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
   const [minutes, setMinutes] = useState(loadLastMinutes);
   const [editing, setEditing] = useState<Meditation | "new" | null>(null);
   const [goalOpen, setGoalOpen] = useState(false);
+  const [soundsOpen, setSoundsOpen] = useState(false);
+  const { prefs } = useSoundPrefs();
   const [tab, setTab] = useState<"cil" | "statistiky" | "historie">("cil");
   const weeks = useMemo(() => groupByWeek(list.slice(0, 40)), [list]);
   const goalDone = stats.weekCount >= goal;
@@ -184,6 +202,9 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
         </div>
         <button className="btn-hero" onClick={() => onStart(minutes)}>
           <Sprite name="i-play" size={22} /> Začít
+        </button>
+        <button className="link sound-link" onClick={() => setSoundsOpen(true)}>
+          Zvuky: {SOUND_NAMES[prefs.medStart]} · {SOUND_NAMES[prefs.medEnd]}{prefs.medInterval ? ` · zvonek po ${prefs.medInterval} min` : ""}
         </button>
       </div>
 
@@ -308,6 +329,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
       )}
 
       {editing && <MeditationSheet meditation={editing === "new" ? null : editing} onClose={() => setEditing(null)} />}
+      {soundsOpen && <MeditationSounds onClose={() => setSoundsOpen(false)} />}
       {goalOpen && <GoalSheet goal={goal} onClose={() => setGoalOpen(false)} onSave={(g) => update({ meditation_weekly_goal: g })} />}
     </div>
   );
@@ -380,6 +402,30 @@ function GoalSheet({ goal, onClose, onSave }: { goal: number; onClose: () => voi
         <button className="icon-btn big tap" aria-label="Více" disabled={value >= 14} onClick={() => setValue((v) => v + 1)}>+</button>
       </div>
       <button className="btn dark tap wide" onClick={() => { onSave(value); onClose(); }}>Uložit cíl</button>
+    </Sheet>
+  );
+}
+
+/** Zvuky meditace: začátek, konec a volitelný zvonek během. */
+function MeditationSounds({ onClose }: { onClose: () => void }) {
+  const { prefs, update } = useSoundPrefs();
+  return (
+    <Sheet title="Zvuky meditace" onClose={onClose}>
+      <p className="small muted">Ťuknutím zvuk vybereš a rovnou uslyšíš. Na iPhonu musí být vypnutý tichý režim.</p>
+      <SoundPicker label="Začátek" value={prefs.medStart} onChange={(v) => update({ medStart: v })} exclude={["fanfara", "pipnuti"]} />
+      <SoundPicker label="Konec" value={prefs.medEnd} onChange={(v) => update({ medEnd: v })} exclude={["fanfara", "pipnuti"]} />
+      <span className="field-label">Zvonek během meditace (každých … minut)</span>
+      <div className="seg seg-wide" role="group" aria-label="Zvonek během meditace">
+        {[0, 1, 3, 5, 10].map((m) => (
+          <button key={m} type="button" className={`seg-btn${prefs.medInterval === m ? " on" : ""}`} aria-pressed={prefs.medInterval === m} onClick={() => update({ medInterval: m })}>
+            {m ? String(m) : "Ne"}
+          </button>
+        ))}
+      </div>
+      {prefs.medInterval > 0 && (
+        <SoundPicker label={`Každých ${prefs.medInterval} min zazní`} value={prefs.medIntervalSound} onChange={(v) => update({ medIntervalSound: v })} exclude={["fanfara", "ticho"]} />
+      )}
+      <button className="btn dark tap wide" onClick={onClose}>Hotovo</button>
     </Sheet>
   );
 }
