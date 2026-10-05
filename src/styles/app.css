@@ -748,8 +748,11 @@ a.btn-hero { text-decoration: none; }
 @media (prefers-reduced-motion: reduce) { .map-dot::after { animation: none; opacity: 0.5; } }
 .map-dot-label {
   position: absolute; left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%); max-width: 220px; overflow: hidden; text-overflow: ellipsis;
-  padding: 2px 8px; white-space: nowrap; background: var(--paper); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 20px; color: var(--ink); pointer-events: none;
+  padding: 2px 8px; white-space: nowrap; background: var(--paper); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 20px; color: var(--ink); pointer-events: auto; cursor: pointer;
 }
+.map-dot-label b { display: block; overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
+.map-dot-label small { display: block; font-family: var(--font-body); font-size: 14px; line-height: 1.1; color: var(--slate); text-align: center; }
+.place-more { font-family: var(--font-pixel); font-size: 16px; color: var(--accent); white-space: nowrap; }
 .map-dot.small { width: 14px; height: 14px; flex: none; box-shadow: none; cursor: inherit; }
 .map-dot.small.byl { width: 14px; height: 14px; }
 .map-banner { position: absolute; z-index: 500; left: 10px; right: 10px; top: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; background: var(--paper); border: var(--line); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 20px; }

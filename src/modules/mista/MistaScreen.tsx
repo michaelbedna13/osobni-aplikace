@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
 import { Sprite } from "../../components/Sprite";
@@ -56,7 +56,20 @@ export function MistaScreen() {
     );
   };
 
-  const onSelect = useCallback((id: string) => { setSelected(id); setSheet({ kind: "detail", id }); }, []);
+  // první ťuknutí místo vybere (na mapě se ukáže jméno), druhé otevře detail
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
+  const mapWrap = useRef<HTMLDivElement>(null);
+  const onSelect = useCallback((id: string, fromList = false) => {
+    if (selectedRef.current === id) {
+      setSheet({ kind: "detail", id });
+      return;
+    }
+    setSelected(id);
+    const box = mapWrap.current;
+    if (fromList && box) window.scrollTo({ top: box.getBoundingClientRect().top + window.scrollY - 12, behavior: "smooth" });
+  }, []);
+  const onDeselect = useCallback(() => setSelected(null), []);
   const onPick = async (lat: number, lng: number) => {
     setPicking(false);
     setPending({ lat, lng });
@@ -69,9 +82,9 @@ export function MistaScreen() {
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <Topbar title="Místa" right={<button className="link" onClick={locate}>Kde jsem</button>} />
 
-      <div className="map-wrap">
+      <div className="map-wrap" ref={mapWrap}>
         <Suspense fallback={<div className="map-box" aria-hidden="true" />}>
-          <MapView places={visible} selectedId={selected} pending={pending} me={me} onSelect={onSelect} onPick={picking ? onPick : undefined} />
+          <MapView places={visible} selectedId={selected} pending={pending} me={me} onSelect={onSelect} onDeselect={onDeselect} onPick={picking ? onPick : undefined} />
         </Suspense>
         {picking && (
           <div className="map-banner">
@@ -107,13 +120,13 @@ export function MistaScreen() {
         <ul className="list">
           {visible.map((p) => (
             <li key={p.id}>
-              <button className={`list-btn place-row${p.id === selected ? " on" : ""}`} onClick={() => onSelect(p.id)}>
+              <button className={`list-btn place-row${p.id === selected ? " on" : ""}`} onClick={() => onSelect(p.id, true)}>
                 <span className={`map-dot small ${p.status}`} aria-hidden="true" />
                 <span className="grow">
                   <b>{p.name}</b>
                   <span className="occasion-kind">{[p.list, p.address].filter(Boolean).join(" · ") || (p.status === "byl" ? "navštíveno" : "chci navštívit")}</span>
                 </span>
-                {me && <span className="small muted">{formatKm(distanceKm(me, p))}</span>}
+                {p.id === selected ? <span className="small place-more">detail ›</span> : me && <span className="small muted">{formatKm(distanceKm(me, p))}</span>}
               </button>
             </li>
           ))}

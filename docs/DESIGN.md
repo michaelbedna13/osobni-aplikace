@@ -264,7 +264,7 @@ Paleta vychází z **Endesga 32**.
 - **Mapa** (`.map-box`, MapLibre + vektorové podklady OpenFreeMap bez klíče, vlastní zjednodušený styl v `mista/mapStyle.ts`):
   tmavě zelená zem, tyrkysově tmavá voda, jemná zeleň, silnice jako světlejší zelené čáry, jen názvy obcí, žádné
   body zájmu. Značky (`.map-dot`) jsou kulaté body s krémovým okrajem: „chci“ v barvě modulu, navštívené menší
-  šedomodré, vybrané větší se světelným kruhem a jmenovkou v pixelovém písmu, nový bod a moje poloha pulzují.
+  šedomodré, vybrané větší se světelným kruhem a jmenovkou v pixelovém písmu („ťukni pro detail“; první ťuknutí vybírá, druhé otevře detail), nový bod a moje poloha pulzují.
   Zdroj dat je schovaný pod malým „i“ v rohu.
 - **Výdaje** (Finance): pruh podílů (`.exp-bar`, dílky v barvě modulu podle měsíční částky, odstíny se střídají) a pod ním
   tři největší položky v procentech; výdaj se splatností do 3 dnů je zvýrazněný (`.list-btn.soon`).

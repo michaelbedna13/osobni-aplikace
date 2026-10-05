@@ -10,6 +10,8 @@ interface Props {
   pending: { lat: number; lng: number } | null;
   me: { lat: number; lng: number } | null;
   onSelect: (id: string) => void;
+  /** Ťuknutí do prázdné mapy zruší výběr. */
+  onDeselect?: () => void;
   /** Když je zapnutý výběr na mapě: ťuknutí vybere bod. */
   onPick?: (lat: number, lng: number) => void;
 }
@@ -20,14 +22,18 @@ function dot(cls: string, label?: string) {
   if (label) {
     const tag = document.createElement("span");
     tag.className = "map-dot-label";
-    tag.textContent = label;
+    const name = document.createElement("b");
+    name.textContent = label;
+    const hint = document.createElement("small");
+    hint.textContent = "ťukni pro detail";
+    tag.append(name, hint);
     el.appendChild(tag);
   }
   return el;
 }
 
 /** Mapa (MapLibre + vlastní zjednodušený styl nad podklady OpenFreeMap / OpenStreetMap). */
-export default function MapView({ places, selectedId, pending, me, onSelect, onPick }: Props) {
+export default function MapView({ places, selectedId, pending, me, onSelect, onDeselect, onPick }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const markers = useRef<maplibregl.Marker[]>([]);
@@ -36,8 +42,10 @@ export default function MapView({ places, selectedId, pending, me, onSelect, onP
   const onReady = useRef<(() => void) | null>(null);
   const pickRef = useRef(onPick);
   const selectRef = useRef(onSelect);
+  const deselectRef = useRef(onDeselect);
   pickRef.current = onPick;
   selectRef.current = onSelect;
+  deselectRef.current = onDeselect;
 
   useEffect(() => {
     if (!box.current) return;
@@ -57,7 +65,10 @@ export default function MapView({ places, selectedId, pending, me, onSelect, onP
     });
     m.touchZoomRotate.disableRotation();
     m.keyboard.disableRotation();
-    m.on("click", (e) => pickRef.current?.(e.lngLat.lat, e.lngLat.lng));
+    m.on("click", (e) => {
+      if (pickRef.current) pickRef.current(e.lngLat.lat, e.lngLat.lng);
+      else deselectRef.current?.();
+    });
     // zdroj dat jen jako malé „i“ v rohu, rozbalí se ťuknutím
     m.once("load", () => {
       box.current?.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
