@@ -2,8 +2,8 @@
 // Drží se v zařízení a nastavuje se jako atribut <html data-bg="…">.
 import { useCallback, useSyncExternalStore } from "react";
 
-export type Background = "svetlo" | "oboje" | "vzor" | "tecky";
-export const BACKGROUNDS: Record<Background, string> = { svetlo: "Světlo", oboje: "Světlo a vzor", vzor: "Vzor", tecky: "Tečky" };
+export type Background = "vzor" | "svetlo" | "oboje" | "tecky";
+export const BACKGROUNDS: Record<Background, string> = { vzor: "Vzor", svetlo: "Světlo", oboje: "Světlo a vzor", tecky: "Tečky" };
 
 const KEY = "pozadi";
 const listeners = new Set<() => void>();
@@ -15,7 +15,7 @@ function read(): Background {
   } catch {
     // výchozí
   }
-  return "svetlo";
+  return "vzor";
 }
 
 export function applyBackground(bg: Background = read()) {
@@ -23,7 +23,7 @@ export function applyBackground(bg: Background = read()) {
 }
 
 export function useBackground() {
-  const bg = useSyncExternalStore((l) => { listeners.add(l); return () => listeners.delete(l); }, read, () => "svetlo" as Background);
+  const bg = useSyncExternalStore((l) => { listeners.add(l); return () => listeners.delete(l); }, read, () => "vzor" as Background);
   const set = useCallback((next: Background) => {
     try {
       localStorage.setItem(KEY, next);
