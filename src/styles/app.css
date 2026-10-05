@@ -512,8 +512,7 @@ a.btn-hero { text-decoration: none; }
 .rounds td b { display: block; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
 .rounds td span { font-size: 14px; color: var(--slate); white-space: nowrap; }
 
-/* ---------- Skóre na hry ---------- */
-.sc-kinds .occasion-kind { white-space: normal; }
+/* ---------- Šipky ---------- */
 .stepper-value.sc-none { font-size: 30px; }
 .sc-chip { box-shadow: inset 0 -4px 0 var(--team); }
 .sc-board { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
@@ -521,41 +520,50 @@ a.btn-hero { text-decoration: none; }
 .sc-row b { display: block; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; line-height: 1.1; }
 .sc-row.on { background: color-mix(in srgb, var(--team) 20%, var(--paper)); outline: 2px solid var(--team); outline-offset: -5px; }
 .sc-row.won { background: color-mix(in srgb, var(--team) 28%, var(--paper)); }
-.sc-row.out { opacity: 0.55; }
-.sc-row.out b { text-decoration: line-through; }
 .sc-score { font-family: var(--font-pixel); font-size: 48px; line-height: 1; font-variant-numeric: tabular-nums; }
-.sc-misses { display: inline-flex; gap: 4px; margin-right: 8px; vertical-align: middle; font-size: 14px; color: var(--danger); }
-.sc-misses i { width: 10px; height: 10px; border: 2px solid var(--edge); background: var(--surface-2); }
-.sc-misses i.full { background: var(--danger); }
+.sc-legs { display: inline-flex; gap: 4px; margin-right: 8px; vertical-align: middle; }
+.sc-legs i { width: 10px; height: 10px; border: 2px solid var(--edge); background: var(--surface-2); }
+.sc-legs i.full { background: var(--team); }
+.sc-route { display: block; font-family: var(--font-pixel); font-size: 16px; color: var(--accent); }
 .sc-input { margin-top: 16px; }
-.sc-turn { margin-bottom: 10px; color: var(--slate); }
+.sc-turn { margin-bottom: 6px; color: var(--slate); }
 .sc-turn b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; color: var(--ink); }
+.sc-leg-won { margin-bottom: 8px; padding: 6px 10px; background: color-mix(in srgb, var(--lime) 18%, var(--paper)); border: var(--line); font-family: var(--font-pixel); font-size: 20px; }
+.sc-checkout { margin-bottom: 10px; padding: 6px 10px; background: color-mix(in srgb, var(--accent) 16%, var(--surface-2)); border: var(--line); color: var(--slate); }
+.sc-checkout b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; color: var(--ink); margin-left: 4px; }
+.sc-checkout.dim { background: var(--surface-2); }
+.sc-mode { margin-bottom: 10px; }
+.sc-darts { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 6px; align-items: center; margin-bottom: 10px; }
+.sc-dart { display: grid; place-items: center; min-height: 44px; border: 2px dashed var(--idle); font-family: var(--font-pixel); font-size: 24px; color: var(--slate); }
+.sc-dart.set { border: var(--line); background: var(--surface-2); color: var(--ink); }
+.sc-dart-sum { min-width: 64px; text-align: right; font-family: var(--font-pixel); font-size: 30px; }
+.sc-mult { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.sc-mult .sc-key { min-height: 48px; font-size: 24px; }
 .sc-display { padding: 6px 12px; margin-bottom: 10px; background: var(--surface-2); border: var(--line); text-align: right; font-family: var(--font-pixel); font-size: 48px; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .sc-display.bad { color: var(--danger); }
 .sc-quick { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
 .sc-quick .chip { padding: 0; justify-content: center; }
 .sc-grid { display: grid; gap: 8px; }
 .sc-grid.keypad { grid-template-columns: repeat(3, 1fr); margin-bottom: 4px; }
-.sc-grid.molkky { grid-template-columns: repeat(4, 1fr); }
-.sc-grid.molkky .miss { grid-column: span 4; order: 1; }
-.sc-grid.petanque { grid-template-columns: repeat(3, 1fr); }
+.sc-grid.numbers { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.sc-grid.extras { grid-template-columns: 1fr 1fr; margin-top: 6px; }
 .sc-key { min-height: 56px; border: var(--line); background: var(--surface-2); color: var(--ink); box-shadow: var(--shadow); font-family: var(--font-pixel); font-size: 30px; }
+.sc-grid.numbers .sc-key { min-height: 52px; font-size: 24px; }
 .sc-key:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--edge); }
 .sc-key:disabled { opacity: 0.4; }
-.sc-key.on { background: var(--ink); color: var(--on-accent); }
+.sc-key.on { background: var(--accent); color: var(--on-accent); }
 .sc-key.miss { font-size: 24px; color: var(--slate); }
-.sc-teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 12px; }
-.sc-team { min-height: 48px; border: var(--line); box-shadow: inset 0 -5px 0 var(--team); }
-.sc-team.on { background: color-mix(in srgb, var(--team) 35%, var(--paper)); color: var(--ink); outline: 3px solid var(--team); outline-offset: 2px; }
+.sc-confirm { display: grid; gap: 4px; text-align: center; }
+.sc-confirm p { margin-bottom: 6px; }
 .sc-actions { display: flex; gap: 10px; margin-top: 12px; }
 .sc-actions .btn { flex: 1; }
 .sc-log-panel { margin-top: 16px; }
 .sc-log { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
 .sc-log li { display: flex; align-items: center; gap: 8px; }
-.sc-log b { min-width: 52px; text-align: right; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
-.sc-after { min-width: 96px; text-align: right; }
-.sc-total th, .sc-total td { border-bottom: 0; }
-.sc-total b { color: var(--accent); }
+.sc-log b { min-width: 44px; text-align: right; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
+.sc-after { min-width: 72px; text-align: right; }
+.sc-after.win { color: var(--lime); font-family: var(--font-pixel); font-size: 20px; }
+.sc-after.bust { color: var(--danger); }
 .sc-cancel { display: block; margin: 16px auto 0; font-size: 16px; color: var(--slate); }
 
 /* Cornhole v mobilu: hra pro dva na jednom telefonu */

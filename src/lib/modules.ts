@@ -62,8 +62,8 @@ export const MODULES: ModuleDef[] = [
     plan: ["Týmy s hráči", "Zápis pytlíků po kolech", "Víc týmů najednou", "Výhry a rekordy"]
   },
   {
-    key: "skore", name: "Skóre", color: "#A884F3", deep: "#5E3FA8", light: "#D9C8FB", phase: 1, ready: true, quickAction: "Nová hra",
-    plan: ["Šipky 501 a 301", "Mölkky a pétanque", "Vlastní hra na cokoli", "Žebříček hráčů a rekordy"]
+    key: "skore", name: "Šipky", color: "#A884F3", deep: "#5E3FA8", light: "#D9C8FB", phase: 1, ready: true, quickAction: "Nová hra",
+    plan: ["301, 501 a 701", "Zavírání na double nebo master", "Co hodit na zavření", "Legy, průměry a rekordy"]
   },
   {
     key: "odkazy", name: "Odkazy", color: "#2CE8F5", deep: "#0099DB", light: "#C7F9FC", phase: 1, ready: true, quickAction: "Uložit odkaz",

@@ -1,33 +1,32 @@
 // Rozehraná hra: drží se v localStorage, takže přežije zavření appky.
 import { useCallback, useSyncExternalStore } from "react";
-import type { GameKind, Settings, Turn } from "./rules";
+import type { Dart, DartSettings, Visit } from "./darts";
 
-export interface ActiveScoreGame {
+export interface ActiveDarts {
   started_at: string;
-  kind: GameKind;
-  settings: Settings;
+  settings: DartSettings;
   players: string[];
-  turns: Turn[];
-  /** Vlastní hru ukončil hráč ručně. */
-  finished?: boolean;
+  turns: Visit[];
+  /** Šipky rozhozeného náhozu (zadávání po šipkách). */
+  pending?: Dart[];
 }
 
-const KEY = "skore:active";
+const KEY = "sipky:active";
 const listeners = new Set<() => void>();
-let cache: ActiveScoreGame | null | undefined;
+let cache: ActiveDarts | null | undefined;
 
-function read(): ActiveScoreGame | null {
+function read(): ActiveDarts | null {
   if (cache !== undefined) return cache;
   try {
-    const parsed = JSON.parse(localStorage.getItem(KEY) ?? "null") as ActiveScoreGame | null;
-    cache = parsed && Array.isArray(parsed.players) && Array.isArray(parsed.turns) ? parsed : null;
+    const parsed = JSON.parse(localStorage.getItem(KEY) ?? "null") as ActiveDarts | null;
+    cache = parsed && parsed.settings && Array.isArray(parsed.players) && Array.isArray(parsed.turns) ? parsed : null;
   } catch {
     cache = null;
   }
   return cache;
 }
 
-function write(next: ActiveScoreGame | null) {
+function write(next: ActiveDarts | null) {
   cache = next;
   try {
     if (next) localStorage.setItem(KEY, JSON.stringify(next));
@@ -43,9 +42,9 @@ const subscribe = (l: () => void) => {
   return () => listeners.delete(l);
 };
 
-export function useActiveScoreGame() {
+export function useActiveDarts() {
   const active = useSyncExternalStore(subscribe, read, () => null);
-  const update = useCallback((fn: (g: ActiveScoreGame) => ActiveScoreGame) => {
+  const update = useCallback((fn: (g: ActiveDarts) => ActiveDarts) => {
     const current = read();
     if (current) write(fn(current));
   }, []);

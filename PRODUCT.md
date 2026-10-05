@@ -36,8 +36,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Cornhole (rodinné hry: týmy s hráči, 2 a víc týmů, body sčítáním nebo rozdílem, zápis pytlíků
   na desce / v díře po kolech, do 21, žebříček týmů a hráčů, rekordy; k tomu hra Cornhole v mobilu
   pro 2–6 hráčů na jednom telefonu: házení prstem, vítr, body rozdílem nebo sčítáním, bilance party).
-  Skóre (počítadlo na další hry: šipky 501/301, mölkky, pétanque a vlastní hra s cílem nebo bez,
-  vyhrává nejvíc nebo nejméně bodů; žebříček hráčů a rekordy).
+  Šipky (301 / 501 / 701, zavírání libovolně, na double nebo master, legy, zadávání po šipkách nebo součtem,
+  návrh co hodit na zavření, průměry, žebříček a rekordy).
   Odkazy (ukládání z menu Sdílet přes Zkratku, náhledy, kolekce, obrázky a screenshoty, na později).
   Filmy a knihy (zapisují se ručně textem: chci / teď / hotovo, hodnocení, kdo doporučil,
   čtenářská výzva).
