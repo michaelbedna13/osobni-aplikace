@@ -253,6 +253,8 @@ Paleta vychází z **Endesga 32**.
   body zájmu. Značky (`.map-dot`) jsou kulaté body s krémovým okrajem: „chci“ v barvě modulu, navštívené menší
   šedomodré, vybrané větší se světelným kruhem a jmenovkou v pixelovém písmu, nový bod a moje poloha pulzují.
   Zdroj dat je schovaný pod malým „i“ v rohu.
+- **Výdaje** (Finance): pruh podílů (`.exp-bar`, dílky v barvě modulu podle měsíční částky, odstíny se střídají) a pod ním
+  tři největší položky v procentech; výdaj se splatností do 3 dnů je zvýrazněný (`.list-btn.soon`).
 - **Částky** (`.money`) v pixelovém písmu; „dluží mi“ limetkově, „dlužím“ v barvě `danger`. Předplatné, které se
   obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.
 - **Dechová kostka** (`.orb`): čtverec v akcentu, při nádechu se v pixelových krocích zvětšuje, při výdechu zmenšuje,

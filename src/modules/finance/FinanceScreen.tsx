@@ -10,12 +10,14 @@ import { useSettings } from "../../lib/settings";
 import { usePeople } from "../lide/data";
 import { useBeers } from "../piva/data";
 import {
-  PERIOD_NAMES, balancesByPerson, computeFinanceStats, dayKey, daysUntil, debts, formatKc, monthly, nextRenewal, parseAmount, roundKc, savings, subscriptions,
-  type Debt, type Period, type SavingsGoal, type Subscription,
+  EXPENSE_PERIODS, EXPENSE_PRESETS, PERIOD_NAMES, balancesByPerson, computeFinanceStats, dayKey, daysUntil, debts, expenseMonthly, expenses, formatKc, monthly,
+  nextDue, nextRenewal, parseAmount, roundKc, savings, subscriptions,
+  type Debt, type Expense, type ExpensePeriod, type Period, type SavingsGoal, type Subscription,
 } from "./data";
 
 const MODULE = MODULE_BY_KEY.finance;
-type Tab = "predplatne" | "dluhy" | "sporeni";
+type Tab = "vydaje" | "predplatne" | "dluhy" | "sporeni";
+const TABS: Tab[] = ["vydaje", "predplatne", "dluhy", "sporeni"];
 const DNI: [string, string, string] = ["den", "dny", "dní"];
 const when = (days: number) => (days === 0 ? "dnes" : days === 1 ? "zítra" : `za ${days} ${plural(days, DNI)}`);
 
@@ -23,19 +25,20 @@ export function FinanceScreen() {
   const { data: subs = [], error } = subscriptions.useList();
   const { data: ds = [] } = debts.useList();
   const { data: goals = [] } = savings.useList();
+  const { data: exps = [] } = expenses.useList();
   const { data: beers = [] } = useBeers();
   const { settings, update: updateSettings } = useSettings();
-  const stats = useMemo(() => computeFinanceStats(subs, ds, goals), [subs, ds, goals]);
+  const stats = useMemo(() => computeFinanceStats(subs, ds, goals, exps), [subs, ds, goals, exps]);
   const [params, setParams] = useSearchParams();
-  const [tab, setTab] = useState<Tab>("predplatne");
+  const [tab, setTab] = useState<Tab>("vydaje");
   const [sheet, setSheet] = useState<
-    { kind: "sub"; item: Subscription | null } | { kind: "debt"; item: Debt | null } | { kind: "goal"; item: SavingsGoal | null } | { kind: "beer" } | null
+    { kind: "exp"; item: Expense | null } | { kind: "sub"; item: Subscription | null } | { kind: "debt"; item: Debt | null } | { kind: "goal"; item: SavingsGoal | null } | { kind: "beer" } | null
   >(null);
 
   useEffect(() => {
     const t = params.get("tab");
-    if (t === "dluhy" || t === "sporeni" || t === "predplatne") setTab(t);
-    else if (params.has("nova")) setSheet({ kind: "sub", item: null });
+    if (TABS.includes(t as Tab)) setTab(t as Tab);
+    else if (params.has("nova")) setSheet({ kind: "exp", item: null });
     else return;
     setParams({}, { replace: true });
   }, [params, setParams]);
@@ -44,7 +47,9 @@ export function FinanceScreen() {
   const beersThisYear = beers.filter((b) => new Date(b.drunk_at).getFullYear() === year).length;
   const upcoming = subs.filter((s) => s.active).map((s) => ({ s, next: nextRenewal(s.next_date, s.period) })).sort((a, b) => a.next.getTime() - b.next.getTime());
   const balances = balancesByPerson(ds);
-  const addCurrent = () => setSheet(tab === "predplatne" ? { kind: "sub", item: null } : tab === "dluhy" ? { kind: "debt", item: null } : { kind: "goal", item: null });
+  const addCurrent = () =>
+    setSheet(tab === "vydaje" ? { kind: "exp", item: null } : tab === "predplatne" ? { kind: "sub", item: null } : tab === "dluhy" ? { kind: "debt", item: null } : { kind: "goal", item: null });
+  const activeExps = exps.filter((e) => e.active).sort((a, b) => expenseMonthly(b) - expenseMonthly(a));
 
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
@@ -52,12 +57,12 @@ export function FinanceScreen() {
         <Topbar title="Finance" />
         <div className="hero">
           <span className="sprite-tile"><Sprite name="finance" size={96} /></span>
-          <span className="hero-num">{Math.round(stats.monthlySubs).toLocaleString("cs-CZ")}</span>
-          <span className="hero-cap">Kč měsíčně za předplatné</span>
-          <p className="hero-line">{roundKc(stats.yearlySubs)} za rok</p>
+          <span className="hero-num">{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}</span>
+          <span className="hero-cap">Kč měsíčně pravidelně</span>
+          <p className="hero-line">výdaje {roundKc(stats.monthlyExpenses)} · předplatné {roundKc(stats.monthlySubs)} · za rok {roundKc(stats.yearlyTotal)}</p>
         </div>
         <button className="btn-hero" onClick={addCurrent}>
-          <Sprite name="i-plus" size={24} /> {tab === "predplatne" ? "Přidat předplatné" : tab === "dluhy" ? "Zapsat dluh" : "Nový spořicí cíl"}
+          <Sprite name="i-plus" size={24} /> {tab === "vydaje" ? "Přidat výdaj" : tab === "predplatne" ? "Přidat předplatné" : tab === "dluhy" ? "Zapsat dluh" : "Nový spořicí cíl"}
         </button>
       </div>
 
@@ -77,7 +82,49 @@ export function FinanceScreen() {
         </span>
       </button>
 
-      <Tabs label="Část" value={tab} onChange={setTab} items={[{ id: "predplatne", label: "Předplatné" }, { id: "dluhy", label: "Dluhy" }, { id: "sporeni", label: "Spoření" }]} />
+      <Tabs label="Část" value={tab} onChange={setTab} items={[{ id: "vydaje", label: "Výdaje" }, { id: "predplatne", label: "Předplatné" }, { id: "dluhy", label: "Dluhy" }, { id: "sporeni", label: "Spoření" }]} />
+
+      {tab === "vydaje" && (
+        <div className="tab-panel">
+          {exps.length === 0 ? <p className="empty">Žádné výdaje. Zapiš nájem, internet, energie… a uvidíš, kolik tě měsíčně stojí bydlení a provoz.</p> : (
+            <>
+              {activeExps.length > 1 && (
+                <div className="panel exp-share" aria-label="Podíl výdajů">
+                  <div className="exp-bar">
+                    {activeExps.map((e, i) => <i key={e.id} style={{ flexGrow: expenseMonthly(e), opacity: 1 - (i % 4) * 0.2 }} title={e.name} />)}
+                  </div>
+                  <span className="small muted">{activeExps.slice(0, 3).map((e) => `${e.name} ${Math.round((expenseMonthly(e) / stats.monthlyExpenses) * 100)} %`).join(" · ")}</span>
+                </div>
+              )}
+              <ul className="list">
+                {activeExps.map((e) => {
+                  const due = e.period === "mesic" && e.due_day ? daysUntil(nextDue(e.due_day)) : null;
+                  return (
+                    <li key={e.id}>
+                      <button className={`list-btn${due !== null && due <= 3 ? " soon" : ""}`} onClick={() => setSheet({ kind: "exp", item: e })}>
+                        <span className="grow">
+                          <b>{e.name}</b>
+                          <span className="occasion-kind">
+                            {EXPENSE_PERIODS[e.period].adj} {formatKc(e.amount)}{e.due_day && e.period === "mesic" ? ` · platí se ${e.due_day}. (${when(due ?? 0)})` : ""}{e.note ? ` · ${e.note}` : ""}
+                          </span>
+                        </span>
+                        <span className="money">{roundKc(expenseMonthly(e))}<small>/měs</small></span>
+                      </button>
+                    </li>
+                  );
+                })}
+                {exps.filter((e) => !e.active).map((e) => (
+                  <li key={e.id}>
+                    <button className="list-btn inactive" onClick={() => setSheet({ kind: "exp", item: e })}>
+                      <span className="grow"><b>{e.name}</b><span className="occasion-kind">už neplatím</span></span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      )}
 
       {tab === "predplatne" && (
         <div className="tab-panel">
@@ -154,6 +201,7 @@ export function FinanceScreen() {
         </div>
       )}
 
+      {sheet?.kind === "exp" && <ExpenseSheet item={sheet.item} existing={exps.map((e) => e.name)} onClose={() => setSheet(null)} />}
       {sheet?.kind === "sub" && <SubSheet item={sheet.item} onClose={() => setSheet(null)} />}
       {sheet?.kind === "debt" && <DebtSheet item={sheet.item} onClose={() => setSheet(null)} />}
       {sheet?.kind === "goal" && <GoalSheet item={sheet.item} onClose={() => setSheet(null)} />}
@@ -175,6 +223,62 @@ function AmountField({ id, label, value, onChange }: { id: string; label: string
 }
 
 const show = (n: number | null | undefined) => (n === null || n === undefined ? "" : String(n).replace(".", ","));
+
+function ExpenseSheet({ item, existing, onClose }: { item: Expense | null; existing: string[]; onClose: () => void }) {
+  const [name, setName] = useState(item?.name ?? "");
+  const [amount, setAmount] = useState(show(item?.amount));
+  const [period, setPeriod] = useState<ExpensePeriod>(item?.period ?? "mesic");
+  const [dueDay, setDueDay] = useState(item?.due_day ? String(item.due_day) : "");
+  const [note, setNote] = useState(item?.note ?? "");
+  const add = expenses.useAdd();
+  const update = expenses.useUpdate();
+  const remove = expenses.useRemove();
+  const a = parseAmount(amount);
+  const day = dueDay.trim() ? Number(dueDay) : null;
+  const dayOk = day === null || (Number.isInteger(day) && day >= 1 && day <= 31);
+  const valid = name.trim() && a !== null && dayOk;
+  const presets = EXPENSE_PRESETS.filter((p) => !existing.includes(p) || p === item?.name);
+
+  const save = () => {
+    const fields = { name: name.trim(), amount: a!, period, due_day: period === "mesic" ? day : null, note: note.trim() || null };
+    if (item) update.mutate({ ...item, ...fields });
+    else add.mutate({ id: crypto.randomUUID(), active: true, created_at: new Date().toISOString(), ...fields });
+    onClose();
+  };
+
+  return (
+    <Sheet title={item ? item.name : "Nový výdaj"} onClose={onClose}>
+      <label htmlFor="exp-name" className="field-label">Co</label>
+      <input id="exp-name" className="input" maxLength={100} placeholder="Nájem, internet, elektřina…" value={name} onChange={(e) => setName(e.target.value)} />
+      {!item && presets.length > 0 && (
+        <div className="chips">
+          {presets.map((p) => <button key={p} type="button" className={`chip${name === p ? " on" : ""}`} onClick={() => setName(p)}>{p}</button>)}
+        </div>
+      )}
+      <AmountField id="exp-amount" label="Kolik (Kč)" value={amount} onChange={setAmount} />
+      <span className="field-label">Jak často</span>
+      <div className="seg seg-wide" role="group" aria-label="Perioda">
+        {(Object.keys(EXPENSE_PERIODS) as ExpensePeriod[]).map((k) => <button key={k} type="button" className={`seg-btn${period === k ? " on" : ""}`} aria-pressed={period === k} onClick={() => setPeriod(k)}>{EXPENSE_PERIODS[k].adj}</button>)}
+      </div>
+      {period === "mesic" && (
+        <>
+          <label htmlFor="exp-day" className="field-label">Den splatnosti (nepovinné)</label>
+          <input id="exp-day" className="input" inputMode="numeric" maxLength={2} placeholder="např. 15" value={dueDay} onChange={(e) => setDueDay(e.target.value.replace(/\D/g, ""))} />
+          {!dayOk && <p className="error">Den v měsíci, 1 až 31.</p>}
+        </>
+      )}
+      <label htmlFor="exp-note" className="field-label">Poznámka</label>
+      <input id="exp-note" className="input" maxLength={500} placeholder="Záloha, trvalý příkaz, dodavatel…" value={note} onChange={(e) => setNote(e.target.value)} />
+      <button className="btn dark tap wide" disabled={!valid} onClick={save}>{item ? "Uložit" : "Přidat"}</button>
+      {item && (
+        <>
+          <button className="btn tap wide" onClick={() => { update.mutate({ ...item, active: !item.active }); onClose(); }}>{item.active ? "Už neplatím" : "Zase platím"}</button>
+          <button className="link" onClick={() => { if (window.confirm(`Smazat ${item.name}?`)) { remove.mutate(item.id); onClose(); } }}>Smazat</button>
+        </>
+      )}
+    </Sheet>
+  );
+}
 
 function SubSheet({ item, onClose }: { item: Subscription | null; onClose: () => void }) {
   const [name, setName] = useState(item?.name ?? "");

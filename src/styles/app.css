@@ -704,6 +704,9 @@ a.btn-hero { text-decoration: none; }
 .money.minus { color: var(--danger); }
 .list-btn.soon { background: color-mix(in srgb, var(--accent) 14%, var(--paper)); }
 .list-btn.inactive { opacity: 0.55; }
+.exp-share { margin-bottom: 12px; padding: 12px 14px; }
+.exp-bar { display: flex; gap: 2px; height: 14px; margin-bottom: 8px; border: var(--line); background: var(--edge); }
+.exp-bar i { flex-basis: 0; min-width: 3px; background: var(--accent); }
 .goal-card { width: 100%; display: grid; gap: 6px; text-align: left; color: var(--ink); }
 .goal-card b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
 

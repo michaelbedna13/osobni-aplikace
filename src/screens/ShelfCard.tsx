@@ -25,7 +25,7 @@ import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data"
 import { usePlaces } from "../modules/mista/data";
 import { computeBreathStats, useBreathSessions } from "../modules/dech/data";
 import { daysUntil as daysTo13, nextFriday13, useUntroisNotes } from "../modules/untrois/data";
-import { computeFinanceStats, daysUntil, debts, nextRenewal, savings, subscriptions } from "../modules/finance/data";
+import { computeFinanceStats, daysUntil, debts, expenses, nextDue, nextRenewal, savings, subscriptions } from "../modules/finance/data";
 
 interface CardProps {
   moduleKey: ModuleKey;
@@ -244,15 +244,19 @@ function FinanceCard() {
   const { data: subs = [] } = subscriptions.useList();
   const { data: ds = [] } = debts.useList();
   const { data: goals = [] } = savings.useList();
-  const stats = useMemo(() => computeFinanceStats(subs, ds, goals), [subs, ds, goals]);
+  const { data: exps = [] } = expenses.useList();
+  const stats = useMemo(() => computeFinanceStats(subs, ds, goals, exps), [subs, ds, goals, exps]);
   const navigate = useNavigate();
-  const next = subs.filter((s) => s.active).map((s) => ({ s, d: daysUntil(nextRenewal(s.next_date, s.period)) })).sort((a, b) => a.d - b.d)[0];
+  const next = [
+    ...subs.filter((s) => s.active).map((s) => ({ name: s.name, d: daysUntil(nextRenewal(s.next_date, s.period)) })),
+    ...exps.filter((e) => e.active && e.period === "mesic" && e.due_day).map((e) => ({ name: e.name, d: daysUntil(nextDue(e.due_day as number)) })),
+  ].sort((a, b) => a.d - b.d)[0];
   return (
     <Card
       moduleKey="finance"
-      num={`${Math.round(stats.monthlySubs).toLocaleString("cs-CZ")}`}
-      sub={next && next.d <= 7 ? `Kč/měs, ${next.s.name} ${next.d === 0 ? "dnes" : `za ${next.d} d`}` : "Kč měsíčně za předplatné"}
-      quick={{ label: "Přidat předplatné", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/finance?nova=1") }}
+      num={`${Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}`}
+      sub={next && next.d <= 7 ? `Kč/měs, ${next.name} ${next.d === 0 ? "dnes" : `za ${next.d} d`}` : "Kč měsíčně pravidelně"}
+      quick={{ label: "Přidat výdaj", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/finance?nova=1") }}
     />
   );
 }

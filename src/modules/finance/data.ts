@@ -33,6 +33,29 @@ export interface SavingsGoal {
   created_at: string;
 }
 
+/** Pravidelný výdaj: nájem, internet, energie… */
+export type ExpensePeriod = "mesic" | "ctvrtleti" | "rok";
+
+export interface Expense {
+  id: string;
+  name: string;
+  amount: number;
+  period: ExpensePeriod;
+  /** Den v měsíci, kdy se platí (jen u měsíčních), nebo null. */
+  due_day: number | null;
+  note: string | null;
+  active: boolean;
+  created_at: string;
+}
+
+export const EXPENSE_PERIODS: Record<ExpensePeriod, { adj: string; per: string }> = {
+  mesic: { adj: "Měsíčně", per: "měsíc" },
+  ctvrtleti: { adj: "Čtvrtletně", per: "čtvrtletí" },
+  rok: { adj: "Ročně", per: "rok" },
+};
+
+export const EXPENSE_PRESETS = ["Nájem", "Internet", "Elektřina", "Plyn", "Voda", "Telefon", "Pojištění", "Fond oprav", "Hypotéka", "Doprava"];
+
 export const PERIOD_NAMES: Record<Period, { adj: string; per: string }> = {
   tyden: { adj: "Týdně", per: "týden" },
   mesic: { adj: "Měsíčně", per: "měsíc" },
@@ -73,6 +96,7 @@ function makeList<T extends { id: string; created_at: string }>(table: string, f
 export const subscriptions = makeList<Subscription>("subscriptions", (r) => ({ ...r, price: num(r.price) }));
 export const debts = makeList<Debt>("debts", (r) => ({ ...r, amount: num(r.amount) }));
 export const savings = makeList<SavingsGoal>("savings_goals", (r) => ({ ...r, target: num(r.target), saved: num(r.saved) }));
+export const expenses = makeList<Expense>("expenses", (r) => ({ ...r, amount: num(r.amount), due_day: r.due_day === null || r.due_day === undefined ? null : Number(r.due_day) }));
 
 const pad = (n: number) => String(n).padStart(2, "0");
 export const dayKey = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -106,22 +130,42 @@ export const daysUntil = (d: Date, now = new Date()) =>
 export const monthly = (s: Pick<Subscription, "price" | "period">) =>
   s.period === "mesic" ? s.price : s.period === "rok" ? s.price / 12 : (s.price * 52) / 12;
 
+/** Měsíční ekvivalent výdaje. */
+export const expenseMonthly = (e: Pick<Expense, "amount" | "period">) =>
+  e.period === "mesic" ? e.amount : e.period === "ctvrtleti" ? e.amount / 3 : e.amount / 12;
+
+/** Nejbližší splatnost měsíčního výdaje (dnes nebo později); den 31 v kratším měsíci = poslední den. */
+export function nextDue(day: number, now = new Date()): Date {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const at = (y: number, m: number) => new Date(y, m, Math.min(day, new Date(y, m + 1, 0).getDate()));
+  const thisMonth = at(now.getFullYear(), now.getMonth());
+  return thisMonth >= today ? thisMonth : at(now.getFullYear(), now.getMonth() + 1);
+}
+
 export interface FinanceStats {
   monthlySubs: number;
   yearlySubs: number;
+  monthlyExpenses: number;
+  /** Výdaje + předplatné za měsíc. */
+  monthlyTotal: number;
+  yearlyTotal: number;
   owedToMe: number;
   iOwe: number;
   savedTotal: number;
   targetTotal: number;
 }
 
-export function computeFinanceStats(subs: Subscription[], ds: Debt[], goals: SavingsGoal[]): FinanceStats {
+export function computeFinanceStats(subs: Subscription[], ds: Debt[], goals: SavingsGoal[], exps: Expense[] = []): FinanceStats {
   const active = subs.filter((s) => s.active);
   const monthlySubs = active.reduce((sum, s) => sum + monthly(s), 0);
+  const monthlyExpenses = exps.filter((e) => e.active).reduce((sum, e) => sum + expenseMonthly(e), 0);
   const open = ds.filter((d) => !d.settled_at);
   return {
     monthlySubs,
     yearlySubs: monthlySubs * 12,
+    monthlyExpenses,
+    monthlyTotal: monthlySubs + monthlyExpenses,
+    yearlyTotal: (monthlySubs + monthlyExpenses) * 12,
     owedToMe: open.filter((d) => d.direction === "mi").reduce((s, d) => s + d.amount, 0),
     iOwe: open.filter((d) => d.direction === "ja").reduce((s, d) => s + d.amount, 0),
     savedTotal: goals.reduce((s, g) => s + g.saved, 0),

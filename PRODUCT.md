@@ -47,7 +47,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   13 – Untrois (osobní brand podle čísla 13: nápady na brand a významy čísla 13, odpočet do pátku 13.).
   Dechová cvičení (krabicové, 4-7-8, rezonanční, fyziologický vzdech, prodloužený výdech, střídavé,
   Wim Hof s měřením zadržení dechu; animovaný průvodce s tóny, historie).
-  Finance (předplatné s obnovami a měsíčním součtem, kdo komu dluží, spořicí cíle, útrata za piva).
+  Finance (pravidelné výdaje jako nájem, internet a energie se dnem splatnosti, předplatné s obnovami, měsíční
+  a roční součet všeho pravidelného, kdo komu dluží, spořicí cíle, útrata za piva).
 - Obrazovka Dnes: datum a kdo má svátek, počasí (Open-Meteo), souhrn dne, dluhy, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, jeden odkaz „Na později“, hláška dne. Pořadí připnutých modulů se upravuje jen v Profilu.
 

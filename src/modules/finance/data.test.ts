@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { balancesByPerson, computeFinanceStats, daysUntil, monthly, nextRenewal, parseAmount, type Debt, type Subscription } from "./data";
+import { balancesByPerson, computeFinanceStats, daysUntil, expenseMonthly, monthly, nextDue, nextRenewal, parseAmount, type Debt, type Expense, type Subscription } from "./data";
 
 const sub = (f: Partial<Subscription>): Subscription => ({ id: "s", name: "X", price: 100, period: "mesic", next_date: "2026-10-05", note: null, active: true, created_at: "", ...f });
 const debt = (f: Partial<Debt>): Debt => ({ id: "d", person: "Míša", amount: 100, direction: "mi", note: null, settled_at: null, created_at: "", ...f });
@@ -33,5 +33,30 @@ describe("finance", () => {
   it("částka z textu", () => {
     expect(parseAmount("1 299,90 Kč")).toBe(1299.9);
     expect(parseAmount("x")).toBeNull();
+  });
+});
+
+describe("výdaje", () => {
+  const now = new Date(2026, 9, 20, 12); // 20. 10. 2026
+  const exp = (f: Partial<Expense>): Expense => ({ id: "e", name: "Nájem", amount: 15000, period: "mesic", due_day: null, note: null, active: true, created_at: "", ...f });
+
+  it("měsíční ekvivalent", () => {
+    expect(expenseMonthly(exp({}))).toBe(15000);
+    expect(expenseMonthly(exp({ amount: 3000, period: "ctvrtleti" }))).toBe(1000);
+    expect(expenseMonthly(exp({ amount: 12000, period: "rok" }))).toBe(1000);
+  });
+
+  it("nejbližší splatnost", () => {
+    expect(nextDue(25, now)).toEqual(new Date(2026, 9, 25));
+    expect(nextDue(20, now)).toEqual(new Date(2026, 9, 20));
+    expect(nextDue(15, now)).toEqual(new Date(2026, 10, 15));
+    expect(nextDue(31, new Date(2026, 10, 3))).toEqual(new Date(2026, 10, 30));
+  });
+
+  it("součty výdajů a předplatného, zrušené se nepočítají", () => {
+    const s = computeFinanceStats([sub({ price: 300 })], [], [], [exp({}), exp({ amount: 900, period: "ctvrtleti" }), exp({ amount: 500, active: false })]);
+    expect(s.monthlyExpenses).toBe(15300);
+    expect(s.monthlyTotal).toBe(15600);
+    expect(s.yearlyTotal).toBe(187200);
   });
 });
