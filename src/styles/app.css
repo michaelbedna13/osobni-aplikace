@@ -74,11 +74,11 @@ html[data-bg="vzor"] .screen::before, html[data-bg="oboje"] .screen::before {
   mask: url("../assets/squiggle.svg") 0 0 / 330px 330px repeat;
 }
 html[data-bg="svetlo"] .screen::after, html[data-bg="oboje"] .screen::after {
-  content: ""; position: fixed; z-index: -2; left: -45vw; top: -30vh; width: 140vw; height: 120vh; pointer-events: none;
+  content: ""; position: fixed; z-index: -2; left: -50vw; top: -35vh; width: 150vw; height: 140vh; pointer-events: none;
   background:
     url("../assets/grain-strong.png") 0 0 / 128px 128px,
-    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 60%, var(--ink)) 0%, color-mix(in srgb, var(--accent) 55%, transparent) 30%, color-mix(in srgb, var(--accent) 18%, transparent) 62%, transparent 100%);
-  opacity: 0.34; transform: rotate(-32deg) scaleX(0.55);
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 45%, var(--ink)) 0%, color-mix(in srgb, var(--accent) 80%, transparent) 22%, color-mix(in srgb, var(--accent) 40%, transparent) 50%, color-mix(in srgb, var(--accent) 12%, transparent) 75%, transparent 100%);
+  opacity: 0.6; transform: rotate(-30deg) scaleX(0.6);
 }
 html[data-bg="oboje"] .screen::after { opacity: 0.26; }
 .bg-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
