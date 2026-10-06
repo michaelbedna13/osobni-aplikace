@@ -279,8 +279,10 @@ Paleta vychází z **Endesga 32**.
   při zadržení má čárkovaný obrys; uprostřed odpočet. Během cvičení je spodní lišta schovaná (`.focus-mode`).
 - **Okno** (`Modal`) uprostřed obrazovky pro detail hlášky: „obrazovka“ s textem a řada akcí (Top, Kopie, Sdílet,
   Upravit, Smazat). Při psaní se lišta schová (`.kb-open`) a okna i panely se drží nad klávesnicí.
-- **Značka Untrois**: appka se jmenuje Untrois (francouzsky „jedna, tři“ = 13). Ikona appky je pixelová limetková
-  „13“ s podtržením na `app-bg` (`public/favicon.svg`, PNG přes `npm run icons`). Modul 13 – Untrois má barvu `lime`.
+- **Značka Untrois**: appka se jmenuje Untrois (francouzsky „jedna, tři“ = 13). Ikona appky jsou dvě pixelové
+  kostky, limetková s jedním okem a zlatá se třemi (un, trois), se stínem `edge` na zrnitém limetkovém světle
+  jako pozadí appky; hrany kostek tmavší (`#7BA33A`, `#C9A227`). Zdroj `public/favicon.svg`, PNG přes `npm run icons`
+  s okrajem kolem kostek, aby je iOS nezaoblil. Modul 13 – Untrois má barvu `lime`.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
