@@ -283,6 +283,8 @@ Paleta vychází z **Endesga 32**.
   kostky, limetková s jedním okem a zlatá se třemi (un, trois), se stínem `edge` na zrnitém limetkovém světle
   jako pozadí appky; hrany kostek tmavší (`#7BA33A`, `#C9A227`). Zdroj `public/favicon.svg`, PNG přes `npm run icons`
   s okrajem kolem kostek, aby je iOS nezaoblil. Modul 13 – Untrois má barvu `lime`.
+- **Nástěnka Untrois** (`.board`): dva sloupce dlaždic různé výšky; fotka v původním poměru stran nahoře, pod ní
+  štítek kategorie, popisek, poznámka a web odkazu. Ve „Co je 13“ má štítek jen výklad (obrys `idle`), fakta žádný.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s pixelovými odrážkami
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

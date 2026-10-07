@@ -111,26 +111,26 @@ const blobToDataUrl = (blob: Blob) => new Promise<string>((resolve) => {
   reader.readAsDataURL(blob);
 });
 
-/** Nahraje obrázek: do Supabase Storage (bucket links), v ukázkovém režimu jako data URL. */
-export async function uploadImage(file: File): Promise<Pick<Link, "storage_path" | "image_url">> {
+/** Nahraje obrázek: do Supabase Storage (výchozí bucket links), v ukázkovém režimu jako data URL. */
+export async function uploadImage(file: File, bucket = "links"): Promise<Pick<Link, "storage_path" | "image_url">> {
   if (!supabase) return { storage_path: null, image_url: await blobToDataUrl(await shrinkImage(file, 900, 0.7)) };
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Nejsi přihlášený");
   const path = `${user.id}/${crypto.randomUUID()}.jpg`;
-  const { error } = await supabase.storage.from("links").upload(path, await shrinkImage(file), { contentType: "image/jpeg" });
+  const { error } = await supabase.storage.from(bucket).upload(path, await shrinkImage(file), { contentType: "image/jpeg" });
   if (error) throw error;
   return { storage_path: path, image_url: null };
 }
 
 /** Dočasné adresy pro obrázky v soukromém úložišti (platí hodinu). */
-export function useSignedUrls(paths: string[]) {
+export function useSignedUrls(paths: string[], bucket = "links") {
   const key = [...paths].sort().join("|");
   return useQuery({
-    queryKey: ["links-signed", key],
+    queryKey: [`${bucket}-signed`, key],
     enabled: !!supabase && paths.length > 0,
     staleTime: 50 * 60 * 1000,
     queryFn: async () => {
-      const { data, error } = await supabase!.storage.from("links").createSignedUrls(paths, 3600);
+      const { data, error } = await supabase!.storage.from(bucket).createSignedUrls(paths, 3600);
       if (error) throw error;
       return Object.fromEntries((data ?? []).filter((d) => d.path && d.signedUrl).map((d) => [d.path!, d.signedUrl]));
     },

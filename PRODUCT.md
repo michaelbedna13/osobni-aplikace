@@ -46,7 +46,7 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Wishlist (cena, priorita, pravidlo 30 dní, koupeno / už nechci a „ušetřeno“).
   Místa (tmavá mapa z OpenStreetMap, hledání míst, ťuknutí do mapy, seznamy, chci / byl jsem,
   navigace do Apple Map, Mapy.com a Google).
-  13 – Untrois (osobní brand podle čísla 13: nápady na brand a významy čísla 13, odpočet do pátku 13.).
+  13 – Untrois (osobní brand podle čísla 13: nástěnka na brainstorming – fotky, odkazy s náhledem a poznámky; významy čísla 13 rozlišené na ověřitelné a výklad; odpočet do pátku 13.).
   Dechová cvičení (krabicové, 4-7-8, rezonanční, fyziologický vzdech, prodloužený výdech, střídavé,
   Wim Hof s měřením zadržení dechu; animovaný průvodce s tóny, historie).
   Finance (pravidelné výdaje jako nájem, internet a energie se dnem splatnosti, předplatné s obnovami, měsíční
