@@ -90,6 +90,7 @@ const deg = (n: number) => `${Math.round(n)}°`;
 export function WeatherCard() {
   const [place, setPlace] = useState<Place | null>(() => loadPlace());
   const [picking, setPicking] = useState(false);
+  const [open, setOpen] = useState(false);
   const { data: w, isLoading, error } = useWeather(place);
   const choose = (p: Place) => { savePlace(p); setPlace(p); setPicking(false); };
 
@@ -107,20 +108,23 @@ export function WeatherCard() {
 
   const d = w ? describe(w.code, w.isDay) : null;
   return (
-    <section className="panel weather" aria-label="Počasí">
+    <section className={`panel weather${open ? " open" : ""}`} aria-label="Počasí">
       {isLoading && <p className="small muted">Načítám počasí…</p>}
       {error && <p className="small muted">Počasí se teď nepodařilo načíst.</p>}
       {w && d && (
         <>
-          <div className="weather-now">
-            <Sprite name={d.icon} size={48} />
+          {/* jeden řádek; ťuknutí rozbalí předpověď po hodinách a na další dny */}
+          <button className="weather-now" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+            <Sprite name={d.icon} size={32} />
             <b className="weather-temp">{deg(w.temp)}</b>
-            <div className="weather-desc">
+            <span className="weather-desc">
               <b>{d.text}</b>
-              <span>{deg(w.today.min)} / {deg(w.today.max)} · pocitově {deg(w.feels)}</span>
-              <span>{w.today.rainChance ? `Déšť ${w.today.rainChance} %` : "Bez deště"} · vítr {Math.round(w.wind)} km/h</span>
-            </div>
-          </div>
+              <span>{deg(w.today.min)} / {deg(w.today.max)} · {w.today.rainChance ? `déšť ${w.today.rainChance} %` : "bez deště"}</span>
+            </span>
+          </button>
+          {open && (
+          <>
+          <p className="weather-extra">Pocitově {deg(w.feels)} · vítr {Math.round(w.wind)} km/h</p>
           <ul className="weather-hours" aria-label="Po hodinách">
             {w.hours.filter((_, i) => i % 2 === 0).slice(0, 6).map((h) => (
               <li key={h.time.toISOString()}>
@@ -140,11 +144,11 @@ export function WeatherCard() {
               </li>
             ))}
           </ul>
+          </>
+          )}
         </>
       )}
-      <div className="weather-foot">
-        <button className="link inline" onClick={() => setPicking(true)}>{place.name}</button>
-      </div>
+      <button className="link inline weather-place" onClick={() => setPicking(true)}>{place.name}</button>
       {picking && <PlaceSheet onClose={() => setPicking(false)} onChoose={choose} onRemove={() => { savePlace(null); setPlace(null); setPicking(false); }} />}
     </section>
   );

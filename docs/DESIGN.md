@@ -180,6 +180,7 @@ Paleta vychází z **Endesga 32**.
 
 - **Jersey 10** – nadpisy, čísla, tlačítka, popisky v grafech. Jasně odlišené číslice
   (žádná záměna 5/S, 2/Z), česká diakritika. Jeden řez; nikdy umělé ztučnění (`font-synthesis: none`).
+- **Tiny5** – jen bodové písmo LED tabule s hláškou dne (5 bodů vysoké, 1 bod = 1 dioda), licence OFL.
 - **Space Grotesk** – delší text (popisy, vedlejší řádky, data v seznamech, zapsaný text). Technický grotesk s rovnými tvary, ladí s pixelovým Jersey lépe než zaoblený Rubik.
 - Stupnice velikostí (jen tyto): 104 / 60 / 48 / 36 / 30 / 24 / 20 px pro Jersey 10,
   16 / 14 px pro Space Grotesk. Žádné nadpisky (eyebrow) nad nadpisy.
@@ -194,8 +195,11 @@ Paleta vychází z **Endesga 32**.
 - Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména limetkově, data z balíčku `namedays-cs`),
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
   v Profilu); nad pásem **počasí** (Open-Meteo, modely DWD ICON a ECMWF; poloha nebo město, uložené
-  v prohlížeči; teď, 12 hodin po 2 h, 3 dny) a **souhrn dne** (5 dlaždic: piva, vděčnost, meditace, trénink, dech;
-  splněné s podkladem v barvě modulu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Dluhy** (dluží mně / dlužím já po lidech); **Na později** (jeden neotevřený odkaz denně); hláška dne.
+  v prohlížeči; jeden řádek: ikona, teplota, popis, min/max a déšť, město vpravo; ťuknutí rozbalí 12 hodin po 2 h a 3 dny),
+  pod ním **hláška dne na LED tabuli** (oranžové diody v barvě `piva` na `desk`, rámeček `paper` se šroubky `idle`; text na začátku
+  chvilku postojí a pak jede po diodách doleva, krátký stojí uprostřed; při omezení pohybu stojí jako text; autor a kontext pod tabulí;
+  ťuknutí otevře Hláškomat) a **souhrn dne** (5 dlaždic: piva, vděčnost, meditace, trénink, dech;
+  splněné s podkladem v barvě modulu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Dluhy** (dluží mně / dlužím já po lidech); **Na později** (jeden neotevřený odkaz denně).
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
   pozadí s texturou běží až pod něj, obsah odsazuje `env(safe-area-inset-top)`. iOS si styl pamatuje z doby přidání
@@ -286,8 +290,8 @@ Paleta vychází z **Endesga 32**.
   jako pozadí appky; hrany kostek tmavší (`#7BA33A`, `#C9A227`). Zdroj `public/favicon.svg`, PNG přes `npm run icons`
   s okrajem kolem kostek, aby je iOS nezaoblil. Modul 13 – Untrois má barvu `lime`.
 - **Sekce na Dnes** (`.sec-tab`): nadpis je záložka v barvě modulu (text `on-accent`, obrys `edge`) přilepená
-  k bloku, blok má nahoře 4px linku stejné barvy; mezi sekcemi 34px. Nákup, Brzy slaví, Vděčnost, Dluhy, Na později
-  a Hláška dne mají každá barvu svého modulu, „Moje moduly“ zůstávají bez záložky.
+  k bloku, blok má nahoře 4px linku stejné barvy; mezi sekcemi 34px. Nákup, Brzy slaví, Vděčnost, Dluhy a Na později
+  mají každá barvu svého modulu, „Moje moduly“ zůstávají bez záložky.
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.

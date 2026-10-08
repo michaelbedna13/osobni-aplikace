@@ -1,5 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
+import { LedBoard } from "../components/LedBoard";
 import { Sprite } from "../components/Sprite";
 import { nameDay, publicHoliday } from "../lib/calendar";
 import { formatDate } from "../lib/format";
@@ -98,21 +99,20 @@ function LaterLink() {
   );
 }
 
-function QuoteOfDay() {
+/** Hláška dne na LED tabuli nahoře; ťuknutí otevře Hláškomat. */
+function QuoteBoard() {
   const { data: quotes = [] } = useQuotes();
   const quote = quoteOfDay(quotes);
   if (!quote) return null;
+  const meta = [quote.context, formatDate(new Date(quote.said_at), true)].filter(Boolean).join(", ");
   return (
-    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.hlaskomat.color } as CSSProperties}>
-      <h2>Hláška dne</h2>
-      <Link to="/m/hlaskomat" className="quote-card tap">
-        <p className="bubble-text">„{quote.text}“</p>
-        <p className="quote-meta">
-          {quote.author && <b>{quote.author}</b>}
-          <span>{[quote.context, formatDate(new Date(quote.said_at), true)].filter(Boolean).join(", ")}</span>
-        </p>
-      </Link>
-    </section>
+    <Link to="/m/hlaskomat" className="led-quote" aria-label={`Hláška dne: ${quote.text}${quote.author ? `, ${quote.author}` : ""}`}>
+      <LedBoard text={`„${quote.text}“`} color={MODULE_BY_KEY.piva.color} label={quote.text} />
+      <span className="led-meta">
+        {quote.author && <b>{quote.author}</b>}
+        <span>{meta}</span>
+      </span>
+    </Link>
   );
 }
 
@@ -138,6 +138,7 @@ export function Today() {
       {isDemo && <p className="demo-note">Ukázkový režim: data se ukládají jen v tomhle prohlížeči.</p>}
 
       <WeatherCard />
+      <QuoteBoard />
       <DaySummary />
 
       <section className="sec">
@@ -157,7 +158,6 @@ export function Today() {
 
       <LaterLink />
 
-      <QuoteOfDay />
     </div>
   );
 }

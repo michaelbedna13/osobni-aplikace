@@ -906,8 +906,9 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather, .weather-empty { margin-top: 16px; }
 .weather-empty { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; color: var(--ink); }
 .weather-empty b { display: block; font-family: var(--font-pixel); font-size: 24px; font-weight: 400; }
-.weather-now { display: flex; align-items: center; gap: 12px; }
-.weather-temp { font-family: var(--font-pixel); font-size: 60px; font-weight: 400; line-height: 0.9; }
+.weather { position: relative; padding: 10px 14px; }
+.weather-now { width: 100%; display: flex; align-items: center; gap: 10px; padding: 0 64px 0 0; background: none; border: 0; text-align: left; color: var(--ink); }
+.weather-temp { font-family: var(--font-pixel); font-size: 48px; font-weight: 400; line-height: 0.9; }
 .weather-desc { display: grid; gap: 2px; font-size: 14px; color: var(--slate); min-width: 0; }
 .weather-desc b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; color: var(--ink); }
 .weather-hours { list-style: none; margin: 14px 0 0; padding: 10px 0 0; border-top: 2px solid var(--idle); display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; }
@@ -917,7 +918,20 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather-days { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .weather-days li { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 4px; background: var(--surface-2); font-size: 14px; }
 .weather-days li span:first-child { font-family: var(--font-pixel); font-size: 16px; text-transform: capitalize; }
-.weather-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; color: var(--slate); }
+.weather-place { position: absolute; top: 4px; right: 14px; font-size: 16px; }
+.weather-extra { margin-top: 10px; font-size: 14px; color: var(--slate); }
+
+/* hláška dne na LED tabuli (bodové písmo Tiny5, kreslí components/LedBoard) */
+.led-quote { display: block; margin-top: 14px; color: var(--ink); text-decoration: none; }
+.led-case { position: relative; padding: 9px; background: var(--paper); border: var(--line); box-shadow: var(--shadow), inset 0 2px 0 var(--idle); }
+.led-case::before, .led-case::after { content: ""; position: absolute; top: 3px; width: 4px; height: 4px; background: var(--idle); }
+.led-case::before { left: 3px; }
+.led-case::after { right: 3px; }
+.led-screen { background: var(--desk); border: 2px solid var(--edge); padding: 2px 0; }
+.led-canvas { display: block; width: 100%; }
+.led-still { margin: 0; padding: 8px 10px; font-family: "Tiny5", var(--font-pixel); font-size: 16px; line-height: 1.4; }
+.led-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin-top: 6px; padding: 0 2px; font-size: 14px; color: var(--slate); }
+.led-meta b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--ink); }
 .day-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 14px; }
 .sum-tile { display: grid; justify-items: center; gap: 2px; padding: 8px 2px; background: var(--paper); border: var(--line); color: var(--slate); text-decoration: none; }
 .sum-tile b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; line-height: 1; color: var(--ink); }
