@@ -20,6 +20,7 @@ import { useActiveDarts } from "../modules/skore/active";
 import { computeDartStats, useDartGames } from "../modules/skore/data";
 import { useActiveChess } from "../modules/sachy/active";
 import { loadHistory } from "../modules/sachy/game";
+import { useShopping } from "../modules/nakup/data";
 import { useLinks } from "../modules/odkazy/data";
 import { computeMediaStats, useMedia } from "../modules/filmy/data";
 import { computeWishStats, formatKc, useWishes } from "../modules/wishlist/data";
@@ -306,9 +307,23 @@ function UntroisCard() {
   );
 }
 
+function NakupCard() {
+  const { data: items = [] } = useShopping();
+  const navigate = useNavigate();
+  const toBuy = items.filter((i) => !i.archived && !i.done);
+  return (
+    <Card
+      moduleKey="nakup"
+      num={String(toBuy.length)}
+      sub={toBuy.length ? toBuy.slice(0, 3).map((i) => i.name).join(", ") : "seznam je prázdný"}
+      quick={{ label: "Přidat na nákup", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/nakup?nova=1") }}
+    />
+  );
+}
+
 const CARDS: Record<ModuleKey, () => ReactNode> = {
   piva: PivaCard, hlaskomat: HlaskomatCard, meditace: MeditaceCard, vdecnost: VdecnostCard, lide: LideCard, trenink: TreninkCard,
-  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard, untrois: UntroisCard, skore: SkoreCard, sachy: SachyCard,
+  cornhole: CornholeCard, odkazy: OdkazyCard, filmy: FilmyCard, wishlist: WishlistCard, mista: MistaCard, finance: FinanceCard, dech: DechCard, untrois: UntroisCard, skore: SkoreCard, sachy: SachyCard, nakup: NakupCard,
 };
 
 export function ShelfCard({ moduleKey }: { moduleKey: ModuleKey }) {

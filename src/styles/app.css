@@ -925,3 +925,21 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .debt-grid .panel + .panel { margin-top: 0; }
 .weather-credit { margin-top: 14px; font-size: 14px; color: var(--idle); }
 .weather-credit a { color: inherit; }
+
+/* ---------- Nákup ---------- */
+.nk-add { display: flex; gap: 10px; margin-top: 18px; }
+.nk-add .input { flex: 1; min-width: 0; min-height: 60px; }
+.nk-add-btn { width: 60px; min-height: 60px; margin-top: 0; flex: none; padding: 0; }
+.nk-sugg { display: grid; gap: 6px; margin-top: 14px; }
+.nk-sugg .chips { padding-bottom: 6px; }
+.nk-group { margin-top: 22px; }
+.nk-cat { font-size: 20px; color: var(--accent); margin-bottom: 8px; }
+.nk-row { display: flex; align-items: stretch; }
+.nk-check { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 6px 12px; background: none; border: 0; text-align: left; color: var(--ink); }
+.nk-check b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; line-height: 1.1; overflow-wrap: anywhere; }
+.nk-box { flex: none; width: 30px; height: 30px; display: grid; place-items: center; border: var(--line); background: var(--surface-2); }
+.nk-qty { margin-left: 8px; font-size: 14px; color: var(--slate); }
+.nk-edit { flex: none; width: 52px; display: grid; place-items: center; border: 0; border-left: 2px solid var(--edge); background: none; color: var(--slate); }
+.nk-row.done .nk-box { background: var(--accent); }
+.nk-row.done b { color: var(--slate); text-decoration: line-through; text-decoration-thickness: 2px; }
+.nk-cats { display: flex; flex-wrap: wrap; gap: 8px; }

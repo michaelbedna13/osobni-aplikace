@@ -20,6 +20,7 @@ import { PlayScreen } from "./modules/skore/PlayScreen";
 import { SkoreScreen } from "./modules/skore/SkoreScreen";
 import { PlayScreen as ChessPlayScreen } from "./modules/sachy/PlayScreen";
 import { SachyScreen } from "./modules/sachy/SachyScreen";
+import { NakupScreen } from "./modules/nakup/NakupScreen";
 import { OdkazyScreen } from "./modules/odkazy/OdkazyScreen";
 import { FilmyScreen } from "./modules/filmy/FilmyScreen";
 import { WishlistScreen } from "./modules/wishlist/WishlistScreen";
@@ -59,6 +60,7 @@ export function App() {
           <Route path="m/skore/hra" element={<PlayScreen />} />
           <Route path="m/sachy" element={<SachyScreen />} />
           <Route path="m/sachy/hra" element={<ChessPlayScreen />} />
+          <Route path="m/nakup" element={<NakupScreen />} />
           <Route path="m/odkazy" element={<OdkazyScreen />} />
           <Route path="m/filmy" element={<FilmyScreen />} />
           <Route path="m/wishlist" element={<WishlistScreen />} />
