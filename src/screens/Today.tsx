@@ -13,6 +13,8 @@ import { soonOccasions, usePeople } from "../modules/lide/data";
 import { OccasionRow } from "../modules/lide/LideScreen";
 import { useLinks } from "../modules/odkazy/data";
 import { domainOf } from "../modules/odkazy/util";
+import { groupByCategory, useShopping, useUpdateItems, type ShoppingItem } from "../modules/nakup/data";
+import { Row as ShoppingRow } from "../modules/nakup/NakupScreen";
 import { ShelfCard } from "./ShelfCard";
 import { DaySummary, DebtsToday, WeatherCard } from "./TodayWidgets";
 
@@ -33,6 +35,30 @@ function Gratitude() {
         )}
         <GratitudeForm todayCount={stats.today.length} />
       </div>
+    </section>
+  );
+}
+
+/** Nákupní seznam, jen když na něm něco je. Odškrtávat jde rovnou tady. */
+function Shopping() {
+  const { data: all = [] } = useShopping();
+  const update = useUpdateItems();
+  const active = all.filter((i) => !i.archived);
+  const toBuy = groupByCategory(active.filter((i) => !i.done)).flatMap((g) => g.items);
+  if (toBuy.length === 0) return null;
+  const inCart = active.filter((i) => i.done).sort((a, b) => (b.done_at ?? "").localeCompare(a.done_at ?? ""));
+  const toggle = (i: ShoppingItem) => update.mutate([{ ...i, done: !i.done, done_at: i.done ? null : new Date().toISOString() }]);
+  const shown = toBuy.slice(0, 8);
+  return (
+    <section className="sec" style={{ "--accent": MODULE_BY_KEY.nakup.color } as CSSProperties}>
+      <div className="sec-head">
+        <h2>Nákup</h2>
+        <Link to="/m/nakup" className="link">{toBuy.length > shown.length ? `Všech ${toBuy.length}` : "Seznam"}</Link>
+      </div>
+      <ul className="list">
+        {shown.map((i) => <ShoppingRow key={i.id} item={i} onToggle={toggle} />)}
+        {inCart.slice(0, 3).map((i) => <ShoppingRow key={i.id} item={i} onToggle={toggle} />)}
+      </ul>
     </section>
   );
 }
@@ -120,6 +146,8 @@ export function Today() {
           {pinned.map((key) => <ShelfCard key={key} moduleKey={key} />)}
         </div>
       </section>
+
+      <Shopping />
 
       <SoonCelebrating />
 

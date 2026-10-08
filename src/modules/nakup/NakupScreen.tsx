@@ -121,14 +121,14 @@ export function NakupScreen() {
   );
 }
 
-function Row({ item, onToggle, onEdit }: { item: ShoppingItem; onToggle: (i: ShoppingItem) => void; onEdit: (i: ShoppingItem) => void }) {
+export function Row({ item, onToggle, onEdit }: { item: ShoppingItem; onToggle: (i: ShoppingItem) => void; onEdit?: (i: ShoppingItem) => void }) {
   return (
     <li className={`nk-row${item.done ? " done" : ""}`}>
       <button className="nk-check" aria-pressed={item.done} onClick={() => onToggle(item)}>
         <span className="nk-box" aria-hidden="true">{item.done && <Sprite name="check" size={20} />}</span>
         <span className="grow"><b>{item.name}</b>{item.qty && <span className="nk-qty">{item.qty}</span>}</span>
       </button>
-      <button className="nk-edit" aria-label={`Upravit: ${item.name}`} onClick={() => onEdit(item)}><Sprite name="i-edit" size={20} /></button>
+      {onEdit && <button className="nk-edit" aria-label={`Upravit: ${item.name}`} onClick={() => onEdit(item)}><Sprite name="i-edit" size={20} /></button>}
     </li>
   );
 }
