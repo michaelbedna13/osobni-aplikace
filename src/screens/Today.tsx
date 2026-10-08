@@ -22,7 +22,7 @@ function Gratitude() {
   const { data: list = [] } = useGratitude();
   const stats = useMemo(() => computeGratitudeStats(list), [list]);
   return (
-    <section className="sec" style={{ "--accent": MODULE_BY_KEY.vdecnost.color } as CSSProperties}>
+    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.vdecnost.color } as CSSProperties}>
       <div className="sec-head">
         <h2>Za co jsem dnes vděčný?</h2>
         {stats.streak > 0 && <Link to="/m/vdecnost" className="streak"><Sprite name="flame" size={20} />{stats.streak}</Link>}
@@ -50,7 +50,7 @@ function Shopping() {
   const toggle = (i: ShoppingItem) => update.mutate([{ ...i, done: !i.done, done_at: i.done ? null : new Date().toISOString() }]);
   const shown = toBuy.slice(0, 8);
   return (
-    <section className="sec" style={{ "--accent": MODULE_BY_KEY.nakup.color } as CSSProperties}>
+    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.nakup.color } as CSSProperties}>
       <div className="sec-head">
         <h2>Nákup</h2>
         <Link to="/m/nakup" className="link">{toBuy.length > shown.length ? `Všech ${toBuy.length}` : "Seznam"}</Link>
@@ -68,7 +68,7 @@ function SoonCelebrating() {
   const soon = useMemo(() => soonOccasions(people, 7), [people]);
   if (soon.length === 0) return null;
   return (
-    <section className="sec" style={{ "--accent": MODULE_BY_KEY.lide.color } as CSSProperties}>
+    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.lide.color } as CSSProperties}>
       <h2>Brzy slaví</h2>
       <ul className="list">{soon.map((o) => <OccasionRow key={`${o.person.id}-${o.kind}`} o={o} />)}</ul>
     </section>
@@ -82,7 +82,7 @@ function LaterLink() {
   if (later.length === 0) return null;
   const pick = later[Math.floor(Date.now() / 86_400_000) % later.length];
   return (
-    <section className="sec" style={{ "--accent": MODULE_BY_KEY.odkazy.color } as CSSProperties}>
+    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.odkazy.color } as CSSProperties}>
       <div className="sec-head">
         <h2>Na později</h2>
         <Link to="/m/odkazy" className="link">Všech {later.length}</Link>
@@ -103,7 +103,7 @@ function QuoteOfDay() {
   const quote = quoteOfDay(quotes);
   if (!quote) return null;
   return (
-    <section className="sec">
+    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.hlaskomat.color } as CSSProperties}>
       <h2>Hláška dne</h2>
       <Link to="/m/hlaskomat" className="quote-card tap">
         <p className="bubble-text">„{quote.text}“</p>

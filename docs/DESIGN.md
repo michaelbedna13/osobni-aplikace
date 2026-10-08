@@ -285,6 +285,9 @@ Paleta vychází z **Endesga 32**.
   kostky, limetková s jedním okem a zlatá se třemi (un, trois), se stínem `edge` na zrnitém limetkovém světle
   jako pozadí appky; hrany kostek tmavší (`#7BA33A`, `#C9A227`). Zdroj `public/favicon.svg`, PNG přes `npm run icons`
   s okrajem kolem kostek, aby je iOS nezaoblil. Modul 13 – Untrois má barvu `lime`.
+- **Sekce na Dnes** (`.sec-tab`): nadpis je záložka v barvě modulu (text `on-accent`, obrys `edge`) přilepená
+  k bloku, blok má nahoře 4px linku stejné barvy; mezi sekcemi 34px. Nákup, Brzy slaví, Vděčnost, Dluhy, Na později
+  a Hláška dne mají každá barvu svého modulu, „Moje moduly“ zůstávají bez záložky.
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.

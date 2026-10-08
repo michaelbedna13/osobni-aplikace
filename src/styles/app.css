@@ -119,6 +119,12 @@ html[data-bg="oboje"] .screen::after { opacity: 0.26; }
 .sec-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
 .sec-head h2, .sec > h2 { font-size: 24px; }
 .sec > h2 { margin-bottom: 12px; }
+/* sekce na Dnes: nadpis jako záložka v barvě modulu přilepená k bloku (jako u šanonu) */
+.sec-tab { margin-top: 34px; }
+.sec-tab > h2, .sec-tab .sec-head h2 { display: inline-block; padding: 6px 12px 4px; background: var(--accent); color: var(--on-accent); border: var(--line); border-bottom: 0; }
+.sec-tab > h2, .sec-tab .sec-head { margin-bottom: 0; }
+.sec-tab .sec-head { align-items: flex-end; }
+.sec-tab > .list, .sec-tab > .panel, .sec-tab > .quote-card, .sec-tab > .link-card, .sec-tab .debt-grid > .panel { border-top: 4px solid var(--accent); }
 .link { background: none; border: 0; padding: 8px 0; font-family: var(--font-pixel); font-size: 20px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; color: inherit; }
 
 /* ---------- tlačítka a bloky ---------- */
