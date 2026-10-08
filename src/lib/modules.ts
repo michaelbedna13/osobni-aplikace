@@ -47,7 +47,7 @@ export const MODULES: ModuleDef[] = [
   },
   {
     key: "meditace", name: "Meditace", color: "#63C74D", deep: "#3E8948", light: "#B8E986", phase: 2, ready: true, quickAction: "Začít meditaci",
-    plan: ["Časovač s gongem", "Historie meditací a jejich délky", "Cíl, např. 5× týdně, a série", "Statistiky"]
+    plan: ["Časovač s gongem", "Historie meditací a jejich délky", "Cíl, např. 5 dní v týdnu, a série", "Statistiky"]
   },
   {
     key: "dech", name: "Dechová cvičení", color: "#73BED3", deep: "#3B7D96", light: "#D6F2F7", phase: 2, ready: true, quickAction: "Krabicové dýchání",

@@ -49,7 +49,10 @@ export function formatDuration(seconds: number) {
 }
 
 export interface MeditationStats {
+  /** Počet meditací tento týden. */
   weekCount: number;
+  /** Počet dní s meditací tento týden – podle nich se plní cíl. */
+  weekDays: number;
   weekMinutes: number;
   /** Minuty po dnech tohoto týdne (Po–Ne); budoucí dny jsou null. */
   thisWeek: (number | null)[];
@@ -59,7 +62,7 @@ export interface MeditationStats {
   totalCount: number;
   averageMinutes: number;
   longest: Meditation | null;
-  /** Počet týdnů v řadě se splněným cílem (tento týden se počítá, jen když už je splněný). */
+  /** Počet týdnů v řadě se splněným cílem (dní s meditací; tento týden se počítá, jen když už je splněný). */
   weekStreak: number;
   lastWeeks: { start: Date; minutes: number; count: number }[];
 }
@@ -70,10 +73,10 @@ export function computeMeditationStats(list: Meditation[], goal: number, now = n
   const month = startOfMonth(now).getTime();
   const todayIndex = (now.getDay() + 6) % 7;
 
-  const perWeek = new Map<number, { minutes: number; count: number }>();
+  const perWeek = new Map<number, { minutes: number; count: number; days: Set<number> }>();
   const perDay = new Map<number, number>();
   const stats: MeditationStats = {
-    weekCount: 0, weekMinutes: 0, thisWeek: [], todayIndex, monthMinutes: 0, totalMinutes: 0, totalCount: 0,
+    weekCount: 0, weekDays: 0, weekMinutes: 0, thisWeek: [], todayIndex, monthMinutes: 0, totalMinutes: 0, totalCount: 0,
     averageMinutes: 0, longest: null, weekStreak: 0, lastWeeks: [],
   };
 
@@ -93,8 +96,9 @@ export function computeMeditationStats(list: Meditation[], goal: number, now = n
     const day = startOfDay(date).getTime();
     perDay.set(day, (perDay.get(day) ?? 0) + minutes);
     const week = startOfWeek(date).getTime();
-    const w = perWeek.get(week) ?? { minutes: 0, count: 0 };
-    perWeek.set(week, { minutes: w.minutes + minutes, count: w.count + 1 });
+    const w = perWeek.get(week) ?? { minutes: 0, count: 0, days: new Set<number>() };
+    w.days.add(day);
+    perWeek.set(week, { minutes: w.minutes + minutes, count: w.count + 1, days: w.days });
   }
 
   stats.averageMinutes = stats.totalCount ? stats.totalMinutes / stats.totalCount : 0;
@@ -106,8 +110,11 @@ export function computeMeditationStats(list: Meditation[], goal: number, now = n
     return { start, minutes: Math.round(w?.minutes ?? 0), count: w?.count ?? 0 };
   });
 
-  let week = stats.weekCount >= goal ? weekStart : addDays(weekStart, -7);
-  while ((perWeek.get(week.getTime())?.count ?? 0) >= goal) {
+  // cíl se plní dny s meditací, ne počtem meditací (dvě za den = pořád jeden den)
+  const daysIn = (week: Date) => perWeek.get(week.getTime())?.days.size ?? 0;
+  stats.weekDays = daysIn(weekStart);
+  let week = stats.weekDays >= goal ? weekStart : addDays(weekStart, -7);
+  while (daysIn(week) >= goal) {
     stats.weekStreak++;
     week = addDays(week, -7);
   }

@@ -30,6 +30,19 @@ describe("statistiky meditace", () => {
     expect(computeMeditationStats(list, 3, now).weekStreak).toBe(0);
   });
 
+  it("cíl se plní dny, ne počtem meditací", () => {
+    // tento týden: pondělí 2×, čtvrtek 1× = 3 meditace, ale 2 dny
+    const week = [m("2026-09-28T07:00:00", 10), m("2026-09-28T21:00:00", 10), m("2026-10-01T07:00:00", 10)];
+    const s = computeMeditationStats(week, 3, now);
+    expect(s.weekCount).toBe(3);
+    expect(s.weekDays).toBe(2);
+    expect(s.weekStreak).toBe(0);
+    // minulý týden 3 meditace v jednom dni cíl 2 dny nesplní
+    const last = [m("2026-09-21T07:00:00", 10), m("2026-09-21T12:00:00", 10), m("2026-09-21T20:00:00", 10)];
+    expect(computeMeditationStats(last, 2, now).weekStreak).toBe(0);
+    expect(computeMeditationStats([...week, ...last], 2, now).weekStreak).toBe(1);
+  });
+
   it("formátuje délku", () => {
     expect(formatDuration(45)).toBe("45 s");
     expect(formatDuration(900)).toBe("15 min");

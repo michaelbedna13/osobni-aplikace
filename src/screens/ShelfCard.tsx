@@ -96,14 +96,14 @@ function HlaskomatCard() {
 function MeditaceCard() {
   const { data: list = [] } = useMeditations();
   const { settings } = useSettings();
-  const goal = settings.meditation_weekly_goal;
+  const goal = Math.min(7, settings.meditation_weekly_goal);
   const stats = useMemo(() => computeMeditationStats(list, goal), [list, goal]);
   const navigate = useNavigate();
   return (
     <Card
       moduleKey="meditace"
-      num={`${stats.weekCount}/${goal}`}
-      sub={stats.weekCount >= goal ? "Cíl splněný!" : "tento týden"}
+      num={`${stats.weekDays}/${goal}`}
+      sub={stats.weekDays >= goal ? "Cíl splněný!" : "dní tento týden"}
       quick={{ label: "Začít meditaci", text: <Sprite name="i-play" size={20} />, run: () => { unlockAudio(); navigate("/m/meditace?start=1"); } }}
     />
   );

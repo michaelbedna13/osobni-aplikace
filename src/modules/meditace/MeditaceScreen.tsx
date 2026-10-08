@@ -26,6 +26,7 @@ import {
 const MODULE = MODULE_BY_KEY.meditace;
 const DURATIONS = [5, 10, 15, 20, 30, 0]; // 0 = bez omezení
 const KRAT: [string, string, string] = ["meditace", "meditace", "meditací"];
+const DNI: [string, string, string] = ["den", "dny", "dní"];
 const SEGMENTS = 32;
 
 export function MeditaceScreen() {
@@ -172,7 +173,7 @@ function TimerView({ timer, onPause, onResume, onFinish, onCancel }: {
 function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; celebrate: number }) {
   const { data: list = [], isLoading, error } = useMeditations();
   const { settings, update } = useSettings();
-  const goal = settings.meditation_weekly_goal;
+  const goal = Math.min(7, settings.meditation_weekly_goal);
   const stats = useMemo(() => computeMeditationStats(list, goal), [list, goal]);
   const [minutes, setMinutes] = useState(loadLastMinutes);
   const [editing, setEditing] = useState<Meditation | "new" | null>(null);
@@ -181,7 +182,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
   const { prefs } = useSoundPrefs();
   const [tab, setTab] = useState<"cil" | "statistiky" | "historie">("cil");
   const weeks = useMemo(() => groupByWeek(list.slice(0, 40)), [list]);
-  const goalDone = stats.weekCount >= goal;
+  const goalDone = stats.weekDays >= goal;
 
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
@@ -190,8 +191,8 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
         <div className="hero">
           <span key={celebrate} className={`sprite-tile ${celebrate ? "anim-jump" : ""}`}><Sprite name="meditace" size={96} /></span>
           <Burst trigger={celebrate} colors={["#FFFFFF", MODULE.deep, "#FEE761"]} />
-          <span className="hero-num">{stats.weekCount}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
-          <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : "meditací tento týden"}</span>
+          <span className="hero-num">{stats.weekDays}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
+          <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : `${plural(stats.weekDays, DNI)} s meditací tento týden`}</span>
         </div>
         <div className="durations" role="group" aria-label="Délka meditace">
           {DURATIONS.map((d) => (
@@ -221,7 +222,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
         <div className="tab-panel">
           <div className="panel">
             <div className="row-between">
-              <h3>Cíl {goal}× týdně</h3>
+              <h3>Cíl {goal} {plural(goal, DNI)} v týdnu</h3>
               <button className="link" onClick={() => setGoalOpen(true)}>Změnit</button>
             </div>
             <div className="week-blocks">
@@ -240,7 +241,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
             </div>
             <p className="goal-line">
               {stats.weekStreak > 0 && <Sprite name="flame" size={24} tone="trenink" />}
-              {goalDone ? "Splněno! " : `Ještě ${goal - stats.weekCount}× a máš to. `}
+              {goalDone ? "Splněno! " : `Ještě ${goal - stats.weekDays} ${plural(goal - stats.weekDays, DNI)} a máš to. `}
               {stats.weekStreak > 0 && `Série ${stats.weekStreak} ${plural(stats.weekStreak, ["týden", "týdny", "týdnů"])}.`}
             </p>
           </div>
@@ -393,14 +394,15 @@ function MeditationSheet({ meditation, onClose }: { meditation: Meditation | nul
 }
 
 function GoalSheet({ goal, onClose, onSave }: { goal: number; onClose: () => void; onSave: (goal: number) => void }) {
-  const [value, setValue] = useState(goal);
+  const [value, setValue] = useState(Math.min(7, goal));
   return (
-    <Sheet title="Cíl meditací za týden" onClose={onClose}>
+    <Sheet title="Kolik dní v týdnu meditovat" onClose={onClose}>
       <div className="stepper">
         <button className="icon-btn big tap" aria-label="Méně" disabled={value <= 1} onClick={() => setValue((v) => v - 1)}>−</button>
-        <span className="stepper-value" aria-live="polite">{value}×</span>
-        <button className="icon-btn big tap" aria-label="Více" disabled={value >= 14} onClick={() => setValue((v) => v + 1)}>+</button>
+        <span className="stepper-value" aria-live="polite">{value} {plural(value, DNI)}</span>
+        <button className="icon-btn big tap" aria-label="Více" disabled={value >= 7} onClick={() => setValue((v) => Math.min(7, v + 1))}>+</button>
       </div>
+      <p className="small muted">Počítají se dny s meditací. Dvě meditace v jeden den jsou pořád jeden den.</p>
       <button className="btn dark tap wide" onClick={() => { onSave(value); onClose(); }}>Uložit cíl</button>
     </Sheet>
   );

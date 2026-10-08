@@ -5,7 +5,7 @@ import { DEFAULT_PINNED, isModuleKey, type ModuleKey } from "./modules";
 
 export interface Settings {
   pinned_modules: ModuleKey[];
-  /** Cíl meditací za týden (počet). */
+  /** Cíl meditace: kolik dní v týdnu (1–7). */
   meditation_weekly_goal: number;
   /** Cíl tréninků za týden (počet). */
   workout_weekly_goal: number;
