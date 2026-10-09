@@ -927,9 +927,9 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather-days li { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 4px; background: var(--surface-2); font-size: 14px; }
 .weather-days li span:first-child { font-family: var(--font-ui); font-size: 14px; text-transform: capitalize; }
 
-/* hláška dne: šalvějová karta s měkkými paprsky a zrnem; patička autor | kontext */
+/* hláška dne: písková karta s výřezem světla z okna a zrnem; patička autor | kontext */
 .day-quote { display: block; margin-top: 18px; padding: 22px 22px 18px; border-radius: 28px; color: var(--ink); text-decoration: none;
-  background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, var(--bg, none) 50% 90% / 180% auto, linear-gradient(160deg, #E8EFDF, #C3D6B1); }
+  background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, var(--bg, none) 50% 40% / 180% auto, linear-gradient(160deg, #F6EEDC, #E3D3B0); }
 .day-quote-text { font-family: var(--font-ui); font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .day-quote-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; font-size: 14px; color: var(--ink); }
 .day-quote-meta b { padding: 5px 12px; border-radius: var(--pill); background: var(--paper); font-family: var(--font-ui); font-size: 14px; font-weight: 400; }

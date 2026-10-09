@@ -17,8 +17,8 @@ colors:
   slate: "#6F6B65"
   sage: "#A9C29A"
   sage-light: "#D5E2C9"
-  sage-card: "#E8EFDF"
-  sage-card-deep: "#C3D6B1"
+  sand-card: "#F6EEDC"
+  sand-card-deep: "#E3D3B0"
   stone-light: "#EEF0E8"
   sand: "#E9E3D3"
   map-land: "#EFEDE6"
@@ -185,7 +185,7 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 - **Karty** `glass`: bílá s 95 % krytím, bez obrysu, s jemným stínem (`--card-shadow`), aby byly na světlém pozadí dobře vidět.
 - **Barva modulu = akcent (`--accent`)**: hlavní tlačítko, pozadí obrazovky a karty modulů na Dnes, stín pod ikonou v hlavičce, grafy, splněné dny, tečku u nadpisu sekce.
 - **Dnes, Moduly a Profil** mají neutrální kámen se šalvějovou mlhou (`sage-light`, `sand`, `stone-light`);
-  hláška dne je šalvějová karta (`sage-card` → `sage-card-deep`).
+  hláška dne je písková karta (`sand-card` → `sand-card-deep`) se světlem z okna.
 - **Limetka** `lime` jen jako plocha (akce „Vrátit“, nová položka, odškrtnutá série); jako text je nečitelná,
   proto „dluží mi“, autor hlášky apod. používají tmavší `lime-ink`. Hvězdy a oblíbené `gold`, chyby `danger`.
 - **Zamčené moduly**: šedá dlaždice, ikona v odstínech šedi.
@@ -198,7 +198,8 @@ Pozadí jsou měkká a rozostřená jako fotografie přes sklo, v barvách modul
 
 | Technika | Moduly |
 |---|---|
-| mléčné sklo: rozmazané siluety za sklem | Dnes a ostatní obrazovky (listy rostliny), Nákup (ovoce a list), Cornhole (pytlík a deska) |
+| světlo z okna: teplý pruh slunce se stínem rámu a větvičky | Dnes |
+| mléčné sklo: rozmazané siluety za sklem | Moduly a Profil (listy rostliny), Nákup (ovoce a list), Cornhole (pytlík a deska) |
 | světlo ve vodě: měkká světelná síť | Piva (medově), Wishlist (růžově s třpytem) |
 | inkoustové koule: hustý střed, jemné soustředné kroužky | Meditace (kapka), Dech (dvě koule – nádech a výdech), Šipky (terč) |
 | zrnité koule: dvě rozmazané barevné koule | Hláškomat, Lidé, Vděčnost, Finance, Odkazy |
@@ -213,7 +214,7 @@ Obrazovka má dvě pevné vrstvy (`.screen::before` pod obsahem, `.screen::after
 - **nad obsahem**: zrno `grain.svg` s krytím 16 % v režimu `multiply` (ze `scripts/generate-textures.mjs`).
 
 Karty modulů na Dnes (`.fav`) ukazují výřez z pozadí svého modulu, k tomu jemné zrno a bílé jiskření (`sparkle.svg`).
-Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
+Hláška dne má výřez z pozadí Dnes (pruh světla) na pískovém přechodu (`sand-card` → `sand-card-deep`).
 
 ## Typography
 
@@ -234,7 +235,7 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
   případně státní svátek; pod hlavičkou **počasí** jako bílá pilulka (Open-Meteo, modely DWD ICON a ECMWF; poloha
   nebo město, uložené v prohlížeči; ikona, teplota, popis s min–max, déšť jen od 30 %, bez názvu města; ťuknutí
   otevře okno „Počasí – město“ s pocitovou teplotou, větrem, 12 hodinami po 2 h, 3 dny a odkazem Změnit místo),
-  pod ním **hláška dne** (`.day-quote`: šalvějová karta s paprsky, text Outfit 24 px nejvýš na 4 řádky, autor v bílé
+  pod ním **hláška dne** (`.day-quote`: písková karta se světlem z okna, text Outfit 24 px nejvýš na 4 řádky, autor v bílé
   pilulce, kontext vpravo; ťuknutí otevře Hláškomat); pás **Moje moduly** (posun do boku, karty 160 px, úpravy jsou
   v Profilu); **Nákup** (jen když je co koupit); **Brzy slaví** (oslavy na 7 dní); **„Za co jsem dnes vděčný?“**;
   **Dluhy**; **Na později** (jeden neotevřený odkaz denně).

@@ -16,7 +16,7 @@ for (const m of src.matchAll(/key: "(\w+)".*?color: "(#\w+)", deep: "(#\w+)", li
 // takže výrazné tvary jsou spíš uprostřed a dole a horní třetina zůstává světlejší kvůli čitelnosti.
 const tint = (key, t) => mix(M[key].c, "#FFFFFF", t);
 const SPECS = {
-  dnes: { kind: "frost", base: ["#E9EEE2", "#EEF0E8"], ink: ["#8FAE7C", "#5E7F4F", "#A9C29A"], amount: 0.75 },
+  dnes: { kind: "window", base: ["#F4EFE3", "#F2EEE5"], shade: "#8E9E7E", light: "#FFF3D6" },
   zaklad: { kind: "frost", base: ["#EDF0E8", "#F1F1EC"], ink: ["#A9C29A", "#8FAE7C"], amount: 0.5 },
   piva: { kind: "caustic", base: [tint("piva", 0.42), tint("piva", 0.62)], glow: M.piva.l },
   wishlist: { kind: "caustic", base: [tint("wishlist", 0.45), tint("wishlist", 0.68)], glow: "#FFFFFF", sparkle: true },
