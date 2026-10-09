@@ -28,16 +28,18 @@ colors:
   shadow-bar: "rgba(35, 33, 31, 0.22)"
   scrim: "rgba(35, 33, 31, 0.35)"
   paused: "rgba(244, 243, 238, 0.88)"
-  game-scrim: "rgba(0, 5, 2, 0.75)"
-  grass: "#0E2719"
-  grass-stripe: "#12301F"
-  wood: "#E4A672"
-  wood-dark: "#B86F50"
-  wood-edge: "#733E39"
-  board-light: "#B9C79E"
-  board-dark: "#4E7A55"
-  piece-white: "#FEFAE0"
-  piece-black: "#1B2A22"
+  grass: "#A9C49A"
+  grass-stripe: "#B4CDA5"
+  wood: "#E9B07E"
+  wood-dark: "#C47F57"
+  wood-edge: "#9E6145"
+  board-light: "#E4E9F0"
+  board-dark: "#7F8EAB"
+  piece-white: "#FBFAF6"
+  piece-black: "#23211F"
+  last-move: "rgba(244, 211, 94, 0.5)"
+  selected-square: "rgba(244, 211, 94, 0.85)"
+  bag-shade: "rgba(0, 0, 0, 0.12)"
   piva: "#FEAE34"
   piva-deep: "#F77622"
   hlaskomat: "#0099DB"
@@ -284,19 +286,22 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - **Zvuky** (`SoundPicker`, `.sound-chips`): výběr zvuku jako čipy, ťuknutí vybere a hned přehraje. Zvuky se
   syntetizují ve Web Audio (gong, tibetská mísa, zvonek, tři zvonky, dřívko, pípnutí, fanfára). Odkaz „Zvuky: …“
   pod hlavním tlačítkem Meditace a Tréninku (`.sound-link`). Nastavení je v zařízení (localStorage `zvuky`).
-- **Šachy** (`.sh-*`): šachovnice v zelených tónech (`board-light`, `board-dark`) s figurkami ve stylu vystřižených
-  tvarů (`PIECE_SHAPES` v `icons.ts`; bílé krémové `on-ink` s off-black okrajem, černé off-black se světlým okrajem). Vybrané pole limetkové, poslední tah žlutě, šach červeně,
-  možné tahy čtverečkem, braní rámečkem. Nad a pod deskou panel hráče (`.sh-player`: jméno, sebrané figury, převaha,
-  hodiny `.sh-clock`, běžící hodiny inverzně, pod 20 s červeně). Při hře přes stůl je horní panel otočený o 180°.
+- **Šachy** (`.sh-*`): šachovnice přes celou šířku displeje (bez okrajů obrazovky; na nízkém displeji se zmenší, aby
+  se vešly panely), pole v modrošedých tónech modulu (`board-light`, `board-dark`), figurky ve stylu vystřižených
+  tvarů (`PIECE_SHAPES` v `icons.ts`; bílé `piece-white` s off-black okrajem, černé off-black se světlým okrajem).
+  Vybrané pole a poslední tah žlutě, šach červeně, možné tahy kulatou tečkou, braní kroužkem. Nad a pod deskou panel
+  hráče (`.sh-player`: jméno v Antonu, sebrané figury, převaha, hodiny `.sh-clock` 40 px, běžící hodiny tmavé
+  `--dark`, pod 20 s červeně; kdo je na tahu, má rámeček v `--deep`). Při hře přes stůl je horní panel otočený o 180°.
 - **Šipky** (`.sc-*`, modul `skore`): seznam hráčů (`.sc-row`, kdo hází má rámeček v barvě hráče; zbývající body,
   průměr, legy jako čtverečky `.sc-legs`, u ostatních hráčů cesta na zavření `.sc-route`). Pod tím panel: kdo hází,
   návrh zavření (`.sc-checkout`), přepínač Po šipkách / Součtem. Po šipkách: tři políčka náhozu (`.sc-dart`), Double /
   Triple (`.sc-mult`, platí pro jednu šipku), čísla 1–20 v mřížce 5×4, 25 / Bull a Vedle. Součtem: číselník a rychlé
   náhozy (`.sc-quick`); když by součet zavřel, zeptá se na double (`.sc-confirm`). Výhra = panel „Game shot!“.
-- **Cornhole v mobilu** (`.ch-mobile`): hra pro 2–6 hráčů na jednom telefonu. Hřiště je plátno v nízkém rozlišení
-  (1 herní pixel = 2 body), kreslené po řádcích celými pixely: tráva v pruzích (`grass`, `grass-stripe`),
-  dřevěná deska (`wood`, `wood-dark`, `wood-edge`), černá díra, pytlíky jako kvádry v barvě hráče se stínem
-  v letu. Nad hřištěm skóre hráčů (`.ch-player`; od tří hráčů zhuštěně ve 3–4 sloupcích, kdo hází má rámeček v barvě pytlíků, čtverečky = pytlíky
+- **Cornhole v mobilu** (`.ch-mobile`): hra pro 2–6 hráčů na jednom telefonu. Hřiště (`.ch-arena`) je zaoblená
+  plocha; plátno se kreslí vektorově v rozlišení displeje (hladké hrany, herní souřadnice 1 bod = 2 px): světlá
+  šalvějová tráva v pruzích, do dálky zesvětlá (`grass`, `grass-stripe`), dřevěná deska s prkny a měkkým stínem
+  (`wood`, `wood-dark`, `wood-edge`), off-black díra, pytlíky jako zaoblené polštářky v barvě hráče se stínem
+  v letu i na zemi. Vítr, síla hodu a kdo hází jsou bílé pilulky (`--glass`) s off-black textem. Nad hřištěm skóre hráčů (`.ch-player`; od tří hráčů zhuštěně ve 3–4 sloupcích, kdo hází má rámeček v barvě pytlíků, čtverečky = pytlíky
   v ruce). V hřišti vítr vpravo nahoře, síla hodu vlevo (`.ch-power`, čárka = minulý hod), dole kdo hází.
   Ovládání prakem: táhni dolů a pusť. Konec kola a výhra jsou panely uprostřed hřiště. Spodní lišta se skryje.
 - **Odkaz** (`.link-card`): náhled 64 px (obrázek webu / nahraný obrázek / písmeno domény), název na 2 řádky,

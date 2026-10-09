@@ -265,7 +265,7 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
     commit({ ...g, bags: [], thrown: 0, starter, windLevel: rollWind(g.wind) }, "aim");
   };
 
-  // velikost plátna: 1 herní pixel = 2 body obrazovky
+  // velikost plátna: herní bod = 2 body obrazovky, kreslí se v plném rozlišení displeje
   useEffect(() => {
     const arena = arenaRef.current;
     const canvas = canvasRef.current;
@@ -273,11 +273,12 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
     const fit = () => {
       const W = Math.max(120, Math.floor(arena.clientWidth / 2));
       const H = Math.max(160, Math.floor(arena.clientHeight / 2));
-      canvas.width = W;
-      canvas.height = H;
+      const scale = 2 * Math.min(3, window.devicePixelRatio || 1);
+      canvas.width = Math.round(W * scale);
+      canvas.height = Math.round(H * scale);
       canvas.style.width = `${W * 2}px`;
       canvas.style.height = `${H * 2}px`;
-      viewRef.current = makeView(W, H);
+      viewRef.current = makeView(W, H, scale);
     };
     fit();
     const ro = new ResizeObserver(fit);

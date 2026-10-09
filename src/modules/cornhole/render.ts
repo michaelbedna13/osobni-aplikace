@@ -1,11 +1,13 @@
-// Kreslení hřiště do malého plátna (pixel art): kamera stojí za hráčem a dívá se na desku.
-// Všechno se kreslí po vodorovných řádcích celými pixely, takže hrany zůstanou ostré.
+// Kreslení hřiště: kamera stojí za hráčem a dívá se na desku. Hladké tvary ve stylu appky (vystřižené plochy,
+// měkké stíny); kreslí se v herních souřadnicích a plátno je zvětšené na rozlišení displeje (View.s).
 import { BAG_R, BAG_T, BOARD, HOLE, boardZ, type Bag } from "./sim";
 
 const CAM_Y = -4;
 const CAM_H = 4.5;
 
 export interface View {
+  /** zvětšení plátna (herní bod → pixel displeje) */
+  s: number;
   W: number;
   H: number;
   f: number;
@@ -19,17 +21,18 @@ export interface Aim {
   color: string;
 }
 
-const GRASS = ["#0E2719", "#12301F"];
-const WOOD = "#E4A672";
-const WOOD_DARK = "#B86F50";
-const WOOD_EDGE = "#733E39";
-const HOLE_COLOR = "#000502";
-const SHADOW = "rgba(0, 5, 2, 0.45)";
+const GRASS = ["#A9C49A", "#B4CDA5"];
+const HAZE = "#E6EEDD";
+const WOOD = "#E9B07E";
+const WOOD_DARK = "#C47F57";
+const WOOD_SIDE = "#9E6145";
+const INK = "#23211F";
+const SHADOW = "rgba(35, 33, 31, 0.22)";
 
-export function makeView(W: number, H: number): View {
+export function makeView(W: number, H: number, s = 1): View {
   const f = W * 7;
   const backY = Math.max(56, Math.round(H * 0.24));
-  return { W, H, f, cx: W / 2, hy: backY - (f * (CAM_H - BOARD.highZ)) / (BOARD.back - CAM_Y) };
+  return { s, W, H, f, cx: W / 2, hy: backY - (f * (CAM_H - BOARD.highZ)) / (BOARD.back - CAM_Y) };
 }
 
 export function project(v: View, x: number, y: number, z: number) {
@@ -37,44 +40,27 @@ export function project(v: View, x: number, y: number, z: number) {
   return { sx: v.cx + (v.f * x) / d, sy: v.hy + (v.f * (CAM_H - z)) / d, k: v.f / d };
 }
 
-/** Vzdálenost (y), kterou kamera vidí na daném řádku obrazovky ve výšce z. */
-const depthAtRow = (v: View, row: number, z = 0) => CAM_Y + (v.f * (CAM_H - z)) / (row - v.hy);
-
-function span(ctx: CanvasRenderingContext2D, color: string, x0: number, x1: number, y0: number, y1: number) {
-  const l = Math.round(x0);
-  const t = Math.round(y0);
-  const w = Math.round(x1) - l;
-  const h = Math.round(y1) - t;
-  if (w <= 0 || h <= 0) return;
-  ctx.fillStyle = color;
-  ctx.fillRect(l, t, w, h);
-}
-
 /** Lichoběžník mezi dvěma řádky (vodorovné horní a dolní hrany). */
 function trapezoid(ctx: CanvasRenderingContext2D, color: string, top: number, tl: number, tr: number, bottom: number, bl: number, br: number) {
   ctx.fillStyle = color;
-  const t = Math.round(top);
-  const b = Math.round(bottom);
-  for (let row = t; row < b; row++) {
-    const u = b - t > 1 ? (row - t) / (b - t - 1) : 0;
-    const l = Math.round(tl + (bl - tl) * u);
-    const r = Math.round(tr + (br - tr) * u);
-    if (r > l) ctx.fillRect(l, row, r - l, 1);
-  }
+  ctx.beginPath();
+  ctx.moveTo(tl, top); ctx.lineTo(tr, top); ctx.lineTo(br, bottom); ctx.lineTo(bl, bottom);
+  ctx.closePath();
+  ctx.fill();
 }
 
 function ellipse(ctx: CanvasRenderingContext2D, color: string, cx: number, cy: number, rx: number, ry: number) {
   ctx.fillStyle = color;
-  const t = Math.round(cy - ry);
-  const b = Math.round(cy + ry);
-  for (let row = t; row <= b; row++) {
-    const dy = (row + 0.5 - cy) / Math.max(ry, 0.5);
-    if (Math.abs(dy) > 1) continue;
-    const half = rx * Math.sqrt(1 - dy * dy);
-    const l = Math.round(cx - half);
-    const r = Math.round(cx + half);
-    if (r > l) ctx.fillRect(l, row, r - l, 1);
-  }
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, Math.max(rx, 0.5), Math.max(ry, 0.5), 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function roundRect(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, w: number, h: number, r: number) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.roundRect(x, y, Math.max(w, 0.5), Math.max(h, 0.5), Math.min(r, w / 2, h / 2));
+  ctx.fill();
 }
 
 /** Plocha desky v dané výšce nad ní a s odsazením od okraje (rámeček). */
@@ -91,38 +77,43 @@ function drawGrass(ctx: CanvasRenderingContext2D, v: View) {
   ctx.fillStyle = GRASS[0];
   ctx.fillRect(0, 0, v.W, v.H);
   // pruhy posekané trávy po půl metru – dávají hloubku
-  let row = 0;
-  while (row < v.H) {
-    const y = depthAtRow(v, row + 0.5);
-    const band = Math.floor(y * 2);
-    const nextY = band / 2;
-    const end = Math.min(v.H, Math.ceil(project(v, 0, nextY, 0).sy));
-    if (band % 2 === 0) span(ctx, GRASS[1], 0, v.W, row, Math.max(end, row + 1));
-    row = Math.max(end, row + 1);
+  for (let band = 0; band < 80; band++) {
+    if (band % 2) continue;
+    const near = project(v, 0, band / 2, 0).sy;
+    const far = project(v, 0, (band + 1) / 2, 0).sy;
+    if (near < 0) break;
+    ctx.fillStyle = GRASS[1];
+    ctx.fillRect(0, far, v.W, near - far);
   }
+  // opar k obzoru, aby dálka měkce zesvětlala
+  const g = ctx.createLinearGradient(0, 0, 0, v.H * 0.55);
+  g.addColorStop(0, HAZE);
+  g.addColorStop(1, "rgba(230, 238, 221, 0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, v.W, v.H * 0.55);
 }
 
 function drawBoard(ctx: CanvasRenderingContext2D, v: View) {
   const nearTop = project(v, 0, BOARD.front, BOARD.lowZ);
   const nearFoot = project(v, 0, BOARD.front, 0);
   const halfNear = BOARD.half * nearTop.k;
-  // stín pod deskou a čelo desky
-  span(ctx, SHADOW, nearTop.sx - halfNear + 2, nearTop.sx + halfNear + 3, nearFoot.sy - 1, nearFoot.sy + 2);
-  span(ctx, WOOD_EDGE, nearTop.sx - halfNear - 1, nearTop.sx + halfNear + 1, nearTop.sy, nearFoot.sy + 1);
-  span(ctx, WOOD_DARK, nearTop.sx - halfNear, nearTop.sx + halfNear, nearTop.sy, nearFoot.sy);
-  // obrys, deska, tmavší rámeček a světlá plocha
   const far = project(v, 0, BOARD.back, BOARD.highZ);
-  trapezoid(ctx, WOOD_EDGE, far.sy - 1, far.sx - BOARD.half * far.k - 1, far.sx + BOARD.half * far.k + 1, nearTop.sy, nearTop.sx - halfNear - 1, nearTop.sx + halfNear + 1);
-  boardFace(ctx, v, WOOD, 0);
+  // měkký stín pod deskou
+  ctx.save();
+  ctx.filter = "blur(3px)";
+  trapezoid(ctx, SHADOW, far.sy + 6, far.sx - BOARD.half * far.k, far.sx + BOARD.half * far.k + 4, nearFoot.sy + 3, nearTop.sx - halfNear + 2, nearTop.sx + halfNear + 6);
+  ctx.restore();
+  // čelo desky a plocha s tmavším okrajem
+  roundRect(ctx, WOOD_SIDE, nearTop.sx - halfNear, nearTop.sy - 1, halfNear * 2, nearFoot.sy - nearTop.sy + 1, 1.5);
+  trapezoid(ctx, WOOD_DARK, far.sy, far.sx - BOARD.half * far.k, far.sx + BOARD.half * far.k, nearTop.sy, nearTop.sx - halfNear, nearTop.sx + halfNear);
+  boardFace(ctx, v, WOOD, 0.04);
   // prkna
+  ctx.strokeStyle = "rgba(158, 97, 69, 0.35)";
+  ctx.lineWidth = 0.6;
   for (const x of [-BOARD.half / 3, BOARD.half / 3]) {
     const a = project(v, x, BOARD.front + 0.05, boardZ(BOARD.front + 0.05));
     const b = project(v, x, BOARD.back - 0.05, boardZ(BOARD.back - 0.05));
-    ctx.fillStyle = "rgba(115, 62, 57, 0.35)";
-    for (let row = Math.round(b.sy); row < Math.round(a.sy); row++) {
-      const u = (row - b.sy) / (a.sy - b.sy);
-      ctx.fillRect(Math.round(b.sx + (a.sx - b.sx) * u), row, 1, 1);
-    }
+    ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke();
   }
   // díra
   const hz = boardZ(HOLE.y);
@@ -130,8 +121,8 @@ function drawBoard(ctx: CanvasRenderingContext2D, v: View) {
   const top = project(v, HOLE.x, HOLE.y + HOLE.r, boardZ(HOLE.y + HOLE.r)).sy;
   const bottom = project(v, HOLE.x, HOLE.y - HOLE.r, boardZ(HOLE.y - HOLE.r)).sy;
   const ry = (bottom - top) / 2;
-  ellipse(ctx, WOOD_EDGE, c.sx, (top + bottom) / 2, HOLE.r * c.k + 1, ry + 1);
-  ellipse(ctx, HOLE_COLOR, c.sx, (top + bottom) / 2, HOLE.r * c.k, ry);
+  ellipse(ctx, WOOD_DARK, c.sx, (top + bottom) / 2, HOLE.r * c.k + 0.8, ry + 0.8);
+  ellipse(ctx, INK, c.sx, (top + bottom) / 2, HOLE.r * c.k, ry);
 }
 
 function shade(hex: string, amount: number) {
@@ -147,12 +138,12 @@ function drawBag(ctx: CanvasRenderingContext2D, v: View, b: Bag, color: string, 
   const foot = project(v, b.x, b.y - BAG_R, b.z);
   const half = Math.max(1.5, r * bottom.k);
   const l = bottom.sx - half;
-  const rr = bottom.sx + half;
   const t = Math.min(top.sy, bottom.sy - 2);
-  span(ctx, "#000502", l - 1, rr + 1, t - 1, foot.sy + 1);
-  span(ctx, shade(color, 0.62), l, rr, t, foot.sy);
-  span(ctx, color, l, rr, t, bottom.sy);
-  span(ctx, shade(color, 1.25), l, rr, t, t + 1);
+  const w = half * 2;
+  const rad = Math.min(half * 0.45, 3);
+  roundRect(ctx, shade(color, 0.7), l, t, w, foot.sy - t, rad);
+  roundRect(ctx, color, l, t, w, bottom.sy - t, rad);
+  roundRect(ctx, "rgba(255, 255, 255, 0.35)", l + w * 0.18, t + 0.6, w * 0.64, Math.max(0.6, (bottom.sy - t) * 0.22), rad);
 }
 
 function drawShadow(ctx: CanvasRenderingContext2D, v: View, b: Bag) {
@@ -168,28 +159,29 @@ function drawAim(ctx: CanvasRenderingContext2D, v: View, a: Aim) {
   const y0 = v.H - 6;
   const len = 18 + a.power * Math.min(v.H * 0.45, 130);
   const ang = a.aim * 0.5;
-  ctx.fillStyle = a.color;
   for (let d = 4; d < len; d += 5) {
-    const px = Math.round(x0 + Math.sin(ang) * d);
-    const py = Math.round(y0 - Math.cos(ang) * d);
-    ctx.fillRect(px - 1, py - 1, 2, 2);
+    const px = x0 + Math.sin(ang) * d;
+    const py = y0 - Math.cos(ang) * d;
+    ellipse(ctx, "rgba(255, 255, 255, 0.85)", px, py, 1.6, 1.6);
+    ellipse(ctx, a.color, px, py, 1.1, 1.1);
   }
-  const hx = Math.round(x0 + Math.sin(ang) * len);
-  const hy = Math.round(y0 - Math.cos(ang) * len);
-  ctx.fillStyle = "#FEFAE0";
-  ctx.fillRect(hx - 2, hy - 2, 4, 4);
+  const hx = x0 + Math.sin(ang) * len;
+  const hy = y0 - Math.cos(ang) * len;
+  ellipse(ctx, INK, hx, hy, 3, 3);
+  ellipse(ctx, "#FFFFFF", hx, hy, 2, 2);
 }
 
 export function drawScene(ctx: CanvasRenderingContext2D, v: View, bags: Bag[], colors: string[], time: number, aim: Aim | null) {
+  ctx.setTransform(v.s, 0, 0, v.s, 0, 0);
   drawGrass(ctx, v);
   const behind = bags.filter((b) => b.state === "ground" && b.y > BOARD.back);
   const front = bags.filter((b) => b.state === "ground" && b.y <= BOARD.back);
   const onTop = bags.filter((b) => b.state === "board").sort((a, b) => b.y - a.y);
   const flying = bags.filter((b) => b.state === "flight");
-  for (const b of behind.sort((a, c) => c.y - a.y)) drawBag(ctx, v, b, colors[b.owner]);
+  for (const b of behind.sort((a, c) => c.y - a.y)) { drawShadow(ctx, v, b); drawBag(ctx, v, b, colors[b.owner]); }
   drawBoard(ctx, v);
   for (const b of onTop) drawBag(ctx, v, b, colors[b.owner]);
-  for (const b of front.sort((a, c) => c.y - a.y)) drawBag(ctx, v, b, colors[b.owner]);
+  for (const b of front.sort((a, c) => c.y - a.y)) { drawShadow(ctx, v, b); drawBag(ctx, v, b, colors[b.owner]); }
   for (const b of flying) {
     drawShadow(ctx, v, b);
     drawBag(ctx, v, b, colors[b.owner], time * 9);
