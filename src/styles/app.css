@@ -297,6 +297,10 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .hero:not(.summary-hero) .icon-slot { position: absolute; z-index: -1; right: -46px; top: -20px; width: 230px; height: 230px; margin: 0; filter: none; }
 .hero:not(.summary-hero) .icon-slot .icon { width: 230px; height: 230px; transform: rotate(-8deg); }
 .hero:not(.summary-hero) .hero-num { font-size: 128px; line-height: 0.85; }
+/* dlouhá hodnota (částka, „Dnes“): ikona menší nahoře vpravo, číslo pod ní přes celou šířku, nikdy se nepřekryjí */
+.hero:not(.summary-hero).hero-long { min-height: 0; align-content: start; padding-top: 150px; }
+.hero:not(.summary-hero).hero-long .icon-slot { top: -12px; right: -26px; width: 160px; height: 160px; }
+.hero:not(.summary-hero).hero-long .icon-slot .icon { width: 160px; height: 160px; }
 .hero:not(.summary-hero).hero-long .hero-num { font-size: 96px; }
 .hero:not(.summary-hero) .hero-cap { font-size: 20px; margin-top: 6px; }
 .hero:not(.summary-hero) .hero-line { max-width: 34ch; }

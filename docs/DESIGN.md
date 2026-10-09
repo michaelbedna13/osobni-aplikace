@@ -218,7 +218,8 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - Jeden sloupec, okraj 16 px, max. šířka 520 px (na počítači uprostřed na ploše `desk`).
 - Obrazovka modulu: lišta (kulaté tlačítko zpět + název) → **hlavička jako plakát**: obří číslo (128 px) vlevo dole
   jako titulek, ikona velká (230 px), natočená o −8° a oříznutá pravým okrajem jako vystřižený papír za textem
-  (číslo je informace, ikona ilustrace, nebijí se) →
+  (číslo je informace, ikona ilustrace, nebijí se). Dlouhá hodnota (`.hero-long`: částka ve Financích, „Dnes“ u Lidí)
+  má ikonu menší (160 px) nahoře vpravo a číslo 96 px pod ní, aby se nikdy nepřekryly →
   popisek → hlavní tlačítko → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
   jen vybrané záložky. Hlavička nemá vlastní kartu, stojí přímo na texturovaném pozadí.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
