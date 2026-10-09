@@ -97,21 +97,24 @@ function LaterLink() {
   );
 }
 
-/** Hláška dne hned pod hlavičkou; ťuknutí otevře Hláškomat. */
+/** Hláška dne dole na Dnes; ťuknutí otevře Hláškomat. */
 function QuoteOfDay() {
   const { data: quotes = [] } = useQuotes();
   const quote = quoteOfDay(quotes);
   if (!quote) return null;
   return (
-    <Link to="/m/hlaskomat" className="day-quote">
-      <p className="day-quote-text">„{quote.text}“</p>
-      {(quote.author || quote.context) && (
-        <p className="day-quote-meta">
-          <b>{quote.author ?? ""}</b>
-          {quote.context && <span>{quote.context}</span>}
-        </p>
-      )}
-    </Link>
+    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.hlaskomat.color } as CSSProperties}>
+      <h2>Hláška dne</h2>
+      <Link to="/m/hlaskomat" className="day-quote">
+        <p className="day-quote-text">„{quote.text}“</p>
+        {(quote.author || quote.context) && (
+          <p className="day-quote-meta">
+            <b>{quote.author ?? ""}</b>
+            {quote.context && <span>{quote.context}</span>}
+          </p>
+        )}
+      </Link>
+    </section>
   );
 }
 
@@ -137,8 +140,6 @@ export function Today() {
 
       {isDemo && <p className="demo-note">Ukázkový režim: data se ukládají jen v tomhle prohlížeči.</p>}
 
-      <QuoteOfDay />
-
       <section className="sec">
         <h2>Moje moduly</h2>
         <div className="shelf" aria-label="Oblíbené moduly, posuň do boku">
@@ -155,6 +156,8 @@ export function Today() {
       <DebtsToday />
 
       <LaterLink />
+
+      <QuoteOfDay />
 
     </div>
   );

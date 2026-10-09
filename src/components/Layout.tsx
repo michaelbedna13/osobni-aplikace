@@ -1,6 +1,4 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import type { CSSProperties } from "react";
-import { backgroundOf } from "../lib/backgrounds";
 import { useKeyboardAware } from "../lib/keyboard";
 import type { IconName } from "../lib/icons";
 import { Icon } from "./Icon";
@@ -12,16 +10,12 @@ const tabs: { to: string; label: string; icon: IconName; match: (path: string) =
   { to: "/profil", label: "Profil", icon: "i-user", match: (p) => p.startsWith("/profil") },
 ];
 
-/** Které pozadí patří pod obrazovku: Dnes, modul podle adresy, jinak základní. */
-const textureOf = (path: string) => (path === "/" ? "dnes" : path.match(/^\/m\/([a-z]+)/)?.[1] ?? "zaklad");
-
 export function Layout() {
   const { pathname } = useLocation();
   useKeyboardAware();
-  const tex = textureOf(pathname);
   return (
     <div className="app">
-      <main className="app-main" data-tex={tex} style={{ "--bg": backgroundOf(tex) } as CSSProperties}>
+      <main className="app-main">
         <Outlet />
       </main>
       <nav className="tabbar" aria-label="Hlavní navigace">

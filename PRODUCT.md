@@ -53,7 +53,7 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Wim Hof s měřením zadržení dechu; animovaný průvodce s tóny, historie).
   Finance (pravidelné výdaje jako nájem, internet a energie se dnem splatnosti, předplatné s obnovami, měsíční
   a roční součet všeho pravidelného, kdo komu dluží, spořicí cíle, útrata za piva).
-- Obrazovka Dnes: datum a kdo má svátek, počasí v jednom řádku (Open-Meteo), hláška dne jako citát, dluhy, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
+- Obrazovka Dnes: datum a kdo má svátek, počasí v jednom řádku (Open-Meteo), dluhy, hláška dne úplně dole, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, jeden odkaz „Na později“. Pořadí připnutých modulů se upravuje jen v Profilu.
 
 ## Capabilities and Constraints
@@ -66,8 +66,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
 ## Brand Commitments
 
 - **Čistý světlý styl s duší** (v3, říjen 2026): bílé karty, výrazné nadpisy Anton verzálkami, hlavní akce
-  jako pilulky v barvě modulu, tmavé off-black přepínače, zrno a měkké rozostřené pozadí modulu přes celou obrazovku
-  (mléčné a vroubkované sklo, inkoustové koule, světlo ve vodě). Pozadí na téma jen naráží.
+  jako pilulky v barvě modulu, tmavé off-black přepínače, jedno pozadí pro celou appku: zrnitý barevný přechod,
+  který dole slábne do bílé; mění se jen barva podle modulu.
   **Ikony jako vystřižené z papíru** (plné off-black siluety s výstřižky, inspirace štětcovou kresbou a vystřiženými
   tvary), bez podkladových dlaždic. Pixel art z appky zmizel (zůstal jen ve hře Cornhole a v ikoně appky).
   Čistou černou uživatel nechce, tmavé prvky jsou vždy off-black.

@@ -17,6 +17,10 @@ const noise = (name, alpha, freq = 0.85) => svg(name, 200, 200,
   `<filter id="n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 ${alpha} 0"/></filter>`);
 noise("grain", 0.5);
 noise("grain-soft", 0.16);
+// sprej: světlé i tmavé tečky jako u zrnitého barevného přechodu (pozadí obrazovek a karet)
+svg("spray", 180, 180, `<rect width="100%" height="100%" filter="url(#w)"/><rect width="100%" height="100%" filter="url(#k)"/>`,
+  `<filter id="w" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="2" stitchTiles="stitch" seed="11"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2.6 -1.3"/></filter>` +
+  `<filter id="k" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="2" stitchTiles="stitch" seed="29"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 2.2 -1.25"/></filter>`);
 // bílé jiskření do barevných karet
 svg("sparkle", 200, 200, `<rect width="100%" height="100%" filter="url(#n)"/>`,
   `<filter id="n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch" seed="4"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.75"/></filter>`);

@@ -9,7 +9,6 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "icons": "node scripts/generate-icons.mjs",
-    "backgrounds": "node scripts/generate-backgrounds.mjs",
     "test": "vitest run"
   },
   "dependencies": {

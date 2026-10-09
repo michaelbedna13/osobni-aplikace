@@ -23,7 +23,6 @@ src/
   components/         lišta, rychlé přidání, symboly, ikony
   screens/            Dnes, Moduly, stránka modulu, Profil, Přihlášení
   lib/icons.ts        ikony a šachové figurky jako vystřižené z papíru (generuje scripts/draw-icons.mjs)
-  lib/backgrounds.ts  pozadí obrazovek podle modulu
   lib/copy.ts         hlas appky (vtipné texty)
   styles/app.css      design tokeny a styly
 supabase/migrations/  struktura databáze (SQL)
@@ -36,7 +35,6 @@ supabase/migrations/  struktura databáze (SQL)
 npm run dev        # vývojový server
 npm run build      # kontrola typů + produkční build
 npm run icons      # znovu vygeneruje PNG ikony z public/favicon.svg (potřebuje Playwright)
-npm run backgrounds  # pozadí obrazovek (WebP) do src/assets/tex (potřebuje Playwright)
-node scripts/generate-textures.mjs  # zrno a jiskření do src/assets/tex
+node scripts/generate-textures.mjs  # zrno, sprej a jiskření do src/assets/tex
 node scripts/draw-icons.mjs         # ikony do src/lib/icons.ts
 ```

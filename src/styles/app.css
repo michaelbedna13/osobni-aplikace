@@ -35,7 +35,7 @@
   --step: cubic-bezier(.2, .8, .2, 1);
   /* akcent obrazovky – přepisuje ho modul (pozadí, dlaždice ikony, grafy) */
   --accent: var(--sage);
-  --deep: var(--slate);
+  --deep: #4E7A55;
   /* tmavé tlačítko: jemný přechod a zrno místo ploché černé */
   --dark: url("../assets/tex/grain.svg") 0 0 / 200px 200px, linear-gradient(180deg, var(--ink-2), var(--ink));
   color-scheme: light;
@@ -68,8 +68,6 @@ input, textarea { caret-color: var(--ink); }
   isolation: isolate;
   padding: calc(env(safe-area-inset-top) + 12px) 16px calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 32px);
   color: var(--ink);
-  /* záložní tónování pod obrázkem pozadí: barva modulu nahoře slábne do kamene */
-  --tint: linear-gradient(180deg, color-mix(in srgb, var(--accent) 30%, #FFFFFF), var(--app-bg));
 }
 /* pevná vrstva pod obsahem: při posouvání stojí, obsah jede přes ni */
 /* v appce z plochy iOS někdy hlásí horní okraj 0, i když hodiny a baterku kreslí přes obsah */
@@ -79,11 +77,18 @@ input, textarea { caret-color: var(--ink); }
 .screen::before, .screen::after {
   content: ""; position: fixed; top: 0; bottom: 0; left: 50%; width: min(100vw, 520px); transform: translateX(-50%); pointer-events: none;
 }
-.screen::before { z-index: -1; background: var(--bg, none) center top / cover no-repeat, var(--tint); }
+/* pozadí: zrnitý barevný přechod – nahoře barva modulu (vlevo světlejší, vpravo tmavší odstín), dole slábne do bílé;
+   stejný na všech obrazovkách, mění se jen barva (--accent, --deep) */
+.screen::before { z-index: -1; background: var(--grad); }
+.screen, .fav {
+  --grad:
+    url("../assets/tex/spray.svg") 0 0 / 180px 180px,
+    radial-gradient(75% 45% at 100% 0%, color-mix(in srgb, var(--deep) 62%, var(--accent)) 0%, transparent 75%),
+    radial-gradient(70% 40% at 0% 26%, color-mix(in srgb, var(--accent) 45%, #FFFFFF) 0%, transparent 72%),
+    linear-gradient(180deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 70%, #FFFFFF) 34%, color-mix(in srgb, var(--accent) 16%, #F7F7F4) 58%, #F7F7F4 78%);
+}
 /* zrno přes celou obrazovku, aby plochy nepůsobily sterilně */
 .screen::after { z-index: 40; background: url("../assets/tex/grain.svg") 0 0 / 200px 200px; opacity: 0.16; mix-blend-mode: multiply; }
-/* pozadí obrazovek: měkké rozostřené tvary jako přes mléčné nebo vroubkované sklo, inkoustové koule, světlo ve vodě;
-   generuje scripts/generate-backgrounds.mjs, vybírá Layout podle adresy (--bg). Na téma modulu jen narážejí. */
 /* hlavička modulu: ikona, číslo a hlavní tlačítko stojí přímo na texturovaném pozadí */
 .band { padding-bottom: 4px; }
 /* místo pro ikonu: bez podkladu, vystřižená silueta stojí přímo na pozadí */
@@ -236,16 +241,12 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .demo-note { margin-top: 10px; font-size: 14px; color: var(--slate); }
 .shelf { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 12px; scrollbar-width: none; }
 .shelf::-webkit-scrollbar { display: none; }
-/* karta modulu: výřez z pozadí svého modulu (--bg), jemné jiskření a zrno */
+/* karta modulu: stejný zrnitý přechod jako pozadí obrazovky, v barvě modulu */
 .fav {
   position: relative; flex: 0 0 160px; min-height: 200px; scroll-snap-align: start;
   display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 28px; color: var(--ink);
-  background:
-    url("../assets/tex/sparkle.svg") 0 0 / 200px 200px,
-    url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px,
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 45%),
-    var(--bg, none) 50% 62% / 300% auto,
-    color-mix(in srgb, var(--accent) 40%, #FFFFFF);
+  background: var(--grad);
+  background-size: 180px 180px, 100% 100%, 100% 100%, 100% 260%;
 }
 .fav .icon-slot { width: 56px; height: 56px; justify-items: start; align-items: start; }
 .fav .icon-slot .icon { width: 52px; height: 52px; }
@@ -927,13 +928,12 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather-days li { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 4px; background: var(--surface-2); font-size: 14px; }
 .weather-days li span:first-child { font-family: var(--font-ui); font-size: 14px; text-transform: capitalize; }
 
-/* hláška dne: písková karta s výřezem světla z okna a zrnem; patička autor | kontext */
-.day-quote { display: block; margin-top: 18px; padding: 22px 22px 18px; border-radius: 28px; color: var(--ink); text-decoration: none;
-  background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, var(--bg, none) 50% 40% / 180% auto, linear-gradient(160deg, #F6EEDC, #E3D3B0); }
-.day-quote-text { font-family: var(--font-ui); font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
-.day-quote-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; font-size: 14px; color: var(--ink); }
-.day-quote-meta b { padding: 5px 12px; border-radius: var(--pill); background: var(--paper); font-family: var(--font-ui); font-size: 14px; font-weight: 400; }
-.day-quote-meta span { opacity: 0.7; text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* hláška dne: sekce dole na Dnes, text v bílé kartě; patička autor | kontext */
+.day-quote { display: block; padding: 20px 20px 16px; border-radius: var(--r); background: var(--glass); box-shadow: var(--card-shadow); color: var(--ink); text-decoration: none; }
+.day-quote-text { font-family: var(--font-ui); font-size: 20px; line-height: 1.25; letter-spacing: -0.01em; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.day-quote-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; font-size: 14px; color: var(--slate); }
+.day-quote-meta b { font-family: var(--font-ui); font-size: 14px; font-weight: 400; color: var(--ink); }
+.day-quote-meta span { text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .debt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .debt-col { display: grid; gap: 6px; align-content: start; }
 .debt-col p { display: flex; justify-content: space-between; gap: 6px; }

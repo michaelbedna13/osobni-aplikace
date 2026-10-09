@@ -16,11 +16,8 @@ colors:
   idle: "#E2DFD8"
   slate: "#6F6B65"
   sage: "#A9C29A"
-  sage-light: "#D5E2C9"
-  sand-card: "#F6EEDC"
-  sand-card-deep: "#E3D3B0"
-  stone-light: "#EEF0E8"
-  sand: "#E9E3D3"
+  sage-deep: "#4E7A55"
+  fade: "#F7F7F4"
   map-land: "#EFEDE6"
   lime: "#CEF17B"
   lime-ink: "#4C7A1E"
@@ -165,15 +162,15 @@ components:
 # Design – čistý styl s texturami (v3)
 
 Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/styles/fonts.css` (písma),
-`scripts/generate-textures.mjs` (zrno), `scripts/generate-backgrounds.mjs` (pozadí), `scripts/draw-icons.mjs` →
+`scripts/generate-textures.mjs` (zrno a sprej), `scripts/draw-icons.mjs` →
 `src/lib/icons.ts` (ikony a šachové figurky), `src/lib/modules.ts`
 (barvy modulů), `src/lib/copy.ts` (hlas appky). Product truth je v `PRODUCT.md`.
 
 ## Overview
 
 Světlý **čistý minimalismus s duší**: bílé lehce průsvitné karty s velkým zaoblením, hodně vzduchu, výrazné
-nadpisy verzálkami, hlavní akce jako pilulky v barvě modulu, tmavé přepínače. Duši dávají **zrno a pozadí modulu**
-přes celou obrazovku (měkká rozostřená pozadí). Ikony jsou **jako vystřižené z papíru**: plné off-black siluety s průhlednými výstřižky.
+nadpisy verzálkami, hlavní akce jako pilulky v barvě modulu, tmavé přepínače. Duši dávají **zrno a barevný přechod modulu**
+přes celou obrazovku (zrnitý barevný přechod). Ikony jsou **jako vystřižené z papíru**: plné off-black siluety s průhlednými výstřižky.
 Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vtipnou větu).
 
 ## Colors
@@ -183,38 +180,24 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 - **Pozadí** `app-bg` `#F4F3EE` (teplý kámen), na počítači kolem appky `desk`. Vedlejší text `slate`, jemné
   plochy `surface-2` (pole formulářů), nečinné sloupce grafů `idle`, tenké linky `edge` (12 % `ink`).
 - **Karty** `glass`: bílá s 95 % krytím, bez obrysu, s jemným stínem (`--card-shadow`), aby byly na světlém pozadí dobře vidět.
-- **Barva modulu = akcent (`--accent`)**: hlavní tlačítko, pozadí obrazovky a karty modulů na Dnes, stín pod ikonou v hlavičce, grafy, splněné dny, tečku u nadpisu sekce.
-- **Dnes, Moduly a Profil** mají neutrální kámen se šalvějovou mlhou (`sage-light`, `sand`, `stone-light`);
-  hláška dne je písková karta (`sand-card` → `sand-card-deep`) se světlem z okna.
+- **Barva modulu = akcent (`--accent`, tmavší `--deep`)**: hlavní tlačítko, zrnitý přechod pozadí a karty modulů na Dnes, stín pod ikonou v hlavičce, grafy, splněné dny, tečku u nadpisu sekce.
+- **Dnes, Moduly a Profil**: pozadí přechází nahoře ze šalvěje (`sage`, `sage-deep`) dolů do `fade`.
 - **Limetka** `lime` jen jako plocha (akce „Vrátit“, nová položka, odškrtnutá série); jako text je nečitelná,
   proto „dluží mi“, autor hlášky apod. používají tmavší `lime-ink`. Hvězdy a oblíbené `gold`, chyby `danger`.
 - **Zamčené moduly**: šedá dlaždice, ikona v odstínech šedi.
 
-## Pozadí, textury a zrno
+## Pozadí a zrno
 
-Každá obrazovka má vlastní **pozadí** (`src/assets/tex/<klíč>.webp`, 480 × 1040, dohromady ~110 kB), které kreslí
-`npm run backgrounds` (`scripts/generate-backgrounds.mjs`, canvas v prohlížeči přes Playwright, výstup je pokaždé stejný).
-Pozadí jsou měkká a rozostřená jako fotografie přes sklo, v barvách modulu, a na téma jen **narážejí**:
+Všechny obrazovky mají **stejné pozadí: zrnitý barevný přechod** a mění se jen barva podle modulu (`--accent`,
+`--deep`; Dnes, Moduly a Profil mají šalvěj `sage` a tmavě zelenou). Nahoře je barva modulu, vlevo prosvětlená,
+v pravém horním rohu tmavší odstín, směrem dolů slábne do téměř bílé. Přes přechod je **sprej** (`spray.svg`:
+světlé i tmavé tečky jako u stříkané barvy). Definice je jedna proměnná `--grad` v CSS, bez obrázků.
 
-| Technika | Moduly |
-|---|---|
-| světlo z okna: teplý pruh slunce se stínem rámu a větvičky | Dnes |
-| mléčné sklo: rozmazané siluety za sklem | Moduly a Profil (listy rostliny), Nákup (ovoce a list), Cornhole (pytlík a deska) |
-| světlo ve vodě: měkká světelná síť | Piva (medově), Wishlist (růžově s třpytem) |
-| inkoustové koule: hustý střed, jemné soustředné kroužky | Meditace (kapka), Dech (dvě koule – nádech a výdech), Šipky (terč) |
-| zrnité koule: dvě rozmazané barevné koule | Hláškomat, Lidé, Vděčnost, Finance, Odkazy |
-| vroubkované sklo: rozmazané tvary rozlámané do svislých pruhů | 13 – Untrois, Trénink, Šachy, Filmy |
-| akvarel: rozpité skvrny s tmavším okrajem | Místa |
+- `.screen::before` (pevně pod obsahem, při posouvání stojí): `--grad`;
+- `.screen::after` (nad obsahem): jemné zrno `grain.svg`, krytí 16 %, režim `multiply`;
+- **karty modulů na Dnes** (`.fav`) mají stejný přechod v barvě svého modulu.
 
-Výrazné tvary jsou uprostřed a dole, horní třetina je světlejší, aby hlavička zůstala čitelná. Kterou obrazovku
-dostane, určuje `Layout` podle adresy (`--bg` na `.app-main`; Dnes, klíč modulu, jinak „zaklad“).
-Obrazovka má dvě pevné vrstvy (`.screen::before` pod obsahem, `.screen::after` nad ním), při posouvání stojí:
-
-- **pod obsahem**: pozadí přes celou obrazovku (`cover`), pod ním záložní tónování `--tint` z barvy modulu;
-- **nad obsahem**: zrno `grain.svg` s krytím 16 % v režimu `multiply` (ze `scripts/generate-textures.mjs`).
-
-Karty modulů na Dnes (`.fav`) ukazují výřez z pozadí svého modulu, k tomu jemné zrno a bílé jiskření (`sparkle.svg`).
-Hláška dne má výřez z pozadí Dnes (pruh světla) na pískovém přechodu (`sand-card` → `sand-card-deep`).
+Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; výstup je pokaždé stejný).
 
 ## Typography
 
@@ -235,10 +218,9 @@ Hláška dne má výřez z pozadí Dnes (pruh světla) na pískovém přechodu (
   případně státní svátek; pod hlavičkou **počasí** jako bílá pilulka (Open-Meteo, modely DWD ICON a ECMWF; poloha
   nebo město, uložené v prohlížeči; ikona, teplota, popis s min–max, déšť jen od 30 %, bez názvu města; ťuknutí
   otevře okno „Počasí – město“ s pocitovou teplotou, větrem, 12 hodinami po 2 h, 3 dny a odkazem Změnit místo),
-  pod ním **hláška dne** (`.day-quote`: písková karta se světlem z okna, text Outfit 24 px nejvýš na 4 řádky, autor v bílé
-  pilulce, kontext vpravo; ťuknutí otevře Hláškomat); pás **Moje moduly** (posun do boku, karty 160 px, úpravy jsou
+  pás **Moje moduly** (posun do boku, karty 160 px, úpravy jsou
   v Profilu); **Nákup** (jen když je co koupit); **Brzy slaví** (oslavy na 7 dní); **„Za co jsem dnes vděčný?“**;
-  **Dluhy**; **Na později** (jeden neotevřený odkaz denně).
+  **Dluhy**; **Na později** (jeden neotevřený odkaz denně); úplně dole **Hláška dne** (`.day-quote`: bílá karta, text Outfit 20 px nejvýš na 5 řádků, autor a kontext pod ním; ťuknutí otevře Hláškomat).
 - Moduly: mřížka 3 × N, jen ikona a název; hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS má tmavý text (`apple-mobile-web-app-status-bar-style: default`, `theme-color` `app-bg`).
   V appce z plochy ale iOS kreslí hodiny přes obsah a přitom hlásí horní okraj 0, proto má `.screen` v režimu
@@ -361,12 +343,12 @@ Kamarád z party: „Dneska zatím na suchu“, „Třetí. Číšník už ví.�
 ## Do's and Don'ts
 
 - **Do:** jedna hlavní akce na obrazovku, největší prvek pod číslem.
-- **Do:** nový modul = nová barva + nová vystřižená ikona v `scripts/draw-icons.mjs` + pozadí, které na téma jen naráží + vlastní herní metafora statistik.
+- **Do:** nový modul = nová barva (a tmavší odstín pro přechod) + nová vystřižená ikona v `scripts/draw-icons.mjs` + vlastní herní metafora statistik.
 - **Do:** barva nového modulu musí mít odstín zřetelně jiný než ostatní moduly (v carouselu a sekcích na Dnes stojí vedle sebe) a nesmí se krýt s `danger`.
 - **Do:** čísla vždy v Anton a s tabulkovými číslicemi.
 - **Don't:** čistá černá – tmavé prvky jsou vždy off-black `ink`.
 - **Don't:** obrysy kolem karet, tvrdé posunuté stíny, limetka jako barva textu.
-- **Don't:** doslovné pozadí (bublinky u piv, činky u tréninku); jen náznak barvou, světlem a tvarem.
+- **Don't:** jiné pozadí pro jednotlivé moduly – přechod je všude stejný, liší se jen barvou.
 - **Don't:** obličeje na ikonách modulů.
 - **Don't:** kreslit ikony znaky (▶ ★) – vždy ikona z `icons.ts`; bílé dlaždice pod ikonami.
 - **Don't:** nadpisky nad nadpisy.
