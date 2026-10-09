@@ -76,10 +76,14 @@ const ICONS = {
     const slit = (y) => blob([[24, y], [76, y - 0.5], [75, y + 4], [25, y + 4.5]], 0.6, 0.2);
     return [I(blob([[24, 44], [30, 18], [50, 10], [70, 18], [76, 44], [68, 44], [64, 24], [50, 18], [36, 24], [32, 44]], 1, 0.4)), I(blob([[12, 40], [50, 39], [88, 40], [80, 86], [50, 88], [20, 86]], 1.5, 0.25)), C(slit(52)), C(slit(64)), C(slit(76))];
   },
+  // znak Untrois: květina se 13 lístky (13 = un, trois) a okem, ve stylu ikony Meditace (ta má 7 lístků)
   untrois: () => {
-    const die = rot([[20, 26], [28, 16], [74, 14], [84, 22], [86, 70], [78, 82], [30, 84], [18, 76]], -8);
-    const pip = (x, y) => { const [[px, py]] = rot([[x, y]], -8); return C(blob(ell(px, py, 7, 7, 10), 0.8, 0.6)); };
-    return [I(blob(die, 1.5, 0.35)), pip(34, 32), pip(52, 49), pip(70, 66)];
+    const pts = [];
+    for (let i = 0; i < 13; i++) {
+      const a = (i / 13) * Math.PI * 2 - Math.PI / 2 + (rnd() - 0.5) * 0.08, w = (Math.PI / 13) * (0.72 + rnd() * 0.12), R = 44 + rnd() * 4, h = Math.PI / 13;
+      pts.push([50 + Math.cos(a - h) * 21, 52 + Math.sin(a - h) * 21], [50 + Math.cos(a - w) * R, 52 + Math.sin(a - w) * R], [50 + Math.cos(a) * (R + 3.5), 52 + Math.sin(a) * (R + 3.5)], [50 + Math.cos(a + w) * R, 52 + Math.sin(a + w) * R]);
+    }
+    return [I(blob(pts, 1, 0.45)), C(blob([[31, 52], [40.5, 42.7], [50, 41], [59.5, 42.7], [69, 52], [59.5, 60.8], [50, 61.9], [40.5, 60.8]], 0.4, 0.45)), I(blob(ell(50, 52, 6.5, 6.5, 10), 0.3, 0.6))];
   },
   dech: () => [
     I(blob(rect(46, 10, 54, 46, 3), 0.6, 0.3)),
