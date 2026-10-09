@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Sprite } from "../components/Sprite";
+import { Icon } from "../components/Icon";
 import { signIn } from "../lib/auth";
 
 export function Login() {
@@ -21,10 +21,10 @@ export function Login() {
     <div className="screen">
       <div className="login">
         <div className="login-cast" aria-hidden="true">
-          <Sprite name="piva" size={64} anim="bob" />
-          <Sprite name="meditace" size={64} />
-          <Sprite name="hlaskomat" size={64} anim="bob" />
-          <Sprite name="lide" size={64} />
+          <Icon name="piva" size={64} anim="bob" />
+          <Icon name="meditace" size={64} />
+          <Icon name="hlaskomat" size={64} anim="bob" />
+          <Icon name="lide" size={64} />
         </div>
         <h1>Untrois</h1>
         <form className="panel login-form form" onSubmit={submit}>

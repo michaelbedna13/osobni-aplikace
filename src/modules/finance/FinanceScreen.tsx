@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { formatDate, plural } from "../../lib/format";
@@ -56,13 +56,13 @@ export function FinanceScreen() {
       <div className="band">
         <Topbar title="Finance" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="finance" size={96} /></span>
+          <span className="icon-slot"><Icon name="finance" size={96} /></span>
           <span className="hero-num">{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}</span>
           <span className="hero-cap">Kč měsíčně pravidelně</span>
           <p className="hero-line">výdaje {roundKc(stats.monthlyExpenses)} · předplatné {roundKc(stats.monthlySubs)} · za rok {roundKc(stats.yearlyTotal)}</p>
         </div>
         <button className="btn-hero" onClick={addCurrent}>
-          <Sprite name="i-plus" size={24} /> {tab === "vydaje" ? "Přidat výdaj" : tab === "predplatne" ? "Přidat předplatné" : tab === "dluhy" ? "Zapsat dluh" : "Nový spořicí cíl"}
+          <Icon name="i-plus" size={24} /> {tab === "vydaje" ? "Přidat výdaj" : tab === "predplatne" ? "Přidat předplatné" : tab === "dluhy" ? "Zapsat dluh" : "Nový spořicí cíl"}
         </button>
       </div>
 
@@ -75,7 +75,7 @@ export function FinanceScreen() {
       </div>
 
       <button className="panel beer-panel" onClick={() => setSheet({ kind: "beer" })}>
-        <Sprite name="piva" size={32} />
+        <Icon name="piva" size={32} />
         <span className="grow">
           <b>Za piva letos ≈ {roundKc(beersThisYear * settings.beer_price)}</b>
           <span className="small muted">{beersThisYear} {plural(beersThisYear, ["pivo", "piva", "piv"])} × {formatKc(settings.beer_price)} · změnit cenu</span>

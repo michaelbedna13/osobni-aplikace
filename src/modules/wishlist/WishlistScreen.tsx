@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { plural } from "../../lib/format";
@@ -19,7 +19,7 @@ const DNI: [string, string, string] = ["den", "dny", "dní"];
 function Thumb({ wish }: { wish: Wish }) {
   const [broken, setBroken] = useState(false);
   if (wish.image_url && !broken) return <img className="link-thumb" src={wish.image_url} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setBroken(true)} />;
-  return <span className="link-thumb link-letter" aria-hidden="true"><Sprite name="wishlist" size={36} /></span>;
+  return <span className="link-thumb link-letter" aria-hidden="true"><Icon name="wishlist" size={36} /></span>;
 }
 
 function PriorityPicker({ value, onChange }: { value: 1 | 2 | 3; onChange: (v: 1 | 2 | 3) => void }) {
@@ -66,12 +66,12 @@ export function WishlistScreen() {
       <div className="band">
         <Topbar title="Wishlist" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="wishlist" size={96} /></span>
+          <span className="icon-slot"><Icon name="wishlist" size={96} /></span>
           <span className="hero-num">{stats.open}</span>
           <span className="hero-cap">{plural(stats.open, ["přání", "přání", "přání"])} za {formatKc(stats.openTotal)}</span>
           <p className="hero-line">{stats.waiting ? `${stats.waiting} ještě čeká na 30 dní` : "Nic nečeká, můžeš vybírat."}</p>
         </div>
-        <button className="btn-hero" onClick={() => setSheet({ kind: "add" })}><Sprite name="i-plus" size={24} /> Přidat přání</button>
+        <button className="btn-hero" onClick={() => setSheet({ kind: "add" })}><Icon name="i-plus" size={24} /> Přidat přání</button>
       </div>
 
       {error && <p className="error">Nepodařilo se načíst přání. Zkontroluj připojení.</p>}
@@ -102,7 +102,7 @@ export function WishlistScreen() {
                     {w.status === "chci" && wait > 0 && <span className="wait-tag">Počkej ještě {wait} {plural(wait, DNI)}</span>}
                     {w.status === "chci" && w.wait_until && wait === 0 && <span className="wait-tag ready">30 dní uběhlo – pořád to chceš?</span>}
                   </span>
-                  {w.priority === 3 && <Sprite name="heart" size={20} tone="wishlist" />}
+                  {w.priority === 3 && <Icon name="heart" size={20} tone="wishlist" />}
                 </button>
               </li>
             );

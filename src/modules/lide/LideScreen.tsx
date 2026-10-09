@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { WEEKDAYS_SHORT } from "../../lib/dates";
@@ -87,7 +87,7 @@ export function LideScreen() {
       <div className="band">
         <Topbar title="Lidé a dárky" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="lide" size={96} /></span>
+          <span className="icon-slot"><Icon name="lide" size={96} /></span>
           {next ? (
             <>
               <span className="hero-num">{next.days === 0 ? "Dnes" : next.days}</span>
@@ -103,7 +103,7 @@ export function LideScreen() {
           )}
         </div>
         <button className="btn-hero" onClick={() => setSheet({ kind: "person" })}>
-          <Sprite name="i-plus" size={24} /> Přidat člověka
+          <Icon name="i-plus" size={24} /> Přidat člověka
         </button>
       </div>
 
@@ -128,7 +128,7 @@ export function LideScreen() {
               <div className="panel">
                 <h3>Připomínky v iPhonu</h3>
                 <p className="small">Přidá narozeniny a svátky do Kalendáře. Připomene se den předem v 9:00. Po přidání nových lidí to zopakuj.</p>
-                <button className="btn tap wide" onClick={exportIcs}><Sprite name="i-up" size={20} /> Přidat do Kalendáře</button>
+                <button className="btn tap wide" onClick={exportIcs}><Icon name="i-up" size={20} /> Přidat do Kalendáře</button>
                 {icsState && <p className="small note-ok">{icsState}</p>}
               </div>
             </>
@@ -155,7 +155,7 @@ export function LideScreen() {
                         <b>{p.name}</b>
                         <span className="occasion-kind">{birthdayText(p)}{next?.age ? ` · bude ${next.age}` : ""}</span>
                       </span>
-                      {ideasFor(p.id).length > 0 && <span className="count-badge"><Sprite name="lide" size={16} />{ideasFor(p.id).length}</span>}
+                      {ideasFor(p.id).length > 0 && <span className="count-badge"><Icon name="lide" size={16} />{ideasFor(p.id).length}</span>}
                       {sort === "narozeniny" && next && <span className="occasion-when">{whenLabel(next.days)}</span>}
                     </Link>
                   </li>
@@ -169,7 +169,7 @@ export function LideScreen() {
       {tab === "darky" && (
         <div className="tab-panel">
           <button className="btn tap wide" disabled={people.length === 0} onClick={() => setSheet({ kind: "idea", idea: null })}>
-            <Sprite name="i-plus" size={20} /> Nápad na dárek
+            <Icon name="i-plus" size={20} /> Nápad na dárek
           </button>
           {openIdeas.length === 0 ? <p className="empty">Žádné nápady. Až tě něco napadne, hned to sem hoď.</p> : (
             people.filter((p) => ideasFor(p.id).length).map((p) => (
@@ -205,7 +205,7 @@ export function IdeaList({ ideas, onEdit, onGiven, givenLabel = "Dáno" }: {
               {idea.url && <span className="occasion-kind">{idea.url.replace(/^https?:\/\/(www\.)?/, "").split("/")[0]}</span>}
             </span>
           </button>
-          {idea.url && <a className="idea-link" href={idea.url} target="_blank" rel="noreferrer" aria-label="Otevřít odkaz"><Sprite name="i-up" size={18} /></a>}
+          {idea.url && <a className="idea-link" href={idea.url} target="_blank" rel="noreferrer" aria-label="Otevřít odkaz"><Icon name="i-up" size={18} /></a>}
           <button className="idea-given" onClick={() => onGiven(idea)}>{givenLabel}</button>
         </li>
       ))}

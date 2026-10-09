@@ -1,6 +1,4 @@
-// Registr modulů: název, barva, symbol a plán.
-// Symboly jsou složené z geometrických tvarů ve viewBoxu 0 0 100 100.
-// Ve značkách: M = barva modulu, W = papír, K = černá. Náhled všech: design/symboly.html.
+// Registr modulů: název, barva a plán. Ikony modulů jsou v src/lib/icons.ts (scripts/draw-icons.mjs).
 
 export type ModuleKey =
   | "piva" | "hlaskomat" | "trenink" | "meditace" | "lide" | "vdecnost"
@@ -10,9 +8,9 @@ export interface ModuleDef {
   key: ModuleKey;
   name: string;
   color: string;
-  /** Tmavší odstín (stíny pixelů, výplně na světlém podkladu). */
+  /** Tmavší odstín (detaily pozadí obrazovky, tmavší tvary). */
   deep: string;
-  /** Světlejší odstín (odlesky, podklady). */
+  /** Světlejší odstín (odlesky v pozadí). */
   light: string;
   /** Fáze, ve které modul vznikne (viz docs/KONCEPT.md). */
   phase: 1 | 2 | 3 | 4;

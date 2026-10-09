@@ -1,6 +1,6 @@
 import { useMemo, useState, type CSSProperties } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { newIdea, upcomingOccasions, useAddIdea, useGiftIdeas, usePeople, useUpdateIdea, type GiftIdea } from "./data";
@@ -51,7 +51,7 @@ export function PersonScreen() {
       </div>
       {occasions.length > 0 && (
         <ul className="plan person-next">
-          {occasions.map((o) => <li key={o.kind}><Sprite name={o.kind === "narozeniny" ? "lide" : "star"} size={20} />{occasionLabel(o)} {whenLabel(o.days).toLowerCase()}</li>)}
+          {occasions.map((o) => <li key={o.kind}><Icon name={o.kind === "narozeniny" ? "lide" : "star"} size={20} />{occasionLabel(o)} {whenLabel(o.days).toLowerCase()}</li>)}
         </ul>
       )}
       {person.note && <p className="person-note">{person.note}</p>}

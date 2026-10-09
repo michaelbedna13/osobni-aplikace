@@ -1,6 +1,6 @@
 ---
 name: Untrois – čistý styl s texturami
-description: Světlá kapesní appka o vlastním životě. Čisté karty, výrazné nadpisy, každý modul má svou barvu a texturu pozadí, ikony zůstávají pixel art.
+description: Světlá kapesní appka o vlastním životě. Čisté karty, výrazné nadpisy, každý modul má svou barvu a pozadí, ikony jako vystřižené z papíru.
 colors:
   ink: "#23211F"
   ink-2: "#3A3733"
@@ -165,14 +165,15 @@ components:
 # Design – čistý styl s texturami (v3)
 
 Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/styles/fonts.css` (písma),
-`scripts/generate-textures.mjs` (textury), `src/lib/sprites.ts` (ikony modulů a doplňky), `src/lib/modules.ts`
+`scripts/generate-textures.mjs` (zrno), `scripts/generate-backgrounds.mjs` (pozadí), `scripts/draw-icons.mjs` →
+`src/lib/icons.ts` (ikony a šachové figurky), `src/lib/modules.ts`
 (barvy modulů), `src/lib/copy.ts` (hlas appky). Product truth je v `PRODUCT.md`.
 
 ## Overview
 
 Světlý **čistý minimalismus s duší**: bílé lehce průsvitné karty s velkým zaoblením, hodně vzduchu, výrazné
 nadpisy verzálkami, hlavní akce jako pilulky v barvě modulu, tmavé přepínače. Duši dávají **zrno a pozadí modulu**
-přes celou obrazovku (měkká rozostřená pozadí). Z pixel artu zůstávají **ikony** (sprity), všechno ostatní je hladké.
+přes celou obrazovku (měkká rozostřená pozadí). Ikony jsou **jako vystřižené z papíru**: plné off-black siluety s průhlednými výstřižky.
 Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vtipnou větu).
 
 ## Colors
@@ -254,12 +255,13 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
 ## Shapes
 
 - Zaoblení podle velikosti: tlačítka, čipy, záložky, lišta a štítky jako pilulky; karty 24 px, karty modulů a okna
-  28 px, dlaždice ikony v hlavičce 40 px, drobnosti 6–14 px. Kolečka (avatar, zpět, body grafů) 50 %.
-- **Ikony modulů** jsou pixelové sprity v `src/lib/sprites.ts` (SVG, `shape-rendering: crispEdges`)
-  ve stylu předmětů z RPG: **bez obličejů**, tmavý obrys, čtyřtónové stínování (obrys, stín, barva,
-  světlo; světlo zleva nahoře) a jeden detail v doplňkové barvě (pěna, uvozovky, stuha, záložka). Ikony lišty jsou
-  plné siluety 12 × 12 v barvě textu. Moduly 16 × 16, doplňky (hvězda, trofej, korunka, zámek, plamen, fajfka,
-  jiskra) a ikony 10 × 10 (`i-…`). Velikost vždy násobek mřížky.
+  28 px, drobnosti 6–14 px. Kolečka (avatar, zpět, body grafů) 50 %.
+- **Ikony** (`Icon`, data `src/lib/icons.ts` z `scripts/draw-icons.mjs`) jsou **jako vystřižené z papíru**: plná
+  silueta v barvě textu (off-black, na tmavém světlá) s lehce nepravidelným okrajem jako stříhaná nůžkami a jeden či
+  dva **výstřižky**, které nesou detail (oko v květině, uvozovky v bublině, odlesky na půllitru). Výstřižky jsou
+  průhledné (maska), takže jimi prosvítá podklad. Žádné obrysy, stínování ani dlaždice pod ikonou; **bez obličejů**.
+  Moduly, doplňky (hvězda, trofej, korunka, zámek, srdce, plamen, fajfka, jiskra), ovládání (`i-…`) a počasí (`w-…`)
+  ve viewBoxu 100 × 100; `tone` obarví ikonu barvou modulu (plamen série, srdce priority).
 - Žádné emoji ani unicode znaky jako ikony.
 
 ## Components
@@ -270,7 +272,7 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
 - **Kostičkový graf** (`BlockStacks`): jedna kostička = jeden kus; při větších číslech uvede měřítko.
 - **Vodorovné pruhy** (`HBars`): dny v týdnu, vítěz v barvě modulu s korunkou; řeší i remízu.
 - **Sloupce** (`Columns`): 12 týdnů s hodnotou nad sloupcem.
-- **Trofeje** (`.trophies`): 2 × 2, rekord zlatě se spritem trofeje.
+- **Trofeje** (`.trophies`): 2 × 2, rekord se zlatým rámečkem a ikonou trofeje.
 - **Karta hlášky** (`.quote-card`): text hlášky a pod ním **uvnitř karty** autor v `lime-ink` a kontext s datem
   šedě; hvězdička oblíbené vpravo. Autor nikdy mimo kartu (mezi kartami nebylo jasné, ke které patří).
 - **Oslava** (`OccasionRow`, `.occasion`): blok s datem a dnem v týdnu, jméno, co slaví („30. narozeniny“,
@@ -288,8 +290,8 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
 - **Zvuky** (`SoundPicker`, `.sound-chips`): výběr zvuku jako čipy, ťuknutí vybere a hned přehraje. Zvuky se
   syntetizují ve Web Audio (gong, tibetská mísa, zvonek, tři zvonky, dřívko, pípnutí, fanfára). Odkaz „Zvuky: …“
   pod hlavním tlačítkem Meditace a Tréninku (`.sound-link`). Nastavení je v zařízení (localStorage `zvuky`).
-- **Šachy** (`.sh-*`): šachovnice v zelených tónech (`board-light`, `board-dark`) s pixelovými figurkami 12 × 12
-  (bílé krémové, černé `piece-black`, obě s černým obrysem). Vybrané pole limetkové, poslední tah žlutě, šach červeně,
+- **Šachy** (`.sh-*`): šachovnice v zelených tónech (`board-light`, `board-dark`) s figurkami ve stylu vystřižených
+  tvarů (`PIECE_SHAPES` v `icons.ts`; bílé krémové `on-ink` s off-black okrajem, černé off-black se světlým okrajem). Vybrané pole limetkové, poslední tah žlutě, šach červeně,
   možné tahy čtverečkem, braní rámečkem. Nad a pod deskou panel hráče (`.sh-player`: jméno, sebrané figury, převaha,
   hodiny `.sh-clock`, běžící hodiny inverzně, pod 20 s červeně). Při hře přes stůl je horní panel otočený o 180°.
 - **Šipky** (`.sc-*`, modul `skore`): seznam hráčů (`.sc-row`, kdo hází má rámeček v barvě hráče; zbývající body,
@@ -306,7 +308,7 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
 - **Odkaz** (`.link-card`): náhled 64 px (obrázek webu / nahraný obrázek / písmeno domény), název na 2 řádky,
   web · kdy · kolekce, limetková tečka = „na později“. Detail ve spodním panelu s „Otevřít“.
 - **Film / kniha** (`.media-row`): štítek druhu (`.kind-tag`), název, autor / režisér · kdo doporučil; u hotových
-  hodnocení 1–5 hvězdiček (sprite hvězdy, nevybrané šedé). Zapisuje se ručně textem, bez katalogů.
+  hodnocení 1–5 hvězdiček (ikona hvězdy, nevybrané průsvitné). Zapisuje se ručně textem, bez katalogů.
 - **Přání** (`.wish-card`): jako odkaz, navíc cena · priorita a štítek čekání (`.wait-tag`; po 30 dnech limetkový
   „pořád to chceš?“).
 - **Mapa** (`.map-box`, MapLibre + vektorové podklady OpenFreeMap bez klíče, vlastní zjednodušený styl v `mista/mapStyle.ts`):
@@ -339,7 +341,7 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
 - **Karta modulu v pásu** (`.fav`): pastelový přechod v barvě modulu se zrnem a jiskřením, ikona na bílé dlaždici, název, číslo v Anton, rychlá akce jako tmavé kolečko vpravo nahoře.
 - **Záložky** (`Tabs`): bílá pilulka přes celou šířku, aktivní položka tmavá.
-- **Dlaždice ikony** (`.sprite-tile`): zaoblený čtverec ve světlém akcentu; v hlavičce modulu bílý s barevným stínem.
+- **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí; v hlavičce modulu 120 px s měkkým stínem.
 - **Okno s formulářem** (`Sheet` → `FormWindow`): uprostřed obrazovky, nadpis a křížek, drží se nad klávesnicí, pozadí se neposouvá; **potvrzení** (`useToast`, tmavá pilulka s limetkovou akcí „Vrátit“).
 
 ### Pohyb
@@ -358,12 +360,12 @@ Kamarád z party: „Dneska zatím na suchu“, „Třetí. Číšník už ví.�
 ## Do's and Don'ts
 
 - **Do:** jedna hlavní akce na obrazovku, největší prvek pod číslem.
-- **Do:** nový modul = nová barva + nový 16 × 16 sprite + pozadí, které na téma jen naráží + vlastní herní metafora statistik.
+- **Do:** nový modul = nová barva + nová vystřižená ikona v `scripts/draw-icons.mjs` + pozadí, které na téma jen naráží + vlastní herní metafora statistik.
 - **Do:** barva nového modulu musí mít odstín zřetelně jiný než ostatní moduly (v carouselu a sekcích na Dnes stojí vedle sebe) a nesmí se krýt s `danger`.
 - **Do:** čísla vždy v Anton a s tabulkovými číslicemi.
 - **Don't:** čistá černá – tmavé prvky jsou vždy off-black `ink`.
 - **Don't:** obrysy kolem karet, tvrdé posunuté stíny, limetka jako barva textu.
 - **Don't:** doslovné pozadí (bublinky u piv, činky u tréninku); jen náznak barvou, světlem a tvarem.
 - **Don't:** obličeje na ikonách modulů.
-- **Don't:** kreslit ikony znaky (▶ ★) – vždy sprite.
+- **Don't:** kreslit ikony znaky (▶ ★) – vždy ikona z `icons.ts`; bílé dlaždice pod ikonami.
 - **Don't:** nadpisky nad nadpisy.

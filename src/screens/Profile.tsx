@@ -1,4 +1,4 @@
-import { Sprite } from "../components/Sprite";
+import { Icon } from "../components/Icon";
 import { signOut, useAuth } from "../lib/auth";
 import { MODULES, MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
@@ -44,10 +44,10 @@ export function Profile() {
           <ul className="pin-list">
             {pinned.map((key, i) => (
               <li key={key}>
-                <Sprite name={key} size={32} />
+                <Icon name={key} size={32} />
                 <span className="pin-name">{MODULE_BY_KEY[key].name}</span>
-                <button className="icon-btn" aria-label={`Posunout ${MODULE_BY_KEY[key].name} výš`} disabled={i === 0} onClick={() => move(i, -1)}><Sprite name="i-up" size={18} /></button>
-                <button className="icon-btn" aria-label={`Posunout ${MODULE_BY_KEY[key].name} níž`} disabled={i === pinned.length - 1} onClick={() => move(i, 1)}><Sprite name="i-down" size={18} /></button>
+                <button className="icon-btn" aria-label={`Posunout ${MODULE_BY_KEY[key].name} výš`} disabled={i === 0} onClick={() => move(i, -1)}><Icon name="i-up" size={18} /></button>
+                <button className="icon-btn" aria-label={`Posunout ${MODULE_BY_KEY[key].name} níž`} disabled={i === pinned.length - 1} onClick={() => move(i, 1)}><Icon name="i-down" size={18} /></button>
                 <button className="chip" onClick={() => remove(key)}>Pryč</button>
               </li>
             ))}
@@ -58,7 +58,7 @@ export function Profile() {
               <ul className="pin-list">
                 {unpinned.map((m) => (
                   <li key={m.key}>
-                    <Sprite name={m.key} size={32} />
+                    <Icon name={m.key} size={32} />
                     <span className="pin-name">{m.name}</span>
                     <button className="chip" onClick={() => add(m.key)}>Připnout</button>
                   </li>

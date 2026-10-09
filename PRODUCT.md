@@ -68,7 +68,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
 - **Čistý světlý styl s duší** (v3, říjen 2026): bílé karty, výrazné nadpisy Anton verzálkami, hlavní akce
   jako pilulky v barvě modulu, tmavé off-black přepínače, zrno a měkké rozostřené pozadí modulu přes celou obrazovku
   (mléčné a vroubkované sklo, inkoustové koule, světlo ve vodě). Pozadí na téma jen naráží.
-  **Pixel art zůstává v ikonách** (sprity modulů a doplňků) – to je výslovně zachovaná vlastnost.
+  **Ikony jako vystřižené z papíru** (plné off-black siluety s výstřižky, inspirace štětcovou kresbou a vystřiženými
+  tvary), bez podkladových dlaždic. Pixel art z appky zmizel (zůstal jen ve hře Cornhole a v ikoně appky).
   Čistou černou uživatel nechce, tmavé prvky jsou vždy off-black.
 - Uživatel má rád: clean minimalism, neo brutalism, Bauhaus; jeho reference (screenshoty):
   pastelové karty s černým obrysem a tvrdým stínem, obrazovky v plných barvách, hravé ilustrace.

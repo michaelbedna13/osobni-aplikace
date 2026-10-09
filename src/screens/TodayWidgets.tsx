@@ -1,7 +1,7 @@
 import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { Sheet } from "../components/Sheet";
-import { Sprite } from "../components/Sprite";
+import { Icon } from "../components/Icon";
 import { MODULE_BY_KEY } from "../lib/modules";
 import { describe, loadPlace, savePlace, searchCity, useWeather, type Place } from "../lib/weather";
 import { balancesByPerson, debts, formatKc } from "../modules/finance/data";
@@ -53,7 +53,7 @@ export function WeatherCard() {
     return (
       <div className="weather">
         <button className="link inline weather-empty" onClick={() => setPicking(true)}>
-          <Sprite name="w-partly" size={20} /> Zapnout počasí
+          <Icon name="w-partly" size={20} /> Zapnout počasí
         </button>
         {picking && <PlaceSheet onClose={() => setPicking(false)} onChoose={choose} />}
       </div>
@@ -68,7 +68,7 @@ export function WeatherCard() {
         {error && <span className="small muted">Počasí se nepodařilo načíst.</span>}
         {w && d && (
           <button className="weather-now" aria-expanded={open} aria-label={`${d.text}, ${deg(w.temp)}. Předpověď`} onClick={() => setOpen((o) => !o)}>
-            <Sprite name={d.icon} size={24} />
+            <Icon name={d.icon} size={24} />
             <b className="weather-temp">{deg(w.temp)}</b>
             <span className="weather-desc">
               {d.text}, {deg(w.today.min)}–{deg(w.today.max)}{w.today.rainChance >= 30 ? `, déšť ${w.today.rainChance} %` : ""}
@@ -85,7 +85,7 @@ export function WeatherCard() {
             {w.hours.filter((_, i) => i % 2 === 0).slice(0, 6).map((h) => (
               <li key={h.time.toISOString()}>
                 <span>{hour(h.time)}</span>
-                <Sprite name={describe(h.code, h.isDay).icon} size={20} />
+                <Icon name={describe(h.code, h.isDay).icon} size={20} />
                 <b>{deg(h.temp)}</b>
                 {h.rainChance >= 30 && <small>{h.rainChance} %</small>}
               </li>
@@ -95,7 +95,7 @@ export function WeatherCard() {
             {w.days.map((x) => (
               <li key={x.date.toISOString()}>
                 <span>{weekday(x.date)}</span>
-                <Sprite name={describe(x.code).icon} size={16} />
+                <Icon name={describe(x.code).icon} size={16} />
                 <span>{deg(x.min)} / {deg(x.max)}</span>
               </li>
             ))}

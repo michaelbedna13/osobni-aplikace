@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { useToast } from "../../components/Toast";
 import { Topbar } from "../../components/Topbar";
 import { relativeTime } from "../../lib/dates";
@@ -27,7 +27,7 @@ function Thumb({ link, src, big }: { link: Link; src: string | null; big?: boole
     return <img className={big ? "link-image" : "link-thumb"} src={src} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setBroken(true)} />;
   }
   const letter = (link.site ?? (link.url ? domainOf(link.url) : "?"))[0]?.toUpperCase() ?? "?";
-  return <span className={`${big ? "link-image" : "link-thumb"} link-letter`} aria-hidden="true">{link.kind === "image" ? <Sprite name="i-grid" size={24} /> : letter}</span>;
+  return <span className={`${big ? "link-image" : "link-thumb"} link-letter`} aria-hidden="true">{link.kind === "image" ? <Icon name="i-grid" size={24} /> : letter}</span>;
 }
 
 export function OdkazyScreen() {
@@ -82,12 +82,12 @@ export function OdkazyScreen() {
       <div className="band">
         <Topbar title="Odkazy" right={<button className="link" onClick={() => setSheet({ kind: "share" })}>Z iPhonu</button>} />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="odkazy" size={96} /></span>
+          <span className="icon-slot"><Icon name="odkazy" size={96} /></span>
           <span className="hero-num">{unread.length}</span>
           <span className="hero-cap">na později</span>
           <p className="hero-line">Celkem {links.length} {plural(links.length, ODKAZU)}{collections.length ? ` v ${collections.length} ${plural(collections.length, ["kolekci", "kolekcích", "kolekcích"])}` : ""}</p>
         </div>
-        <button className="btn-hero" onClick={() => setSheet({ kind: "add" })}><Sprite name="i-plus" size={24} /> Uložit odkaz</button>
+        <button className="btn-hero" onClick={() => setSheet({ kind: "add" })}><Icon name="i-plus" size={24} /> Uložit odkaz</button>
       </div>
 
       {error && <p className="error">Nepodařilo se načíst odkazy. Zkontroluj připojení.</p>}
@@ -203,7 +203,7 @@ function AddSheet({ collections, onClose, onSaved }: { collections: string[]; on
       <input id="link-note" className="input" maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} />
       <button className="btn dark tap wide" disabled={!url} onClick={save}>Uložit odkaz</button>
       <label className={`btn tap wide file-btn${busy ? " busy" : ""}`}>
-        <Sprite name="i-up" size={20} /> {busy ? "Nahrávám…" : "Nahrát obrázek nebo screenshot"}
+        <Icon name="i-up" size={20} /> {busy ? "Nahrávám…" : "Nahrát obrázek nebo screenshot"}
         <input type="file" accept="image/*" multiple disabled={busy} onChange={(e) => void upload(e.target.files)} />
       </label>
       {isDemo && <p className="small muted">V ukázkovém režimu se obrázky ukládají zmenšené jen v tomhle prohlížeči.</p>}

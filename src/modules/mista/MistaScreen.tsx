@@ -1,7 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import {
@@ -96,7 +96,7 @@ export function MistaScreen() {
       {geoErr && <p className="error">{geoErr}</p>}
       {error && <p className="error">Nepodařilo se načíst místa. Zkontroluj připojení.</p>}
 
-      <button className="btn-hero" onClick={() => { setPending(null); setSheet({ kind: "add" }); }}><Sprite name="i-plus" size={24} /> Přidat místo</button>
+      <button className="btn-hero" onClick={() => { setPending(null); setSheet({ kind: "add" }); }}><Icon name="i-plus" size={24} /> Přidat místo</button>
 
       <div className="score">
         <div><b>{wanted}</b><span>chci navštívit</span></div>

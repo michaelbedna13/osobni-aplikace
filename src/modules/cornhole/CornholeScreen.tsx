@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { relativeTime } from "../../lib/dates";
@@ -55,20 +55,20 @@ export function CornholeScreen() {
       <div className="band">
         <Topbar title="Cornhole" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="cornhole" size={96} /></span>
+          <span className="icon-slot"><Icon name="cornhole" size={96} /></span>
           <span className="hero-num">{stats.games}</span>
           <span className="hero-cap">{plural(stats.games, ODEHRANO)}</span>
           <p className="hero-line">{leader && leader.wins > 0 ? `Nejvíc výher: ${leader.name} (${leader.wins})` : "Hoď první pytlík."}</p>
         </div>
         {active ? (
-          <button className="btn-hero" onClick={() => navigate("/m/cornhole/hra")}><Sprite name="i-play" size={24} /> Pokračovat ve hře</button>
+          <button className="btn-hero" onClick={() => navigate("/m/cornhole/hra")}><Icon name="i-play" size={24} /> Pokračovat ve hře</button>
         ) : (
           <button className="btn-hero" onClick={() => setSheet(teams.length ? { kind: "game" } : { kind: "team", team: null })}>
-            <Sprite name="i-play" size={24} /> {teams.length ? "Nová hra" : "Založit první tým"}
+            <Icon name="i-play" size={24} /> {teams.length ? "Nová hra" : "Založit první tým"}
           </button>
         )}
         <button className="btn tap wide ch-mobile-link" onClick={() => navigate("/m/cornhole/mobil")}>
-          <Sprite name="cornhole" size={24} /> Hra v mobilu
+          <Icon name="cornhole" size={24} /> Hra v mobilu
         </button>
       </div>
 
@@ -107,7 +107,7 @@ export function CornholeScreen() {
                       <li key={p.name}>
                         <span className="rank">{i + 1}.</span>
                         <span className="grow">{p.name}</span>
-                        {i === 0 && p.wins > 0 && <Sprite name="crown" size={20} />}
+                        {i === 0 && p.wins > 0 && <Icon name="crown" size={20} />}
                         <b>{p.wins}</b>
                         <span className="small muted">z {p.games} · {pct(p.wins, p.games)}</span>
                       </li>
@@ -134,7 +134,7 @@ export function CornholeScreen() {
               ))}
             </ul>
           )}
-          <button className="btn tap wide" onClick={() => setSheet({ kind: "team", team: null })}><Sprite name="i-plus" size={20} /> Nový tým</button>
+          <button className="btn tap wide" onClick={() => setSheet({ kind: "team", team: null })}><Icon name="i-plus" size={20} /> Nový tým</button>
         </div>
       )}
 
@@ -188,7 +188,7 @@ export function CornholeScreen() {
 function Record({ icon, value, text, date, gold }: { icon?: "trophy" | "star"; value: string; text: string; date: string; gold?: boolean }) {
   return (
     <div className={`trophy${gold ? " gold" : ""}`}>
-      {icon && <Sprite name={icon} size={40} />}
+      {icon && <Icon name={icon} size={40} />}
       <b>{value}</b>
       <span>{text} ({formatDate(new Date(date), true)})</span>
     </div>

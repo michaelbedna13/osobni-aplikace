@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Burst } from "../../components/Burst";
 import { Columns } from "../../components/Charts";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { useToast } from "../../components/Toast";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
@@ -152,7 +152,7 @@ function TimerView({ timer, onPause, onResume, onFinish, onCancel }: {
             );
           })}
           <div className="ring-center">
-            <Sprite name="meditace" size={96} anim={running ? "breathe" : undefined} />
+            <Icon name="meditace" size={96} anim={running ? "breathe" : undefined} />
             <span className="timer-time">{mm}:{ss}</span>
             <span className="timer-of">{timer.plannedSeconds === null ? "bez omezení" : `z ${formatDuration(timer.plannedSeconds)}`}</span>
           </div>
@@ -189,7 +189,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
       <div className="band">
         <Topbar title="Meditace" />
         <div className="hero">
-          <span key={celebrate} className={`sprite-tile ${celebrate ? "anim-jump" : ""}`}><Sprite name="meditace" size={96} /></span>
+          <span key={celebrate} className={`icon-slot ${celebrate ? "anim-jump" : ""}`}><Icon name="meditace" size={96} /></span>
           <Burst trigger={celebrate} colors={["#FFFFFF", MODULE.deep, "#FEE761"]} />
           <span className="hero-num">{stats.weekDays}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
           <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : `${plural(stats.weekDays, DNI)} s meditací tento týden`}</span>
@@ -202,7 +202,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
           ))}
         </div>
         <button className="btn-hero" onClick={() => onStart(minutes)}>
-          <Sprite name="i-play" size={22} /> Začít
+          <Icon name="i-play" size={22} /> Začít
         </button>
         <button className="link sound-link" onClick={() => setSoundsOpen(true)}>
           Zvuky: {SOUND_NAMES[prefs.medStart]} · {SOUND_NAMES[prefs.medEnd]}{prefs.medInterval ? ` · zvonek po ${prefs.medInterval} min` : ""}
@@ -231,7 +231,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
                 return (
                   <div key={d} className="week-block">
                     <i className={v === null ? "future" : v > 0 ? "done" : undefined}>
-                      {v ? <Sprite name="check" size={28} tone="meditace" /> : null}
+                      {v ? <Icon name="check" size={20} /> : null}
                     </i>
                     <span className={i === stats.todayIndex ? "today" : undefined}>{d}</span>
                     <span className="sr-only">{v === null ? "ještě nebylo" : v > 0 ? `${v} min` : "bez meditace"}</span>
@@ -240,7 +240,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
               })}
             </div>
             <p className="goal-line">
-              {stats.weekStreak > 0 && <Sprite name="flame" size={24} tone="trenink" />}
+              {stats.weekStreak > 0 && <Icon name="flame" size={24} tone="trenink" />}
               {goalDone ? "Splněno! " : `Ještě ${goal - stats.weekDays} ${plural(goal - stats.weekDays, DNI)} a máš to. `}
               {stats.weekStreak > 0 && `Série ${stats.weekStreak} ${plural(stats.weekStreak, ["týden", "týdny", "týdnů"])}.`}
             </p>
@@ -272,13 +272,13 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
               <div className="trophies">
                 {stats.longest && (
                   <div className="trophy gold">
-                    <Sprite name="trophy" size={40} />
+                    <Icon name="trophy" size={40} />
                     <b>{formatDuration(stats.longest.duration_s)}</b>
                     <span>nejdelší ({formatDate(new Date(stats.longest.started_at), true)})</span>
                   </div>
                 )}
                 <div className="trophy">
-                  <Sprite name="flame" size={40} tone="trenink" />
+                  <Icon name="flame" size={40} tone="trenink" />
                   <b>{stats.weekStreak}</b>
                   <span>{plural(stats.weekStreak, ["týden", "týdny", "týdnů"])} v řadě se splněným cílem</span>
                 </div>
@@ -316,7 +316,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
                   {w.items.map((m) => (
                     <li key={m.id}>
                       <button className="list-btn" onClick={() => setEditing(m)}>
-                        <Sprite name="meditace" size={24} />
+                        <Icon name="meditace" size={24} />
                         <span className="grow">{relativeTime(new Date(m.started_at))}{m.note ? ` – ${m.note}` : ""}</span>
                         <b>{formatDuration(m.duration_s)}</b>
                       </button>

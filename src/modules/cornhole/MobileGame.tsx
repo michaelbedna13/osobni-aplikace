@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerE
 import { useNavigate } from "react-router-dom";
 import { Burst } from "../../components/Burst";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { playTone, unlockAudio } from "../../lib/sound";
@@ -87,7 +87,7 @@ function Setup({ onStart }: { onStart: (s: MobileSetup) => void }) {
         {count === 2 && <span className="ch-vs" aria-hidden="true">vs</span>}
       </div>
       {count < MAX_PLAYERS && (
-        <button className="btn tap wide" onClick={addPlayer}><Sprite name="i-plus" size={20} /> Přidat hráče</button>
+        <button className="btn tap wide" onClick={addPlayer}><Icon name="i-plus" size={20} /> Přidat hráče</button>
       )}
       {wins.some((w) => w > 0) && (
         <p className="ch-h2h">

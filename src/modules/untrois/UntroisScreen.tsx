@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { formatDate, plural } from "../../lib/format";
@@ -64,7 +64,7 @@ export function UntroisScreen() {
       <div className="band">
         <Topbar title="13 – Untrois" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="untrois" size={96} /></span>
+          <span className="icon-slot"><Icon name="untrois" size={96} /></span>
           <span className="hero-num">{ideas.length}</span>
           <span className="hero-cap">{plural(ideas.length, NAPADU)} na nástěnce</span>
           <p className="hero-line">
@@ -72,7 +72,7 @@ export function UntroisScreen() {
           </p>
         </div>
         <button className="btn-hero" onClick={() => setSheet({ note: null, kind: tab === "vyznamy" ? "vyznam" : "napad" })}>
-          <Sprite name="i-plus" size={24} /> {tab === "vyznamy" ? "Přidat význam" : "Přidat na nástěnku"}
+          <Icon name="i-plus" size={24} /> {tab === "vyznamy" ? "Přidat význam" : "Přidat na nástěnku"}
         </button>
       </div>
 
@@ -142,7 +142,7 @@ function BoardTile({ note, src, onOpen }: { note: UntroisNote; src: string | nul
         {note.body && <span className="idea-body">{note.body}</span>}
         {note.url && <span className="board-site">{note.site ?? domainOf(note.url)}</span>}
       </span>
-      {note.starred && <span className="idea-star"><Sprite name="star" size={20} /></span>}
+      {note.starred && <span className="idea-star"><Icon name="star" size={20} /></span>}
     </button>
   );
 }
@@ -227,7 +227,7 @@ function NoteSheet({ note, kind, src, onClose }: { note: UntroisNote | null; kin
           {photo && preview && <img className="board-preview" src={preview} alt="" />}
           <div className="inline-form">
             <label className={`btn tap file-btn grow${busy === "upload" ? " busy" : ""}`}>
-              <Sprite name="i-up" size={20} /> {busy === "upload" ? "Nahrávám…" : photo ? "Jiná fotka" : "Přidat fotku"}
+              <Icon name="i-up" size={20} /> {busy === "upload" ? "Nahrávám…" : photo ? "Jiná fotka" : "Přidat fotku"}
               <input type="file" accept="image/*" disabled={!!busy} onChange={(e) => void pick(e.target.files?.[0])} />
             </label>
             {photo && <button type="button" className="btn tap" onClick={() => { setPhoto(null); setPreview(null); }}>Odebrat</button>}

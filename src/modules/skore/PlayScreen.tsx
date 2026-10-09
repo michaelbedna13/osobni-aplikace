@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Burst } from "../../components/Burst";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { useActiveDarts, type ActiveDarts } from "./active";
@@ -139,7 +139,7 @@ export function PlayScreen() {
           )}
 
           <div className="sc-actions">
-            <button className="btn tap" disabled={!turns.length && !pending.length} onClick={undo}><Sprite name="i-back" size={20} /> {pending.length ? "Vrátit šipku" : "Vrátit nához"}</button>
+            <button className="btn tap" disabled={!turns.length && !pending.length} onClick={undo}><Icon name="i-back" size={20} /> {pending.length ? "Vrátit šipku" : "Vrátit nához"}</button>
           </div>
         </div>
       )}

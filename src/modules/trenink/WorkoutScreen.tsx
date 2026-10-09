@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Burst } from "../../components/Burst";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { formatNumber, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
@@ -96,8 +96,8 @@ export function WorkoutScreen() {
         );
       })}
 
-      <button className="btn tap wide" onClick={() => setPicking(true)}><Sprite name="i-plus" size={20} /> Přidat cvik</button>
-      <button className="btn-hero" onClick={finish}><Sprite name="check" size={32} tone="trenink" /> Dokončit trénink</button>
+      <button className="btn tap wide" onClick={() => setPicking(true)}><Icon name="i-plus" size={20} /> Přidat cvik</button>
+      <button className="btn-hero" onClick={finish}><Icon name="check" size={32} /> Dokončit trénink</button>
       <button className="link timer-cancel" onClick={() => {
         if (window.confirm("Zrušit trénink bez uložení?")) { clear(); navigate("/m/trenink", { replace: true }); }
       }}>Zrušit bez uložení</button>
@@ -164,8 +164,8 @@ function ExerciseCard({ exercise, sets, last, isFirst, isLast, onChange, onToggl
           <p className="small muted">{last.length ? `Minule: ${last.map(formatSet).join(", ")}` : "Poprvé – ať to stojí za to."}</p>
         </div>
         <div className="wx-tools">
-          <button className="icon-btn" aria-label="Posunout nahoru" disabled={isFirst} onClick={() => onMove(-1)}><Sprite name="i-up" size={16} /></button>
-          <button className="icon-btn" aria-label="Posunout dolů" disabled={isLast} onClick={() => onMove(1)}><Sprite name="i-down" size={16} /></button>
+          <button className="icon-btn" aria-label="Posunout nahoru" disabled={isFirst} onClick={() => onMove(-1)}><Icon name="i-up" size={16} /></button>
+          <button className="icon-btn" aria-label="Posunout dolů" disabled={isLast} onClick={() => onMove(1)}><Icon name="i-down" size={16} /></button>
           <button className="icon-btn" aria-label="Odebrat cvik" onClick={onRemove}>×</button>
         </div>
       </div>
@@ -183,7 +183,7 @@ function ExerciseCard({ exercise, sets, last, isFirst, isLast, onChange, onToggl
             ? <NumInput label={`Série ${i + 1}, opakování`} value={s.reps} onChange={(v) => onChange(i, { reps: v })} />
             : <NumInput label={`Série ${i + 1}, sekund`} value={s.seconds} onChange={(v) => onChange(i, { seconds: v })} />}
           <button className={`wx-check${s.done ? " on" : ""}`} aria-pressed={s.done} aria-label={`Série ${i + 1} hotová`} onClick={() => onToggle(i)}>
-            {s.done ? <Sprite name="check" size={24} tone="meditace" /> : null}
+            {s.done ? <Icon name="check" size={24} /> : null}
           </button>
         </div>
       ))}
@@ -227,7 +227,7 @@ function SummaryView({ summary }: { summary: Summary }) {
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="hero summary-hero">
-        <span className="sprite-tile anim-jump"><Sprite name="trenink" size={96} /></span>
+        <span className="icon-slot anim-jump"><Icon name="trenink" size={96} /></span>
         <Burst trigger={1} text={records.length ? "Rekord!" : "Hotovo!"} />
         <span className="hero-num">{minutes}</span>
         <span className="hero-cap">{plural(minutes, ["minuta", "minuty", "minut"])} makačky</span>
@@ -242,7 +242,7 @@ function SummaryView({ summary }: { summary: Summary }) {
         <div className="panel" style={{ marginTop: 14 }}>
           <h3>Nové rekordy</h3>
           <ul className="plan">
-            {records.map((r) => <li key={r.name}><Sprite name="trophy" size={24} />{r.name}: {r.text}</li>)}
+            {records.map((r) => <li key={r.name}><Icon name="trophy" size={24} />{r.name}: {r.text}</li>)}
           </ul>
         </div>
       )}

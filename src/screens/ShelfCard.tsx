@@ -1,7 +1,7 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Burst } from "../components/Burst";
-import { Sprite } from "../components/Sprite";
+import { Icon } from "../components/Icon";
 import { backgroundOf } from "../lib/backgrounds";
 import { plural } from "../lib/format";
 import { MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
@@ -44,8 +44,8 @@ function Card({ moduleKey, num, sub, quick, jump = 0 }: CardProps) {
     <div className={`fav tap${m.ready ? "" : " locked"}`} style={{ "--accent": m.color, "--bg": backgroundOf(moduleKey) } as CSSProperties}>
       <Link to={`/m/${moduleKey}`} className="fav-link" aria-label={`${m.name}: ${num}, ${sub}`} />
       <div className="fav-top">
-        <span key={jump} className={`sprite-tile${jump ? " anim-jump" : ""}`}>
-          <Sprite name={moduleKey} size={44} />
+        <span key={jump} className={`icon-slot${jump ? " anim-jump" : ""}`}>
+          <Icon name={moduleKey} size={44} />
         </span>
         {quick && (
           <button className="fav-quick" aria-label={quick.label} onClick={quick.run}>
@@ -53,7 +53,7 @@ function Card({ moduleKey, num, sub, quick, jump = 0 }: CardProps) {
             <Burst trigger={jump} />
           </button>
         )}
-        {!m.ready && <Sprite name="lock" size={24} label="Zamčeno" />}
+        {!m.ready && <Icon name="lock" size={24} label="Zamčeno" />}
       </div>
       <span className="fav-name">{m.name}</span>
       <span className="fav-num">{num}</span>
@@ -89,7 +89,7 @@ function HlaskomatCard() {
       moduleKey="hlaskomat"
       num={String(quotes.length)}
       sub={`${plural(quotes.length, ["hláška", "hlášky", "hlášek"])}, měsíc ${countThisMonth(quotes)}`}
-      quick={{ label: "Zapsat hlášku", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/hlaskomat?nova=1") }}
+      quick={{ label: "Zapsat hlášku", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/hlaskomat?nova=1") }}
     />
   );
 }
@@ -105,7 +105,7 @@ function MeditaceCard() {
       moduleKey="meditace"
       num={`${stats.weekDays}/${goal}`}
       sub={stats.weekDays >= goal ? "Cíl splněný!" : "dní tento týden"}
-      quick={{ label: "Začít meditaci", text: <Sprite name="i-play" size={20} />, run: () => { unlockAudio(); navigate("/m/meditace?start=1"); } }}
+      quick={{ label: "Začít meditaci", text: <Icon name="i-play" size={20} />, run: () => { unlockAudio(); navigate("/m/meditace?start=1"); } }}
     />
   );
 }
@@ -119,7 +119,7 @@ function VdecnostCard() {
       moduleKey="vdecnost"
       num={String(stats.today.length)}
       sub={`${plural(stats.today.length, ["věc", "věci", "věcí"])} dnes${stats.streak ? `, série ${stats.streak}` : ""}`}
-      quick={{ label: "Zapsat vděčnost", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/vdecnost?nova=1") }}
+      quick={{ label: "Zapsat vděčnost", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/vdecnost?nova=1") }}
     />
   );
 }
@@ -133,7 +133,7 @@ function LideCard() {
       moduleKey="lide"
       num={next ? (next.days === 0 ? "Dnes" : `${next.days} d`) : String(people.length)}
       sub={next ? `${next.person.name}, ${next.kind === "narozeniny" ? "narozeniny" : "svátek"}` : "lidí, přidej narozeniny"}
-      quick={{ label: "Přidat nápad na dárek", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/lide?napad=1") }}
+      quick={{ label: "Přidat nápad na dárek", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/lide?napad=1") }}
     />
   );
 }
@@ -150,7 +150,7 @@ function TreninkCard() {
       moduleKey="trenink"
       num={`${stats.weekCount}/${goal}`}
       sub={active ? "trénink běží" : stats.weekCount >= goal ? "Cíl splněný!" : "tento týden"}
-      quick={{ label: active ? "Pokračovat v tréninku" : "Začít trénink", text: <Sprite name="i-play" size={20} />, run: () => { unlockAudio(); navigate(active ? "/m/trenink/trenink" : "/m/trenink?start=1"); } }}
+      quick={{ label: active ? "Pokračovat v tréninku" : "Začít trénink", text: <Icon name="i-play" size={20} />, run: () => { unlockAudio(); navigate(active ? "/m/trenink/trenink" : "/m/trenink?start=1"); } }}
     />
   );
 }
@@ -166,7 +166,7 @@ function CornholeCard() {
       moduleKey="cornhole"
       num={String(stats.games)}
       sub={active ? "hra běží" : leader?.wins ? `${plural(stats.games, ["hra", "hry", "her"])}, vede ${leader.name}` : plural(stats.games, ["hra", "hry", "her"])}
-      quick={{ label: active ? "Pokračovat ve hře" : "Nová hra", text: <Sprite name="i-play" size={20} />, run: () => navigate(active ? "/m/cornhole/hra" : "/m/cornhole?hra=1") }}
+      quick={{ label: active ? "Pokračovat ve hře" : "Nová hra", text: <Icon name="i-play" size={20} />, run: () => navigate(active ? "/m/cornhole/hra" : "/m/cornhole?hra=1") }}
     />
   );
 }
@@ -182,7 +182,7 @@ function SkoreCard() {
       moduleKey="skore"
       num={String(stats.games)}
       sub={active ? "hra běží" : leader?.wins ? `${plural(stats.games, ["hra", "hry", "her"])}, vede ${leader.name}` : plural(stats.games, ["hra", "hry", "her"])}
-      quick={{ label: active ? "Pokračovat ve hře" : "Nová hra", text: <Sprite name="i-play" size={20} />, run: () => navigate(active ? "/m/skore/hra" : "/m/skore?nova=1") }}
+      quick={{ label: active ? "Pokračovat ve hře" : "Nová hra", text: <Icon name="i-play" size={20} />, run: () => navigate(active ? "/m/skore/hra" : "/m/skore?nova=1") }}
     />
   );
 }
@@ -196,7 +196,7 @@ function SachyCard() {
       moduleKey="sachy"
       num={String(history.length)}
       sub={game ? "partie běží" : plural(history.length, ["partie", "partie", "partií"])}
-      quick={{ label: game ? "Pokračovat v partii" : "Nová partie", text: <Sprite name="i-play" size={20} />, run: () => navigate(game ? "/m/sachy/hra" : "/m/sachy?nova=1") }}
+      quick={{ label: game ? "Pokračovat v partii" : "Nová partie", text: <Icon name="i-play" size={20} />, run: () => navigate(game ? "/m/sachy/hra" : "/m/sachy?nova=1") }}
     />
   );
 }
@@ -210,7 +210,7 @@ function OdkazyCard() {
       moduleKey="odkazy"
       num={String(later)}
       sub={`na později, celkem ${links.length}`}
-      quick={{ label: "Uložit odkaz", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/odkazy?nova=1") }}
+      quick={{ label: "Uložit odkaz", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/odkazy?nova=1") }}
     />
   );
 }
@@ -224,7 +224,7 @@ function FilmyCard() {
       moduleKey="filmy"
       num={String(stats.wanted)}
       sub={stats.inProgress ? `chci, ${stats.inProgress} rozkoukáno` : "na seznamu chci"}
-      quick={{ label: "Přidat film nebo knihu", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/filmy?nova=1") }}
+      quick={{ label: "Přidat film nebo knihu", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/filmy?nova=1") }}
     />
   );
 }
@@ -238,7 +238,7 @@ function WishlistCard() {
       moduleKey="wishlist"
       num={String(stats.open)}
       sub={`přání za ${formatKc(stats.openTotal)}`}
-      quick={{ label: "Přidat přání", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/wishlist?nova=1") }}
+      quick={{ label: "Přidat přání", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/wishlist?nova=1") }}
     />
   );
 }
@@ -252,7 +252,7 @@ function MistaCard() {
       moduleKey="mista"
       num={String(wanted)}
       sub={`chci navštívit, ${places.length - wanted} navštíveno`}
-      quick={{ label: "Přidat místo", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/mista?nova=1") }}
+      quick={{ label: "Přidat místo", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/mista?nova=1") }}
     />
   );
 }
@@ -273,7 +273,7 @@ function FinanceCard() {
       moduleKey="finance"
       num={`${Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}`}
       sub={next && next.d <= 7 ? `Kč/měs, ${next.name} ${next.d === 0 ? "dnes" : `za ${next.d} d`}` : "Kč měsíčně pravidelně"}
-      quick={{ label: "Přidat výdaj", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/finance?nova=1") }}
+      quick={{ label: "Přidat výdaj", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/finance?nova=1") }}
     />
   );
 }
@@ -288,7 +288,7 @@ function DechCard() {
       moduleKey="dech"
       num={String(stats.weekMinutes)}
       sub={`min tento týden${stats.bestHold ? `, rekord ${Math.floor(stats.bestHold / 60)}:${String(stats.bestHold % 60).padStart(2, "0")}` : ""}`}
-      quick={{ label: "Krabicové dýchání", text: <Sprite name="i-play" size={20} />, run: () => { unlockAudio(); navigate("/m/dech?cviceni=krabice"); } }}
+      quick={{ label: "Krabicové dýchání", text: <Icon name="i-play" size={20} />, run: () => { unlockAudio(); navigate("/m/dech?cviceni=krabice"); } }}
     />
   );
 }
@@ -303,7 +303,7 @@ function UntroisCard() {
       moduleKey="untrois"
       num={String(ideas)}
       sub={`nápadů · pátek 13. ${d === 0 ? "dnes!" : `za ${d} d`}`}
-      quick={{ label: "Zapsat nápad", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/untrois?nova=1") }}
+      quick={{ label: "Zapsat nápad", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/untrois?nova=1") }}
     />
   );
 }
@@ -317,7 +317,7 @@ function NakupCard() {
       moduleKey="nakup"
       num={String(toBuy.length)}
       sub={toBuy.length ? toBuy.slice(0, 3).map((i) => i.name).join(", ") : "seznam je prázdný"}
-      quick={{ label: "Přidat na nákup", text: <Sprite name="i-plus" size={20} />, run: () => navigate("/m/nakup?nova=1") }}
+      quick={{ label: "Přidat na nákup", text: <Icon name="i-plus" size={20} />, run: () => navigate("/m/nakup?nova=1") }}
     />
   );
 }

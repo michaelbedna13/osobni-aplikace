@@ -1,7 +1,7 @@
 // Počasí z Open-Meteo (zdarma, bez klíče). Pro střední Evropu vybírá nejlepší model sám
 // („best_match“ = DWD ICON-D2 2 km / ICON-EU, dál ECMWF IFS).
 import { useQuery } from "@tanstack/react-query";
-import type { SpriteName } from "./sprites";
+import type { IconName } from "./icons";
 
 export interface Place { lat: number; lng: number; name: string }
 
@@ -17,7 +17,7 @@ export interface Weather {
 }
 
 /** WMO kód počasí → popis a ikona. */
-export function describe(code: number, isDay = true): { text: string; icon: SpriteName } {
+export function describe(code: number, isDay = true): { text: string; icon: IconName } {
   if (code === 0) return { text: "Jasno", icon: isDay ? "w-sun" : "w-moon" };
   if (code <= 2) return { text: code === 1 ? "Skoro jasno" : "Polojasno", icon: isDay ? "w-partly" : "w-moon" };
   if (code === 3) return { text: "Zataženo", icon: "w-cloud" };

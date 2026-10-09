@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { Sprite } from "../components/Sprite";
+import { Icon } from "../components/Icon";
 import { MODULES } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
 
@@ -18,10 +18,10 @@ export function Modules() {
             style={{ "--accent": m.color } as CSSProperties}
             aria-label={m.ready ? m.name : `${m.name} (zamčeno)`}
           >
-            <span className="sprite-tile"><Sprite name={m.key} size={48} /></span>
+            <span className="icon-slot"><Icon name={m.key} size={48} /></span>
             {m.ready
-              ? pinned.includes(m.key) && <span className="pin"><Sprite name="star" size={20} label="Připnuto" /></span>
-              : <span className="lock"><Sprite name="lock" size={20} label="Zamčeno" /></span>}
+              ? pinned.includes(m.key) && <span className="pin"><Icon name="star" size={20} label="Připnuto" /></span>
+              : <span className="lock"><Icon name="lock" size={20} label="Zamčeno" /></span>}
             <b>{m.name}</b>
           </Link>
         ))}

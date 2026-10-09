@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { relativeTime } from "../../lib/dates";
@@ -68,15 +68,15 @@ export function SkoreScreen() {
       <div className="band">
         <Topbar title="Šipky" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="skore" size={96} /></span>
+          <span className="icon-slot"><Icon name="skore" size={96} /></span>
           <span className="hero-num">{stats.games}</span>
           <span className="hero-cap">{plural(stats.games, ODEHRANO)}</span>
           <p className="hero-line">{leader && leader.wins > 0 ? `Nejvíc výher: ${leader.name} (${leader.wins})` : "301, 501, double out a návrh, co hodit na zavření."}</p>
         </div>
         {active ? (
-          <button className="btn-hero" onClick={() => navigate("/m/skore/hra")}><Sprite name="i-play" size={24} /> Pokračovat ve hře</button>
+          <button className="btn-hero" onClick={() => navigate("/m/skore/hra")}><Icon name="i-play" size={24} /> Pokračovat ve hře</button>
         ) : (
-          <button className="btn-hero" onClick={() => setSheet(true)}><Sprite name="i-play" size={24} /> Nová hra</button>
+          <button className="btn-hero" onClick={() => setSheet(true)}><Icon name="i-play" size={24} /> Nová hra</button>
         )}
       </div>
 
@@ -98,7 +98,7 @@ export function SkoreScreen() {
                   <li key={p.name}>
                     <span className="rank">{i + 1}.</span>
                     <span className="grow">{p.name}<span className="occasion-kind">{p.average !== null ? `průměr ${String(p.average).replace(".", ",")}` : ""}{p.legs ? ` · ${p.legs} ${plural(p.legs, ["leg", "legy", "legů"])}` : ""}</span></span>
-                    {i === 0 && p.wins > 0 && <Sprite name="crown" size={20} />}
+                    {i === 0 && p.wins > 0 && <Icon name="crown" size={20} />}
                     <b>{p.wins}</b>
                     <span className="small muted">{plural(p.wins, VYHER)} z {p.games} · {pct(p.wins, p.games)}</span>
                   </li>
@@ -143,7 +143,7 @@ export function SkoreScreen() {
             <div className="trophies">
               {stats.records.map((r, i) => (
                 <div key={r.text} className={`trophy${i === 0 ? " gold" : ""}`}>
-                  <Sprite name={i === 0 ? "trophy" : "star"} size={40} />
+                  <Icon name={i === 0 ? "trophy" : "star"} size={40} />
                   <b>{r.value}</b>
                   <span>{r.text}{r.date ? ` (${formatDate(new Date(r.date), true)})` : ""}</span>
                 </div>

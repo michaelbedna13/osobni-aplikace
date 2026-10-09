@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { relativeTime } from "../../lib/dates";
 import { plural } from "../../lib/format";
@@ -64,15 +64,15 @@ export function SachyScreen() {
       <div className="band">
         <Topbar title="Šachy" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="sachy" size={96} /></span>
+          <span className="icon-slot"><Icon name="sachy" size={96} /></span>
           <span className="hero-num">{history.length}</span>
           <span className="hero-cap">{plural(history.length, PARTIE)}</span>
           <p className="hero-line">{last ? `Naposledy ${last.white} – ${last.black} ${score(last)}` : "Dva hráči, jeden telefon, šachové hodiny."}</p>
         </div>
         {game ? (
-          <button className="btn-hero" onClick={() => navigate("/m/sachy/hra")}><Sprite name="i-play" size={24} /> Pokračovat v partii</button>
+          <button className="btn-hero" onClick={() => navigate("/m/sachy/hra")}><Icon name="i-play" size={24} /> Pokračovat v partii</button>
         ) : (
-          <button className="btn-hero" onClick={() => setSheet(true)}><Sprite name="i-play" size={24} /> Nová partie</button>
+          <button className="btn-hero" onClick={() => setSheet(true)}><Icon name="i-play" size={24} /> Nová partie</button>
         )}
       </div>
 

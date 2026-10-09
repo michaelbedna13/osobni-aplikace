@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "r
 import { useSearchParams } from "react-router-dom";
 import { Burst } from "../../components/Burst";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { useToast } from "../../components/Toast";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
@@ -66,7 +66,7 @@ export function DechScreen() {
       <div className="band">
         <Topbar title="Dechová cvičení" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="dech" size={96} /></span>
+          <span className="icon-slot"><Icon name="dech" size={96} /></span>
           <Burst trigger={burst} />
           <span className="hero-num">{stats.weekMinutes}</span>
           <span className="hero-cap">{plural(stats.weekMinutes, ["minuta", "minuty", "minut"])} tento týden</span>
@@ -88,7 +88,7 @@ export function DechScreen() {
                   <b>{e.name}</b>
                   <span className="occasion-kind">{e.for}</span>
                 </span>
-                <Sprite name="i-play" size={18} />
+                <Icon name="i-play" size={18} />
               </button>
             </li>
           ))}
@@ -148,7 +148,7 @@ function DetailSheet({ exercise, onClose, onStart }: { exercise: BreathExercise;
           </button>
         ))}
       </div>
-      <button className="btn-hero" onClick={() => onStart(length)}><Sprite name="i-play" size={24} /> Začít</button>
+      <button className="btn-hero" onClick={() => onStart(length)}><Icon name="i-play" size={24} /> Začít</button>
     </Sheet>
   );
 }

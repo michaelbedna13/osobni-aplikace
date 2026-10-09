@@ -2,7 +2,7 @@ import { useMemo, useState, type CSSProperties } from "react";
 import { Burst } from "../../components/Burst";
 import { BlockStacks, Columns, HBars } from "../../components/Charts";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { useToast } from "../../components/Toast";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
@@ -57,14 +57,14 @@ export function PivaScreen() {
       <div className="band">
         <Topbar title="Piva" />
         <div className="hero" aria-live="polite">
-          <span key={jump} className={`sprite-tile ${jump ? "anim-jump" : ""}`}><Sprite name="piva" size={96} /></span>
+          <span key={jump} className={`icon-slot ${jump ? "anim-jump" : ""}`}><Icon name="piva" size={96} /></span>
           <Burst trigger={jump} text="+1" />
           <span className="hero-num">{stats.today}</span>
           <span className="hero-cap">{beerHeadline(stats.today)}</span>
           <p className="hero-line">{cheer ?? `Tento týden ${stats.week} ${plural(stats.week, PIV)}`}</p>
         </div>
         <button className="btn-hero" onClick={addOne}>
-          <Sprite name="i-plus" size={24} /> 1 pivo
+          <Icon name="i-plus" size={24} /> 1 pivo
         </button>
       </div>
 
@@ -125,7 +125,7 @@ export function PivaScreen() {
                   highlight={topDay}
                   color={MODULE.color}
                   digits={mode === "average" ? 1 : 0}
-                  badge={<Sprite name="crown" size={28} />}
+                  badge={<Icon name="crown" size={28} />}
                   label={`Piva podle dne v týdnu (${mode === "average" ? "průměr" : "celkem"})`}
                 />
               </div>
@@ -144,14 +144,14 @@ export function PivaScreen() {
               <div className="trophies">
                 {stats.bestDay && (
                   <div className="trophy gold">
-                    <Sprite name="trophy" size={40} />
+                    <Icon name="trophy" size={40} />
                     <b>{stats.bestDay.count}</b>
                     <span>nejvíc za den ({formatDate(stats.bestDay.date, true)})</span>
                   </div>
                 )}
                 {stats.bestWeek && (
                   <div className="trophy">
-                    <Sprite name="star" size={40} />
+                    <Icon name="star" size={40} />
                     <b>{stats.bestWeek.count}</b>
                     <span>nejvíc za týden (od {formatDate(stats.bestWeek.start)})</span>
                   </div>
@@ -184,7 +184,7 @@ export function PivaScreen() {
               {beers.slice(0, 30).map((b) => (
                 <li key={b.id}>
                   <button className="list-btn" onClick={() => setEditing(b)}>
-                    <Sprite name="piva" size={24} />
+                    <Icon name="piva" size={24} />
                     <span className="grow">{relativeTime(new Date(b.drunk_at))}</span>
                     <span className="small">Upravit</span>
                   </button>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { useToast } from "../../components/Toast";
 import { Topbar } from "../../components/Topbar";
 import { plural } from "../../lib/format";
@@ -66,10 +66,10 @@ export function NakupScreen() {
       <div className="band">
         <Topbar
           title="Nákup"
-          right={toBuy.length > 0 && <button className="block-btn" aria-label="Sdílet seznam" onClick={() => void share()}><Sprite name="i-share" size={20} /></button>}
+          right={toBuy.length > 0 && <button className="block-btn" aria-label="Sdílet seznam" onClick={() => void share()}><Icon name="i-share" size={20} /></button>}
         />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="nakup" size={96} /></span>
+          <span className="icon-slot"><Icon name="nakup" size={96} /></span>
           <span className="hero-num">{toBuy.length}</span>
           <span className="hero-cap">{plural(toBuy.length, VECI)} koupit</span>
           <p className="hero-line">{inCart.length ? `V košíku ${inCart.length}` : toBuy.length ? "Ťukni na položku, až ji dáš do košíku." : "Seznam je prázdný."}</p>
@@ -80,7 +80,7 @@ export function NakupScreen() {
             id="nk-input" ref={input} className="input" autoComplete="off" enterKeyHint="done" maxLength={150}
             placeholder="Co koupit? Třeba 2 mléka" value={text} onChange={(e) => setText(e.target.value)}
           />
-          <button className="btn-hero nk-add-btn" disabled={!text.trim()} aria-label="Přidat"><Sprite name="i-plus" size={24} /></button>
+          <button className="btn-hero nk-add-btn" disabled={!text.trim()} aria-label="Přidat"><Icon name="i-plus" size={24} /></button>
         </form>
         {sugg.length > 0 && (
           <div className="nk-sugg">
@@ -125,10 +125,10 @@ export function Row({ item, onToggle, onEdit }: { item: ShoppingItem; onToggle: 
   return (
     <li className={`nk-row${item.done ? " done" : ""}`}>
       <button className="nk-check" aria-pressed={item.done} onClick={() => onToggle(item)}>
-        <span className="nk-box" aria-hidden="true">{item.done && <Sprite name="check" size={20} />}</span>
+        <span className="nk-box" aria-hidden="true">{item.done && <Icon name="check" size={20} />}</span>
         <span className="grow"><b>{item.name}</b>{item.qty && <span className="nk-qty">{item.qty}</span>}</span>
       </button>
-      {onEdit && <button className="nk-edit" aria-label={`Upravit: ${item.name}`} onClick={() => onEdit(item)}><Sprite name="i-edit" size={20} /></button>}
+      {onEdit && <button className="nk-edit" aria-label={`Upravit: ${item.name}`} onClick={() => onEdit(item)}><Icon name="i-edit" size={20} /></button>}
     </li>
   );
 }

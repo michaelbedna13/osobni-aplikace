@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { formatDate, plural } from "../../lib/format";
@@ -24,9 +24,9 @@ function Stars({ value, onChange, size = 28 }: { value: number | null; onChange?
         const on = (value ?? 0) >= n;
         return onChange ? (
           <button key={n} type="button" role="radio" aria-checked={value === n} aria-label={`${n} z 5`} className={on ? "on" : ""} onClick={() => onChange(value === n ? null : n)}>
-            <Sprite name="star" size={size} />
+            <Icon name="star" size={size} />
           </button>
-        ) : <span key={n} className={on ? "on" : ""}><Sprite name="star" size={size} /></span>;
+        ) : <span key={n} className={on ? "on" : ""}><Icon name="star" size={size} /></span>;
       })}
     </span>
   );
@@ -59,14 +59,14 @@ export function FilmyScreen() {
       <div className="band">
         <Topbar title="Filmy a knihy" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="filmy" size={96} /></span>
+          <span className="icon-slot"><Icon name="filmy" size={96} /></span>
           <span className="hero-num">{stats.wanted}</span>
           <span className="hero-cap">na seznamu „chci“</span>
           <p className="hero-line">
             Letos: {stats.doneThisYear.film} {plural(stats.doneThisYear.film, ["film", "filmy", "filmů"])}, {stats.doneThisYear.serial} {plural(stats.doneThisYear.serial, ["seriál", "seriály", "seriálů"])}, {stats.doneThisYear.kniha} {plural(stats.doneThisYear.kniha, ["kniha", "knihy", "knih"])}
           </p>
         </div>
-        <button className="btn-hero" onClick={() => setSheet({ kind: "add" })}><Sprite name="i-plus" size={24} /> Přidat</button>
+        <button className="btn-hero" onClick={() => setSheet({ kind: "add" })}><Icon name="i-plus" size={24} /> Přidat</button>
       </div>
 
       {error && <p className="error">Nepodařilo se načíst seznam. Zkontroluj připojení.</p>}

@@ -53,7 +53,7 @@ button:disabled { cursor: default; opacity: 0.45; }
 ::selection { background: var(--lime); color: var(--on-accent); }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 input, textarea { caret-color: var(--ink); }
-.sprite { display: block; flex: none; image-rendering: pixelated; }
+.icon { display: block; flex: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .num { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
 
@@ -80,7 +80,8 @@ input, textarea { caret-color: var(--ink); }
    generuje scripts/generate-backgrounds.mjs, vybírá Layout podle adresy (--bg). Na téma modulu jen narážejí. */
 /* hlavička modulu: ikona, číslo a hlavní tlačítko stojí přímo na texturovaném pozadí */
 .band { padding-bottom: 4px; }
-.sprite-tile { display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 22%, var(--paper)); border-radius: var(--r-sm); }
+/* místo pro ikonu: bez podkladu, vystřižená silueta stojí přímo na pozadí */
+.icon-slot { display: grid; place-items: center; }
 .tabs { display: grid; gap: 4px; margin-top: 18px; padding: 5px; border-radius: var(--pill); background: var(--glass); }
 .tabs button {
   min-height: 42px; border: 0; border-radius: var(--pill); background: none; color: var(--ink);
@@ -174,7 +175,7 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
   background: var(--dark); border-radius: var(--pill); box-shadow: 0 12px 30px rgba(35, 33, 31, 0.22);
 }
 .tab { width: 64px; height: 48px; display: grid; place-items: center; border-radius: var(--pill); color: var(--on-ink); opacity: 0.8; text-decoration: none; }
-.tab .sprite { width: 24px; height: 24px; }
+.tab .icon { width: 24px; height: 24px; }
 .tab.on { background: var(--on-ink); color: var(--ink); opacity: 1; }
 .tab:active { transform: scale(0.96); }
 
@@ -238,7 +239,8 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
     var(--bg, none) 50% 62% / 300% auto,
     color-mix(in srgb, var(--accent) 40%, #FFFFFF);
 }
-.fav .sprite-tile { width: 56px; height: 56px; border-radius: 18px; background: var(--paper); }
+.fav .icon-slot { width: 56px; height: 56px; justify-items: start; align-items: start; }
+.fav .icon-slot .icon { width: 52px; height: 52px; }
 .fav-link { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
 .fav-top { display: flex; justify-content: space-between; align-items: flex-start; }
 .fav-quick {
@@ -252,21 +254,22 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .fav-num { font-family: var(--font-display); font-size: 40px; line-height: 1; }
 .fav-sub { font-size: 14px; line-height: 1.25; opacity: 0.75; }
 .fav.locked { background: var(--glass); }
-.fav.locked .sprite-tile, .tile.locked .sprite-tile { background: var(--surface-2); }
-.fav.locked .sprite-tile .sprite, .tile.locked .sprite-tile .sprite { opacity: 0.6; filter: grayscale(1); }
+.fav.locked .icon-slot .icon, .tile.locked .icon-slot .icon { opacity: 0.35; }
 .fav.locked .fav-num { color: var(--slate); font-size: 24px; }
 
 /* ---------- Moduly ---------- */
 .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
 .tile { position: relative; padding: 12px 6px 10px; border: var(--line); background: var(--paper); color: var(--ink); display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; text-decoration: none; }
-.tile .sprite-tile { width: 64px; height: 64px; }
+.tile .icon-slot { width: 64px; height: 64px; }
+.tile .icon-slot .icon { width: 48px; height: 48px; }
 .tile b { font-family: var(--font-ui); font-size: 16px; font-weight: 400; line-height: 1.05; }
 .tile.locked b { color: var(--slate); }
 .tile .pin, .tile .lock { position: absolute; top: 5px; right: 5px; }
 
 /* ---------- hlavička modulu (hero) ---------- */
 .hero { position: relative; display: grid; justify-items: center; text-align: center; margin-top: 16px; }
-.hero .sprite-tile { width: 128px; height: 128px; margin-bottom: 10px; border-radius: 40px; background: var(--paper); box-shadow: 0 14px 32px color-mix(in srgb, var(--accent) 45%, transparent); }
+.hero .icon-slot { width: 132px; height: 132px; margin-bottom: 6px; filter: drop-shadow(0 10px 14px rgba(35, 33, 31, 0.18)); }
+.hero .icon-slot .icon { width: 120px; height: 120px; }
 .hero-num { font-family: var(--font-display); font-size: 96px; line-height: 0.95; font-variant-numeric: tabular-nums; }
 .hero-cap { font-family: var(--font-ui); font-size: 18px; }
 .hero-line { margin-top: 4px; color: var(--slate); min-height: 24px; }
@@ -282,7 +285,7 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 /* trofeje */
 .trophies { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .trophy { background: var(--paper); border: var(--line); padding: 12px; display: grid; gap: 2px; align-content: start; }
-.trophy .sprite { margin-bottom: 4px; }
+.trophy .icon { margin-bottom: 4px; }
 .trophy b { font-family: var(--font-display); font-size: 32px; line-height: 1; }
 .trophy span { font-size: 14px; }
 .trophy.gold { box-shadow: inset 0 0 0 2px var(--lime); }
@@ -337,7 +340,6 @@ a.quote-card { display: grid; gap: 10px; padding: 16px; }
 .search { margin-top: 22px; }
 .star-btn { flex: none; width: 52px; height: 52px; background: none; border: 0; display: grid; place-items: center; color: var(--slate); }
 .star-btn.on { color: var(--gold); }
-.star-btn.on .sprite { filter: drop-shadow(0 0 0 var(--lime)); }
 .podium { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: end; gap: 6px; margin-top: 4px; }
 .podium-step { display: grid; justify-items: center; gap: 6px; text-align: center; }
 .podium-name { font-family: var(--font-ui); font-size: 16px; line-height: 1.1; word-break: break-word; }
@@ -384,7 +386,8 @@ a.quote-card { display: grid; gap: 10px; padding: 16px; }
 .login-cast { position: relative; display: flex; gap: 10px; align-items: flex-end; }
 .login-form { position: relative; }
 .locked-hero { display: grid; justify-items: center; gap: 10px; margin-top: 24px; text-align: center; }
-.locked-hero .sprite-tile { width: 128px; height: 128px; border-radius: 40px; }
+.locked-hero .icon-slot { width: 128px; height: 128px; }
+.locked-hero .icon { opacity: 0.35; }
 .plan { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .plan li { display: flex; gap: 10px; align-items: center; font-weight: 500; }
 
@@ -407,7 +410,7 @@ a.quote-card { display: grid; gap: 10px; padding: 16px; }
 .thanks-list li::before { content: ""; flex: none; width: 8px; height: 8px; margin-top: 7px; background: var(--accent); box-shadow: none; }
 .panel .thanks-list:last-child { margin-bottom: 0; }
 .thanks-item { align-items: flex-start; padding: 14px; line-height: 1.4; }
-.thanks-item .sprite { margin-top: 1px; }
+.thanks-item .icon { margin-top: 1px; }
 .mosaic { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 8px; }
 .mosaic-days { display: grid; grid-template-rows: repeat(7, 1fr); gap: 4px; align-items: center; font-family: var(--font-ui); font-size: 14px; color: var(--slate); }
 .mosaic-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
@@ -729,7 +732,7 @@ a.btn-hero { text-decoration: none; }
 .stars { display: inline-flex; gap: 2px; align-items: center; }
 .stars span, .stars button { display: inline-grid; place-items: center; background: none; border: 0; padding: 0; }
 .stars.editable button { width: 44px; height: 44px; }
-.stars span:not(.on) .sprite, .stars button:not(.on) .sprite { filter: grayscale(1); opacity: 0.35; }
+.stars span:not(.on) .icon, .stars button:not(.on) .icon { opacity: 0.25; }
 .media-head { display: flex; gap: 14px; align-items: flex-start; }
 .kind-tag { flex: none; min-width: 58px; padding: 2px 6px; text-align: center; font-family: var(--font-ui); font-size: 14px; background: var(--surface-2); color: var(--slate); }
 .kind-tag.kind-kniha { color: var(--lime-ink); }

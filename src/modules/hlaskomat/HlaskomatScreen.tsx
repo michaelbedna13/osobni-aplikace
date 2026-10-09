@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type CSSProperties, type FormEvent, type 
 import { useSearchParams } from "react-router-dom";
 import { Burst } from "../../components/Burst";
 import { Modal } from "../../components/Modal";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { useToast } from "../../components/Toast";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
@@ -54,7 +54,7 @@ export function HlaskomatScreen() {
       <Topbar title="Hláškomat" />
 
       <div className="hero">
-        <span key={jump} className={`sprite-tile ${jump ? "anim-jump" : ""}`}><Sprite name="hlaskomat" size={96} /></span>
+        <span key={jump} className={`icon-slot ${jump ? "anim-jump" : ""}`}><Icon name="hlaskomat" size={96} /></span>
         <Burst trigger={jump} />
         <span className="hero-num">{quotes.length}</span>
         <span className="hero-cap">{plural(quotes.length, HLASEK)} v archivu</span>
@@ -62,7 +62,7 @@ export function HlaskomatScreen() {
       </div>
 
       <button className="btn-hero" onClick={() => setEditing("new")}>
-        <Sprite name="i-plus" size={24} /> Zapsat hlášku
+        <Icon name="i-plus" size={24} /> Zapsat hlášku
       </button>
       </div>
 
@@ -88,7 +88,7 @@ export function HlaskomatScreen() {
       <div className="chips" role="group" aria-label="Filtr">
         <FilterChip on={filter.kind === "all"} onClick={() => setFilter({ kind: "all" })}>Vše</FilterChip>
         <FilterChip on={filter.kind === "starred"} onClick={() => setFilter({ kind: "starred" })}>
-          <Sprite name="i-star" size={16} /> Oblíbené
+          <Icon name="i-star" size={16} /> Oblíbené
         </FilterChip>
         {ranking.map(({ author, count }) => (
           <FilterChip key={author} on={filter.kind === "author" && filter.author === author} onClick={() => setFilter({ kind: "author", author })}>
@@ -120,7 +120,7 @@ export function HlaskomatScreen() {
                 aria-label={q.starred ? "Odebrat z oblíbených" : "Přidat do oblíbených"}
                 onClick={() => update.mutate({ ...q, starred: !q.starred })}
               >
-                <Sprite name="i-star" size={22} />
+                <Icon name="i-star" size={22} />
               </button>
             </li>
           ))}
@@ -137,7 +137,7 @@ export function HlaskomatScreen() {
             <div className="podium">
               {podium.map((r, i) => r ? (
                 <div key={r.author} className="podium-step">
-                  {i === 1 && <Sprite name="crown" size={40} />}
+                  {i === 1 && <Icon name="crown" size={40} />}
                   <span className="podium-name">{r.author}</span>
                   <span className="podium-block">{r.count}</span>
                 </div>
@@ -240,17 +240,17 @@ function QuoteModal({ quote, quotes, onClose, onSaved }: { quote: Quote | null; 
           </div>
           <div className="modal-actions">
             <button className={quote.starred ? "on" : ""} aria-pressed={quote.starred} onClick={() => update.mutate({ ...quote, starred: !quote.starred })}>
-              <Sprite name="i-star" size={20} />Top
+              <Icon name="i-star" size={20} />Top
             </button>
-            <button onClick={() => void copy()}><Sprite name="i-copy" size={20} />Kopie</button>
-            <button onClick={() => void share()}><Sprite name="i-share" size={20} />Sdílet</button>
-            <button onClick={() => setMode("edit")}><Sprite name="i-edit" size={20} />Upravit</button>
+            <button onClick={() => void copy()}><Icon name="i-copy" size={20} />Kopie</button>
+            <button onClick={() => void share()}><Icon name="i-share" size={20} />Sdílet</button>
+            <button onClick={() => setMode("edit")}><Icon name="i-edit" size={20} />Upravit</button>
             <button className="danger" onClick={() => {
               if (!window.confirm("Smazat hlášku?")) return;
               remove.mutate(quote.id);
               onSaved("Hláška smazána", false);
               onClose();
-            }}><Sprite name="i-trash" size={20} />Smazat</button>
+            }}><Icon name="i-trash" size={20} />Smazat</button>
           </div>
         </>
       ) : (

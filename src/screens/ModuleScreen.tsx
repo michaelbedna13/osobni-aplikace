@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { Navigate, useParams } from "react-router-dom";
-import { Sprite } from "../components/Sprite";
+import { Icon } from "../components/Icon";
 import { Topbar } from "../components/Topbar";
 import { MODULE_BY_KEY, isModuleKey, type ModuleKey } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
@@ -21,7 +21,7 @@ export function ModuleScreen({ moduleKey, showBack = true }: { moduleKey?: Modul
       <div className="band">
         <Topbar title={m.name} back={showBack ? "/moduly" : null} />
         <div className="locked-hero">
-          <span className="sprite-tile"><Sprite name={key} size={96} /></span>
+          <span className="icon-slot"><Icon name={key} size={96} /></span>
           <p className="hero-cap">Odemkne se ve fázi {m.phase}</p>
         </div>
       </div>
@@ -29,7 +29,7 @@ export function ModuleScreen({ moduleKey, showBack = true }: { moduleKey?: Modul
         <h2>Co tu bude</h2>
         <div className="panel">
           <ul className="plan">
-            {m.plan.map((item) => <li key={item}><Sprite name="sparkle" size={20} />{item}</li>)}
+            {m.plan.map((item) => <li key={item}><Icon name="sparkle" size={20} />{item}</li>)}
           </ul>
         </div>
       </section>

@@ -1,6 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { Sprite } from "../components/Sprite";
+import { Icon } from "../components/Icon";
 import { nameDay, publicHoliday } from "../lib/calendar";
 import { MODULE_BY_KEY } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
@@ -24,7 +24,7 @@ function Gratitude() {
     <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.vdecnost.color } as CSSProperties}>
       <div className="sec-head">
         <h2>Za co jsem dnes vděčný?</h2>
-        {stats.streak > 0 && <Link to="/m/vdecnost" className="streak"><Sprite name="flame" size={20} />{stats.streak}</Link>}
+        {stats.streak > 0 && <Link to="/m/vdecnost" className="streak"><Icon name="flame" size={20} />{stats.streak}</Link>}
       </div>
       <div className="panel thanks-panel">
         {stats.today.length > 0 && (

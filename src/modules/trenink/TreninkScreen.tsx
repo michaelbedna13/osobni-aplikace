@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Columns } from "../../components/Charts";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { relativeTime, WEEKDAYS_SHORT } from "../../lib/dates";
@@ -76,7 +76,7 @@ export function TreninkScreen() {
       <div className="band">
         <Topbar title="Trénink" />
         <div className="hero">
-          <span className="sprite-tile"><Sprite name="trenink" size={96} /></span>
+          <span className="icon-slot"><Icon name="trenink" size={96} /></span>
           <span className="hero-num">{stats.weekCount}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
           <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : `${plural(stats.weekCount, TRENINKU)} tento týden`}</span>
           <p className="hero-line">
@@ -84,9 +84,9 @@ export function TreninkScreen() {
           </p>
         </div>
         {active ? (
-          <button className="btn-hero" onClick={() => navigate("/m/trenink/trenink")}><Sprite name="i-play" size={24} /> Pokračovat v tréninku</button>
+          <button className="btn-hero" onClick={() => navigate("/m/trenink/trenink")}><Icon name="i-play" size={24} /> Pokračovat v tréninku</button>
         ) : (
-          <button className="btn-hero" onClick={() => setStarting(true)}><Sprite name="i-play" size={24} /> Začít trénink</button>
+          <button className="btn-hero" onClick={() => setStarting(true)}><Icon name="i-play" size={24} /> Začít trénink</button>
         )}
         <button className="link sound-link" onClick={() => setSoundsOpen(true)}>
           Zvuky: začátek {SOUND_NAMES[prefs.workoutStart].toLowerCase()} · pauza {SOUND_NAMES[prefs.restEnd].toLowerCase()} · konec {SOUND_NAMES[prefs.workoutEnd].toLowerCase()}
@@ -119,7 +119,7 @@ export function TreninkScreen() {
                           {last ? ` · naposledy ${relativeTime(new Date(last.started_at)).toLowerCase()}` : ""}
                         </span>
                       </span>
-                      <Sprite name="i-play" size={20} />
+                      <Icon name="i-play" size={20} />
                     </button>
                     <button className="idea-given" onClick={() => navigate(`/m/trenink/sablona/${t.id}`)}>Upravit</button>
                   </li>
@@ -127,7 +127,7 @@ export function TreninkScreen() {
               })}
             </ul>
           )}
-          <button className="btn tap wide" onClick={() => navigate("/m/trenink/sablona/nova")}><Sprite name="i-plus" size={20} /> Nový trénink</button>
+          <button className="btn tap wide" onClick={() => navigate("/m/trenink/sablona/nova")}><Icon name="i-plus" size={20} /> Nový trénink</button>
         </div>
       )}
 
@@ -143,7 +143,7 @@ export function TreninkScreen() {
                 const v = stats.thisWeek[i];
                 return (
                   <div key={d} className="week-block">
-                    <i className={v === null ? "future" : v > 0 ? "done" : undefined}>{v ? <Sprite name="check" size={28} tone="trenink" /> : null}</i>
+                    <i className={v === null ? "future" : v > 0 ? "done" : undefined}>{v ? <Icon name="check" size={20} /> : null}</i>
                     <span className={i === stats.todayIndex ? "today" : undefined}>{d}</span>
                     <span className="sr-only">{v === null ? "ještě nebylo" : v > 0 ? `${v}× trénink` : "bez tréninku"}</span>
                   </div>
@@ -151,7 +151,7 @@ export function TreninkScreen() {
               })}
             </div>
             <p className="goal-line">
-              {stats.weekStreak > 0 && <Sprite name="flame" size={24} tone="trenink" />}
+              {stats.weekStreak > 0 && <Icon name="flame" size={24} tone="trenink" />}
               {goalDone ? "Splněno! " : `Ještě ${goal - stats.weekCount}× a máš to. `}
               {stats.weekStreak > 0 && `Série ${stats.weekStreak} ${plural(stats.weekStreak, ["týden", "týdny", "týdnů"])}.`}
             </p>
@@ -236,7 +236,7 @@ export function TreninkScreen() {
                 <li key={t.id}>
                   <button className="list-btn" onClick={() => begin(t)}>
                     <span className="grow"><b>{t.name}</b><span className="occasion-kind">{t.items.map((it) => byId.get(it.exercise_id)?.name).filter(Boolean).join(", ")}</span></span>
-                    <Sprite name="i-play" size={20} />
+                    <Icon name="i-play" size={20} />
                   </button>
                 </li>
               ))}

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { addDays, startOfDay, WEEKDAYS_SHORT } from "../../lib/dates";
@@ -54,7 +54,7 @@ export function VdecnostScreen() {
       <div className="band">
         <Topbar title="Vděčnost" />
         <div className="hero" aria-live="polite">
-          <span key={jump} className={`sprite-tile${jump ? " anim-jump" : ""}`}><Sprite name="vdecnost" size={96} /></span>
+          <span key={jump} className={`icon-slot${jump ? " anim-jump" : ""}`}><Icon name="vdecnost" size={96} /></span>
           <span className="hero-num">{stats.streak}</span>
           <span className="hero-cap">{plural(stats.streak, DNI)} v řadě</span>
           <p className="hero-line">
@@ -89,7 +89,7 @@ export function VdecnostScreen() {
                 {day.items.map((g) => (
                   <li key={g.id}>
                     <button className="list-btn thanks-item" onClick={() => setEditing(g)} aria-label={`Upravit: ${g.text}`}>
-                      <Sprite name="heart" size={20} tone="trenink" />
+                      <Icon name="heart" size={20} tone="trenink" />
                       <span className="grow">{g.text}</span>
                     </button>
                   </li>

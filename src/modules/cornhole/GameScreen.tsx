@@ -1,7 +1,7 @@
 import { useState, type CSSProperties } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Burst } from "../../components/Burst";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
@@ -61,7 +61,7 @@ export function GameScreen() {
           <span className="bag big" style={{ background: active.teams[winner].color }} aria-hidden="true" />
           <h2>Vyhrává {active.teams[winner].name}!</h2>
           <p className="small muted">{scores[winner]} bodů po {active.rounds.length} {plural(active.rounds.length, ["kole", "kolech", "kolech"])}</p>
-          <button className="btn-hero" onClick={() => save(active, winner)}><Sprite name="trophy" size={32} /> Uložit hru</button>
+          <button className="btn-hero" onClick={() => save(active, winner)}><Icon name="trophy" size={32} /> Uložit hru</button>
           <button className="link" onClick={undo}>Vrátit poslední kolo</button>
         </div>
       )}
@@ -79,7 +79,7 @@ export function GameScreen() {
                   {t.players.length > 0 && <span className="occasion-kind">{t.players.join(", ")}</span>}
                 </div>
                 <div className="ch-score">
-                  {rank === 0 && scores[i] > 0 && <Sprite name="crown" size={24} />}
+                  {rank === 0 && scores[i] > 0 && <Icon name="crown" size={24} />}
                   <span>{scores[i]}</span>
                   {lastRound && lastRound[i] > 0 && <small>+{lastRound[i]}</small>}
                 </div>
@@ -100,7 +100,7 @@ export function GameScreen() {
       {winner === null && (
         <>
           <button className="btn-hero" onClick={record}>
-            <Sprite name="i-plus" size={24} /> Zapsat kolo
+            <Icon name="i-plus" size={24} /> Zapsat kolo
             <Burst trigger={burst} />
           </button>
           {active.mode === "rozdil" && <p className="small muted note-center">Rozdílem: boduje jen tým s nejvíc body v kole.</p>}
@@ -178,7 +178,7 @@ function Finished({ game }: { game: Game }) {
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="hero summary-hero">
-        <span className="sprite-tile anim-jump"><Sprite name={w ? "trophy" : "cornhole"} size={96} /></span>
+        <span className="icon-slot anim-jump"><Icon name={w ? "trophy" : "cornhole"} size={96} /></span>
         <span className="hero-num hero-name">{w ? w.name : "Konec"}</span>
         <span className="hero-cap">{w ? "vyhráli!" : "hra uložená bez vítěze"}</span>
         {w && w.players.length > 0 && <p className="hero-line">{w.players.join(", ")}</p>}

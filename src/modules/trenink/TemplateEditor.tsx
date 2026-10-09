@@ -1,6 +1,6 @@
 import { useState, type CSSProperties } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { Sprite } from "../../components/Sprite";
+import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { DEFAULT_REST_BETWEEN, estimateTemplate, formatMinutes, setSeconds, useAddTemplate, useDeleteTemplate, useExercises, useTemplates, useUpdateTemplate, useWorkouts, type TemplateItem, type WorkoutTemplate } from "./data";
@@ -62,8 +62,8 @@ function Editor({ initial }: { initial: WorkoutTemplate | null }) {
           {items.map((it, i) => (
             <li key={`${it.exercise_id}-${i}`} className="tpl-item">
               <div className="tpl-order">
-                <button className="icon-btn" aria-label="Posunout nahoru" disabled={i === 0} onClick={() => move(i, -1)}><Sprite name="i-up" size={16} /></button>
-                <button className="icon-btn" aria-label="Posunout dolů" disabled={i === items.length - 1} onClick={() => move(i, 1)}><Sprite name="i-down" size={16} /></button>
+                <button className="icon-btn" aria-label="Posunout nahoru" disabled={i === 0} onClick={() => move(i, -1)}><Icon name="i-up" size={16} /></button>
+                <button className="icon-btn" aria-label="Posunout dolů" disabled={i === items.length - 1} onClick={() => move(i, 1)}><Icon name="i-down" size={16} /></button>
               </div>
               <div className="grow">
                 <b>{byId.get(it.exercise_id)?.name ?? "Smazaný cvik"}</b>
@@ -85,7 +85,7 @@ function Editor({ initial }: { initial: WorkoutTemplate | null }) {
           ))}
         </ol>
       )}
-      <button className="btn tap wide" onClick={() => setPicking(true)}><Sprite name="i-plus" size={20} /> Přidat cvik</button>
+      <button className="btn tap wide" onClick={() => setPicking(true)}><Icon name="i-plus" size={20} /> Přidat cvik</button>
 
       {items.length > 1 && (
         <label className="tpl-rest between">
