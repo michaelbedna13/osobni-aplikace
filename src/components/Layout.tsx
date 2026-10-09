@@ -23,10 +23,14 @@ function useStatusBarColor(pathname: string) {
   }, [pathname]);
 }
 
+// jako v nativní appce: prohlížeč si pozici posunu nepamatuje, každá obrazovka začíná nahoře
+if (typeof history !== "undefined" && "scrollRestoration" in history) history.scrollRestoration = "manual";
+
 export function Layout() {
   const { pathname } = useLocation();
   useKeyboardAware();
   useStatusBarColor(pathname);
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return (
     <div className="app">
       <main className="app-main">
@@ -37,7 +41,9 @@ export function Layout() {
           {tabs.map((tab) => {
             const on = tab.match(pathname);
             return (
-              <NavLink key={tab.to} to={tab.to} className={`tab${on ? " on" : ""}`} aria-label={tab.label} aria-current={on ? "page" : undefined}>
+              <NavLink key={tab.to} to={tab.to} className={`tab${on ? " on" : ""}`} aria-label={tab.label} aria-current={on ? "page" : undefined}
+                // ťuknutí na lištu vždy nahoru, i když už na té obrazovce jsi
+                onClick={() => window.scrollTo({ top: 0, behavior: pathname === tab.to ? "smooth" : "auto" })}>
                 <Icon name={tab.icon} size={24} />
               </NavLink>
             );
