@@ -922,10 +922,13 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather-days li span:first-child { font-family: var(--font-pixel); font-size: 16px; text-transform: capitalize; }
 
 /* hláška dne: tmavý panel, text na celou šířku, patička autor | kontext pod linkou */
-.day-quote { display: block; margin-top: 18px; padding: 14px 16px 12px; background: var(--paper); border: var(--line); box-shadow: var(--shadow); color: var(--ink); text-decoration: none; }
+.day-quote { display: block; margin-top: 18px; padding: 14px 16px 12px;
+  /* zrnité limetkové světlo z pravého horního rohu, stejné zrno jako pozadí appky */
+  background: url("../assets/grain-strong.png") 0 0 / 128px 128px,
+    radial-gradient(90% 160% at 100% 0%, color-mix(in srgb, var(--lime) 42%, var(--paper)) 0%, color-mix(in srgb, var(--lime) 14%, var(--paper)) 45%, var(--paper) 80%); border: var(--line); box-shadow: var(--shadow); color: var(--ink); text-decoration: none; }
 .day-quote-text { font-family: var(--font-pixel); font-size: 24px; line-height: 1.15; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .day-quote-mark { color: var(--lime); }
-.day-quote-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 10px; padding-top: 8px; border-top: 2px solid var(--idle); font-size: 14px; color: var(--slate); }
+.day-quote-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 10px; padding-top: 8px; border-top: 2px solid color-mix(in srgb, var(--lime) 25%, var(--idle)); font-size: 14px; color: var(--slate); }
 .day-quote-meta b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--lime); }
 .day-quote-meta span { text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .debt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }

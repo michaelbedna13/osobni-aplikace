@@ -195,7 +195,7 @@ Paleta vychází z **Endesga 32**.
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
   v Profilu); nad pásem **počasí** (Open-Meteo, modely DWD ICON a ECMWF; poloha nebo město, uložené
   v prohlížeči; bez rámečku, jeden řádek pod hlavičkou: ikona, teplota, popis s min–max, déšť jen od 30 %, bez názvu města;
-  ťuknutí otevře okno „Počasí – město“ s pocitovou teplotou, větrem, 12 hodinami po 2 h, 3 dny a odkazem Změnit místo), pod ním **hláška dne** v tmavém panelu (`.day-quote`: text Jersey 24 px na celou šířku nejvýš na 4 řádky,
+  ťuknutí otevře okno „Počasí – město“ s pocitovou teplotou, větrem, 12 hodinami po 2 h, 3 dny a odkazem Změnit místo), pod ním **hláška dne** v tmavém panelu se zrnitým limetkovým světlem z pravého horního rohu (`.day-quote`: text Jersey 24 px na celou šířku nejvýš na 4 řádky,
   uvozovky „ “ v `lime` přímo v textu; pod 2px linkou `idle` patička: autor vlevo v `lime`, kontext vpravo `slate`;
   ťuknutí otevře Hláškomat); hned pod hlavičkou pás „Moje moduly“ (souhrn dne zrušen – stejná čísla jsou na kartách); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Dluhy** (dluží mně / dlužím já po lidech); **Na později** (jeden neotevřený odkaz denně).
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
