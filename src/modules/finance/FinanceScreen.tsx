@@ -371,7 +371,11 @@ function DebtSheet({ item, onClose }: { item: Debt | null; onClose: () => void }
   );
 }
 
-function GoalSheet({ item, onClose }: { item: SavingsGoal | null; onClose: () => void }) {
+function GoalSheet({ item: opened, onClose }: { item: SavingsGoal | null; onClose: () => void }) {
+  // vždy aktuální verze cíle ze seznamu – po vložení částky se hned ukáže nový stav
+  // a „Uložit změny“ nepřepíše naspořenou částku starou hodnotou z otevření okna
+  const { data: goals = [] } = savings.useList();
+  const item = opened ? goals.find((g) => g.id === opened.id) ?? opened : null;
   const [name, setName] = useState(item?.name ?? "");
   const [target, setTarget] = useState(show(item?.target));
   const [deadline, setDeadline] = useState(item?.deadline ?? "");
