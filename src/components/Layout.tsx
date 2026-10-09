@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useKeyboardAware } from "../lib/keyboard";
+import { MODULE_BY_KEY, isModuleKey } from "../lib/modules";
 import type { IconName } from "../lib/icons";
 import { Icon } from "./Icon";
 
@@ -10,9 +12,21 @@ const tabs: { to: string; label: string; icon: IconName; match: (path: string) =
   { to: "/profil", label: "Profil", icon: "i-user", match: (p) => p.startsWith("/profil") },
 ];
 
+/** Barva lišty s hodinami: v appce z plochy ji iPhone kreslí plnou barvou theme-color, tak ji ladíme
+ *  s horním okrajem pozadí obrazovky (barva modulu, jinak šalvěj). */
+const SAGE = "#A9C29A";
+function useStatusBarColor(pathname: string) {
+  useEffect(() => {
+    const key = pathname.match(/^\/m\/([a-z]+)/)?.[1];
+    const color = isModuleKey(key) ? MODULE_BY_KEY[key].color : SAGE;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", color);
+  }, [pathname]);
+}
+
 export function Layout() {
   const { pathname } = useLocation();
   useKeyboardAware();
+  useStatusBarColor(pathname);
   return (
     <div className="app">
       <main className="app-main">

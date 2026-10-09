@@ -70,10 +70,6 @@ input, textarea { caret-color: var(--ink); }
   color: var(--ink);
 }
 /* pevná vrstva pod obsahem: při posouvání stojí, obsah jede přes ni */
-/* v appce z plochy iOS někdy hlásí horní okraj 0, i když hodiny a baterku kreslí přes obsah */
-@media (display-mode: standalone) {
-  .screen { padding-top: calc(max(env(safe-area-inset-top), 50px) + 12px); }
-}
 .screen::before, .screen::after {
   content: ""; position: fixed; top: 0; bottom: 0; left: 50%; width: min(100vw, 520px); transform: translateX(-50%); pointer-events: none;
 }
@@ -81,7 +77,10 @@ input, textarea { caret-color: var(--ink); }
    stejný na všech obrazovkách, mění se jen barva (--accent, --deep) */
 .screen::before { z-index: -1; background: var(--grad); }
 .screen {
+  /* horní pruh v plné barvě: navazuje na lištu s hodinami (theme-color = --accent, nastavuje Layout), zrno a tmavší
+     roh se objeví až pod ním */
   --grad:
+    linear-gradient(180deg, var(--accent) 0, transparent 90px),
     url("../assets/tex/spray.svg") 0 0 / 180px 180px,
     radial-gradient(75% 45% at 100% 0%, color-mix(in srgb, var(--deep) 62%, var(--accent)) 0%, transparent 75%),
     radial-gradient(70% 40% at 0% 26%, color-mix(in srgb, var(--accent) 45%, #FFFFFF) 0%, transparent 72%),

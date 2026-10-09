@@ -20,7 +20,7 @@ export default defineConfig({
         short_name: "Untrois",
         lang: "cs",
         description: "Untrois – osobní appka: hlášky, piva, meditace, tréninky, lidé a další.",
-        theme_color: "#F4F3EE",
+        theme_color: "#A9C29A",
         background_color: "#F4F3EE",
         display: "standalone",
         start_url: base,
