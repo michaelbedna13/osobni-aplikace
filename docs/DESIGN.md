@@ -182,7 +182,7 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
   jemný přechod `ink-2` → `ink` se zrnem (`--dark`). Text na tmavém je `on-ink` `#FBFAF6`.
 - **Pozadí** `app-bg` `#F4F3EE` (teplý kámen), na počítači kolem appky `desk`. Vedlejší text `slate`, jemné
   plochy `surface-2` (pole formulářů), nečinné sloupce grafů `idle`, tenké linky `edge` (12 % `ink`).
-- **Karty** `glass`: bílá s 84 % krytím, bez obrysu – barva pozadí lehce prosvítá.
+- **Karty** `glass`: bílá s 95 % krytím, bez obrysu, s jemným stínem (`--card-shadow`), aby byly na světlém pozadí dobře vidět.
 - **Barva modulu = akcent (`--accent`)**: hlavní tlačítko, pozadí obrazovky a karty modulů na Dnes, stín pod ikonou v hlavičce, grafy, splněné dny, tečku u nadpisu sekce.
 - **Dnes, Moduly a Profil** mají neutrální kámen se šalvějovou mlhou (`sage-light`, `sand`, `stone-light`);
   hláška dne je šalvějová karta (`sage-card` → `sage-card-deep`).
@@ -239,15 +239,15 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
   v Profilu); **Nákup** (jen když je co koupit); **Brzy slaví** (oslavy na 7 dní); **„Za co jsem dnes vděčný?“**;
   **Dluhy**; **Na později** (jeden neotevřený odkaz denně).
 - Moduly: mřížka 3 × N, jen ikona a název; hvězdička = připnuto, zámek = zamčeno.
-- Stavový řádek iOS má tmavý text na světlém pruhu (`apple-mobile-web-app-status-bar-style: default`, `theme-color`
-  `app-bg`), obsah odsazuje `env(safe-area-inset-top)`. iOS si styl pamatuje z doby přidání na plochu – po změně je
-  potřeba appku z plochy odebrat a přidat znovu.
-- **Spodní lišta**: tmavá plovoucí pilulka uprostřed dole jen se třemi ikonami (Dnes, Moduly, Profil; popisky pro
-  čtečku obrazovky). Aktivní položka je světlé kolečko s tmavou ikonou; obrazovky modulů patří pod Moduly.
+- Stavový řádek iOS má tmavý text (`apple-mobile-web-app-status-bar-style: default`, `theme-color` `app-bg`).
+  V appce z plochy ale iOS kreslí hodiny přes obsah a přitom hlásí horní okraj 0, proto má `.screen` v režimu
+  `display-mode: standalone` horní odsazení aspoň 50 px. iOS si styl pamatuje z doby přidání na plochu.
+- **Spodní lišta**: plovoucí pilulka ze světlého skla (rozmazané pozadí prosvítá) uprostřed dole jen se třemi ikonami
+  (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní položka je tmavá pilulka se světlou ikonou; obrazovky modulů patří pod Moduly.
 
 ## Elevation & Depth
 
-- Karty jsou bez obrysu a bez stínu; od pozadí je odděluje bílá barva.
+- Karty jsou bez obrysu, s jemným dvojitým stínem (`--card-shadow`); stejný mají záložky, čipy a počasí.
 - **Měkký stín = dá se na to ťuknout** (`--shadow`), hlavní tlačítko a lišta mají výraznější tmavý stín.
   Po stisku se prvek lehce zmenší (`scale(0.98)`).
 - Okna mají velký měkký stín (`--shadow-big`) a pozadí za nimi ztmavené a rozmazané.
@@ -339,7 +339,7 @@ Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s odrážkami v akcentu
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
-- **Karta modulu v pásu** (`.fav`): pastelový přechod v barvě modulu se zrnem a jiskřením, ikona na bílé dlaždici, název, číslo v Anton, rychlá akce jako tmavé kolečko vpravo nahoře.
+- **Karta modulu v pásu** (`.fav`): výřez z pozadí modulu se zrnem a jiskřením, ikona přímo na kartě, název, číslo v Anton; rychlá akce je malá světlá skleněná pilulka vpravo nahoře (36 px), aby se nebila s ikonou.
 - **Záložky** (`Tabs`): bílá pilulka přes celou šířku, aktivní položka tmavá.
 - **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí; v hlavičce modulu 120 px s měkkým stínem.
 - **Okno s formulářem** (`Sheet` → `FormWindow`): uprostřed obrazovky, nadpis a křížek, drží se nad klávesnicí, pozadí se neposouvá; **potvrzení** (`useToast`, tmavá pilulka s limetkovou akcí „Vrátit“).
