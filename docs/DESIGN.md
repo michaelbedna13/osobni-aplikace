@@ -180,7 +180,6 @@ Paleta vychází z **Endesga 32**.
 
 - **Jersey 10** – nadpisy, čísla, tlačítka, popisky v grafech. Jasně odlišené číslice
   (žádná záměna 5/S, 2/Z), česká diakritika. Jeden řez; nikdy umělé ztučnění (`font-synthesis: none`).
-- **Tiny5** – jen bodové písmo LED tabule s hláškou dne (5 bodů vysoké, 1 bod = 1 dioda), licence OFL.
 - **Space Grotesk** – delší text (popisy, vedlejší řádky, data v seznamech, zapsaný text). Technický grotesk s rovnými tvary, ladí s pixelovým Jersey lépe než zaoblený Rubik.
 - Stupnice velikostí (jen tyto): 104 / 60 / 48 / 36 / 30 / 24 / 20 px pro Jersey 10,
   16 / 14 px pro Space Grotesk. Žádné nadpisky (eyebrow) nad nadpisy.
@@ -195,11 +194,11 @@ Paleta vychází z **Endesga 32**.
 - Dnes: datum, pod ním den v týdnu a **kdo má svátek** (jména limetkově, data z balíčku `namedays-cs`),
   případně státní svátek; pás „Moje moduly“ (posun do boku, karty 156 px, bez odkazu Upravit – úpravy jsou
   v Profilu); nad pásem **počasí** (Open-Meteo, modely DWD ICON a ECMWF; poloha nebo město, uložené
-  v prohlížeči; jeden řádek: ikona, teplota, popis, min/max a déšť, město vpravo; ťuknutí rozbalí 12 hodin po 2 h a 3 dny),
-  pod ním **hláška dne na LED tabuli** (oranžové diody v barvě `piva` na `desk`, rámeček `paper` se šroubky `idle`; text na začátku
-  chvilku postojí a pak jede po diodách doleva, krátký stojí uprostřed; při omezení pohybu stojí jako text; autor a kontext pod tabulí;
+  v prohlížeči; bez rámečku, jeden řádek pod hlavičkou: ikona, teplota, popis s min–max, déšť jen od 30 %, město vpravo;
+  ťuknutí rozbalí panel s pocitovou teplotou, větrem, 12 hodinami po 2 h a 3 dny), pod ním **hláška dne** jako citát (bez rámečku,
+  velká pixelová uvozovka „ v barvě `hlaskomat` vlevo, text Jersey 24 px nejvýš na 4 řádky, pod ním „— autor“ v barvě a kontext;
   ťuknutí otevře Hláškomat) a **souhrn dne** (5 dlaždic: piva, vděčnost, meditace, trénink, dech;
-  splněné s podkladem v barvě modulu); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Dluhy** (dluží mně / dlužím já po lidech); **Na později** (jeden neotevřený odkaz denně).
+  splněné s podkladem v barvě modulu, nesplněné jen s tlumeným obrysem `idle` bez výplně); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Dluhy** (dluží mně / dlužím já po lidech); **Na později** (jeden neotevřený odkaz denně).
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
 - Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
   pozadí s texturou běží až pod něj, obsah odsazuje `env(safe-area-inset-top)`. iOS si styl pamatuje z doby přidání

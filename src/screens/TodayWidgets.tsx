@@ -87,6 +87,7 @@ const hour = (d: Date) => d.toLocaleTimeString("cs-CZ", { hour: "numeric" });
 const weekday = (d: Date) => d.toLocaleDateString("cs-CZ", { weekday: "short" });
 const deg = (n: number) => `${Math.round(n)}°`;
 
+/** Počasí jako jeden řádek v hlavičce Dnes; ťuknutí rozbalí předpověď po hodinách a na další dny. */
 export function WeatherCard() {
   const [place, setPlace] = useState<Place | null>(() => loadPlace());
   const [picking, setPicking] = useState(false);
@@ -96,35 +97,35 @@ export function WeatherCard() {
 
   if (!place) {
     return (
-      <>
-        <button className="panel weather-empty" onClick={() => setPicking(true)}>
-          <Sprite name="w-partly" size={32} />
-          <span className="grow"><b>Zapnout počasí</b><span className="small muted">podle polohy nebo města</span></span>
+      <div className="weather">
+        <button className="link inline weather-empty" onClick={() => setPicking(true)}>
+          <Sprite name="w-partly" size={20} /> Zapnout počasí
         </button>
         {picking && <PlaceSheet onClose={() => setPicking(false)} onChoose={choose} />}
-      </>
+      </div>
     );
   }
 
   const d = w ? describe(w.code, w.isDay) : null;
   return (
-    <section className={`panel weather${open ? " open" : ""}`} aria-label="Počasí">
-      {isLoading && <p className="small muted">Načítám počasí…</p>}
-      {error && <p className="small muted">Počasí se teď nepodařilo načíst.</p>}
-      {w && d && (
-        <>
-          {/* jeden řádek; ťuknutí rozbalí předpověď po hodinách a na další dny */}
-          <button className="weather-now" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-            <Sprite name={d.icon} size={32} />
+    <section className="weather" aria-label="Počasí">
+      <div className="weather-row">
+        {isLoading && <span className="small muted">Načítám počasí…</span>}
+        {error && <span className="small muted">Počasí se nepodařilo načíst.</span>}
+        {w && d && (
+          <button className="weather-now" aria-expanded={open} aria-label={`${d.text}, ${deg(w.temp)}. Předpověď`} onClick={() => setOpen((o) => !o)}>
+            <Sprite name={d.icon} size={24} />
             <b className="weather-temp">{deg(w.temp)}</b>
             <span className="weather-desc">
-              <b>{d.text}</b>
-              <span>{deg(w.today.min)} / {deg(w.today.max)} · {w.today.rainChance ? `déšť ${w.today.rainChance} %` : "bez deště"}</span>
+              {d.text}, {deg(w.today.min)}–{deg(w.today.max)}{w.today.rainChance >= 30 ? `, déšť ${w.today.rainChance} %` : ""}
             </span>
           </button>
-          {open && (
-          <>
-          <p className="weather-extra">Pocitově {deg(w.feels)} · vítr {Math.round(w.wind)} km/h</p>
+        )}
+        <button className="link inline weather-place" onClick={() => setPicking(true)}>{place.name}</button>
+      </div>
+      {w && open && (
+        <div className="panel weather-more">
+          <p className="weather-extra">Pocitově {deg(w.feels)}, vítr {Math.round(w.wind)} km/h</p>
           <ul className="weather-hours" aria-label="Po hodinách">
             {w.hours.filter((_, i) => i % 2 === 0).slice(0, 6).map((h) => (
               <li key={h.time.toISOString()}>
@@ -144,11 +145,8 @@ export function WeatherCard() {
               </li>
             ))}
           </ul>
-          </>
-          )}
-        </>
+        </div>
       )}
-      <button className="link inline weather-place" onClick={() => setPicking(true)}>{place.name}</button>
       {picking && <PlaceSheet onClose={() => setPicking(false)} onChoose={choose} onRemove={() => { savePlace(null); setPlace(null); setPicking(false); }} />}
     </section>
   );
