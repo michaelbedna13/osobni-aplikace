@@ -169,7 +169,44 @@ const out = await page.evaluate((SPECS) => {
     g.closePath(); stroke ? g.stroke() : g.fill();
   }
 
-  const KINDS = { orbs, ink, frost, caustic, reeded, watercolor };
+  // stín kapradiny za mléčným sklem: stonek s lístky po obou stranách (reference: stín rostliny)
+  function fern(g, s) {
+    base(g, s.base);
+    const frond = (x, y, len, ang, bend, a, bl) => {
+      g.save(); g.filter = `blur(${bl}px)`; g.globalAlpha = a; g.fillStyle = s.ink; g.strokeStyle = s.ink;
+      g.translate(x, y); g.rotate(ang);
+      g.lineWidth = 4; g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(len * 0.5, bend, len, bend * 1.6); g.stroke();
+      for (let t = 0.06; t < 0.97; t += 0.055) {
+        const px = len * t, py = bend * (2 * t * (1 - t)) + bend * 1.6 * t * t, w = (1 - t) * 34 + 8;
+        for (const side of [-1, 1]) { g.save(); g.translate(px, py); g.rotate(side * 1.05 - 0.25); g.beginPath(); g.ellipse(w / 2, 0, w / 2, 4.5, 0, 0, Math.PI * 2); g.fill(); g.restore(); }
+      }
+      g.restore();
+    };
+    frond(-40, 900, 700, -0.9, -70, 0.7, 4);
+    frond(40, 1080, 720, -0.7, 60, 0.45, 10);
+    frond(540, 640, 560, -2.55, 50, 0.5, 7);
+    frond(520, 1080, 640, -2.15, -40, 0.65, 5);
+    frond(300, 1120, 420, -1.7, 30, 0.35, 14);
+    g.filter = "none";
+    const v = g.createLinearGradient(0, 0, 0, H * 0.5); v.addColorStop(0, "rgba(255,255,255,0.6)"); v.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = v; g.fillRect(0, 0, W, H);
+  }
+
+  // světlo prosvítající listím (komorebi): měkký stín koruny a teplé skvrny slunce
+  function dapple(g, s) {
+    base(g, s.base);
+    g.filter = "blur(18px)"; g.globalAlpha = 0.7; g.fillStyle = s.shade;
+    for (let i = 0; i < 90; i++) { const x = 60 + rnd() * 480, y = 300 + rnd() * 780; g.beginPath(); g.ellipse(x, y, 30 + rnd() * 60, 18 + rnd() * 30, rnd() * 3, 0, Math.PI * 2); g.fill(); }
+    g.globalAlpha = 1;
+    for (let i = 0; i < 70; i++) {
+      const x = rnd() * W, y = 320 + rnd() * 760, r = 6 + Math.pow(rnd(), 2) * 34;
+      g.filter = `blur(${2 + r / 5}px)`; orb(g, x, y, r, s.light, 0.75 + rnd() * 0.25);
+    }
+    g.filter = "blur(60px)"; orb(g, 80, 120, 260, s.light, 0.7);
+    g.filter = "none";
+    const v = g.createLinearGradient(0, 0, 0, H * 0.45); v.addColorStop(0, "rgba(255,255,255,0.5)"); v.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = v; g.fillRect(0, 0, W, H);
+  }
+
+  const KINDS = { orbs, ink, frost, caustic, reeded, watercolor, fern, dapple };
   const res = {};
   for (const [key, s] of Object.entries(SPECS)) {
     seed = 7 + key.length;
