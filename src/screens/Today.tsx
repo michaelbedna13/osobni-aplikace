@@ -103,7 +103,7 @@ function QuoteOfDay() {
   const quote = quoteOfDay(quotes);
   if (!quote) return null;
   return (
-    <Link to="/m/hlaskomat" className="day-quote" style={{ "--accent": MODULE_BY_KEY.hlaskomat.color } as CSSProperties}>
+    <Link to="/m/hlaskomat" className="day-quote">
       <p className="day-quote-text">{quote.text}</p>
       <p className="day-quote-meta">
         {quote.author && <b>{quote.author}</b>}

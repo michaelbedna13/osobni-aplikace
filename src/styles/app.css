@@ -923,10 +923,10 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 
 /* hláška dne: citát pod hlavičkou, autor jako podpis */
 .day-quote { position: relative; display: block; margin-top: 24px; padding-left: 34px; color: var(--ink); text-decoration: none; }
-.day-quote::before { content: "„"; position: absolute; left: 0; top: -30px; font-family: var(--font-pixel); font-size: 60px; line-height: 1; color: var(--accent); }
+.day-quote::before { content: "„"; position: absolute; left: 0; top: -30px; font-family: var(--font-pixel); font-size: 60px; line-height: 1; color: var(--lime); }
 .day-quote-text { font-family: var(--font-pixel); font-size: 24px; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .day-quote-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-top: 8px; font-size: 14px; color: var(--slate); }
-.day-quote-meta b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--accent); }
+.day-quote-meta b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--lime); }
 .day-quote-meta b::before { content: "— "; }
 .day-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 28px; }
 .sum-tile { display: grid; justify-items: center; gap: 2px; padding: 8px 2px; background: var(--paper); border: var(--line); color: var(--slate); text-decoration: none; }

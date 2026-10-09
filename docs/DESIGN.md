@@ -196,7 +196,7 @@ Paleta vychází z **Endesga 32**.
   v Profilu); nad pásem **počasí** (Open-Meteo, modely DWD ICON a ECMWF; poloha nebo město, uložené
   v prohlížeči; bez rámečku, jeden řádek pod hlavičkou: ikona, teplota, popis s min–max, déšť jen od 30 %, město vpravo;
   ťuknutí rozbalí panel s pocitovou teplotou, větrem, 12 hodinami po 2 h a 3 dny), pod ním **hláška dne** jako citát (bez rámečku,
-  velká pixelová uvozovka „ v barvě `hlaskomat` vlevo, text Jersey 24 px nejvýš na 4 řádky, pod ním „— autor“ v barvě a kontext;
+  velká pixelová uvozovka „ v barvě `lime` vlevo, text Jersey 24 px nejvýš na 4 řádky, pod ním „— autor“ v `lime` a kontext;
   ťuknutí otevře Hláškomat) a **souhrn dne** (5 dlaždic: piva, vděčnost, meditace, trénink, dech;
   splněné s podkladem v barvě modulu, nesplněné jen s tlumeným obrysem `idle` bez výplně); **Brzy slaví** (oslavy na 7 dní, jen když nějaké jsou); **„Za co jsem dnes vděčný?“** (dnešní zápisy + políčko); **Dluhy** (dluží mně / dlužím já po lidech); **Na později** (jeden neotevřený odkaz denně).
 - Moduly: mřížka 3 × N, jen ikona a název (bez popisků); hvězdička = připnuto, zámek = zamčeno.
