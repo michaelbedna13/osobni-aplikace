@@ -336,7 +336,7 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s odrážkami v akcentu
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
-- **Karta modulu v pásu** (`.fav`): výřez z pozadí modulu se zrnem a jiskřením, ikona přímo na kartě, název, číslo v Anton; rychlá akce je malá světlá skleněná pilulka vpravo nahoře (36 px), aby se nebila s ikonou.
+- **Karta modulu v pásu** (`.fav`): výřez z pozadí modulu se zrnem a jiskřením, ikona přímo na kartě, název a velké číslo v Anton (56 px) bez popisku – popisek je jen pro čtečku v aria-label; rychlá akce je malá světlá skleněná pilulka vpravo nahoře (36 px), aby se nebila s ikonou.
 - **Záložky** (`Tabs`): bílá pilulka přes celou šířku, aktivní položka tmavá.
 - **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí. V hlavičce modulu je plakátová ilustrace
   (viz Layout); souhrny po hře a tréninku (`.summary-hero`) zůstávají na střed s menší ikonou.

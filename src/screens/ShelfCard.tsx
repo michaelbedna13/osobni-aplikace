@@ -56,7 +56,6 @@ function Card({ moduleKey, num, sub, quick, jump = 0 }: CardProps) {
       </div>
       <span className="fav-name">{m.name}</span>
       <span className="fav-num">{num}</span>
-      <span className="fav-sub">{sub}</span>
     </div>
   );
 }

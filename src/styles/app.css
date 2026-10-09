@@ -274,8 +274,8 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .fav-quick .icon { width: 16px; height: 16px; }
 .fav-quick:active { transform: scale(0.94); }
 .fav-name { font-family: var(--font-ui); font-size: 18px; margin-top: auto; }
-.fav-num { font-family: var(--font-display); font-size: 40px; line-height: 1; }
-.fav-sub { font-size: 14px; line-height: 1.25; opacity: 0.75; }
+/* jen velké číslo bez popisku (popisek je v aria-label odkazu karty) */
+.fav-num { font-family: var(--font-display); font-size: 56px; line-height: 0.95; margin-top: 2px; }
 .fav.locked { background: var(--glass); }
 .fav.locked .icon-slot .icon, .tile.locked .icon-slot .icon { opacity: 0.35; }
 .fav.locked .fav-num { color: var(--slate); font-size: 24px; }
