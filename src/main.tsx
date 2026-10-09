@@ -6,6 +6,12 @@ import "./styles/app.css";
 import { App } from "./App";
 import { AuthProvider } from "./lib/auth";
 
+// chová se jako appka: přechody nevytvářejí historii, takže švih od okraje nevrátí ani neposune obrazovku
+// (navigace jen přes lištu a tlačítka; žádné tlačítko v appce nepoužívá history.back)
+history.pushState = function (data: unknown, unused: string, url?: string | URL | null) {
+  History.prototype.replaceState.call(this, data, unused, url);
+};
+
 // chová se jako appka: žádné přibližování dvěma prsty (iOS ignoruje user-scalable=no, proto i gesta)
 const stopZoom = (e: Event) => e.preventDefault();
 document.addEventListener("gesturestart", stopZoom, { passive: false });

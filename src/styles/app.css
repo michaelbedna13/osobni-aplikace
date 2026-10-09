@@ -42,7 +42,7 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--app-bg); touch-action: pan-x pan-y; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; background: var(--app-bg); touch-action: pan-x pan-y; overscroll-behavior-x: none; }
 @media (min-width: 560px) { html { background: var(--desk); } }
 body { font-synthesis: none; margin: 0; background: var(--app-bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; line-height: 1.06; letter-spacing: 0.005em; text-transform: uppercase; }
