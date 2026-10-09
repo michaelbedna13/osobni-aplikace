@@ -64,7 +64,7 @@ export function DechScreen() {
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
-        <Topbar title="Dechová cvičení" />
+        <Topbar title="Dech" />
         <div className="hero">
           <span className="icon-slot"><Icon name="dech" size={96} /></span>
           <Burst trigger={burst} />

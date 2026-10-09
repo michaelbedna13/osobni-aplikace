@@ -48,7 +48,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Časovač s gongem", "Historie meditací a jejich délky", "Cíl, např. 5 dní v týdnu, a série", "Statistiky"]
   },
   {
-    key: "dech", name: "Dechová cvičení", color: "#73BED3", deep: "#3B7D96", light: "#D6F2F7", phase: 2, ready: true, quickAction: "Krabicové dýchání",
+    key: "dech", name: "Dech", color: "#73BED3", deep: "#3B7D96", light: "#D6F2F7", phase: 2, ready: true, quickAction: "Krabicové dýchání",
     plan: ["Wim Hof, krabicové, 4-7-8, rezonanční a další", "Animovaný průvodce s tóny", "Historie a nejdelší zadržení dechu"]
   },
   {
