@@ -98,4 +98,4 @@ export const MODULE_BY_KEY = Object.fromEntries(MODULES.map((m) => [m.key, m])) 
 export const isModuleKey = (value: string | undefined): value is ModuleKey =>
   !!value && value in MODULE_BY_KEY;
 
-export const DEFAULT_PINNED: ModuleKey[] = ["piva", "vdecnost", "lide", "meditace", "hlaskomat"];
+export const DEFAULT_PINNED: ModuleKey[] = ["meditace", "piva", "hlaskomat", "vdecnost", "lide"];
