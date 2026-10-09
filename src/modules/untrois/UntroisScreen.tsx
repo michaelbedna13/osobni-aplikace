@@ -62,7 +62,7 @@ export function UntroisScreen() {
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
-        <Topbar title="13 – Untrois" />
+        <Topbar title="Untrois" />
         <div className="hero">
           <span className="icon-slot"><Icon name="untrois" size={96} /></span>
           <span className="hero-num">{ideas.length}</span>

@@ -909,7 +909,13 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .holds { margin-top: 4px; }
 @media (prefers-reduced-motion: reduce) { .orb { transition: none; } }
 
-/* ---------- 13 – Untrois ---------- */
+/* ---------- Untrois ---------- */
+/* zámek na heslo */
+.lock { display: grid; justify-items: center; gap: 12px; margin-top: 48px; text-align: center; }
+.lock h2 { font-size: 32px; margin-top: 6px; }
+.lock .muted { max-width: 30ch; margin-bottom: 8px; }
+.lock .input, .lock .btn-hero, .lock .error { width: 100%; margin: 0; }
+.lock .btn-hero { margin-top: 6px; }
 /* nástěnka: dva sloupce dlaždic různé výšky (fotky v původním poměru stran) */
 .board { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 10px; }
 .board li { break-inside: avoid; margin-bottom: 10px; }

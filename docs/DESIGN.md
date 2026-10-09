@@ -321,13 +321,16 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - **Značka Untrois**: appka se jmenuje Untrois (francouzsky „jedna, tři“ = 13). Ikona appky je off-black květina
   se **13 lístky** (číslo Untrois) a **okem** uprostřed (stejné oko jako ikona Meditace), vystřižená z papíru na zrnitém
   limetkovém přechodu (barva modulu 13). Zdroj `public/favicon.svg`, PNG přes `npm run icons` s okrajem, aby je iOS
-  nezaoblil a kulatá ikona Androidu nic neořízla. Modul 13 – Untrois má barvu `lime`.
+  nezaoblil a kulatá ikona Androidu nic neořízla. Modul Untrois má barvu `lime`.
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
   Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, „Moje moduly“ zůstávají bez tečky.
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.
   Na Dnes je pod „Moje moduly“ sekce Nákup (jen když je co koupit): nejvýš 8 položek k odškrtnutí a poslední 3 z košíku.
+- **Zámek Untrois** (`UntroisLock`, `.lock`): před otevřením modulu ikona zámku, „Nastav si heslo“ (poprvé, dvakrát)
+  nebo „Zamčeno“, pole hesla a hlavní tlačítko. Ukládá se jen otisk PBKDF2 se solí (`user_settings.untrois_lock`,
+  bez sloupce v prohlížeči); odemčení platí, dokud appka neodejde do pozadí.
 - **Nástěnka Untrois** (`.board`): dva sloupce dlaždic různé výšky; fotka v původním poměru stran nahoře, pod ní
   štítek kategorie, popisek, poznámka a web odkazu. Ve „Co je 13“ má štítek jen výklad (obrys `idle`), fakta žádný.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s odrážkami v akcentu

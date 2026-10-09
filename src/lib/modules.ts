@@ -24,7 +24,7 @@ export interface ModuleDef {
 
 export const MODULES: ModuleDef[] = [
   {
-    key: "untrois", name: "13 – Untrois", color: "#CEF17B", deep: "#7BA33A", light: "#EEFBC9", phase: 1, ready: true, quickAction: "Zapsat nápad",
+    key: "untrois", name: "Untrois", color: "#CEF17B", deep: "#7BA33A", light: "#EEFBC9", phase: 1, ready: true, quickAction: "Zapsat nápad",
     plan: ["Nápady na brand", "Co všechno znamená číslo 13", "Odpočet do pátku 13."]
   },
   {
