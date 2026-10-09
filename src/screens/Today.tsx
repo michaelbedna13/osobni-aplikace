@@ -140,8 +140,8 @@ export function Today() {
 
       {isDemo && <p className="demo-note">Ukázkový režim: data se ukládají jen v tomhle prohlížeči.</p>}
 
-      <section className="sec">
-        <h2>Moje moduly</h2>
+      {/* pás modulů bez nadpisu – barevné karty mluví samy za sebe */}
+      <section className="sec shelf-sec" aria-label="Moje moduly">
         <div className="shelf" aria-label="Oblíbené moduly, posuň do boku">
           {pinned.map((key) => <ShelfCard key={key} moduleKey={key} />)}
         </div>

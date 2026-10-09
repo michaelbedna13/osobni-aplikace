@@ -242,6 +242,7 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .streak { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-size: 20px; color: var(--ink); text-decoration: none; min-height: 44px; }
 .avatar { width: 48px; height: 48px; flex: none; display: grid; place-items: center; background: var(--dark); color: var(--on-ink); border-radius: 50%; font-family: var(--font-display); font-size: 24px; text-decoration: none; }
 .demo-note { margin-top: 10px; font-size: 14px; color: var(--slate); }
+.shelf-sec { margin-top: 22px; }
 .shelf { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 12px; scrollbar-width: none; }
 .shelf::-webkit-scrollbar { display: none; }
 /* karta modulu (pás na Dnes i dlaždice v Modulech): hladký přechod v barvě modulu bez zrna – pozadí je zrnité,

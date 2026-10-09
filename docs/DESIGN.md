@@ -227,7 +227,7 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   případně státní svátek; pod hlavičkou **počasí** jako bílá pilulka (Open-Meteo, modely DWD ICON a ECMWF; poloha
   nebo město, uložené v prohlížeči; ikona, teplota, popis s min–max, déšť jen od 30 %, bez názvu města; ťuknutí
   otevře okno „Počasí – město“ s pocitovou teplotou, větrem, 12 hodinami po 2 h, 3 dny a odkazem Změnit místo),
-  pás **Moje moduly** (posun do boku, karty 160 px, úpravy jsou
+  pás **modulů** bez nadpisu (posun do boku, karty 160 px, úpravy jsou
   v Profilu); **Nákup** (jen když je co koupit); **Brzy slaví** (oslavy na 7 dní); **„Za co jsem dnes vděčný?“**;
   **Dluhy**; **Na později** (jeden neotevřený odkaz denně); úplně dole **Hláška dne** (`.day-quote`: bílá karta, text Outfit 20 px nejvýš na 5 řádků, autor a kontext pod ním; ťuknutí otevře Hláškomat).
 - Moduly: mřížka 3 × N, jen ikona a název; každá dlaždice má hladký přechod v barvě svého modulu jako karty na Dnes
@@ -323,11 +323,11 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   limetkovém přechodu (barva modulu 13). Zdroj `public/favicon.svg`, PNG přes `npm run icons` s okrajem, aby je iOS
   nezaoblil a kulatá ikona Androidu nic neořízla. Modul Untrois má barvu `lime`.
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
-  Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, „Moje moduly“ zůstávají bez tečky.
+  Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, pás modulů nemá nadpis.
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.
-  Na Dnes je pod „Moje moduly“ sekce Nákup (jen když je co koupit): nejvýš 8 položek k odškrtnutí a poslední 3 z košíku.
+  Na Dnes je pod pásem modulů sekce Nákup (jen když je co koupit): nejvýš 8 položek k odškrtnutí a poslední 3 z košíku.
 - **Zámek Untrois** (`UntroisLock`, `.lock`): před otevřením modulu ikona zámku, „Nastav si heslo“ (poprvé, dvakrát)
   nebo „Zamčeno“, pole hesla a hlavní tlačítko. Ukládá se jen otisk PBKDF2 se solí (`user_settings.untrois_lock`,
   bez sloupce v prohlížeči); odemčení platí, dokud appka neodejde do pozadí.
