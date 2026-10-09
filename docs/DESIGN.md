@@ -232,10 +232,10 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   **Dluhy**; **Na později** (jeden neotevřený odkaz denně); úplně dole **Hláška dne** (`.day-quote`: bílá karta, text Outfit 20 px nejvýš na 5 řádků, autor a kontext pod ním; ťuknutí otevře Hláškomat).
 - Moduly: mřížka 3 × N, jen ikona a název; každá dlaždice má hladký přechod v barvě svého modulu jako karty na Dnes
   (`--module-card`); hvězdička = připnuto, zámek = zamčeno (zamčená dlaždice zůstává bílá).
-- Stavový řádek iOS má tmavý text na plné barvě `theme-color` (`apple-mobile-web-app-status-bar-style: default`).
-  `Layout` ji při každé změně obrazovky nastaví na barvu modulu (na Dnes, Modulech a v Profilu šalvěj `sage`)
-  a pozadí obrazovky začíná nahoře stejnou plnou barvou (prvních 90 px `--grad`), takže lišta plynule navazuje.
-  iOS si styl lišty pamatuje z doby přidání na plochu.
+- Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
+  pozadí běží až pod hodiny, takže nikde není hrana. Hodiny jsou bílé, proto horní okraj `--grad` (110 px) jemně
+  ztmavne do `--deep`. Obsah odsazuje `env(safe-area-inset-top)`, v režimu `display-mode: standalone` aspoň 50 px.
+  `theme-color` sleduje barvu obrazovky (pro Safari). iOS si styl lišty pamatuje z doby přidání na plochu.
 - **Spodní lišta**: plovoucí pilulka ze světlého skla (rozmazané pozadí prosvítá) uprostřed dole jen se třemi ikonami
   (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní položka je tmavá pilulka se světlou ikonou; obrazovky modulů patří pod Moduly.
 
