@@ -233,7 +233,7 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   v Profilu); **Nákup** (jen když je co koupit); **Brzy slaví** (oslavy na 7 dní); **„Za co jsem dnes vděčný?“**;
   **Dluhy**; **Na později** (jeden neotevřený odkaz denně); úplně dole **Hláška dne** (`.day-quote`: bílá karta, text Outfit 20 px nejvýš na 5 řádků, autor a kontext pod ním; ťuknutí otevře Hláškomat).
 - Moduly: mřížka 3 × N, jen ikona a název; každá dlaždice má hladký přechod v barvě svého modulu jako karty na Dnes
-  (`--module-card`); hvězdička = připnuto, zámek = zamčeno (zamčená dlaždice zůstává bílá).
+  (`--module-card`); bez značky připnutí (které moduly jsou na Dnes, se nastavuje v Profilu), zámek = zamčeno (zamčená dlaždice zůstává bílá).
 - Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
   pozadí běží až pod hodiny, takže nikde není hrana. Hodiny jsou bílé, proto horní okraj `--grad` (110 px) jemně
   ztmavne do `--deep`. Obsah odsazuje `env(safe-area-inset-top)`, v režimu `display-mode: standalone` aspoň 50 px.
