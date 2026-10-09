@@ -15,7 +15,7 @@ import { domainOf } from "../modules/odkazy/util";
 import { groupByCategory, useShopping, useUpdateItems, type ShoppingItem } from "../modules/nakup/data";
 import { Row as ShoppingRow } from "../modules/nakup/NakupScreen";
 import { ShelfCard } from "./ShelfCard";
-import { DaySummary, DebtsToday, WeatherCard } from "./TodayWidgets";
+import { DebtsToday, WeatherCard } from "./TodayWidgets";
 
 function Gratitude() {
   const { data: list = [] } = useGratitude();
@@ -136,7 +136,6 @@ export function Today() {
       {isDemo && <p className="demo-note">Ukázkový režim: data se ukládají jen v tomhle prohlížeči.</p>}
 
       <QuoteOfDay />
-      <DaySummary />
 
       <section className="sec">
         <h2>Moje moduly</h2>

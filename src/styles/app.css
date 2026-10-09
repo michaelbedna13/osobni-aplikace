@@ -911,7 +911,6 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather-desc { min-width: 0; font-size: 14px; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .weather-place { flex: none; padding: 0; font-size: 16px; color: var(--slate); }
 .weather-empty { display: inline-flex; align-items: center; gap: 8px; padding: 0; }
-.weather-more { margin-top: 10px; padding: 12px 14px; }
 .weather-extra { font-size: 14px; color: var(--slate); }
 .weather-hours { list-style: none; margin: 14px 0 0; padding: 10px 0 0; border-top: 2px solid var(--idle); display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; }
 .weather-hours li { display: grid; justify-items: center; gap: 4px; font-size: 14px; color: var(--slate); }
@@ -922,20 +921,12 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather-days li span:first-child { font-family: var(--font-pixel); font-size: 16px; text-transform: capitalize; }
 
 /* hláška dne: citát pod hlavičkou, autor jako podpis */
-.day-quote { position: relative; display: block; margin-top: 24px; padding-left: 34px; color: var(--ink); text-decoration: none; }
-.day-quote::before { content: "„"; position: absolute; left: 0; top: -30px; font-family: var(--font-pixel); font-size: 60px; line-height: 1; color: var(--lime); }
-.day-quote-text { font-family: var(--font-pixel); font-size: 24px; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.day-quote { position: relative; display: block; margin-top: 20px; padding-left: 28px; color: var(--ink); text-decoration: none; }
+.day-quote::before { content: "„"; position: absolute; left: 0; top: -24px; font-family: var(--font-pixel); font-size: 48px; line-height: 1; color: var(--lime); }
+.day-quote-text { font-family: var(--font-pixel); font-size: 20px; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .day-quote-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-top: 8px; font-size: 14px; color: var(--slate); }
 .day-quote-meta b { font-family: var(--font-pixel); font-size: 20px; font-weight: 400; color: var(--lime); }
 .day-quote-meta b::before { content: "— "; }
-.day-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 28px; }
-.sum-tile { display: grid; justify-items: center; gap: 2px; padding: 8px 2px; background: var(--paper); border: var(--line); color: var(--slate); text-decoration: none; }
-.sum-tile b { font-family: var(--font-pixel); font-size: 24px; font-weight: 400; line-height: 1; color: var(--ink); }
-.sum-tile span { font-size: 14px; line-height: 1.1; }
-.sum-tile.done { background: color-mix(in srgb, var(--accent) 16%, var(--paper)); }
-/* nesplněné jen naznačené, ať souhrn nekřičí */
-.sum-tile:not(.done) { background: transparent; border-color: var(--idle); }
-.sum-tile:not(.done) .sprite { filter: grayscale(1); opacity: 0.55; }
 .debt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .debt-col { display: grid; gap: 6px; align-content: start; }
 .debt-col p { display: flex; justify-content: space-between; gap: 6px; }

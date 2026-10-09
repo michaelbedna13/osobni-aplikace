@@ -2,56 +2,10 @@ import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { Sheet } from "../components/Sheet";
 import { Sprite } from "../components/Sprite";
-import { isSameDay } from "../lib/dates";
-import { plural } from "../lib/format";
-import { MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
+import { MODULE_BY_KEY } from "../lib/modules";
 import { describe, loadPlace, savePlace, searchCity, useWeather, type Place } from "../lib/weather";
-import { useBreathSessions } from "../modules/dech/data";
 import { balancesByPerson, debts, formatKc } from "../modules/finance/data";
 import { reverseName } from "../modules/mista/data";
-import { useMeditations } from "../modules/meditace/data";
-import { computeStats, useBeers } from "../modules/piva/data";
-import { useWorkouts } from "../modules/trenink/data";
-import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
-
-// ---------- souhrn dne ----------
-
-function Tile({ module, value, label, done }: { module: ModuleKey; value: string; label: string; done: boolean }) {
-  return (
-    <Link to={`/m/${module}`} className={`sum-tile${done ? " done" : ""}`} style={{ "--accent": MODULE_BY_KEY[module].color } as CSSProperties} aria-label={`${MODULE_BY_KEY[module].name}: ${value} ${label}`}>
-      <Sprite name={module} size={24} />
-      <b>{value}</b>
-      <span>{label}</span>
-    </Link>
-  );
-}
-
-/** Co už dnes je: piva, vděčnost, meditace, trénink, dýchání. */
-export function DaySummary() {
-  const { data: beers = [] } = useBeers();
-  const { data: gratitude = [] } = useGratitude();
-  const { data: meditations = [] } = useMeditations();
-  const { data: workouts = [] } = useWorkouts();
-  const { data: breaths = [] } = useBreathSessions();
-  const now = new Date();
-  const today = (iso: string) => isSameDay(new Date(iso), now);
-
-  const beerCount = useMemo(() => computeStats(beers).today, [beers]);
-  const thanks = useMemo(() => computeGratitudeStats(gratitude).today.length, [gratitude]);
-  const medMin = Math.round(meditations.filter((m) => today(m.started_at)).reduce((s, m) => s + m.duration_s, 0) / 60);
-  const trained = workouts.filter((w) => today(w.started_at)).length;
-  const breathMin = Math.round(breaths.filter((b) => today(b.started_at)).reduce((s, b) => s + b.duration_s, 0) / 60);
-
-  return (
-    <section className="day-summary" aria-label="Dnešní souhrn">
-      <Tile module="piva" value={String(beerCount)} label={plural(beerCount, ["pivo", "piva", "piv"])} done={beerCount > 0} />
-      <Tile module="vdecnost" value={String(thanks)} label="vděčnost" done={thanks > 0} />
-      <Tile module="meditace" value={medMin ? `${medMin}′` : "–"} label="meditace" done={medMin > 0} />
-      <Tile module="trenink" value={trained ? `${trained}×` : "–"} label="trénink" done={trained > 0} />
-      <Tile module="dech" value={breathMin ? `${breathMin}′` : "–"} label="dech" done={breathMin > 0} />
-    </section>
-  );
-}
 
 // ---------- dluhy ----------
 
@@ -87,7 +41,7 @@ const hour = (d: Date) => d.toLocaleTimeString("cs-CZ", { hour: "numeric" });
 const weekday = (d: Date) => d.toLocaleDateString("cs-CZ", { weekday: "short" });
 const deg = (n: number) => `${Math.round(n)}°`;
 
-/** Počasí jako jeden řádek v hlavičce Dnes; ťuknutí rozbalí předpověď po hodinách a na další dny. */
+/** Počasí jako jeden řádek v hlavičce Dnes; ťuknutí otevře panel s předpovědí po hodinách a na další dny. */
 export function WeatherCard() {
   const [place, setPlace] = useState<Place | null>(() => loadPlace());
   const [picking, setPicking] = useState(false);
@@ -121,11 +75,11 @@ export function WeatherCard() {
             </span>
           </button>
         )}
-        <button className="link inline weather-place" onClick={() => setPicking(true)}>{place.name}</button>
+        <button className="link inline weather-place" onClick={() => setPicking(true)}>{place.name.split(",")[0]}</button>
       </div>
-      {w && open && (
-        <div className="panel weather-more">
-          <p className="weather-extra">Pocitově {deg(w.feels)}, vítr {Math.round(w.wind)} km/h</p>
+      {w && d && open && (
+        <Sheet title={`Počasí – ${place.name.split(",")[0]}`} onClose={() => setOpen(false)}>
+          <p className="weather-extra">{d.text}, {deg(w.today.min)}–{deg(w.today.max)}. Pocitově {deg(w.feels)}, vítr {Math.round(w.wind)} km/h{w.today.rainChance ? `, déšť ${w.today.rainChance} %` : ""}.</p>
           <ul className="weather-hours" aria-label="Po hodinách">
             {w.hours.filter((_, i) => i % 2 === 0).slice(0, 6).map((h) => (
               <li key={h.time.toISOString()}>
@@ -145,7 +99,7 @@ export function WeatherCard() {
               </li>
             ))}
           </ul>
-        </div>
+        </Sheet>
       )}
       {picking && <PlaceSheet onClose={() => setPicking(false)} onChoose={choose} onRemove={() => { savePlace(null); setPlace(null); setPicking(false); }} />}
     </section>
