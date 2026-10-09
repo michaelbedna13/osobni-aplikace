@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Icon } from "./Icon";
 
 /** Horní lišta obrazovky: zpět, nadpis, volitelně něco vpravo. */
-export function Topbar({ title, back = "/moduly", right }: { title: string; back?: string | null; right?: ReactNode }) {
+/** brand = název značky untrois, píše se vždy malými písmeny (nadpisy jsou jinak verzálkami). */
+export function Topbar({ title, back = "/moduly", right, brand }: { title: string; back?: string | null; right?: ReactNode; brand?: boolean }) {
   return (
     <header className="topbar">
       {back && (
@@ -11,7 +12,7 @@ export function Topbar({ title, back = "/moduly", right }: { title: string; back
           <Icon name="i-back" size={20} />
         </Link>
       )}
-      <h1>{title}</h1>
+      <h1 className={brand ? "brand" : undefined}>{title}</h1>
       {right}
     </header>
   );

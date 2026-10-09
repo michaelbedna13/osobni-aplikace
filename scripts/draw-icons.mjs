@@ -76,7 +76,7 @@ const ICONS = {
     const slit = (y) => blob([[24, y], [76, y - 0.5], [75, y + 4], [25, y + 4.5]], 0.6, 0.2);
     return [I(blob([[24, 44], [30, 18], [50, 10], [70, 18], [76, 44], [68, 44], [64, 24], [50, 18], [36, 24], [32, 44]], 1, 0.4)), I(blob([[12, 40], [50, 39], [88, 40], [80, 86], [50, 88], [20, 86]], 1.5, 0.25)), C(slit(52)), C(slit(64)), C(slit(76))];
   },
-  // znak Untrois: květina se 13 lístky (13 = un, trois) a okem, ve stylu ikony Meditace (ta má 7 lístků)
+  // znak untrois: květina se 13 lístky (13 = un, trois) a okem, ve stylu ikony Meditace (ta má 7 lístků)
   untrois: () => {
     const pts = [];
     for (let i = 0; i < 13; i++) {

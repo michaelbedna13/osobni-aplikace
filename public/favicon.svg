@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Untrois: znak – květina se 13 lístky (13 = un, trois) a okem uprostřed (jako ikona modulu, src/lib/icons.ts), vystřižená z papíru na zrnitém limetkovém
+  <!-- untrois: znak – květina se 13 lístky (13 = un, trois) a okem uprostřed (jako ikona modulu, src/lib/icons.ts), vystřižená z papíru na zrnitém limetkovém
        přechodu. Pozadí přesahuje plátno, aby ikony s okrajem (npm run icons) neměly hranu. -->
   <defs>
 <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CEF17B"/><stop offset="1" stop-color="#E6F5C0"/></linearGradient>

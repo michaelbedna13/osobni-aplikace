@@ -1,4 +1,4 @@
-// Nakreslí znak Untrois pro úvodní obrazovku (index.html, #splash): stejná květina se 13 lístky a okem jako ikona
+// Nakreslí znak untrois pro úvodní obrazovku (index.html, #splash): stejná květina se 13 lístky a okem jako ikona
 // (scripts/draw-icons.mjs), jen každý lístek zvlášť, aby se při spuštění mohly rozvinout jeden po druhém.
 // Výsledné SVG vloží do index.html mezi značky <!-- splash:start --> a <!-- splash:end -->.
 // Spuštění: node scripts/draw-splash.mjs (bez závislostí, výstup je pokaždé stejný)

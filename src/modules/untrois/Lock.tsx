@@ -5,7 +5,7 @@ import { useAuth } from "../../lib/auth";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { supabase } from "../../lib/supabase";
 
-// Zámek modulu Untrois: heslo si uživatel nastaví sám při prvním otevření. Ukládá se jen otisk (PBKDF2 se solí)
+// Zámek modulu untrois: heslo si uživatel nastaví sám při prvním otevření. Ukládá se jen otisk (PBKDF2 se solí)
 // v user_settings.untrois_lock, bez Supabase nebo bez sloupce v prohlížeči. Odemčení platí, dokud appka neodejde
 // do pozadí. Je to ochrana soukromí na půjčeném telefonu, ne šifrování dat.
 
@@ -117,12 +117,12 @@ export function UntroisLock({ children }: { children: ReactNode }) {
 
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
-      <Topbar title="Untrois" />
+      <Topbar title="untrois" brand />
       <form className="lock" onSubmit={submit}>
         <Icon name="lock" size={72} />
         <h2>{creating ? "Nastav si heslo" : "Zamčeno"}</h2>
         <p className="muted">
-          {creating ? "Untrois se bude otevírat jen s tímhle heslem. Ulož si ho, obnovit ho nejde." : "Zadej heslo k Untrois."}
+          {creating ? "untrois se bude otevírat jen s tímhle heslem. Ulož si ho, obnovit ho nejde." : "Zadej heslo k untrois."}
         </p>
         {failed && <p className="error">Zámek se nepodařilo ověřit. Zkontroluj připojení a zkus to znovu.</p>}
         {!loading && !failed && (

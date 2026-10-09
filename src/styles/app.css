@@ -1,4 +1,4 @@
-/* Untrois – čistý světlý styl s texturami; pixel art jen v ikonách. Tokeny popisuje docs/DESIGN.md */
+/* untrois – čistý světlý styl s texturami; pixel art jen v ikonách. Tokeny popisuje docs/DESIGN.md */
 :root {
   /* text a tmavé prvky jsou off-black, ne čistá černá */
   --ink: #23211F;
@@ -46,6 +46,8 @@ html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent;
 @media (min-width: 560px) { html { background: var(--desk); } }
 body { font-synthesis: none; margin: 0; background: var(--app-bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; line-height: 1.06; letter-spacing: 0.005em; text-transform: uppercase; }
+/* značka untrois se píše vždy malými písmeny */
+.brand { text-transform: none; }
 p { margin: 0; }
 a { color: inherit; }
 button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
@@ -913,7 +915,7 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .holds { margin-top: 4px; }
 @media (prefers-reduced-motion: reduce) { .orb { transition: none; } }
 
-/* ---------- Untrois ---------- */
+/* ---------- untrois ---------- */
 /* zámek na heslo */
 .lock { display: grid; justify-items: center; gap: 12px; margin-top: 48px; text-align: center; }
 .lock h2 { font-size: 32px; margin-top: 6px; }

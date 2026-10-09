@@ -30,7 +30,7 @@ export const MEANINGS: Meaning[] = [
   { category: "Kultura a sport", kind: "fakt", title: "Legendy s 13 na dresu", body: "Wilt Chamberlain (100 bodů v jednom zápase NBA), Steve Nash (2× MVP), Dan Marino (NFL), Pavel Dacjuk (NHL), Alex Morgan (fotbal)." },
   { category: "Kultura a sport", kind: "fakt", title: "Ragby league", body: "Tým ragby league má na hřišti 13 hráčů." },
   { category: "Kultura a sport", kind: "fakt", title: "Bez 13. patra", body: "Mnoho hotelů a mrakodrapů 13. patro ani pokoj 13 nemá. Strach z čísla 13 se jmenuje triskaidekafobie, z pátku 13. paraskevidekatriafobie." },
-  { category: "Kultura a sport", kind: "fakt", title: "Un, trois", body: "Untrois = francouzsky „jedna, tři“. 1 a 3 vedle sebe dávají 13." },
+  { category: "Kultura a sport", kind: "fakt", title: "Un, trois", body: "untrois = francouzsky „jedna, tři“. 1 a 3 vedle sebe dávají 13." },
   // Symbolika
   { category: "Symbolika", kind: "vyklad", title: "Tarot: XIII Smrt", body: "Třináctá karta velké arkány. Vykládá se jako konec jedné etapy a proměna, ne doslovná smrt – svléknout starou kůži, aby mohla narůst nová." },
   { category: "Symbolika", kind: "vyklad", title: "12 + 1", body: "12 je uzavřený celek: měsíce, znamení, hodiny na ciferníku. 13 je krok přes okraj kruhu, do místa, které ještě nemá tvar." },

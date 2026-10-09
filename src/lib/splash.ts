@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useIsFetching } from "@tanstack/react-query";
 
-// Úvodní obrazovka (#splash v index.html): znak Untrois se rozvine a zmizí, až když jsou načtená data první
+// Úvodní obrazovka (#splash v index.html): znak untrois se rozvine a zmizí, až když jsou načtená data první
 // obrazovky, aby nikde neproblikly nuly. Drží se aspoň chvilku, aby animace doběhla, a nejdéle pár sekund,
 // kdyby byla síť pomalá. Počasí se nečeká (má vlastní stav načítání).
 

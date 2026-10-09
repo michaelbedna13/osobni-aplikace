@@ -1,6 +1,6 @@
-# Untrois
+# untrois
 
-Osobní aplikace pod značkou **Untrois** (un, trois = 13).
+Osobní aplikace pod značkou **untrois** (un, trois = 13).
 
 Osobní mobilní webová aplikace (PWA pro iPhone) napojená na Supabase a nasazovaná z GitHubu – hlášky, tréninky, meditace, odkazy, piva, lidé a narozeniny, deník, mapa míst a další.
 

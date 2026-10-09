@@ -1,5 +1,5 @@
 ---
-name: Untrois – čistý styl s texturami
+name: untrois – čistý styl s texturami
 description: Světlá kapesní appka o vlastním životě. Čisté karty, výrazné nadpisy, každý modul má svou barvu a pozadí, ikony jako vystřižené z papíru.
 colors:
   ink: "#23211F"
@@ -323,12 +323,12 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   při zadržení má čárkovaný obrys; uprostřed odpočet. Během cvičení je spodní lišta schovaná (`.focus-mode`).
 - **Okno** (`Modal`) uprostřed obrazovky pro detail hlášky: „obrazovka“ s textem a řada akcí (Top, Kopie, Sdílet,
   Upravit, Smazat). Při psaní se lišta schová (`.kb-open`) a okna i panely se drží nad klávesnicí.
-- **Značka Untrois**: appka se jmenuje Untrois (francouzsky „jedna, tři“ = 13). Znak Untrois i ikona appky je off-black květina
-  se **13 lístky** (číslo Untrois) a **okem** uprostřed, ve stylu ikony Meditace (ta má 7 lístků); stejný tvar je ikona modulu Untrois, vystřižená z papíru na zrnitém
+- **Značka untrois**: appka se jmenuje untrois (francouzsky „jedna, tři“ = 13). Píše se vždy malými písmeny, i v nadpisech (třída `.brand` ruší verzálky, `Topbar brand`). Znak untrois i ikona appky je off-black květina
+  se **13 lístky** (číslo untrois) a **okem** uprostřed, ve stylu ikony Meditace (ta má 7 lístků); stejný tvar je ikona modulu untrois, vystřižená z papíru na zrnitém
   limetkovém přechodu (barva modulu 13). Zdroj `public/favicon.svg`, PNG přes `npm run icons` s okrajem, aby je iOS
-  nezaoblil a kulatá ikona Androidu nic neořízla. Modul Untrois má barvu `lime`.
+  nezaoblil a kulatá ikona Androidu nic neořízla. Modul untrois má barvu `lime`.
 - **Úvodní obrazovka** (`#splash` přímo v `index.html`, aby byla vidět hned, ještě před JS): stejný zrnitý limetkový
-  přechod jako ikona, uprostřed jen znak Untrois (bez nápisu). Animace: střed vyskočí,
+  přechod jako ikona, uprostřed jen znak untrois (bez nápisu). Animace: střed vyskočí,
   13 lístků se rozvine jeden po druhém dokola, oko se otevře, zornička se rozhlíží a květ se pomalu otáčí. Zmizí
   (oko mrkne, znak se zvětší, obrazovka prolne), až nic nenačítá (`src/lib/splash.ts`: aspoň 1,3 s, nejdéle 4,5 s,
   počasí se nečeká), takže na Dnes neproblikají nuly. Appka se pod ní vykresluje skrytá (`html.splashing`), aby přes ni na iOS neproblikla skleněná lišta. Tvar lístků kreslí `scripts/draw-splash.mjs`. Při omezeném
@@ -339,10 +339,10 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.
   Na Dnes je pod pásem modulů sekce Nákup (jen když je co koupit): nejvýš 8 položek k odškrtnutí a poslední 3 z košíku.
-- **Zámek Untrois** (`UntroisLock`, `.lock`): před otevřením modulu ikona zámku, „Nastav si heslo“ (poprvé, dvakrát)
+- **Zámek untrois** (`UntroisLock`, `.lock`): před otevřením modulu ikona zámku, „Nastav si heslo“ (poprvé, dvakrát)
   nebo „Zamčeno“, pole hesla a hlavní tlačítko. Ukládá se jen otisk PBKDF2 se solí (`user_settings.untrois_lock`,
   bez sloupce v prohlížeči); odemčení platí, dokud appka neodejde do pozadí.
-- **Nástěnka Untrois** (`.board`): dva sloupce dlaždic různé výšky; fotka v původním poměru stran nahoře, pod ní
+- **Nástěnka untrois** (`.board`): dva sloupce dlaždic různé výšky; fotka v původním poměru stran nahoře, pod ní
   štítek kategorie, popisek, poznámka a web odkazu. Ve „Co je 13“ má štítek jen výklad (obrys `idle`), fakta žádný.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s odrážkami v akcentu
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
