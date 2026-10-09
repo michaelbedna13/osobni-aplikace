@@ -75,7 +75,8 @@ export function WeatherCard() {
             </span>
           </button>
         )}
-        <button className="link inline weather-place" onClick={() => setPicking(true)}>{place.name.split(",")[0]}</button>
+        {/* místo se mění v okně s předpovědí; tady jen když se počasí nenačetlo */}
+        {!w && <button className="link inline weather-place" onClick={() => setPicking(true)}>Změnit místo</button>}
       </div>
       {w && d && open && (
         <Sheet title={`Počasí – ${place.name.split(",")[0]}`} onClose={() => setOpen(false)}>
@@ -99,6 +100,7 @@ export function WeatherCard() {
               </li>
             ))}
           </ul>
+          <button className="link weather-change" onClick={() => { setOpen(false); setPicking(true); }}>Změnit místo</button>
         </Sheet>
       )}
       {picking && <PlaceSheet onClose={() => setPicking(false)} onChoose={choose} onRemove={() => { savePlace(null); setPlace(null); setPicking(false); }} />}
