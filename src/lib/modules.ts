@@ -74,23 +74,23 @@ export const MODULES: ModuleDef[] = [
     plan: ["Dva hráči na jednom telefonu", "Šachové hodiny: bullet, blitz, rapid", "Hra přes stůl nebo s otáčením desky", "Historie partií a zápis"]
   },
   {
-    key: "odkazy", name: "Odkazy", color: "#2CE8F5", deep: "#0099DB", light: "#C7F9FC", phase: 1, ready: true, quickAction: "Uložit odkaz",
+    key: "odkazy", name: "Odkazy", color: "#C77DF3", deep: "#7E3BAE", light: "#EBD3FB", phase: 1, ready: true, quickAction: "Uložit odkaz",
     plan: ["Uložení odkazu s náhledem", "Kolekce a moodboardy", "Uložení z menu Sdílet přes Zkratku", "Obrázky a screenshoty"]
   },
   {
-    key: "mista", name: "Místa", color: "#C28569", deep: "#733E39", light: "#E8B796", phase: 3, ready: true, quickAction: "Přidat místo",
+    key: "mista", name: "Místa", color: "#6F8CF7", deep: "#3A4FA8", light: "#C9D5FD", phase: 3, ready: true, quickAction: "Přidat místo",
     plan: ["Mapa s místy, kam se chceš podívat", "Seznamy a plány výletů", "Navigace v Apple Mapách nebo Mapy.com", "Import z Google Map"]
   },
   {
-    key: "filmy", name: "Filmy a knihy", color: "#8B9BB4", deep: "#5A6988", light: "#C0CBDC", phase: 3, ready: true, quickAction: "Přidat film nebo knihu",
+    key: "filmy", name: "Filmy a knihy", color: "#8B9BB4", deep: "#4A5874", light: "#C0CBDC", phase: 3, ready: true, quickAction: "Přidat film nebo knihu",
     plan: ["Chci vidět / přečíst", "Hledání s plakáty a obálkami", "Kde film běží", "Čtenářská výzva"]
   },
   {
-    key: "wishlist", name: "Wishlist", color: "#F6757A", deep: "#B55088", light: "#FAD4D6", phase: 3, ready: true, quickAction: "Přidat přání",
+    key: "wishlist", name: "Wishlist", color: "#F98DB9", deep: "#A8336A", light: "#FDD9E8", phase: 3, ready: true, quickAction: "Přidat přání",
     plan: ["Věci, co chceš koupit", "Cena a priorita", "Pravidlo 30 dní", "Propojení se spořením"]
   },
   {
-    key: "finance", name: "Finance", color: "#FEE761", deep: "#FEAE34", light: "#FFF7C2", phase: 4, ready: true, quickAction: "Přidat výdaj",
+    key: "finance", name: "Finance", color: "#FEE761", deep: "#D9A21E", light: "#FFF7C2", phase: 4, ready: true, quickAction: "Přidat výdaj",
     plan: ["Předplatné a jejich obnovy", "Spořicí cíle", "Kdo mi dluží a komu dlužím", "Útrata za piva"]
   },
 ];

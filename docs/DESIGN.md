@@ -30,10 +30,11 @@ colors:
   trenink: "#E43B44"
   lide: "#B55088"
   vdecnost: "#E4A672"
-  odkazy: "#2CE8F5"
-  mista: "#C28569"
+  odkazy: "#C77DF3"
+  mista: "#6F8CF7"
+  map-me: "#2CE8F5"
   filmy: "#8B9BB4"
-  wishlist: "#F6757A"
+  wishlist: "#F98DB9"
   cornhole: "#D77643"
   dech: "#73BED3"
   untrois: "#CEF17B"
@@ -321,6 +322,7 @@ Kamarád z party: „Dneska zatím na suchu“, „Třetí. Číšník už ví.�
 
 - **Do:** jedna hlavní akce na obrazovku, největší prvek pod číslem.
 - **Do:** nový modul = nová barva + nový 16 × 16 sprite + vlastní herní metafora statistik.
+- **Do:** barva nového modulu musí mít odstín zřetelně jiný než ostatní moduly (v carouselu a sekcích na Dnes stojí vedle sebe) a nesmí se krýt s `danger`.
 - **Do:** čísla vždy v Jersey 10 a s tabulkovými číslicemi.
 - **Don't:** plné barevné plochy přes obrazovku, víc než jeden akcent na obrazovce, zaoblené rohy, měkké stíny.
   Jediné gradienty jsou rastr a záře akcentu v pozadí obrazovky.
