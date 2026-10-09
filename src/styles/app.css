@@ -241,15 +241,20 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .demo-note { margin-top: 10px; font-size: 14px; color: var(--slate); }
 .shelf { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 12px; scrollbar-width: none; }
 .shelf::-webkit-scrollbar { display: none; }
-/* karta modulu: hladký přechod v barvě modulu (bez zrna) – pozadí je zrnité, karta čistá, takže se od něj oddělí sama */
+/* karta modulu (pás na Dnes i dlaždice v Modulech): hladký přechod v barvě modulu bez zrna – pozadí je zrnité,
+   karta čistá, takže se od něj oddělí sama */
 .fav {
   position: relative; flex: 0 0 160px; min-height: 200px; scroll-snap-align: start;
   display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 28px; color: var(--ink);
-  background:
-    radial-gradient(75% 45% at 100% 0%, color-mix(in srgb, var(--deep) 45%, var(--accent)) 0%, transparent 75%),
-    linear-gradient(170deg, color-mix(in srgb, var(--accent) 70%, #FFFFFF), var(--accent));
+  background: var(--module-card);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
+.fav, .tiles .tile {
+  --module-card:
+    radial-gradient(75% 45% at 100% 0%, color-mix(in srgb, var(--deep) 45%, var(--accent)) 0%, transparent 75%),
+    linear-gradient(170deg, color-mix(in srgb, var(--accent) 70%, #FFFFFF), var(--accent));
+}
+.tiles .tile:not(.locked) { background: var(--module-card); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
 .fav .icon-slot { width: 56px; height: 56px; justify-items: start; align-items: start; }
 .fav .icon-slot .icon { width: 52px; height: 52px; }
 .fav-link { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }

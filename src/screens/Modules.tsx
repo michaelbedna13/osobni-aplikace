@@ -15,7 +15,7 @@ export function Modules() {
             key={m.key}
             to={`/m/${m.key}`}
             className={`tile tap${m.ready ? "" : " locked"}`}
-            style={{ "--accent": m.color } as CSSProperties}
+            style={{ "--accent": m.color, "--deep": m.deep } as CSSProperties}
             aria-label={m.ready ? m.name : `${m.name} (zamčeno)`}
           >
             <span className="icon-slot"><Icon name={m.key} size={48} /></span>
