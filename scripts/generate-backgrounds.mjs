@@ -206,7 +206,48 @@ const out = await page.evaluate((SPECS) => {
     const v = g.createLinearGradient(0, 0, 0, H * 0.45); v.addColorStop(0, "rgba(255,255,255,0.5)"); v.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = v; g.fillRect(0, 0, W, H);
   }
 
-  const KINDS = { orbs, ink, frost, caustic, reeded, watercolor, fern, dapple };
+  // světlo z okna: teplý pruh slunce s rozmazaným stínem rámu a listu (oblíbená „ranní“ fotka)
+  function windowLight(g, s) {
+    base(g, s.base);
+    g.save(); g.translate(W * 0.5, H * 0.55); g.rotate(-0.42);
+    g.filter = "blur(28px)"; g.fillStyle = s.light; g.globalAlpha = 0.95; g.fillRect(-260, -420, 520, 760);
+    g.filter = "blur(10px)"; g.fillStyle = s.shade; g.globalAlpha = 0.35;
+    g.fillRect(-12, -440, 22, 800); g.fillRect(-280, -40, 560, 20);
+    g.restore();
+    g.filter = "blur(14px)"; g.globalAlpha = 0.3; g.fillStyle = s.shade;
+    g.save(); g.translate(380, 760); g.rotate(-0.8);
+    for (let i = 0; i < 7; i++) { g.beginPath(); g.ellipse(i * 34, (i % 2 ? -1 : 1) * 26, 46, 12, (i % 2 ? -0.6 : 0.6), 0, Math.PI * 2); g.fill(); }
+    g.lineWidth = 6; g.strokeStyle = s.shade; g.beginPath(); g.moveTo(-40, 0); g.lineTo(260, 0); g.stroke();
+    g.restore(); g.globalAlpha = 1; g.filter = "none";
+  }
+
+  // hedvábí: měkké lesklé záhyby látky
+  function silk(g, s) {
+    base(g, s.base);
+    const band = (y0, amp, f, ph, color, width, a, bl) => {
+      g.filter = `blur(${bl}px)`; g.globalAlpha = a; g.strokeStyle = color; g.lineWidth = width; g.lineCap = "round";
+      g.beginPath(); for (let x = -60; x <= W + 60; x += 8) { const y = y0 + amp * Math.sin(x / f + ph) + x * 0.55; x === -60 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke();
+    };
+    for (let k = 0; k < 7; k++) {
+      const y0 = 160 + k * 150;
+      band(y0 + 30, 60, 120, k, s.shade, 70, 0.32, 26);
+      band(y0, 60, 120, k, s.light, 34, 0.85, 14);
+    }
+    g.globalAlpha = 1; g.filter = "none";
+    const v = g.createLinearGradient(0, 0, 0, H * 0.4); v.addColorStop(0, "rgba(255,255,255,0.45)"); v.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = v; g.fillRect(0, 0, W, H);
+  }
+
+  // polární záře: velké rozmazané pásy pastelových barev šikmo přes obrazovku
+  function aurora(g, s) {
+    base(g, s.base);
+    g.filter = "blur(70px)";
+    const spots = [[90, 380, 260, 120, 0], [380, 520, 250, 110, 1], [140, 780, 280, 120, 2], [420, 940, 240, 110, 3], [300, 660, 180, 90, 0]];
+    for (const [x, y, rx, ry, c] of spots) { g.globalAlpha = 0.9; g.fillStyle = s.colors[c]; g.beginPath(); g.ellipse(x, y, rx, ry, -0.5, 0, Math.PI * 2); g.fill(); }
+    g.globalAlpha = 1; g.filter = "none";
+    const v = g.createLinearGradient(0, 0, 0, H * 0.35); v.addColorStop(0, "rgba(255,255,255,0.5)"); v.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = v; g.fillRect(0, 0, W, H);
+  }
+
+  const KINDS = { orbs, ink, frost, caustic, reeded, watercolor, fern, dapple, window: windowLight, silk, aurora };
   const res = {};
   for (const [key, s] of Object.entries(SPECS)) {
     seed = 7 + key.length;
