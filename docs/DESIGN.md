@@ -195,11 +195,11 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 
 Všechny obrazovky mají **stejné pozadí: zrnitý barevný přechod** a mění se jen barva podle modulu (`--accent`,
 `--deep`; Dnes, Moduly a Profil mají šalvěj `sage` a tmavě zelenou). Nahoře je barva modulu, vlevo prosvětlená,
-v pravém horním rohu tmavší odstín, směrem dolů slábne do téměř bílé. Přes přechod je **sprej** (`spray.svg`:
+v pravém horním rohu tmavší odstín, směrem dolů slábne do téměř bílé. Přes přechod je tlumený **sprej** (`spray.svg`, dlaždice 150 px:
 světlé i tmavé tečky jako u stříkané barvy). Definice je jedna proměnná `--grad` v CSS, bez obrázků.
 
 - `.screen::before` (pevně pod obsahem, při posouvání stojí): `--grad`;
-- `.screen::after` (nad obsahem): jemné zrno `grain.svg`, krytí 16 %, režim `multiply`;
+- `.screen::after` (nad obsahem): jemné zrno `grain.svg`, krytí 7 %, režim `multiply`;
 - **karty modulů na Dnes** (`.fav`) mají hladký přechod v barvě svého modulu **bez zrna** a jemnou světlou hranu:
   pozadí je zrnité, karta čistá, takže se oddělí sama, bez stínu.
 
