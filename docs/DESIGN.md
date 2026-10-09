@@ -171,8 +171,8 @@ Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/st
 ## Overview
 
 Světlý **čistý minimalismus s duší**: bílé lehce průsvitné karty s velkým zaoblením, hodně vzduchu, výrazné
-nadpisy verzálkami a tmavé „pilulky“ jako hlavní akce. Duši dávají **zrno, měkké přechody a textura modulu**
-přes celou obrazovku. Z pixel artu zůstávají **ikony** (sprity), všechno ostatní je hladké.
+nadpisy verzálkami, hlavní akce jako pilulky v barvě modulu, tmavé přepínače. Duši dávají **zrno a pozadí modulu**
+přes celou obrazovku (měkká rozostřená pozadí). Z pixel artu zůstávají **ikony** (sprity), všechno ostatní je hladké.
 Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vtipnou větu).
 
 ## Colors
@@ -182,48 +182,37 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 - **Pozadí** `app-bg` `#F4F3EE` (teplý kámen), na počítači kolem appky `desk`. Vedlejší text `slate`, jemné
   plochy `surface-2` (pole formulářů), nečinné sloupce grafů `idle`, tenké linky `edge` (12 % `ink`).
 - **Karty** `glass`: bílá s 84 % krytím, bez obrysu – barva pozadí lehce prosvítá.
-- **Barva modulu = akcent (`--accent`)**: tónuje pozadí obrazovky (nahoře sytě, dolů slábne do kamene),
-  karty modulů na Dnes (pastelový přechod), stín pod ikonou v hlavičce, grafy, splněné dny, tečku u nadpisu sekce.
+- **Barva modulu = akcent (`--accent`)**: hlavní tlačítko, pozadí obrazovky a karty modulů na Dnes, stín pod ikonou v hlavičce, grafy, splněné dny, tečku u nadpisu sekce.
 - **Dnes, Moduly a Profil** mají neutrální kámen se šalvějovou mlhou (`sage-light`, `sand`, `stone-light`);
   hláška dne je šalvějová karta (`sage-card` → `sage-card-deep`).
 - **Limetka** `lime` jen jako plocha (akce „Vrátit“, nová položka, odškrtnutá série); jako text je nečitelná,
   proto „dluží mi“, autor hlášky apod. používají tmavší `lime-ink`. Hvězdy a oblíbené `gold`, chyby `danger`.
 - **Zamčené moduly**: šedá dlaždice, ikona v odstínech šedi.
 
-## Textury a zrno
+## Pozadí, textury a zrno
 
-Soubory v `src/assets/tex` generuje `node scripts/generate-textures.mjs` (bez závislostí, výstup je pokaždé stejný).
+Každá obrazovka má vlastní **pozadí** (`src/assets/tex/<klíč>.webp`, 480 × 1040, dohromady ~110 kB), které kreslí
+`npm run backgrounds` (`scripts/generate-backgrounds.mjs`, canvas v prohlížeči přes Playwright, výstup je pokaždé stejný).
+Pozadí jsou měkká a rozostřená jako fotografie přes sklo, v barvách modulu, a na téma jen **narážejí**:
+
+| Technika | Moduly |
+|---|---|
+| mléčné sklo: rozmazané siluety za sklem | Dnes a ostatní obrazovky (listy rostliny), Nákup (ovoce a list), Cornhole (pytlík a deska) |
+| světlo ve vodě: měkká světelná síť | Piva (medově), Wishlist (růžově s třpytem) |
+| inkoustové koule: hustý střed, jemné soustředné kroužky | Meditace (kapka), Dech (dvě koule – nádech a výdech), Šipky (terč) |
+| zrnité koule: dvě rozmazané barevné koule | Hláškomat, Lidé, Vděčnost, Finance, Odkazy |
+| vroubkované sklo: rozmazané tvary rozlámané do svislých pruhů | 13 – Untrois, Trénink, Šachy, Filmy |
+| akvarel: rozpité skvrny s tmavším okrajem | Místa |
+
+Výrazné tvary jsou uprostřed a dole, horní třetina je světlejší, aby hlavička zůstala čitelná. Kterou obrazovku
+dostane, určuje `Layout` podle adresy (`--bg` na `.app-main`; Dnes, klíč modulu, jinak „zaklad“).
 Obrazovka má dvě pevné vrstvy (`.screen::before` pod obsahem, `.screen::after` nad ním), při posouvání stojí:
 
-- **pod obsahem**: textura modulu (`--tex`), jemné zrno `grain-soft.svg` a tónování `--tint` z barvy modulu
-  (`--tint-a` nahoře, `--tint-b` uprostřed, dole `app-bg`);
-- **nad obsahem**: zrno `grain.svg` s krytím 13 % v režimu `multiply`, aby plochy nepůsobily sterilně.
+- **pod obsahem**: pozadí přes celou obrazovku (`cover`), pod ním záložní tónování `--tint` z barvy modulu;
+- **nad obsahem**: zrno `grain.svg` s krytím 16 % v režimu `multiply` (ze `scripts/generate-textures.mjs`).
 
-Kterou texturu obrazovka dostane, určuje atribut `data-tex` na `.app-main` (Dnes, klíč modulu z adresy, jinak
-„zaklad“). Textura na téma jen **naráží**, nikdy doslovně:
-
-| Modul | Textura |
-|---|---|
-| Dnes | měkké rozmazané paprsky světla |
-| Piva | kaustiky – světelná síť jako pod sklenicí na slunci (`piva.png`) |
-| Meditace | rozmazaná aura od ikony |
-| Trénink | obláčky a zrnka magnézia |
-| Hláškomat | polotónové tečky jako tisk |
-| 13 – Untrois | světelný únik jako na kinofilmu |
-| Nákup | proužky termopapíru |
-| Lidé | rozostřená světýlka |
-| Vděčnost | vlákna ručního papíru |
-| Cornhole | vazba látky |
-| Šipky | slabé paprsky z jednoho bodu |
-| Šachy | mramorové žilky |
-| Odkazy | souhvězdí |
-| Místa | akvarelové vrstevnice |
-| Filmy | kužel světla z projektoru a škrábance |
-| Wishlist | třpyt |
-| Finance | gilošování |
-| Dech | proudy vzduchu |
-
-Barevné karty (`.fav`) mají navíc vlastní zrno, bílé jiskření (`sparkle.svg`) a světlo z levého horního rohu.
+Karty modulů na Dnes (`.fav`) ukazují výřez z pozadí svého modulu, k tomu jemné zrno a bílé jiskření (`sparkle.svg`).
+Hláška dne má výřez z pozadí Dnes na šalvějovém přechodu.
 
 ## Typography
 
@@ -275,7 +264,7 @@ Barevné karty (`.fav`) mají navíc vlastní zrno, bílé jiskření (`sparkle.
 
 ## Components
 
-- **Hlavní tlačítko** (`.btn-hero`): tmavá pilulka (off-black s přechodem a zrnem), světlý text a ikona, 60 px, ikona + akce („1 pivo“, „Zapsat hlášku“, „Začít“).
+- **Hlavní tlačítko** (`.btn-hero`): pilulka v barvě modulu (přechod a zrno, barevný stín), tmavý text a ikona, 60 px. Tmavé (off-black) jsou jen aktivní přepínače, aby se s akcí nepletly; ikona + akce („1 pivo“, „Zapsat hlášku“, „Začít“).
 - **Tlačítko / čip / segment**: bílá pilulka bez obrysu; aktivní stav tmavá pilulka se světlým textem.
 - **Skóre** (`.score`): tři pole vedle sebe s velkým číslem a popiskem.
 - **Kostičkový graf** (`BlockStacks`): jedna kostička = jeden kus; při větších číslech uvede měřítko.
@@ -369,12 +358,12 @@ Kamarád z party: „Dneska zatím na suchu“, „Třetí. Číšník už ví.�
 ## Do's and Don'ts
 
 - **Do:** jedna hlavní akce na obrazovku, největší prvek pod číslem.
-- **Do:** nový modul = nová barva + nový 16 × 16 sprite + textura, která na téma jen naráží + vlastní herní metafora statistik.
+- **Do:** nový modul = nová barva + nový 16 × 16 sprite + pozadí, které na téma jen naráží + vlastní herní metafora statistik.
 - **Do:** barva nového modulu musí mít odstín zřetelně jiný než ostatní moduly (v carouselu a sekcích na Dnes stojí vedle sebe) a nesmí se krýt s `danger`.
 - **Do:** čísla vždy v Anton a s tabulkovými číslicemi.
 - **Don't:** čistá černá – tmavé prvky jsou vždy off-black `ink`.
 - **Don't:** obrysy kolem karet, tvrdé posunuté stíny, limetka jako barva textu.
-- **Don't:** doslovná textura (bublinky u piv, činky u tréninku).
+- **Don't:** doslovné pozadí (bublinky u piv, činky u tréninku); jen náznak barvou, světlem a tvarem.
 - **Don't:** obličeje na ikonách modulů.
 - **Don't:** kreslit ikony znaky (▶ ★) – vždy sprite.
 - **Don't:** nadpisky nad nadpisy.

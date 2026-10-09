@@ -66,39 +66,18 @@ input, textarea { caret-color: var(--ink); }
   isolation: isolate;
   padding: calc(env(safe-area-inset-top) + 12px) 16px calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 32px);
   color: var(--ink);
-  /* pozadí obrazovky: barva modulu nahoře slábne do kamene, přes ni textura modulu (--tex) a jemné zrno */
-  --tint: linear-gradient(180deg, color-mix(in srgb, var(--accent) var(--tint-a, 44%), #FFFFFF) 0%, color-mix(in srgb, var(--accent) var(--tint-b, 24%), #FFFFFF) 55%, var(--app-bg) 100%);
+  /* záložní tónování pod obrázkem pozadí: barva modulu nahoře slábne do kamene */
+  --tint: linear-gradient(180deg, color-mix(in srgb, var(--accent) 30%, #FFFFFF), var(--app-bg));
 }
 /* pevná vrstva pod obsahem: při posouvání stojí, obsah jede přes ni */
 .screen::before, .screen::after {
   content: ""; position: fixed; top: 0; bottom: 0; left: 50%; width: min(100vw, 520px); transform: translateX(-50%); pointer-events: none;
 }
-.screen::before { z-index: -1; background: var(--tex, none), url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, var(--tint); }
+.screen::before { z-index: -1; background: var(--bg, none) center top / cover no-repeat, var(--tint); }
 /* zrno přes celou obrazovku, aby plochy nepůsobily sterilně */
-.screen::after { z-index: 40; background: url("../assets/tex/grain.svg") 0 0 / 200px 200px; opacity: 0.13; mix-blend-mode: multiply; }
-/* textury: vznikají ze scripts/generate-textures.mjs, na téma modulu jen narážejí */
-[data-tex="dnes"] .screen, [data-tex="zaklad"] .screen, .login {
-  --tint: radial-gradient(80% 42% at 0% 0%, #D5E2C9, transparent 70%), radial-gradient(60% 36% at 100% 6%, #E9E3D3, transparent 70%), linear-gradient(180deg, #EEF0E8, var(--app-bg) 60%);
-}
-[data-tex="dnes"] .screen { --tex: url("../assets/tex/dnes.svg") 30% -40px / 820px 1230px no-repeat; }
-[data-tex="piva"] .screen { --tint-a: 46%; --tint-b: 26%; --tex: url("../assets/tex/piva.png") 0 0 / 420px 420px repeat, url("../assets/tex/piva.png") 210px 140px / 420px 420px repeat, url("../assets/tex/sparkle.svg") 0 0 / 200px 200px; }
-[data-tex="meditace"] .screen { --tint-a: 50%; --tint-b: 26%; --tex: url("../assets/tex/meditace.svg") 50% -60px / 820px 820px no-repeat, url("../assets/tex/sparkle.svg") 0 0 / 200px 200px; }
-[data-tex="trenink"] .screen { --tex: url("../assets/tex/trenink.svg") 20% 0 / 640px 640px repeat; }
-[data-tex="hlaskomat"] .screen { --tex: url("../assets/tex/hlaskomat.svg") 0 0 / 560px 840px no-repeat; }
-[data-tex="untrois"] .screen { --tint-a: 46%; --tint-b: 22%; --tex: url("../assets/tex/untrois.svg") 0 0 / 100% 100% no-repeat, url("../assets/tex/grain-soft.svg") 0 0 / 160px 160px; }
-[data-tex="nakup"] .screen { --tint-a: 42%; --tint-b: 22%; --tex: url("../assets/tex/nakup.svg") 0 0 / 10px 400px repeat; }
-[data-tex="lide"] .screen { --tint-a: 40%; --tint-b: 22%; --tex: url("../assets/tex/lide.svg") 0 0 / 600px 900px no-repeat; }
-[data-tex="vdecnost"] .screen { --tint-a: 42%; --tint-b: 22%; --tex: url("../assets/tex/vdecnost.svg") 0 0 / 300px 300px repeat; }
-[data-tex="cornhole"] .screen { --tint-a: 42%; --tint-b: 22%; --tex: url("../assets/tex/cornhole.svg") 0 0 / 12px 12px repeat; }
-[data-tex="skore"] .screen { --tint-a: 40%; --tint-b: 22%; --tex: url("../assets/tex/skore.svg") 50% 0 / 600px 900px no-repeat; }
-[data-tex="sachy"] .screen { --tint-a: 46%; --tint-b: 24%; --tex: url("../assets/tex/sachy.svg") 0 0 / 520px 520px repeat; }
-[data-tex="odkazy"] .screen { --tint-a: 40%; --tint-b: 22%; --tex: url("../assets/tex/odkazy.svg") 0 0 / 600px 900px no-repeat; }
-[data-tex="mista"] .screen { --tint-a: 42%; --tint-b: 22%; --tex: url("../assets/tex/mista.svg") 0 0 / 600px 900px no-repeat; }
-[data-tex="filmy"] .screen { --tint-b: 22%; --tex: url("../assets/tex/filmy.svg") 50% 0 / 600px 900px no-repeat; }
-[data-tex="wishlist"] .screen { --tint-a: 40%; --tint-b: 22%; --tex: url("../assets/tex/wishlist.svg") 0 0 / 400px 400px repeat; }
-[data-tex="finance"] .screen { --tint-a: 50%; --tint-b: 26%; --tex: url("../assets/tex/finance.svg") 50% 0 / 600px 420px no-repeat; }
-[data-tex="dech"] .screen { --tint-b: 22%; --tex: url("../assets/tex/dech.svg") 0 0 / 600px 900px no-repeat; }
-
+.screen::after { z-index: 40; background: url("../assets/tex/grain.svg") 0 0 / 200px 200px; opacity: 0.16; mix-blend-mode: multiply; }
+/* pozadí obrazovek: měkké rozostřené tvary jako přes mléčné nebo vroubkované sklo, inkoustové koule, světlo ve vodě;
+   generuje scripts/generate-backgrounds.mjs, vybírá Layout podle adresy (--bg). Na téma modulu jen narážejí. */
 /* hlavička modulu: ikona, číslo a hlavní tlačítko stojí přímo na texturovaném pozadí */
 .band { padding-bottom: 4px; }
 .sprite-tile { display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 22%, var(--paper)); border-radius: var(--r-sm); }
@@ -143,15 +122,16 @@ input, textarea { caret-color: var(--ink); }
 }
 .btn.dark { background: var(--dark); color: var(--on-ink); }
 .btn.wide { width: 100%; margin-top: 14px; }
-/* hlavní akce: tmavá pilulka (off-black s jemným přechodem), ikona světlá */
+/* hlavní akce: pilulka v barvě modulu (tmavé jsou jen přepínače, aby se akce s nimi neplety) */
 .btn-hero {
   position: relative; width: 100%; min-height: 60px; margin-top: 18px;
   display: flex; align-items: center; justify-content: center; gap: 12px;
-  border: 0; border-radius: var(--pill); background: var(--dark); color: var(--on-ink);
+  border: 0; border-radius: var(--pill); color: var(--on-accent);
+  background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, linear-gradient(180deg, color-mix(in srgb, var(--accent) 80%, #FFFFFF), var(--accent));
   font-family: var(--font-ui); font-size: 18px;
-  box-shadow: 0 10px 24px rgba(35, 33, 31, 0.18); transition: transform 120ms var(--step), box-shadow 120ms var(--step);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.35); transition: transform 120ms var(--step), box-shadow 120ms var(--step);
 }
-.btn-hero:active { transform: scale(0.98); box-shadow: 0 4px 12px rgba(35, 33, 31, 0.18); }
+.btn-hero:active { transform: scale(0.98); box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 45%, transparent); }
 .btn-hero:disabled { opacity: 1; background: var(--glass); color: var(--slate); box-shadow: none; }
 .chip {
   display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px;
@@ -247,15 +227,16 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .demo-note { margin-top: 10px; font-size: 14px; color: var(--slate); }
 .shelf { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 12px; scrollbar-width: none; }
 .shelf::-webkit-scrollbar { display: none; }
-/* karta modulu: barva modulu přechází ze světlého rohu do sytější, vlastní zrno a jiskření */
+/* karta modulu: výřez z pozadí svého modulu (--bg), jemné jiskření a zrno */
 .fav {
   position: relative; flex: 0 0 160px; min-height: 200px; scroll-snap-align: start;
   display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 28px; color: var(--ink);
   background:
     url("../assets/tex/sparkle.svg") 0 0 / 200px 200px,
     url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px,
-    radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--accent) 22%, #FFFFFF), transparent 60%),
-    linear-gradient(160deg, color-mix(in srgb, var(--accent) 38%, #FFFFFF), color-mix(in srgb, var(--accent) 66%, #FFFFFF));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 45%),
+    var(--bg, none) 50% 62% / 300% auto,
+    color-mix(in srgb, var(--accent) 40%, #FFFFFF);
 }
 .fav .sprite-tile { width: 56px; height: 56px; border-radius: 18px; background: var(--paper); }
 .fav-link { position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
@@ -933,7 +914,7 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 
 /* hláška dne: šalvějová karta s měkkými paprsky a zrnem; patička autor | kontext */
 .day-quote { display: block; margin-top: 18px; padding: 22px 22px 18px; border-radius: 28px; color: var(--ink); text-decoration: none;
-  background: url("../assets/tex/dnes.svg") 40% 0 / 600px 900px no-repeat, url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, linear-gradient(160deg, #E8EFDF, #C3D6B1); }
+  background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, var(--bg, none) 50% 90% / 180% auto, linear-gradient(160deg, #E8EFDF, #C3D6B1); }
 .day-quote-text { font-family: var(--font-ui); font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .day-quote-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; font-size: 14px; color: var(--ink); }
 .day-quote-meta b { padding: 5px 12px; border-radius: var(--pill); background: var(--paper); font-family: var(--font-ui); font-size: 14px; font-weight: 400; }

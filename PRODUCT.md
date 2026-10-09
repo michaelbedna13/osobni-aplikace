@@ -65,8 +65,9 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
 
 ## Brand Commitments
 
-- **Čistý světlý styl s duší** (v3, říjen 2026): bílé karty, výrazné nadpisy Anton verzálkami, tmavé off-black
-  pilulky jako hlavní akce, zrno a textura modulu přes celou obrazovku. Textura na téma jen naráží.
+- **Čistý světlý styl s duší** (v3, říjen 2026): bílé karty, výrazné nadpisy Anton verzálkami, hlavní akce
+  jako pilulky v barvě modulu, tmavé off-black přepínače, zrno a měkké rozostřené pozadí modulu přes celou obrazovku
+  (mléčné a vroubkované sklo, inkoustové koule, světlo ve vodě). Pozadí na téma jen naráží.
   **Pixel art zůstává v ikonách** (sprity modulů a doplňků) – to je výslovně zachovaná vlastnost.
   Čistou černou uživatel nechce, tmavé prvky jsou vždy off-black.
 - Uživatel má rád: clean minimalism, neo brutalism, Bauhaus; jeho reference (screenshoty):

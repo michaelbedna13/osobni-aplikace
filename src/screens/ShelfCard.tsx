@@ -2,6 +2,7 @@ import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Burst } from "../components/Burst";
 import { Sprite } from "../components/Sprite";
+import { backgroundOf } from "../lib/backgrounds";
 import { plural } from "../lib/format";
 import { MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
 import { useSettings } from "../lib/settings";
@@ -40,7 +41,7 @@ interface CardProps {
 function Card({ moduleKey, num, sub, quick, jump = 0 }: CardProps) {
   const m = MODULE_BY_KEY[moduleKey];
   return (
-    <div className={`fav tap${m.ready ? "" : " locked"}`} style={{ "--accent": m.color } as CSSProperties}>
+    <div className={`fav tap${m.ready ? "" : " locked"}`} style={{ "--accent": m.color, "--bg": backgroundOf(moduleKey) } as CSSProperties}>
       <Link to={`/m/${moduleKey}`} className="fav-link" aria-label={`${m.name}: ${num}, ${sub}`} />
       <div className="fav-top">
         <span key={jump} className={`sprite-tile${jump ? " anim-jump" : ""}`}>
