@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="cs">
+<html lang="cs" class="splashing">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
@@ -19,6 +19,10 @@
       #splash::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.5; mix-blend-mode: multiply;
         background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.14 0 0 0 0 0.13 0 0 0 0 0.12 0 0 0 0.9 -0.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
       #splash.out { opacity: 0; visibility: hidden; }
+      /* pod úvodní obrazovkou se appka už vykresluje a načítá, jen je skrytá: na iOS by jinak skleněná lišta
+         (backdrop-filter) mohla na okamžik probliknout přes úvodní obrazovku; stejná barva pozadí kryje i spodní okraj */
+      html.splashing { background: #E6F5C0; }
+      html.splashing #root { visibility: hidden; }
       .splash-flower { width: min(48vw, 200px); overflow: visible; transition: transform 0.45s cubic-bezier(0.5, 0, 0.75, 0); }
       #splash.out .splash-flower { transform: scale(1.12); }
       .splash-flower * { transform-box: view-box; transform-origin: 50px 52px; }

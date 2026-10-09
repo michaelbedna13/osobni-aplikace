@@ -16,6 +16,7 @@ const shownAt = (): number => (window as { __splashAt?: number }).__splashAt ?? 
 export function hideSplash() {
   if (hidden) return;
   hidden = true;
+  document.documentElement.classList.remove("splashing");
   const el = document.getElementById("splash");
   if (!el) return;
   el.classList.add("out");
