@@ -1,14 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "@fontsource/jersey-10";
-import "@fontsource-variable/space-grotesk";
+import "./styles/fonts.css";
 import "./styles/app.css";
 import { App } from "./App";
 import { AuthProvider } from "./lib/auth";
-import { applyBackground } from "./lib/background";
-
-applyBackground();
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 60_000, retry: 1 } },

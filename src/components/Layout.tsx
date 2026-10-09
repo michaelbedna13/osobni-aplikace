@@ -10,12 +10,15 @@ const tabs: { to: string; label: string; icon: SpriteName; match: (path: string)
   { to: "/profil", label: "Profil", icon: "i-user", match: (p) => p.startsWith("/profil") },
 ];
 
+/** Která textura patří pod obrazovku: Dnes, modul podle adresy, jinak základní. */
+const textureOf = (path: string) => (path === "/" ? "dnes" : path.match(/^\/m\/([a-z]+)/)?.[1] ?? "zaklad");
+
 export function Layout() {
   const { pathname } = useLocation();
   useKeyboardAware();
   return (
     <div className="app">
-      <main className="app-main">
+      <main className="app-main" data-tex={textureOf(pathname)}>
         <Outlet />
       </main>
       <nav className="tabbar" aria-label="Hlavní navigace">

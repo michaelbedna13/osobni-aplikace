@@ -3,18 +3,18 @@
 import type { ExpressionSpecification, StyleSpecification } from "maplibre-gl";
 
 export const MAP_COLORS = {
-  land: "#0B2016",
-  green: "#10291C",
-  water: "#0B2A30",
-  building: "#123022",
-  minor: "#1A3527",
-  road: "#24432F",
-  main: "#2F5239",
-  motorway: "#3D6448",
-  border: "#4B6B5A",
-  label: "#C9D8D2",
-  labelDim: "#9FB8B8",
-  halo: "#020F08",
+  land: "#EFEDE6",
+  green: "#DDE7D2",
+  water: "#CFE1E8",
+  building: "#E4E0D6",
+  minor: "#FFFFFF",
+  road: "#FFFFFF",
+  main: "#FBF6EA",
+  motorway: "#F2E1BE",
+  border: "#B5AEA2",
+  label: "#45423D",
+  labelDim: "#77726B",
+  halo: "#FFFFFF",
 };
 
 const C = MAP_COLORS;

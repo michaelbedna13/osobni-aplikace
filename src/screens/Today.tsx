@@ -104,7 +104,7 @@ function QuoteOfDay() {
   if (!quote) return null;
   return (
     <Link to="/m/hlaskomat" className="day-quote">
-      <p className="day-quote-text"><span className="day-quote-mark">„</span>{quote.text}<span className="day-quote-mark">“</span></p>
+      <p className="day-quote-text">„{quote.text}“</p>
       {(quote.author || quote.context) && (
         <p className="day-quote-meta">
           <b>{quote.author ?? ""}</b>

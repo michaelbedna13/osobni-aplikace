@@ -4,7 +4,6 @@ import { MODULES, MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
 import { ImportSection } from "./ImportSection";
-import { BACKGROUNDS, useBackground, type Background } from "../lib/background";
 
 export function Profile() {
   const { session } = useAuth();
@@ -70,28 +69,10 @@ export function Profile() {
         </div>
       </section>
 
-      <BackgroundSection />
 
       <ImportSection />
 
       <p className="version">Verze {__APP_VERSION__}</p>
     </div>
-  );
-}
-
-function BackgroundSection() {
-  const { bg, set } = useBackground();
-  return (
-    <section className="sec">
-      <h2>Pozadí</h2>
-      <div className="bg-options" role="radiogroup" aria-label="Pozadí">
-        {(Object.keys(BACKGROUNDS) as Background[]).map((b) => (
-          <button key={b} type="button" role="radio" aria-checked={bg === b} className={`bg-option bg-${b}${bg === b ? " on" : ""}`} onClick={() => set(b)}>
-            <span className="bg-swatch" aria-hidden="true" />
-            <span>{BACKGROUNDS[b]}</span>
-          </button>
-        ))}
-      </div>
-    </section>
   );
 }

@@ -44,7 +44,7 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Filmy a knihy (zapisují se ručně textem: chci / teď / hotovo, hodnocení, kdo doporučil,
   čtenářská výzva).
   Wishlist (cena, priorita, pravidlo 30 dní, koupeno / už nechci a „ušetřeno“).
-  Místa (tmavá mapa z OpenStreetMap, hledání míst, ťuknutí do mapy, seznamy, chci / byl jsem,
+  Místa (světlá mapa z OpenStreetMap, hledání míst, ťuknutí do mapy, seznamy, chci / byl jsem,
   navigace do Apple Map, Mapy.com a Google).
   Nákup (nákupní seznam: položky se samy řadí podle oddělení v obchodě, množství z textu „2 mléka“, odškrtávání do košíku,
   návrhy toho, co kupuješ často, sdílení seznamu zprávou).
@@ -65,8 +65,10 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
 
 ## Brand Commitments
 
-- **Černé obrysy a tvrdé posunuté stíny** (neo brutalismus) zůstávají – jediná výslovně
-  zachovaná vlastnost dosavadního vzhledu. Symboly a barvy modulů se smí změnit.
+- **Čistý světlý styl s duší** (v3, říjen 2026): bílé karty, výrazné nadpisy Anton verzálkami, tmavé off-black
+  pilulky jako hlavní akce, zrno a textura modulu přes celou obrazovku. Textura na téma jen naráží.
+  **Pixel art zůstává v ikonách** (sprity modulů a doplňků) – to je výslovně zachovaná vlastnost.
+  Čistou černou uživatel nechce, tmavé prvky jsou vždy off-black.
 - Uživatel má rád: clean minimalism, neo brutalism, Bauhaus; jeho reference (screenshoty):
   pastelové karty s černým obrysem a tvrdým stínem, obrazovky v plných barvách, hravé ilustrace.
 - „Fun“ podle uživatele: odměny a radost z akce (animace, oslava), plné barvy a velké tvary,
