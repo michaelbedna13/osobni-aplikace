@@ -317,10 +317,10 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   při zadržení má čárkovaný obrys; uprostřed odpočet. Během cvičení je spodní lišta schovaná (`.focus-mode`).
 - **Okno** (`Modal`) uprostřed obrazovky pro detail hlášky: „obrazovka“ s textem a řada akcí (Top, Kopie, Sdílet,
   Upravit, Smazat). Při psaní se lišta schová (`.kb-open`) a okna i panely se drží nad klávesnicí.
-- **Značka Untrois**: appka se jmenuje Untrois (francouzsky „jedna, tři“ = 13). Ikona appky jsou dvě pixelové
-  kostky, limetková s jedním okem a zlatá se třemi (un, trois), se stínem `edge` na zrnitém limetkovém světle
-  jako pozadí appky; hrany kostek tmavší (`#7BA33A`, `#C9A227`). Zdroj `public/favicon.svg`, PNG přes `npm run icons`
-  s okrajem kolem kostek, aby je iOS nezaoblil. Modul 13 – Untrois má barvu `lime`.
+- **Značka Untrois**: appka se jmenuje Untrois (francouzsky „jedna, tři“ = 13). Ikona appky je off-black květina
+  se **13 lístky** (číslo Untrois) a **okem** uprostřed (stejné oko jako ikona Meditace), vystřižená z papíru na zrnitém
+  limetkovém přechodu (barva modulu 13). Zdroj `public/favicon.svg`, PNG přes `npm run icons` s okrajem, aby je iOS
+  nezaoblil a kulatá ikona Androidu nic neořízla. Modul 13 – Untrois má barvu `lime`.
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
   Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, „Moje moduly“ zůstávají bez tečky.
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po

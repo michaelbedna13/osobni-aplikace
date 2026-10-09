@@ -69,7 +69,7 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   jako pilulky v barvě modulu, tmavé off-black přepínače, jedno pozadí pro celou appku: zrnitý barevný přechod,
   který dole slábne do bílé; mění se jen barva podle modulu.
   **Ikony jako vystřižené z papíru** (plné off-black siluety s výstřižky, inspirace štětcovou kresbou a vystřiženými
-  tvary), bez podkladových dlaždic. Pixel art z appky zmizel (zůstal jen ve hře Cornhole a v ikoně appky).
+  tvary), bez podkladových dlaždic. Pixel art z appky zmizel (zůstal jen ve hře Cornhole). Ikona appky: květina se 13 lístky a okem.
   Čistou černou uživatel nechce, tmavé prvky jsou vždy off-black.
 - Uživatel má rád: clean minimalism, neo brutalism, Bauhaus; jeho reference (screenshoty):
   pastelové karty s černým obrysem a tvrdým stínem, obrazovky v plných barvách, hravé ilustrace.
