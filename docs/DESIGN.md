@@ -195,7 +195,8 @@ světlé i tmavé tečky jako u stříkané barvy). Definice je jedna proměnná
 
 - `.screen::before` (pevně pod obsahem, při posouvání stojí): `--grad`;
 - `.screen::after` (nad obsahem): jemné zrno `grain.svg`, krytí 16 %, režim `multiply`;
-- **karty modulů na Dnes** (`.fav`) mají stejný přechod v barvě svého modulu.
+- **karty modulů na Dnes** (`.fav`) mají stejný přechod v barvě svého modulu, světlou hranu nahoře a měkký stín
+  v tmavém odstínu modulu, aby nesplývaly s pozadím.
 
 Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; výstup je pokaždé stejný).
 
@@ -210,7 +211,7 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 ## Layout
 
 - Jeden sloupec, okraj 16 px, max. šířka 520 px (na počítači uprostřed na ploše `desk`).
-- Obrazovka modulu: lišta (kulaté tlačítko zpět + název) → ikona na bílé dlaždici s barevným stínem → obří číslo,
+- Obrazovka modulu: lišta (kulaté tlačítko zpět + název) → ikona v tmavém odstínu modulu → obří číslo,
   popisek → hlavní tlačítko → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
   jen vybrané záložky. Hlavička nemá vlastní kartu, stojí přímo na texturovaném pozadí.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
@@ -324,7 +325,8 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
 - **Karta modulu v pásu** (`.fav`): výřez z pozadí modulu se zrnem a jiskřením, ikona přímo na kartě, název, číslo v Anton; rychlá akce je malá světlá skleněná pilulka vpravo nahoře (36 px), aby se nebila s ikonou.
 - **Záložky** (`Tabs`): bílá pilulka přes celou šířku, aktivní položka tmavá.
-- **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí; v hlavičce modulu 120 px s měkkým stínem.
+- **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí. V hlavičce modulu je menší (72 px) a v tmavém
+  odstínu modulu, aby hlavní roli mělo číslo pod ní.
 - **Okno s formulářem** (`Sheet` → `FormWindow`): uprostřed obrazovky, nadpis a křížek, drží se nad klávesnicí, pozadí se neposouvá; **potvrzení** (`useToast`, tmavá pilulka s limetkovou akcí „Vrátit“).
 
 ### Pohyb
