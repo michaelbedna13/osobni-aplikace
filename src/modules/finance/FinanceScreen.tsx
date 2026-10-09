@@ -55,7 +55,7 @@ export function FinanceScreen() {
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
         <Topbar title="Finance" />
-        <div className="hero">
+        <div className="hero hero-long">
           <span className="icon-slot"><Icon name="finance" size={96} /></span>
           <span className="hero-num">{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}</span>
           <span className="hero-cap">Kč měsíčně pravidelně</span>

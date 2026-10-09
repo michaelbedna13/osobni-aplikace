@@ -63,6 +63,11 @@ colors:
   nakup-deep: "#1E7466"
   finance: "#FEE761"
 typography:
+  poster:
+    fontFamily: "Anton, Impact, sans-serif"
+    fontSize: "128px"
+    fontWeight: 400
+    lineHeight: 0.85
   hero:
     fontFamily: "Anton, Impact, sans-serif"
     fontSize: "96px"
@@ -180,7 +185,7 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 - **Pozadí** `app-bg` `#F4F3EE` (teplý kámen), na počítači kolem appky `desk`. Vedlejší text `slate`, jemné
   plochy `surface-2` (pole formulářů), nečinné sloupce grafů `idle`, tenké linky `edge` (12 % `ink`).
 - **Karty** `glass`: bílá s 95 % krytím, bez obrysu, s jemným stínem (`--card-shadow`), aby byly na světlém pozadí dobře vidět.
-- **Barva modulu = akcent (`--accent`, tmavší `--deep`)**: hlavní tlačítko, zrnitý přechod pozadí a karty modulů na Dnes, stín pod ikonou v hlavičce, grafy, splněné dny, tečku u nadpisu sekce.
+- **Barva modulu = akcent (`--accent`, tmavší `--deep`)**: hlavní tlačítko, zrnitý přechod pozadí a karty modulů na Dnes, grafy, splněné dny, tečku u nadpisu sekce.
 - **Dnes, Moduly a Profil**: pozadí přechází nahoře ze šalvěje (`sage`, `sage-deep`) dolů do `fade`.
 - **Limetka** `lime` jen jako plocha (akce „Vrátit“, nová položka, odškrtnutá série); jako text je nečitelná,
   proto „dluží mi“, autor hlášky apod. používají tmavší `lime-ink`. Hvězdy a oblíbené `gold`, chyby `danger`.
@@ -195,7 +200,8 @@ světlé i tmavé tečky jako u stříkané barvy). Definice je jedna proměnná
 
 - `.screen::before` (pevně pod obsahem, při posouvání stojí): `--grad`;
 - `.screen::after` (nad obsahem): jemné zrno `grain.svg`, krytí 16 %, režim `multiply`;
-- **karty modulů na Dnes** (`.fav`) mají stejný přechod v barvě svého modulu.
+- **karty modulů na Dnes** (`.fav`) mají hladký přechod v barvě svého modulu **bez zrna** a jemnou světlou hranu:
+  pozadí je zrnité, karta čistá, takže se oddělí sama, bez stínu.
 
 Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; výstup je pokaždé stejný).
 
@@ -204,13 +210,15 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - **Anton** – nadpisy (vždy verzálkami) a velká čísla (`.hero-num`, skóre, karty modulů). Zúžený, tučný.
 - **Outfit** – text (400) a ovládání: tlačítka, popisky, záložky, čipy používají „Outfit UI“ (= Outfit 600),
   takže jsou polotučné bez nastavování váhy. Obě písma jsou lokálně v `src/assets/fonts` (SIL OFL).
-- Stupnice velikostí (jen tyto): 96 / 56 / 40 / 32 / 24 / 20 px pro Anton, 24 / 18 / 16 / 14 px pro Outfit.
+- Stupnice velikostí (jen tyto): 128 (číslo v hlavičce modulu) / 96 / 56 / 40 / 32 / 24 / 20 px pro Anton, 24 / 18 / 16 / 14 px pro Outfit.
   Nikdy umělé ztučnění (`font-synthesis: none`). Žádné nadpisky (eyebrow) nad nadpisy.
 
 ## Layout
 
 - Jeden sloupec, okraj 16 px, max. šířka 520 px (na počítači uprostřed na ploše `desk`).
-- Obrazovka modulu: lišta (kulaté tlačítko zpět + název) → ikona na bílé dlaždici s barevným stínem → obří číslo,
+- Obrazovka modulu: lišta (kulaté tlačítko zpět + název) → **hlavička jako plakát**: obří číslo (128 px) vlevo dole
+  jako titulek, ikona velká (230 px), natočená o −8° a oříznutá pravým okrajem jako vystřižený papír za textem
+  (číslo je informace, ikona ilustrace, nebijí se) →
   popisek → hlavní tlačítko → skóre ve 3 polích → **záložky** (např. Týden / Statistiky / Lístek) → obsah
   jen vybrané záložky. Hlavička nemá vlastní kartu, stojí přímo na texturovaném pozadí.
 - Panely v záložce mají nadpis uvnitř (`h3`), mezera mezi panely 14 px.
@@ -324,7 +332,8 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.
 - **Karta modulu v pásu** (`.fav`): výřez z pozadí modulu se zrnem a jiskřením, ikona přímo na kartě, název, číslo v Anton; rychlá akce je malá světlá skleněná pilulka vpravo nahoře (36 px), aby se nebila s ikonou.
 - **Záložky** (`Tabs`): bílá pilulka přes celou šířku, aktivní položka tmavá.
-- **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí; v hlavičce modulu 120 px s měkkým stínem.
+- **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí. V hlavičce modulu je plakátová ilustrace
+  (viz Layout); souhrny po hře a tréninku (`.summary-hero`) zůstávají na střed s menší ikonou.
 - **Okno s formulářem** (`Sheet` → `FormWindow`): uprostřed obrazovky, nadpis a křížek, drží se nad klávesnicí, pozadí se neposouvá; **potvrzení** (`useToast`, tmavá pilulka s limetkovou akcí „Vrátit“).
 
 ### Pohyb

@@ -80,7 +80,7 @@ input, textarea { caret-color: var(--ink); }
 /* pozadí: zrnitý barevný přechod – nahoře barva modulu (vlevo světlejší, vpravo tmavší odstín), dole slábne do bílé;
    stejný na všech obrazovkách, mění se jen barva (--accent, --deep) */
 .screen::before { z-index: -1; background: var(--grad); }
-.screen, .fav {
+.screen {
   --grad:
     url("../assets/tex/spray.svg") 0 0 / 180px 180px,
     radial-gradient(75% 45% at 100% 0%, color-mix(in srgb, var(--deep) 62%, var(--accent)) 0%, transparent 75%),
@@ -241,12 +241,14 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .demo-note { margin-top: 10px; font-size: 14px; color: var(--slate); }
 .shelf { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; margin: 0 -16px; padding: 2px 16px 12px; scrollbar-width: none; }
 .shelf::-webkit-scrollbar { display: none; }
-/* karta modulu: stejný zrnitý přechod jako pozadí obrazovky, v barvě modulu */
+/* karta modulu: hladký přechod v barvě modulu (bez zrna) – pozadí je zrnité, karta čistá, takže se od něj oddělí sama */
 .fav {
   position: relative; flex: 0 0 160px; min-height: 200px; scroll-snap-align: start;
   display: flex; flex-direction: column; gap: 4px; padding: 16px; border-radius: 28px; color: var(--ink);
-  background: var(--grad);
-  background-size: 180px 180px, 100% 100%, 100% 100%, 100% 260%;
+  background:
+    radial-gradient(75% 45% at 100% 0%, color-mix(in srgb, var(--deep) 45%, var(--accent)) 0%, transparent 75%),
+    linear-gradient(170deg, color-mix(in srgb, var(--accent) 70%, #FFFFFF), var(--accent));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 .fav .icon-slot { width: 56px; height: 56px; justify-items: start; align-items: start; }
 .fav .icon-slot .icon { width: 52px; height: 52px; }
@@ -283,6 +285,16 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .hero { position: relative; display: grid; justify-items: center; text-align: center; margin-top: 16px; }
 .hero .icon-slot { width: 132px; height: 132px; margin-bottom: 6px; filter: drop-shadow(0 10px 14px rgba(35, 33, 31, 0.18)); }
 .hero .icon-slot .icon { width: 120px; height: 120px; }
+/* hlavička modulu jako plakát: obří číslo vlevo dole jako titulek, ikona velká, natočená a oříznutá pravým okrajem
+   jako vystřižený papír nalepený na plakát; číslo je informace, ikona ilustrace, takže se nebijí o pozornost */
+.module { overflow-x: clip; }
+.hero:not(.summary-hero) { justify-items: start; text-align: left; align-content: end; min-height: 250px; margin-top: 8px; }
+.hero:not(.summary-hero) .icon-slot { position: absolute; z-index: -1; right: -46px; top: -20px; width: 230px; height: 230px; margin: 0; filter: none; }
+.hero:not(.summary-hero) .icon-slot .icon { width: 230px; height: 230px; transform: rotate(-8deg); }
+.hero:not(.summary-hero) .hero-num { font-size: 128px; line-height: 0.85; }
+.hero:not(.summary-hero).hero-long .hero-num { font-size: 96px; }
+.hero:not(.summary-hero) .hero-cap { font-size: 20px; margin-top: 6px; }
+.hero:not(.summary-hero) .hero-line { max-width: 34ch; }
 .hero-num { font-family: var(--font-display); font-size: 96px; line-height: 0.95; font-variant-numeric: tabular-nums; }
 .hero-cap { font-family: var(--font-ui); font-size: 18px; }
 .hero-line { margin-top: 4px; color: var(--slate); min-height: 24px; }
