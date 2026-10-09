@@ -328,7 +328,7 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   limetkovém přechodu (barva modulu 13). Zdroj `public/favicon.svg`, PNG přes `npm run icons` s okrajem, aby je iOS
   nezaoblil a kulatá ikona Androidu nic neořízla. Modul Untrois má barvu `lime`.
 - **Úvodní obrazovka** (`#splash` přímo v `index.html`, aby byla vidět hned, ještě před JS): stejný zrnitý limetkový
-  přechod jako ikona, uprostřed znak Untrois a pod ním slovo UNTROIS v Antonu s prostrkáním. Animace: střed vyskočí,
+  přechod jako ikona, uprostřed jen znak Untrois (bez nápisu). Animace: střed vyskočí,
   13 lístků se rozvine jeden po druhém dokola, oko se otevře, zornička se rozhlíží a květ se pomalu otáčí. Zmizí
   (oko mrkne, znak se zvětší, obrazovka prolne), až nic nenačítá (`src/lib/splash.ts`: aspoň 1,3 s, nejdéle 4,5 s,
   počasí se nečeká), takže na Dnes neproblikají nuly. Tvar lístků kreslí `scripts/draw-splash.mjs`. Při omezeném
