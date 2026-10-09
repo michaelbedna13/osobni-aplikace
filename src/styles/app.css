@@ -92,6 +92,9 @@ input, textarea { caret-color: var(--ink); }
     radial-gradient(70% 40% at 0% 26%, color-mix(in srgb, var(--accent) 45%, #FFFFFF) 0%, transparent 72%),
     linear-gradient(180deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 70%, #FFFFFF) 34%, color-mix(in srgb, var(--accent) 16%, #F7F7F4) 58%, #F7F7F4 78%);
 }
+/* švih zpět (src/lib/swipeBack.ts): obrazovka jede s prstem, pozadí s ní (jinak je pevné k displeji), stín na levé hraně */
+.screen.swiping { will-change: transform; box-shadow: -14px 0 32px rgba(35, 33, 31, 0.18); }
+.screen.swiping::before, .screen.swiping::after { position: absolute; top: var(--swipe-top, 0px); bottom: auto; height: 100lvh; }
 /* zrno přes celou obrazovku, aby plochy nepůsobily sterilně */
 .screen::after { z-index: 40; background: url("../assets/tex/grain.svg") 0 0 / 200px 200px; opacity: 0.07; mix-blend-mode: multiply; }
 /* hlavička modulu: ikona, číslo a hlavní tlačítko stojí přímo na texturovaném pozadí */

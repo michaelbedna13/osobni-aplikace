@@ -240,6 +240,10 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   `theme-color` sleduje barvu obrazovky (pro Safari). iOS si styl lišty pamatuje z doby přidání na plochu.
 - **Spodní lišta**: plovoucí pilulka ze světlého skla (rozmazané pozadí prosvítá) uprostřed dole jen se třemi ikonami
   (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní položka je tmavá pilulka se světlou ikonou; obrazovky modulů patří pod Moduly.
+- **Švih zpět** (`src/lib/swipeBack.ts`): na obrazovkách se šipkou zpět švih od levého okraje (začátek do 28 px)
+  vrací zpět jako v nativní appce. Obrazovka jede s prstem (`.screen.swiping`, stín na levé hraně, pozadí jede s ní),
+  po přetažení přes třetinu šířky nebo rychlém švihu odjede a appka přejde tam, kam vede šipka; kdo přišel z Dnes,
+  vrátí se na Dnes. Jinak se obrazovka vrátí na místo. Nefunguje v otevřeném okně, na mapě a na hřišti Cornhole.
 
 ## Elevation & Depth
 

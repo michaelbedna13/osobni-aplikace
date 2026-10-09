@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useKeyboardAware } from "../lib/keyboard";
 import { MODULE_BY_KEY, isModuleKey } from "../lib/modules";
+import { useSwipeBack } from "../lib/swipeBack";
 import type { IconName } from "../lib/icons";
 import { Icon } from "./Icon";
 
@@ -30,6 +31,7 @@ export function Layout() {
   const { pathname } = useLocation();
   useKeyboardAware();
   useStatusBarColor(pathname);
+  useSwipeBack();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return (
     <div className="app">
