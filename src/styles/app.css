@@ -445,6 +445,16 @@ a.quote-card { display: grid; gap: 10px; padding: 16px; }
 .pin-list li { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
 .pin-list li + li { border-top: 1px solid var(--edge); }
 
+/* Profil → Vzhled: tři vzorky (podklad + znak v barvě popředí), vybraný s rámečkem v barvě textu */
+.theme-pick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.theme-opt { display: grid; justify-items: center; gap: 8px; padding: 10px 6px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); font-family: var(--font-ui); font-size: 16px; }
+.theme-opt.on { box-shadow: inset 0 0 0 2px var(--ink); }
+.theme-swatch { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--edge); }
+/* vzorek ukazuje svůj vzhled, ne aktuální: ikona v barvě popředí vzorku, bez přepisu z duotone */
+html[data-theme^="duo"] .theme-swatch .icon { color: currentColor !important; }
+.theme-swatch .icon { color: inherit; }
+.theme-note { margin-top: 12px; }
+
 /* Profil → Upozornění: přepínač, název s nápovědou, hodina */
 .notify-list { list-style: none; margin: 0; padding: 0; }
 .notify-list li { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
@@ -1088,6 +1098,16 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .score > div + div { border-left: 1px solid var(--edge); }
 .list li + li, .pin-list li + li { border-top: 1px solid var(--edge); }
 
+/* Profil → Vzhled: tři vzorky (podklad + znak v barvě popředí), vybraný s rámečkem v barvě textu */
+.theme-pick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.theme-opt { display: grid; justify-items: center; gap: 8px; padding: 10px 6px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); font-family: var(--font-ui); font-size: 16px; }
+.theme-opt.on { box-shadow: inset 0 0 0 2px var(--ink); }
+.theme-swatch { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--edge); }
+/* vzorek ukazuje svůj vzhled, ne aktuální: ikona v barvě popředí vzorku, bez přepisu z duotone */
+html[data-theme^="duo"] .theme-swatch .icon { color: currentColor !important; }
+.theme-swatch .icon { color: inherit; }
+.theme-note { margin-top: 12px; }
+
 /* Profil → Upozornění: přepínač, název s nápovědou, hodina */
 .notify-list { list-style: none; margin: 0; padding: 0; }
 .notify-list li { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
@@ -1137,3 +1157,41 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .debt-chip b { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .debt-chip.plus b { color: var(--lime-ink); }
 .debt-chip.minus b { color: var(--danger); }
+
+/* ---------- vzhled „duotone“ (Profil → Vzhled, src/lib/theme.ts) ----------
+   Jen dvě barvy jako logo: krémová na off-black, nebo na lesní zelené. Barvy modulů se nahradí krémovou,
+   karty jsou o kousek světlejší než podklad. html[data-theme] nastaví skript v index.html ještě před vykreslením. */
+html[data-theme="duo-black"] { --duo-bg: #23211F; --duo-card: #2E2B28; }
+html[data-theme="duo-green"] { --duo-bg: #2F4A36; --duo-card: #3A5843; }
+html[data-theme^="duo"] {
+  --duo-cream: #F3EADB;
+  --ink: var(--duo-cream); --ink-2: #FFF8EC; --on-ink: var(--duo-bg); --on-accent: var(--duo-bg);
+  --paper: var(--duo-card); --glass: var(--duo-card);
+  --surface-2: color-mix(in srgb, var(--duo-cream) 9%, var(--duo-bg)); --idle: color-mix(in srgb, var(--duo-cream) 18%, var(--duo-bg));
+  --edge: rgba(243, 234, 219, 0.14); --slate: color-mix(in srgb, var(--duo-cream) 62%, var(--duo-bg));
+  --app-bg: var(--duo-bg); --desk: var(--duo-bg);
+  --lime: var(--duo-cream); --lime-ink: var(--duo-cream); --gold: var(--duo-cream); --sage: var(--duo-cream);
+  --card-shadow: inset 0 0 0 1px rgba(243, 234, 219, 0.08); --shadow: none; --shadow-big: 0 14px 36px rgba(0, 0, 0, 0.35);
+  --dark: linear-gradient(180deg, #FFF8EC, var(--duo-cream));
+  /* zvýraznění v grafech (jinak barva modulu, src/components/Charts.tsx) */
+  --chart-hl: var(--duo-cream);
+  color-scheme: dark;
+}
+html[data-theme^="duo"] .fin-chart { --fin-mark: var(--duo-cream); }
+/* barvy modulů → krémová (i u prvků, které si barvu modulu nastavují samy) */
+html[data-theme^="duo"] body * { --accent: var(--duo-cream) !important; --deep: var(--duo-cream) !important; }
+html[data-theme^="duo"] .screen { --grad: var(--duo-bg); }
+html[data-theme^="duo"] .fav, html[data-theme^="duo"] .tiles .tile { --module-card: var(--duo-card); box-shadow: inset 0 0 0 1px rgba(243, 234, 219, 0.1); }
+html[data-theme^="duo"] .btn-hero { background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, var(--duo-cream); box-shadow: none; }
+/* ikony: barva textu i tam, kde jinak mají barvu modulu; barevné kousky (pytlík) v barvě podkladu */
+html[data-theme^="duo"] .icon { color: inherit !important; }
+html[data-theme^="duo"] .icon > path { fill: var(--duo-bg); }
+html[data-theme^="duo"] .icon > path[fill^="color-mix"] { fill: color-mix(in srgb, var(--duo-cream) 22%, var(--duo-bg)); }
+html[data-theme^="duo"] .tabbar-glass { background: color-mix(in srgb, var(--duo-card) 78%, transparent); box-shadow: inset 0 0 0 1px rgba(243, 234, 219, 0.12), 0 12px 32px rgba(0, 0, 0, 0.35); }
+html[data-theme^="duo"] .fav-quick { background: color-mix(in srgb, var(--duo-cream) 14%, var(--duo-card)); box-shadow: none; }
+html[data-theme^="duo"] .sh-paused { background: color-mix(in srgb, var(--duo-bg) 88%, transparent); }
+html[data-theme^="duo"] .sh-play { --sq-light: color-mix(in srgb, var(--duo-cream) 80%, var(--duo-bg)); --sq-dark: color-mix(in srgb, var(--duo-cream) 35%, var(--duo-bg)); }
+html[data-theme^="duo"] .map-box { background: var(--duo-card); }
+/* na krémové ploše (zaškrtnuto, vybráno) má ikona barvu podkladu */
+html[data-theme^="duo"] .nk-row.done .nk-box, html[data-theme^="duo"] .wx-check.on { color: var(--duo-bg); }
+html[data-theme^="duo"] .toast-action { background: var(--duo-bg); color: var(--duo-cream); }

@@ -41,6 +41,17 @@ colors:
   selected-square: "rgba(244, 211, 94, 0.85)"
   bag-shade: "rgba(0, 0, 0, 0.12)"
   finance-mark: "#A87A10"
+  duo-cream: "#F3EADB"
+  duo-cream-hi: "#FFF8EC"
+  duo-black: "#23211F"
+  duo-black-card: "#2E2B28"
+  duo-green: "#2F4A36"
+  duo-green-card: "#3A5843"
+  duo-edge: "rgba(243, 234, 219, 0.14)"
+  duo-edge-soft: "rgba(243, 234, 219, 0.12)"
+  duo-edge-faint: "rgba(243, 234, 219, 0.1)"
+  duo-edge-line: "rgba(243, 234, 219, 0.08)"
+  duo-shadow: "rgba(0, 0, 0, 0.35)"
   piva: "#FEAE34"
   piva-deep: "#F77622"
   hlaskomat: "#0099DB"
@@ -193,6 +204,16 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 - **Limetka** `lime` jen jako plocha (akce „Vrátit“, nová položka, odškrtnutá série); jako text je nečitelná,
   proto „dluží mi“, autor hlášky apod. používají tmavší `lime-ink`. Hvězdy a oblíbené `gold`, chyby `danger`.
 - **Zamčené moduly**: šedá dlaždice, ikona v odstínech šedi.
+
+## Vzhled „duotone“
+
+Profil → Vzhled: **Barevný** (výchozí, každý modul má svou barvu), **Tmavý** (krémová `#F3EADB` na off-black `#23211F`,
+karty `#2E2B28`) a **Zelený** (krémová na lesní zelené `#2F4A36`, karty `#3A5843`). Duotone jsou jen dvě barvy jako logo:
+tokeny se přemapují (`--ink` krémová, `--paper`/`--glass` karta, `--on-ink` podklad, `--dark` krémová pilulka s tmavým
+textem), všechny barvy modulů (`--accent`, `--deep`, zvýraznění v grafech `--chart-hl`, `--fin-mark`) jsou krémové,
+dlaždice modulů jsou karty a barevné kousky ikon mají barvu podkladu. Pozadí je plné bez přechodu, film zůstává.
+Uloženo jen v zařízení (`localStorage` `theme`), `html[data-theme]` nastaví skript v `index.html` ještě před
+vykreslením, takže nic nepřebliká; úvodní obrazovka je v barvách vzhledu. Kód: `src/lib/theme.ts`, konec `app.css`.
 
 ## Pozadí a zrno
 

@@ -11,6 +11,10 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <title>untrois</title>
+    <script>
+      // vzhled (Profil → Vzhled, src/lib/theme.ts) hned při načtení, ať nic nepřebliká
+      try { var t = localStorage.getItem("theme"); if (t === "duo-black" || t === "duo-green") document.documentElement.dataset.theme = t; } catch (e) {}
+    </script>
     <style>
       /* úvodní obrazovka: znak untrois se rozvine, dokud se nenačtou data (skrývá ji src/lib/splash.ts) */
       #splash { position: fixed; inset: 0; z-index: 1000; display: grid; place-content: center; justify-items: center; color: #23211F;
@@ -45,6 +49,13 @@
       @keyframes splash-look { 0%, 20%, 100% { translate: 0 0; } 35%, 50% { translate: -4px 0; } 65%, 80% { translate: 4px 0; } }
       @keyframes splash-spin { to { rotate: 360deg; } }
       @media (prefers-reduced-motion: reduce) { #splash *, .splash-flower * { animation: none !important; } }
+      /* vzhled duotone (Profil → Vzhled): úvodní obrazovka jen v krémové na podkladu vzhledu */
+      html[data-theme="duo-black"] { --duo-bg: #23211F; }
+      html[data-theme="duo-green"] { --duo-bg: #2F4A36; }
+      html[data-theme^="duo"].splashing, html[data-theme^="duo"].splashing body, html[data-theme^="duo"] #splash { background: var(--duo-bg); }
+      html[data-theme^="duo"] #splash::after { mix-blend-mode: soft-light; }
+      html[data-theme^="duo"] .splash-flower .bloom, html[data-theme^="duo"] .splash-flower .pupil { fill: #F3EADB; }
+      html[data-theme^="duo"] .splash-flower .eye { fill: var(--duo-bg); }
     </style>
   </head>
   <body>

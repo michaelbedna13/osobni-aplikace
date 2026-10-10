@@ -5,10 +5,12 @@ import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
 import { ImportSection } from "./ImportSection";
 import { NotifySection } from "./NotifySection";
+import { THEMES, useTheme } from "../lib/theme";
 
 export function Profile() {
   const { session } = useAuth();
   const { pinned, setPinned, error } = usePinnedModules();
+  const { theme, setTheme } = useTheme();
   const unpinned = MODULES.filter((m) => !pinned.includes(m.key));
 
   const move = (index: number, delta: number) => {
@@ -35,6 +37,21 @@ export function Profile() {
               <button className="btn tap wide" onClick={signOut}>Odhlásit se</button>
             </>
           )}
+        </div>
+      </section>
+
+      <section className="sec" id="vzhled">
+        <h2>Vzhled</h2>
+        <div className="panel">
+          <div className="theme-pick" role="radiogroup" aria-label="Vzhled">
+            {THEMES.map((t) => (
+              <button key={t.id} type="button" role="radio" aria-checked={theme === t.id} className={`theme-opt${theme === t.id ? " on" : ""}`} onClick={() => setTheme(t.id)}>
+                <span className="theme-swatch" style={{ background: t.bg, color: t.fg }} aria-hidden="true"><Icon name="untrois" size={30} /></span>
+                <span>{t.name}</span>
+              </button>
+            ))}
+          </div>
+          <p className="small muted theme-note">{theme === "barevny" ? "Každý modul má svou barvu." : "Jen dvě barvy jako logo. Platí pro tohle zařízení."}</p>
         </div>
       </section>
 

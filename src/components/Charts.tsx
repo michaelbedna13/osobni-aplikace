@@ -26,7 +26,7 @@ export function BlockStacks({ values, labels, highlight, color, label }: StackPr
             <span className="stack-num">{v ?? ""}</span>
             <span className="stack-blocks">
               {Array.from({ length: v ? Math.ceil(v / unit) : 0 }, (_, j) => (
-                <i key={j} style={{ background: i === highlight ? color : undefined }} />
+                <i key={j} style={{ background: i === highlight ? `var(--chart-hl, ${color})` : undefined }} />
               ))}
               {v === 0 && <i className="zero" />}
             </span>
@@ -60,7 +60,7 @@ export function HBars({ rows, highlight, color, digits = 1, badge, label }: {
         <li key={r.label} className={i === highlight ? "on" : undefined}>
           <span className="hbar-label">{r.label}</span>
           <span className="hbar-track">
-            <i style={{ width: `${(r.value / max) * 100}%`, background: i === highlight ? color : undefined }} />
+            <i style={{ width: `${(r.value / max) * 100}%`, background: i === highlight ? `var(--chart-hl, ${color})` : undefined }} />
           </span>
           <b className="hbar-value">{formatNumber(r.value, digits)}</b>
           <span className="hbar-badge">{i === highlight ? badge : null}</span>
@@ -79,7 +79,7 @@ export function Columns({ values, labels, highlight, color, label }: StackProps)
         <div key={i} className={`col${i === highlight ? " on" : ""}`}>
           <span className="col-num">{v || ""}</span>
           <span className="col-track">
-            <i style={{ height: `${((v ?? 0) / max) * 100}%`, background: i === highlight ? color : undefined }} />
+            <i style={{ height: `${((v ?? 0) / max) * 100}%`, background: i === highlight ? `var(--chart-hl, ${color})` : undefined }} />
           </span>
           <span className="col-label">{labels[i]}</span>
         </div>
