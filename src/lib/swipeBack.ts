@@ -133,7 +133,9 @@ export function useSwipeBack() {
         place(el, width, ms);
         window.setTimeout(() => {
           if (target) navigate(target);
-          requestAnimationFrame(() => reset(el));
+          // stará obrazovka zůstane mimo displej, dokud ji React neodstraní: přechod trvá i pár snímků a vrácení
+          // na místo hned po navigaci ji na okamžik ukázalo (problikla). Vrátí se, jen kdyby na stránce zůstala.
+          window.setTimeout(() => { if (el.isConnected) { reset(el); setPeek(null); } }, 900);
         }, ms);
       } else {
         place(el, 0, 260);
