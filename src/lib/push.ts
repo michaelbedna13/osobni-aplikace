@@ -69,13 +69,19 @@ function base64UrlToBytes(value: string): Uint8Array<ArrayBuffer> {
   return bytes;
 }
 
+/** Chyba z funkce i s její zprávou (funkce vrací { error }), ať je z Profilu vidět, co přesně selhalo. */
+async function functionError(res: Response) {
+  const detail = await res.json().then((b: { error?: string }) => b.error).catch(() => undefined);
+  return new Error(`untrois-push ${res.status}${detail ? `: ${detail}` : ""}`);
+}
+
 const bytesToBase64Url = (buf: ArrayBuffer) =>
   btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 
 /** Veřejný klíč VAPID: funkce untrois-push si pár klíčů vytvoří sama při prvním volání, soukromý nikdy neopustí databázi. */
 async function publicKey(): Promise<string> {
   const res = await fetch(FUNCTION_URL);
-  if (!res.ok) throw new Error(`untrois-push ${res.status}`);
+  if (!res.ok) throw await functionError(res);
   const { publicKey } = (await res.json()) as { publicKey?: string };
   if (!publicKey) throw new Error("chybí veřejný klíč");
   return publicKey;
@@ -145,7 +151,7 @@ export function usePushDevice() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ test: true }),
       });
-      if (!res.ok) throw new Error(`untrois-push ${res.status}`);
+      if (!res.ok) throw await functionError(res);
       const { sent } = (await res.json()) as { sent?: number };
       if (!sent) throw new Error("Nepodařilo se doručit na žádné zařízení.");
     },

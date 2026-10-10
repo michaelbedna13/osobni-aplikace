@@ -51,7 +51,9 @@ Upozornění posílá funkce Supabase `untrois-push`, kterou každou celou hodin
 vytvoří sama při prvním volání a drží je v tabulce `push_vapid` (čte ji jen service role). Žádné tajné klíče se nikam nezadávají.
 
 1. **SQL Editor** → vlož celý soubor `supabase/migrations/20261010120000_upozorneni.sql` → **Run**
-   (tabulky `push_subscriptions`, `notification_log`, `push_vapid`, sloupec `user_settings.notification_prefs`, hodinový job).
+   (tabulky `push_subscriptions`, `notification_log`, `push_vapid`, sloupec `user_settings.notification_prefs`, hodinový job)
+   a pak stejně `supabase/migrations/20261010130000_upozorneni_prava.sql` (práva pro funkci; nové tabulky se tu
+   automaticky nezpřístupňují ani service roli).
 2. **Edge Functions** → **Deploy a new function** → **Via Editor**, název `untrois-push`,
    obsah nahradit souborem `supabase/functions/untrois-push/index.ts` → **Deploy**.
 3. V detailu funkce → **Details** vypnout **Enforce JWT verification** (volá ji pg_cron bez přihlášení;
