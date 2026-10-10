@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Icon } from "../components/Icon";
 import { signOut, useAuth } from "../lib/auth";
 import { MODULES, MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
@@ -6,11 +7,13 @@ import { isDemo } from "../lib/supabase";
 import { ImportSection } from "./ImportSection";
 import { NotifySection } from "./NotifySection";
 import { THEMES, useTheme } from "../lib/theme";
+import { readPlayInSilent, setPlayInSilent } from "../lib/sound";
 
 export function Profile() {
   const { session } = useAuth();
   const { pinned, setPinned, error } = usePinnedModules();
   const { theme, setTheme } = useTheme();
+  const [silent, setSilent] = useState(readPlayInSilent);
   const unpinned = MODULES.filter((m) => !pinned.includes(m.key));
 
   const move = (index: number, delta: number) => {
@@ -84,6 +87,23 @@ export function Profile() {
               </ul>
             </>
           )}
+        </div>
+      </section>
+
+      <section className="sec" id="zvuky">
+        <h2>Zvuky</h2>
+        <div className="panel">
+          <ul className="notify-list">
+            <li>
+              <label className="notify-main">
+                <input type="checkbox" role="switch" className="switch" checked={silent} onChange={(e) => { setSilent(e.target.checked); setPlayInSilent(e.target.checked); }} />
+                <span>
+                  <b>Hrát i v tichém režimu</b>
+                  <small>Gong, pípnutí a zvonky uslyšíš i s přepínačem ticha. Hudba z jiné appky se při spuštění zvuku zastaví.</small>
+                </span>
+              </label>
+            </li>
+          </ul>
         </div>
       </section>
 

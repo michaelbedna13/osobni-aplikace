@@ -56,6 +56,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   a roční součet všeho pravidelného, kdo komu dluží, spořicí cíle, útrata za piva).
 - Obrazovka Dnes: datum a kdo má svátek, počasí v jednom řádku (Open-Meteo), dluhy (bilance po lidech), pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, jeden odkaz „Na později“. Pořadí připnutých modulů se upravuje jen v Profilu.
+- Zvuky (gong, pípnutí, zvonky) hrají i v tichém režimu iPhonu (Profil → Zvuky, jde vypnout; daň: hudba z jiné appky
+  se při zvuku zastaví).
 - Vzhled v Profilu: barevný (moduly ve svých barvách), nebo duotone jako logo – krémová na off-black nebo na lesní
   zelené. Platí pro zařízení.
 - Upozornění (Web Push, appka z plochy, iOS 16.4+): ráno kdo dnes a zítra slaví i s nápady na dárek, den předem

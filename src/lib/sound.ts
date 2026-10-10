@@ -3,8 +3,63 @@
 
 let ctx: AudioContext | null = null;
 
+/* ---------- tichý režim iPhonu ----------
+   Web Audio na iPhonu respektuje přepínač ticha. Aby zvuky hrály i v tichém režimu, přepne se zvuková relace na
+   „přehrávání“ (jako hudba): v iOS 17+ přes navigator.audioSession, ve starších přes krátké tiché <audio>, které
+   relaci přepne taky. Daň: hudba z jiné appky se při spuštění zvuku zastaví. Volba je v Profilu → Zvuky. */
+const SILENT_KEY = "zvuky-ticho";
+type AudioSessionNav = Navigator & { audioSession?: { type: string } };
+
+export function readPlayInSilent(): boolean {
+  try {
+    return localStorage.getItem(SILENT_KEY) !== "0";
+  } catch {
+    return true;
+  }
+}
+
+export function setPlayInSilent(on: boolean) {
+  try {
+    localStorage.setItem(SILENT_KEY, on ? "1" : "0");
+  } catch {
+    // bez úložiště platí jen do zavření
+  }
+  applySession(on);
+}
+
+let silentUrl: string | null = null;
+/** 0,1 s ticha jako WAV (8 kHz, 8 bit) – žádný soubor navíc. */
+function silentWav() {
+  if (silentUrl) return silentUrl;
+  const n = 800, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+  const str = (o: number, t: string) => [...t].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  str(0, "RIFF"); v.setUint32(4, 36 + n, true); str(8, "WAVE"); str(12, "fmt ");
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 8000, true);
+  v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true); str(36, "data"); v.setUint32(40, n, true);
+  for (let i = 0; i < n; i++) v.setUint8(44 + i, 128);
+  return (silentUrl = URL.createObjectURL(new Blob([buf], { type: "audio/wav" })));
+}
+
+function applySession(playInSilent: boolean) {
+  const session = (navigator as AudioSessionNav).audioSession;
+  if (session) {
+    // ambient = jako dřív: respektuje tichý režim a hraje přes hudbu
+    session.type = playInSilent ? "playback" : "ambient";
+    return;
+  }
+  if (!playInSilent) return;
+  try {
+    const el = new Audio(silentWav());
+    el.setAttribute("playsinline", "");
+    void el.play().catch(() => {});
+  } catch {
+    // bez <audio> zůstane chování prohlížeče
+  }
+}
+
 export function unlockAudio() {
   try {
+    applySession(readPlayInSilent());
     ctx ??= new AudioContext();
     if (ctx.state === "suspended") void ctx.resume();
     // krátké ticho – na iOS „probudí“ zvukový výstup
