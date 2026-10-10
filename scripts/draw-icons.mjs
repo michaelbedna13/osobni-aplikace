@@ -1,5 +1,6 @@
 // Nakreslí ikony ve stylu „vystřižené z papíru“ a zapíše je do src/lib/icons.ts.
-// Každá ikona je seznam vrstev v pořadí: "i" = papír (kreslí se barvou textu), "c" = výstřižek (průhledný).
+// Každá ikona je seznam vrstev v pořadí: "i" = papír (kreslí se barvou textu), "c" = výstřižek (průhledný),
+// "a" = barevný papír nalepený navrch (světlý odstín modulu), "k" = papír v barvě textu navrch (detail na barevném).
 // Tvary jsou hladké křivky přes body s malou nepravidelností, jako stříhané nůžkami. viewBox 0 0 100 100.
 // Spuštění: node scripts/draw-icons.mjs (bez závislostí; náhodnost je pevná, výstup je pokaždé stejný)
 import { writeFileSync } from "node:fs";
@@ -28,7 +29,7 @@ const ell = (cx, cy, rx, ry = rx, n = 14, wob = 0, rot = 0) =>
 const rect = (x1, y1, x2, y2, r = 4) => [[x1 + r, y1], [(x1 + x2) / 2, y1], [x2 - r, y1], [x2, y1 + r], [x2, (y1 + y2) / 2], [x2, y2 - r], [x2 - r, y2], [(x1 + x2) / 2, y2], [x1 + r, y2], [x1, y2 - r], [x1, (y1 + y2) / 2], [x1, y1 + r]];
 const rot = (pts, deg, cx = 50, cy = 50) => { const a = (deg * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a); return pts.map(([x, y]) => [cx + (x - cx) * c - (y - cy) * s, cy + (x - cx) * s + (y - cy) * c]); };
 const star = (cx, cy, R, r, k = 5, rot0 = -Math.PI / 2) => [...Array(k * 2)].map((_, i) => { const a = rot0 + (i * Math.PI) / k; const rr = i % 2 ? r : R; return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr]; });
-const I = (d) => ["i", d], C = (d) => ["c", d];
+const I = (d) => ["i", d], C = (d) => ["c", d], A = (d) => ["a", d], K = (d) => ["k", d];
 
 // klasické srdce (parametrická křivka), ostrý zářez nahoře i špička dole, mírně nepravidelné jako stříhané
 const heartPts = () => [...Array(36)].map((_, i) => {
@@ -91,16 +92,16 @@ const ICONS = {
     I(blob([[56, 34], [70, 26], [82, 36], [88, 58], [86, 82], [72, 88], [58, 80], [54, 60]], 1.6, 0.55)),
     C(blob([[38, 46], [34, 58], [28, 70], [26, 68], [31, 56], [35, 46]], 0.4, 0.4)), C(blob([[62, 46], [66, 58], [72, 70], [74, 68], [69, 56], [65, 46]], 0.4, 0.4)),
   ],
-  // deska v perspektivě s dírou nahoře a pytlík ležící celý na desce (měkký polštářek oddělený výstřižkem)
+  // černá deska v perspektivě s dírou nahoře a na ní pytlík ve světlém odstínu modulu se švem
   cornhole: () => {
     const saved = seed;
     const pillow = (cx, cy, w, h, deg) => rot([[cx - w / 2 + 3, cy - h / 2], [cx, cy - h / 2 - 1.5], [cx + w / 2 - 3, cy - h / 2], [cx + w / 2 + 1, cy], [cx + w / 2 - 3, cy + h / 2], [cx, cy + h / 2 + 1.5], [cx - w / 2 + 3, cy + h / 2], [cx - w / 2 - 1, cy]], deg, cx, cy);
     const out = [
       I(blob([[32, 12], [50, 11.5], [68, 12], [78, 50], [88, 88], [50, 89], [12, 88], [22, 50]], 1.2, 0.12)),
       C(blob(ell(50, 29, 10.5, 8.5, 14), 0.5, 0.6)),
-      C(blob(pillow(50, 66, 34, 24, -16), 0.5, 0.55)),
-      I(blob(pillow(50, 66, 22, 12.5, -16), 0.4, 0.55)),
-      C(blob(pillow(50, 66, 17, 7.5, -16), 0.3, 0.55)),
+      A(blob(pillow(52, 64, 38, 28, -14), 0.5, 0.55)),
+      K(blob(pillow(52, 64, 29, 19, -14), 0.4, 0.55)),
+      A(blob(pillow(52, 64, 25.5, 15.5, -14), 0.3, 0.55)),
     ];
     // ostatní ikony kreslí se stejnou náhodností jako dřív (tvar ostatních ikon se nemění)
     seed = saved;
@@ -194,8 +195,10 @@ import type { ModuleKey } from "./modules";
 
 export type IconName = ModuleKey | ${extra.map((n) => JSON.stringify(n)).join(" | ")};
 
-/** Vrstvy v pořadí: "i" = papír (barva textu), "c" = výstřižek (průhledný). viewBox 0 0 100 100. */
-export const ICONS: Record<IconName, ["i" | "c", string][]> = {
+/** Vrstvy v pořadí: "i" = papír (barva textu), "c" = výstřižek (průhledný), "a" = barevný papír navrch (světlý odstín
+ *  modulu), "k" = papír v barvě textu navrch. viewBox 0 0 100 100. */
+export type IconLayer = ["i" | "c" | "a" | "k", string];
+export const ICONS: Record<IconName, IconLayer[]> = {
 ${lines.join("\n")}
 };
 

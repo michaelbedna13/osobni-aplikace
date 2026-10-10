@@ -267,6 +267,8 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   průhledné (maska), takže jimi prosvítá podklad. Žádné obrysy, stínování ani dlaždice pod ikonou; **bez obličejů**.
   Moduly, doplňky (hvězda, trofej, korunka, zámek, srdce, plamen, fajfka, jiskra), ovládání (`i-…`) a počasí (`w-…`)
   ve viewBoxu 100 × 100; `tone` obarví ikonu barvou modulu (plamen série, srdce priority).
+  Ikona může mít i barevný kousek nalepený navrch (vrstva „a“ ve světlém odstínu modulu, „k“ = detail v barvě textu
+  na něm): Cornhole je černá deska s dírou a na ní pískový pytlík (`light` modulu) se švem.
 - Žádné emoji ani unicode znaky jako ikony.
 
 ## Components
