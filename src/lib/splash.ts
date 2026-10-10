@@ -10,11 +10,18 @@ const MAX_MS = 4500;
 const SETTLE_MS = 120;
 
 let hidden = false;
+// písma: appka se odkryje až s načtenými písmy, jinak by se text hned po zmizení úvodní obrazovky přeskládal
+let fontsReady = typeof document === "undefined" || !document.fonts;
+if (!fontsReady) document.fonts.ready.then(() => { fontsReady = true; });
 /** Kdy se úvodní obrazovka poprvé ukázala (zapisuje inline skript v index.html, až jsou styly načtené). */
 const shownAt = (): number => (window as { __splashAt?: number }).__splashAt ?? 0;
 
-export function hideSplash() {
+export function hideSplash(force = false) {
   if (hidden) return;
+  if (!fontsReady && !force) {
+    document.fonts.ready.then(() => hideSplash(true));
+    return;
+  }
   hidden = true;
   document.documentElement.classList.remove("splashing");
   const el = document.getElementById("splash");
@@ -23,7 +30,7 @@ export function hideSplash() {
   window.setTimeout(() => el.remove(), 600);
 }
 
-if (typeof window !== "undefined") window.setTimeout(hideSplash, Math.max(0, shownAt() + MAX_MS - performance.now()));
+if (typeof window !== "undefined") window.setTimeout(() => hideSplash(true), Math.max(0, shownAt() + MAX_MS - performance.now()));
 
 /** Skryje úvodní obrazovku, jakmile appka nic nenačítá (ready = přihlášení je vyřešené). */
 export function useSplash(ready: boolean) {
@@ -31,7 +38,7 @@ export function useSplash(ready: boolean) {
   useEffect(() => {
     if (!ready || fetching > 0 || hidden) return;
     // počká na první dotazy obrazovky (spustí se až po vykreslení) a na konec animace
-    const t = window.setTimeout(hideSplash, Math.max(SETTLE_MS, shownAt() + MIN_MS - performance.now()));
+    const t = window.setTimeout(() => hideSplash(), Math.max(SETTLE_MS, shownAt() + MIN_MS - performance.now()));
     return () => window.clearTimeout(t);
   }, [ready, fetching]);
 }
