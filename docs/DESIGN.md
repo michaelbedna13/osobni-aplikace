@@ -244,8 +244,8 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
 - **Volba hodnoty vs. přepínač obrazovek**: záložky (`.tabs`) a filtry jsou bílé pilulky s tmavou vybranou položkou.
   Hodnota pro hlavní akci (délka meditace) tak vypadat nesmí: je to stupnice (`.dur-scale`, `role="radiogroup"`) –
   velká čísla v Antonu s malou jednotkou pod sebou, ostatní tlumeně, vybraná v tmavém odstínu modulu (`--deep`) s čárkou; hlavní tlačítko
-  pod ní vybranou hodnotu opakuje („Začít · 15 min“). Bez limitu je nekonečno kreslené tahem stejně silným
-  jako čísla (`.dur-inf`; Anton znak ∞ nemá).
+  pod ní vybranou hodnotu opakuje („Začít · 15 min“). Bez limitu je nekonečno kreslené tahem
+  (`.dur-inf`; Anton znak ∞ nemá) přímo v řádku čísla: spodek na účaří, výška jako číslice, takže sedí v jejich úrovni.
   Panely mají 20 px vnitřní okraj, mezi panely 16 px; buňky skóre 16 px nahoře.
 - **Spodní lišta**: plovoucí pilulka ze světlého skla (rozmazané pozadí prosvítá) uprostřed dole jen se třemi ikonami
   (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní položka je tmavá pilulka se světlou ikonou; obrazovky modulů patří pod Moduly.

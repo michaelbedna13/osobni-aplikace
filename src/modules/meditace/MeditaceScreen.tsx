@@ -198,7 +198,7 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
         <div className="dur-scale" role="radiogroup" aria-label="Délka meditace">
           {DURATIONS.map((d) => (
             <button key={d} role="radio" aria-checked={minutes === d} aria-label={d ? `${d} min` : "bez limitu"} className={`dur${minutes === d ? " on" : ""}`} onClick={() => setMinutes(d)}>
-              {d ? <b>{d}</b> : <InfinitySign />}
+              <b>{d || <InfinitySign />}</b>
               <small aria-hidden="true">{d ? "min" : "\u00a0"}</small>
             </button>
           ))}
@@ -434,11 +434,12 @@ function MeditationSounds({ onClose }: { onClose: () => void }) {
   );
 }
 
-/** Nekonečno (bez limitu) kreslené tahem stejně silným jako čísla stupnice. */
+/** Nekonečno (bez limitu) kreslené tahem jako čísla stupnice. Stojí v řádku čísla na účaří a je vysoké jako číslice,
+ *  takže sedí přesně v jejich úrovni (ne mezi číslem a popiskem). */
 function InfinitySign() {
   return (
-    <svg className="dur-inf" viewBox="0 0 48 24" aria-hidden="true">
-      <path d="M24 12C20 6.5 16.5 4.5 12.5 4.5 8.4 4.5 5 7.9 5 12s3.4 7.5 7.5 7.5c4 0 7.5-2 11.5-7.5s7.5-7.5 11.5-7.5c4.1 0 7.5 3.4 7.5 7.5s-3.4 7.5-7.5 7.5c-4 0-7.5-2-11.5-7.5Z" />
+    <svg className="dur-inf" viewBox="0 0 51 28" aria-hidden="true">
+      <path d="M25.5 14C21.5 7.5 18 5 14 5 9 5 5.5 9 5.5 14s3.5 9 8.5 9c4 0 7.5-2.5 11.5-9s7.5-9 11.5-9c5 0 8.5 4 8.5 9s-3.5 9-8.5 9c-4 0-7.5-2.5-11.5-9Z" />
     </svg>
   );
 }
