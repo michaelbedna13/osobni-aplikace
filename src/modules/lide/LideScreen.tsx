@@ -85,7 +85,7 @@ export function LideScreen() {
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
-        <Topbar title="Lidé a dárky" />
+        <Topbar title={MODULE.name} />
         {/* „Dnes“ je delší než číslo: ikona se zmenší a slovo jde pod ni, aby se nepřekrývaly */}
         <div className={`hero${next?.days === 0 ? " hero-long" : ""}`}>
           <span className="icon-slot"><Icon name="lide" size={96} /></span>

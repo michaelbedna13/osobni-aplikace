@@ -57,7 +57,7 @@ export function FilmyScreen() {
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
       <div className="band">
-        <Topbar title="Filmy a knihy" />
+        <Topbar title={MODULE.name} />
         <div className="hero">
           <span className="icon-slot"><Icon name="filmy" size={96} /></span>
           <span className="hero-num">{stats.wanted}</span>

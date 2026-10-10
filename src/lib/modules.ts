@@ -52,7 +52,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Wim Hof, krabicové, 4-7-8, rezonanční a další", "Animovaný průvodce s tóny", "Historie a nejdelší zadržení dechu"]
   },
   {
-    key: "lide", name: "Lidé a dárky", color: "#B55088", deep: "#68386C", light: "#F6757A", phase: 1, ready: true, quickAction: "Přidat nápad na dárek",
+    key: "lide", name: "Narozeniny", color: "#B55088", deep: "#68386C", light: "#F6757A", phase: 1, ready: true, quickAction: "Přidat nápad na dárek",
     plan: ["Narozeniny a jmeniny kamarádů", "Nápady na dárky během roku", "Odběr do Kalendáře v iPhonu", "Poznámky k lidem"]
   },
   {
@@ -80,7 +80,7 @@ export const MODULES: ModuleDef[] = [
     plan: ["Mapa s místy, kam se chceš podívat", "Seznamy a plány výletů", "Navigace v Apple Mapách nebo Mapy.com", "Import z Google Map"]
   },
   {
-    key: "filmy", name: "Filmy a knihy", color: "#8B9BB4", deep: "#4A5874", light: "#C0CBDC", phase: 3, ready: true, quickAction: "Přidat film nebo knihu",
+    key: "filmy", name: "Filmy / Knihy", color: "#8B9BB4", deep: "#4A5874", light: "#C0CBDC", phase: 3, ready: true, quickAction: "Přidat film nebo knihu",
     plan: ["Chci vidět / přečíst", "Hledání s plakáty a obálkami", "Kde film běží", "Čtenářská výzva"]
   },
   {
