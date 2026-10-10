@@ -6,31 +6,33 @@ import { MODULE_BY_KEY } from "../lib/modules";
 import { describe, loadPlace, savePlace, searchCity, useWeather, type Place } from "../lib/weather";
 import { balancesByPerson, debts, formatKc } from "../modules/finance/data";
 import { reverseName } from "../modules/mista/data";
+import { initials } from "./initials";
 
 // ---------- dluhy ----------
 
+/** Dluhy jako bilance po lidech: jedna pilulka na člověka, zeleně plus (dluží mně), červeně minus (dlužím já). */
 export function DebtsToday() {
   const { data: ds = [] } = debts.useList();
   const balances = useMemo(() => balancesByPerson(ds), [ds]);
   if (balances.length === 0) return null;
-  const owed = balances.filter((b) => b.balance > 0);
-  const owe = balances.filter((b) => b.balance < 0);
   return (
     <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.finance.color } as CSSProperties}>
       <div className="sec-head">
         <h2>Dluhy</h2>
         <Link to="/m/finance?tab=dluhy" className="link">Vše</Link>
       </div>
-      <div className="debt-grid">
-        <div className="panel debt-col">
-          <span className="small muted">Dluží mně</span>
-          {owed.length ? owed.map((b) => <p key={b.person}><span>{b.person}</span><b className="money plus">{formatKc(b.balance)}</b></p>) : <p className="small muted">nikdo</p>}
-        </div>
-        <div className="panel debt-col">
-          <span className="small muted">Dlužím já</span>
-          {owe.length ? owe.map((b) => <p key={b.person}><span>{b.person}</span><b className="money minus">{formatKc(-b.balance)}</b></p>) : <p className="small muted">nikomu</p>}
-        </div>
-      </div>
+      <ul className="debt-chips">
+        {balances.map((b) => (
+          <li key={b.person}>
+            <Link to="/m/finance?tab=dluhy" className={`debt-chip ${b.balance > 0 ? "plus" : "minus"}`}
+              aria-label={`${b.person} ${b.balance > 0 ? "ti dluží" : "– dlužíš"} ${formatKc(Math.abs(b.balance))}`}>
+              <span className="initials" aria-hidden="true">{initials(b.person)}</span>
+              <span>{b.person}</span>
+              <b>{b.balance > 0 ? "+" : "−"}{formatKc(Math.abs(b.balance))}</b>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

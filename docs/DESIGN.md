@@ -231,8 +231,8 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   nebo město, uložené v prohlížeči; ikona, teplota, popis s min–max, déšť jen od 30 %, bez názvu města; ťuknutí
   otevře okno „Počasí – město“ s pocitovou teplotou, větrem, 12 hodinami po 2 h, 3 dny a odkazem Změnit místo),
   pás **modulů** bez nadpisu (posun do boku, karty 160 px, úpravy jsou
-  v Profilu); **Nákup** (jen když je co koupit); **Brzy slaví** (oslavy na 7 dní); **„Za co jsem dnes vděčný?“**;
-  **Dluhy**; **Na později** (jeden neotevřený odkaz denně); úplně dole **Hláška dne** (`.day-quote`: bílá karta, text Outfit 20 px nejvýš na 5 řádků, autor a kontext pod ním; ťuknutí otevře Hláškomat).
+  v Profilu); **Nákup** (jen když je co koupit); **„Za co jsem dnes vděčný?“** hned pod nákupem (bez nákupu jako první
+  sekce); **Brzy slaví** (oslavy na 7 dní); **Dluhy**; **Na později** (jeden neotevřený odkaz denně). Hláška dne na Dnes není.
 - Moduly: mřížka 3 × N, jen ikona a název; každá dlaždice má hladký přechod v barvě svého modulu jako karty na Dnes
   (`--module-card`); bez značky připnutí (které moduly jsou na Dnes, se nastavuje v Profilu), zámek = zamčeno (zamčená dlaždice zůstává bílá).
 - Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
@@ -361,6 +361,10 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   pohybu bez animace.
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
   Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, pás modulů nemá nadpis.
+  Podoba podle funkce: **Brzy slaví** (`.celebrate`) jsou lidé s iniciálami v kolečku v barvě modulu (`.initials`;
+  kdo slaví dnes, má kolečko plné a štítek tmavý), pod jménem co a kdy slaví a nápady na dárek, pokud nějaké jsou
+  (`.gift-hint`), vpravo štítek Dnes / Zítra / za n dní (`.when-pill`). **Dluhy** jsou bilance po lidech: jedna
+  pilulka na člověka (`.debt-chip`: iniciály, jméno, částka zeleně s plus = dluží mně, červeně s minus = dlužím já).
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.

@@ -2,14 +2,15 @@ import { useMemo, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "../components/Icon";
 import { nameDay, publicHoliday } from "../lib/calendar";
+import { plural } from "../lib/format";
 import { MODULE_BY_KEY } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
-import { quoteOfDay, useQuotes } from "../modules/hlaskomat/data";
 import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 import { GratitudeForm } from "../modules/vdecnost/GratitudeForm";
-import { soonOccasions, usePeople } from "../modules/lide/data";
-import { OccasionRow } from "../modules/lide/LideScreen";
+import { soonOccasions, useGiftIdeas, usePeople } from "../modules/lide/data";
+import { occasionLabel, whenLabel } from "../modules/lide/LideScreen";
+import { initials } from "./initials";
 import { useLinks } from "../modules/odkazy/data";
 import { domainOf } from "../modules/odkazy/util";
 import { groupByCategory, useShopping, useUpdateItems, type ShoppingItem } from "../modules/nakup/data";
@@ -62,14 +63,34 @@ function Shopping() {
   );
 }
 
+/** Kdo brzy slaví: lidé s iniciálami v barvě modulu, co a kdy slaví, a rovnou nápady na dárek, když nějaké jsou. */
 function SoonCelebrating() {
   const { data: people = [] } = usePeople();
+  const { data: ideas = [] } = useGiftIdeas();
   const soon = useMemo(() => soonOccasions(people, 7), [people]);
   if (soon.length === 0) return null;
+  const lide = MODULE_BY_KEY.lide;
   return (
-    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.lide.color } as CSSProperties}>
+    <section className="sec sec-tab" style={{ "--accent": lide.color, "--deep": lide.deep } as CSSProperties}>
       <h2>Brzy slaví</h2>
-      <ul className="list">{soon.map((o) => <OccasionRow key={`${o.person.id}-${o.kind}`} o={o} />)}</ul>
+      <ul className="list celebrate">
+        {soon.map((o) => {
+          const open = ideas.filter((i) => i.person_id === o.person.id && !i.given_at).length;
+          return (
+            <li key={`${o.person.id}-${o.kind}`}>
+              <Link to={`/m/lide/${o.person.id}`} className={`list-btn${o.days === 0 ? " today" : ""}`}>
+                <span className="initials" aria-hidden="true">{initials(o.person.name)}</span>
+                <span className="grow">
+                  <b>{o.person.name}</b>
+                  <span className="occasion-kind">{occasionLabel(o)} · {o.date.toLocaleDateString("cs-CZ", { weekday: "short", day: "numeric", month: "numeric" })}</span>
+                  {open > 0 && <span className="gift-hint"><Icon name="lide" size={14} /> {open} {plural(open, ["nápad", "nápady", "nápadů"])} na dárek</span>}
+                </span>
+                <span className="when-pill">{whenLabel(o.days)}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
@@ -92,27 +113,6 @@ function LaterLink() {
           <b>{pick.title ?? pick.url}</b>
           <span className="occasion-kind">{pick.site ?? domainOf(pick.url ?? "")}</span>
         </span>
-      </Link>
-    </section>
-  );
-}
-
-/** Hláška dne dole na Dnes; ťuknutí otevře Hláškomat. */
-function QuoteOfDay() {
-  const { data: quotes = [] } = useQuotes();
-  const quote = quoteOfDay(quotes);
-  if (!quote) return null;
-  return (
-    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.hlaskomat.color } as CSSProperties}>
-      <h2>Hláška dne</h2>
-      <Link to="/m/hlaskomat" className="day-quote">
-        <p className="day-quote-text">„{quote.text}“</p>
-        {(quote.author || quote.context) && (
-          <p className="day-quote-meta">
-            <b>{quote.author ?? ""}</b>
-            {quote.context && <span>{quote.context}</span>}
-          </p>
-        )}
       </Link>
     </section>
   );
@@ -149,15 +149,14 @@ export function Today() {
 
       <Shopping />
 
-      <SoonCelebrating />
-
+      {/* vděčnost hned pod nákupem (když je co koupit), jinak jako první sekce */}
       <Gratitude />
+
+      <SoonCelebrating />
 
       <DebtsToday />
 
       <LaterLink />
-
-      <QuoteOfDay />
 
     </div>
   );

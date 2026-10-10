@@ -53,7 +53,7 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Wim Hof s měřením zadržení dechu; animovaný průvodce s tóny, historie).
   Finance (pravidelné výdaje jako nájem, internet a energie se dnem splatnosti, předplatné s obnovami, měsíční
   a roční součet všeho pravidelného, kdo komu dluží, spořicí cíle, útrata za piva).
-- Obrazovka Dnes: datum a kdo má svátek, počasí v jednom řádku (Open-Meteo), dluhy, hláška dne úplně dole, pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
+- Obrazovka Dnes: datum a kdo má svátek, počasí v jednom řádku (Open-Meteo), dluhy (bilance po lidech), pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, jeden odkaz „Na později“. Pořadí připnutých modulů se upravuje jen v Profilu.
 
 ## Capabilities and Constraints
