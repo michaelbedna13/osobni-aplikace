@@ -96,10 +96,15 @@ const ICONS = {
   cornhole: () => {
     const saved = seed;
     const pillow = (cx, cy, w, h, deg) => rot([[cx - w / 2 + 3, cy - h / 2], [cx, cy - h / 2 - 1.5], [cx + w / 2 - 3, cy - h / 2], [cx + w / 2 + 1, cy], [cx + w / 2 - 3, cy + h / 2], [cx, cy + h / 2 + 1.5], [cx - w / 2 + 3, cy + h / 2], [cx - w / 2 - 1, cy]], deg, cx, cy);
+    // polštářek: rohy kousek vytažené ven (jako ušité cípy), strany vyboulené (náplň)
+    const bag = (cx, cy, r, deg) => rot([[-1.12, -1.12], [0, -1.2], [1.12, -1.12], [1.2, 0], [1.12, 1.12], [0, 1.2], [-1.12, 1.12], [-1.2, 0]].map(([x, y]) => [cx + x * r, cy + y * r]), deg, cx, cy);
     const out = [
       I(blob([[32, 12], [50, 11.5], [68, 12], [78, 50], [88, 88], [50, 89], [12, 88], [22, 50]], 1.2, 0.12)),
       C(blob(ell(50, 29, 10.5, 8.5, 14), 0.5, 0.6)),
-      A(blob(rot(rect(30, 59, 52, 78, 4), -18, 41, 68.5), 0.3, 0.35)),
+      // pytlík jako polštářek: vyboulené strany, zašpičatělé rohy a šev kolem dokola
+      A(blob(bag(44, 66, 12.5, -15), 0.2, 0.62)),
+      K(blob(bag(44, 66, 9, -15), 0.15, 0.62)),
+      A(blob(bag(44, 66, 7.2, -15), 0.1, 0.62)),
     ];
     // ostatní ikony kreslí se stejnou náhodností jako dřív (tvar ostatních ikon se nemění)
     seed = saved;
