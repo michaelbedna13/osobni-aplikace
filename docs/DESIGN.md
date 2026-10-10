@@ -202,7 +202,7 @@ v pravém horním rohu tmavší odstín, směrem dolů slábne do téměř bíl�
 Zrnitost dělá jen jemný **film** přes celou obrazovku (tmavé tečky a tmavé zrno s násobením působily špinavě).
 
 - `.screen::before` (pevně pod obsahem, při posouvání stojí): `--grad`;
-- `.screen::after` (nad obsahem): film `film.svg` (šedý šum, dlaždice 200 px), krytí 32 %, režim `soft-light` – barvu
+- `.screen::after` (nad obsahem): film `film.svg` (šedý šum, dlaždice 200 px), krytí 44 %, režim `soft-light` – barvu
   oživí, zesvětlí i ztmaví, ale nešpiní; při švihu zpět se schová;
 - **karty modulů na Dnes** (`.fav`) mají hladký přechod v barvě svého modulu **bez zrna** a jemnou světlou hranu:
   pozadí je zrnité, karta čistá, takže se oddělí sama, bez stínu.

@@ -102,7 +102,7 @@ input, textarea { caret-color: var(--ink); }
 .swipe-dim { position: absolute; inset: 0; background: rgba(35, 33, 31, 0.22); }
 /* jemný film přes celou obrazovku, aby plochy nepůsobily sterilně; soft-light barvu oživí, ale nešpiní (dřív tmavé zrno
    s násobením a tmavé tečky v přechodu působily zaprášeně) */
-.screen::after { z-index: 40; background: url("../assets/tex/film.svg") 0 0 / 200px 200px; opacity: 0.32; mix-blend-mode: soft-light; }
+.screen::after { z-index: 40; background: url("../assets/tex/film.svg") 0 0 / 200px 200px; opacity: 0.44; mix-blend-mode: soft-light; }
 /* hlavička modulu: ikona, číslo a hlavní tlačítko stojí přímo na texturovaném pozadí */
 /* rytmus hlavičky: uvnitř skupiny (číslo, popisek, podtext) těsně, mezi skupinami (údaj → volby a akce → obsah) velkoryse */
 .band { padding-bottom: 14px; }
