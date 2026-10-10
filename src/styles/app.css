@@ -412,6 +412,7 @@ a.quote-card { display: grid; gap: 10px; padding: 16px; }
 .dur { display: grid; justify-items: center; gap: 2px; min-height: 64px; padding: 6px 0 12px; border: 0; background: none; color: var(--ink); opacity: 0.5; position: relative; transition: opacity 160ms var(--step); }
 .dur b { font-family: var(--font-display); font-size: 32px; font-weight: 400; line-height: 1; text-transform: uppercase; }
 .dur small { font-family: var(--font-ui); font-size: 14px; line-height: 1.1; }
+.dur-inf { width: 46px; height: 32px; fill: none; stroke: currentColor; stroke-width: 5; stroke-linejoin: round; }
 /* vybraná v tmavém odstínu modulu (ladí s hlavním tlačítkem), malý popisek o kus tmavší kvůli čitelnosti */
 .dur.on { opacity: 1; color: var(--deep); }
 .dur.on small { color: color-mix(in srgb, var(--deep) 70%, var(--ink)); }

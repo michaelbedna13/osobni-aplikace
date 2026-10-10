@@ -197,9 +197,9 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
         {/* délka jako stupnice hodnot (ne tlačítka jako záložky dole): vybraná plně s čárkou, ostatní tlumeně */}
         <div className="dur-scale" role="radiogroup" aria-label="Délka meditace">
           {DURATIONS.map((d) => (
-            <button key={d} role="radio" aria-checked={minutes === d} className={`dur${minutes === d ? " on" : ""}`} onClick={() => setMinutes(d)}>
-              <b>{d || "bez"}</b>
-              <small>{d ? "min" : "limitu"}</small>
+            <button key={d} role="radio" aria-checked={minutes === d} aria-label={d ? `${d} min` : "bez limitu"} className={`dur${minutes === d ? " on" : ""}`} onClick={() => setMinutes(d)}>
+              {d ? <b>{d}</b> : <InfinitySign />}
+              <small aria-hidden="true">{d ? "min" : "\u00a0"}</small>
             </button>
           ))}
         </div>
@@ -431,5 +431,14 @@ function MeditationSounds({ onClose }: { onClose: () => void }) {
       )}
       <button className="btn dark tap wide" onClick={onClose}>Hotovo</button>
     </Sheet>
+  );
+}
+
+/** Nekonečno (bez limitu) kreslené tahem stejně silným jako čísla stupnice. */
+function InfinitySign() {
+  return (
+    <svg className="dur-inf" viewBox="0 0 48 24" aria-hidden="true">
+      <path d="M24 12C20 6.5 16.5 4.5 12.5 4.5 8.4 4.5 5 7.9 5 12s3.4 7.5 7.5 7.5c4 0 7.5-2 11.5-7.5s7.5-7.5 11.5-7.5c4.1 0 7.5 3.4 7.5 7.5s-3.4 7.5-7.5 7.5c-4 0-7.5-2-11.5-7.5Z" />
+    </svg>
   );
 }
