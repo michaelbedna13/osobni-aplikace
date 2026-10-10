@@ -6,7 +6,8 @@ import { MODULES } from "../lib/modules";
 export function Modules() {
   return (
     <div className="screen">
-      <header className="topbar"><h1>Moduly</h1></header>
+      {/* nadpis jen pro čtečku obrazovky: lišta dole už říká, kde jsi */}
+      <h1 className="sr-only">Moduly</h1>
       <div className="tiles">
         {MODULES.map((m) => (
           <Link
