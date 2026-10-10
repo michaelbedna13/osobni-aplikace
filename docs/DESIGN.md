@@ -240,7 +240,11 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   `theme-color` sleduje barvu obrazovky (pro Safari). iOS si styl lišty pamatuje z doby přidání na plochu.
 - **Rytmus hlavičky modulu**: uvnitř skupiny údaje těsně (číslo → popisek 12 px → podtext 6 px, řádkování 1,45),
   mezi skupinami velkoryse (údaj → volby a hlavní tlačítko 32 px, volby → tlačítko 20 px, hlavička → obsah 32 px).
-  Volby délky a podobné čipy jsou v plakátové hlavičce zarovnané vlevo s číslem; čipy mají 44 px na výšku.
+  Čipy mají 44 px na výšku.
+- **Volba hodnoty vs. přepínač obrazovek**: záložky (`.tabs`) a filtry jsou bílé pilulky s tmavou vybranou položkou.
+  Hodnota pro hlavní akci (délka meditace) tak vypadat nesmí: je to stupnice (`.dur-scale`, `role="radiogroup"`) –
+  velká čísla v Antonu s malou jednotkou pod sebou, ostatní tlumeně, vybraná plně s tmavou čárkou; hlavní tlačítko
+  pod ní vybranou hodnotu opakuje („Začít · 15 min“).
   Panely mají 20 px vnitřní okraj, mezi panely 16 px; buňky skóre 16 px nahoře.
 - **Spodní lišta**: plovoucí pilulka ze světlého skla (rozmazané pozadí prosvítá) uprostřed dole jen se třemi ikonami
   (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní položka je tmavá pilulka se světlou ikonou; obrazovky modulů patří pod Moduly.

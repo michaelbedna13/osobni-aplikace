@@ -194,15 +194,17 @@ function Overview({ onStart, celebrate }: { onStart: (minutes: number) => void; 
           <span className="hero-num">{stats.weekDays}<span style={{ fontSize: "0.45em" }}>/{goal}</span></span>
           <span className="hero-cap">{goalDone ? "cíl na týden splněný!" : `${plural(stats.weekDays, DNI)} s meditací tento týden`}</span>
         </div>
-        <div className="durations" role="group" aria-label="Délka meditace">
+        {/* délka jako stupnice hodnot (ne tlačítka jako záložky dole): vybraná plně s čárkou, ostatní tlumeně */}
+        <div className="dur-scale" role="radiogroup" aria-label="Délka meditace">
           {DURATIONS.map((d) => (
-            <button key={d} className={`chip${minutes === d ? " on" : ""}`} aria-pressed={minutes === d} onClick={() => setMinutes(d)}>
-              {d ? `${d} min` : "Bez limitu"}
+            <button key={d} role="radio" aria-checked={minutes === d} className={`dur${minutes === d ? " on" : ""}`} onClick={() => setMinutes(d)}>
+              <b>{d || "bez"}</b>
+              <small>{d ? "min" : "limitu"}</small>
             </button>
           ))}
         </div>
         <button className="btn-hero" onClick={() => onStart(minutes)}>
-          <Icon name="i-play" size={22} /> Začít
+          <Icon name="i-play" size={22} /> Začít · {minutes ? `${minutes} min` : "bez limitu"}
         </button>
         <button className="link sound-link" onClick={() => setSoundsOpen(true)}>
           Zvuky: {SOUND_NAMES[prefs.medStart]} · {SOUND_NAMES[prefs.medEnd]}{prefs.medInterval ? ` · zvonek po ${prefs.medInterval} min` : ""}

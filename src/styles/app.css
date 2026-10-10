@@ -406,10 +406,15 @@ a.quote-card { display: grid; gap: 10px; padding: 16px; }
 .rest { list-style: none; padding: 0; }
 
 /* ---------- Meditace ---------- */
-.durations { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
-/* v plakátové hlavičce zarovnané vlevo s číslem; k hlavnímu tlačítku patří, proto blíž */
-.module .durations { justify-content: flex-start; }
-.durations + .btn-hero { margin-top: 20px; }
+/* volba délky jako stupnice: velká čísla v Antonu, vybrané plně s čárkou pod sebou, ostatní tlumeně; vypadá jako hodnota
+   pro hlavní tlačítko, ne jako přepínač obrazovek (záložky jsou bílé pilulky) */
+.dur-scale { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin: 0 -6px; }
+.dur { display: grid; justify-items: center; gap: 2px; min-height: 64px; padding: 6px 0 12px; border: 0; background: none; color: var(--ink); opacity: 0.5; position: relative; transition: opacity 160ms var(--step); }
+.dur b { font-family: var(--font-display); font-size: 32px; font-weight: 400; line-height: 1; text-transform: uppercase; }
+.dur small { font-family: var(--font-ui); font-size: 14px; line-height: 1.1; }
+.dur.on { opacity: 1; }
+.dur.on::after { content: ""; position: absolute; bottom: 2px; width: 22px; height: 4px; border-radius: var(--pill); background: var(--ink); }
+.dur-scale + .btn-hero { margin-top: 16px; }
 .week-blocks { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
 .week-block { display: grid; justify-items: center; gap: 6px; font-family: var(--font-ui); font-size: 16px; }
 .week-block i { width: 36px; height: 36px; border: var(--line); background: var(--paper); display: grid; place-items: center; }
