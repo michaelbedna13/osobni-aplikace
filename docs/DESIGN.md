@@ -316,11 +316,14 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
   návrh zavření (`.sc-checkout`), přepínač Po šipkách / Součtem. Po šipkách: tři políčka náhozu (`.sc-dart`), Double /
   Triple (`.sc-mult`, platí pro jednu šipku), čísla 1–20 v mřížce 5×4, 25 / Bull a Vedle. Součtem: číselník a rychlé
   náhozy (`.sc-quick`); když by součet zavřel, zeptá se na double (`.sc-confirm`). Výhra = panel „Game shot!“.
-- **Cornhole – nová hra** (`NewGameSheet`): nahoře „Hrají (v pořadí házení)“ – týmy ve hře s úchytem vlevo (`.gt-handle`,
-  přetažením se mění pořadí, šipkami z klávesnice taky), tužkou (upravit) a křížkem (vyřadit z téhle hry, tým zůstane);
-  pod tím „Další týmy“ (ťuknutím přidat do hry, tužkou upravit) a „Nový tým“. Okno týmu se otevře nad oknem hry a po
-  uložení se do něj vrátí, nový tým je rovnou ve hře; smazat tým jde v okně týmu. Výchozí výběr = týmy minulé hry
-  v jejich pořadí (jinak oba, když jsou jen dva). Escape zavře jen horní okno.
+- **Cornhole – nová hra** (`NewGameSheet`): týmy se neukládají, zakládají se jen pro danou hru (v rodině se pokaždé
+  míchají jinak). Řádek týmu: úchyt vlevo (`.gt-handle`, přetažením pořadí házení, šipkami z klávesnice taky), barva
+  pytlíků (ťuknutím další volná), název a hráči rovnou v řádku (`.gt-name`, `.gt-players`, hráči nepovinní, čárkou,
+  návrhy z minulých her), křížek (od tří týmů). Na začátku dva prázdné týmy („Tým 1“, „Tým 2“), „Přidat tým“ do osmi,
+  „Jako minule“ zkopíruje týmy poslední hry.
+- **Cornhole – přehled**: záložky Zajímavosti (karty `.trophy`: nejvíc bodů v kole, největší přetahovaná = nejvíc změn
+  vedení, největší obrat = vítěz dohnal největší ztrátu, nejtěsnější konec, nejvíc děr, nejrychlejší výhra, nejdelší hra;
+  velké číslo, krátký popisek, tým a datum), Hry a Hráči (výhry hráčů napříč hrami, jen když jsou hráči zapsaní).
 - **Cornhole v mobilu** (`.ch-mobile`): hra pro 2–6 hráčů na jednom telefonu. Hřiště (`.ch-arena`) je zaoblená
   plocha; plátno se kreslí vektorově v rozlišení displeje (hladké hrany, herní souřadnice 1 bod = 2 px): světlá
   šalvějová tráva v pruzích, do dálky zesvětlá (`grass`, `grass-stripe`), dřevěná deska s prkny a měkkým stínem

@@ -33,8 +33,9 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   Lidé a dárky (narozeniny, jmeniny podle jména, nápady na dárky, export do Kalendáře iPhonu).
   Trénink (doma s jednoručkami a s vlastní vahou: vlastní tréninky ze šablon, série × opakování × kg
   předvyplněné z minula, pauza s pípnutím, rekordy, cíl týdně).
-  Cornhole (rodinné hry: týmy s hráči, 2 a víc týmů, body sčítáním nebo rozdílem, zápis pytlíků
-  na desce / v díře po kolech, do 21, žebříček týmů a hráčů, rekordy; k tomu hra Cornhole v mobilu
+  Cornhole (rodinné hry: týmy se zakládají jen pro danou hru, protože se pokaždé míchají jinak; 2 a víc týmů,
+  nepovinně hráči, body sčítáním nebo rozdílem, zápis pytlíků na desce / v díře po kolech, do 21, zajímavosti
+  (nejvíc bodů v kole, přetahovaná, obrat, nejtěsnější konec…) a výhry hráčů; k tomu hra Cornhole v mobilu
   pro 2–6 hráčů na jednom telefonu: házení prstem, vítr, body rozdílem nebo sčítáním, bilance party).
   Šipky (301 / 501 / 701, zavírání libovolně, na double nebo master, legy, zadávání po šipkách nebo součtem,
   návrh co hodit na zavření, průměry, žebříček a rekordy).

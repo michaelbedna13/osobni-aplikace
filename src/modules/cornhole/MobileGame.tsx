@@ -7,7 +7,7 @@ import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { playTone, unlockAudio } from "../../lib/sound";
 import { usePeople } from "../lide/data";
-import { TEAM_COLORS, useTeams } from "./data";
+import { TEAM_COLORS, useCornholePlayers } from "./data";
 import {
   addResult, headToHead, loadMatch, loadResults, loadSetup, modeOf, newMatch, nextStarter, rollWind, saveMatch, saveSetup, windForce,
   type MobileMatch, type MobileSetup,
@@ -153,14 +153,14 @@ function PlayerSheet({ setup, player, onClose, onSave, onRemove }: {
 }) {
   const [name, setName] = useState(setup.names[player]);
   const [color, setColor] = useState(setup.colors[player]);
-  const { data: teams = [] } = useTeams();
+  const known = useCornholePlayers();
   const { data: people = [] } = usePeople();
   const taken = setup.colors.filter((_, i) => i !== player);
   const suggestions = useMemo(() => {
     const others = setup.names.filter((_, i) => i !== player);
-    const names = new Set([...teams.flatMap((t) => t.players), ...people.map((p) => p.name)]);
+    const names = new Set([...known, ...people.map((p) => p.name)]);
     return [...names].filter((n) => !others.includes(n)).sort((x, y) => x.localeCompare(y, "cs")).slice(0, 16);
-  }, [teams, people, setup.names, player]);
+  }, [known, people, setup.names, player]);
 
   const save = (n = name) => {
     onSave(n.trim() || `Hráč ${player + 1}`, color);

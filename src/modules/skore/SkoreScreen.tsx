@@ -7,7 +7,7 @@ import { Topbar } from "../../components/Topbar";
 import { relativeTime } from "../../lib/dates";
 import { formatDate, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
-import { useTeams } from "../cornhole/data";
+import { useCornholePlayers } from "../cornhole/data";
 import { usePeople } from "../lide/data";
 import { useActiveDarts } from "./active";
 import { DEFAULT_SETTINGS, LEG_OPTIONS, OUT_HINTS, OUT_NAMES, STARTS, play, ranking, settingsLabel, type DartSettings, type OutMode } from "./darts";
@@ -165,13 +165,13 @@ function NewGameSheet({ onClose, onStart, known }: { onClose: () => void; onStar
   const [settings, setSettings] = useState<DartSettings>(last?.settings ?? DEFAULT_SETTINGS);
   const [players, setPlayers] = useState<string[]>(last?.players ?? []);
   const [name, setName] = useState("");
-  const { data: teams = [] } = useTeams();
+  const cornholePlayers = useCornholePlayers();
   const { data: people = [] } = usePeople();
 
   const suggestions = useMemo(() => {
-    const names = new Set([...known, ...teams.flatMap((t) => t.players), ...people.map((p) => p.name)]);
+    const names = new Set([...known, ...cornholePlayers, ...people.map((p) => p.name)]);
     return [...names].filter((n) => !players.includes(n)).sort((a, b) => a.localeCompare(b, "cs")).slice(0, 20);
-  }, [known, teams, people, players]);
+  }, [known, cornholePlayers, people, players]);
 
   const add = (n: string) => {
     const clean = n.trim();

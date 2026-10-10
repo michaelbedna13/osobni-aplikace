@@ -35,16 +35,25 @@ describe("cornhole – statistiky", () => {
     mode: "soucet", target: 21, teams: [team("A", ["Míša", "Jana"]), team("B", ["Petr"])], rounds, winner,
   });
 
-  it("výhry týmů a hráčů, rekordy", () => {
+  it("výhry hráčů a zajímavosti", () => {
     const s = computeCornholeStats([
       game(0, [[t(0, 4), t(1, 0)], [t(0, 3), t(4, 0)]]),
       game(1, [[t(1, 0), t(0, 3)], [t(0, 1), t(0, 3)], [t(0, 0), t(1, 2)]]),
       game(0, [[t(4, 0), t(0, 0)]]),
     ]);
-    expect(s.teams.map((x) => `${x.name} ${x.wins}/${x.games}`)).toEqual(["A 2/3", "B 1/3"]);
     expect(s.players.map((x) => `${x.name} ${x.wins}`)).toEqual(["Jana 2", "Míša 2", "Petr 1"]);
     expect(s.bestRound).toMatchObject({ points: 12, team: "A" });
     expect(s.fastestWin).toMatchObject({ rounds: 1, team: "A" });
     expect(s.mostHoles).toMatchObject({ holes: 8, team: "B" });
+    expect(s.closest).toMatchObject({ margin: 4, team: "A" });
+    expect(s.tugOfWar).toBeNull();
+  });
+
+  it("přetahovaná a obrat", () => {
+    // A vede 3:0, B otočí na 3:6, A znovu vede 9:6 a vyhraje
+    const s = computeCornholeStats([game(0, [[t(3, 0), t(0, 0)], [t(0, 0), t(0, 2)], [t(0, 2), t(0, 0)]])]);
+    expect(s.tugOfWar).toMatchObject({ changes: 2, teams: ["A", "B"] });
+    expect(s.comeback).toMatchObject({ deficit: 3, team: "A" });
+    expect(s.closest).toMatchObject({ margin: 3, team: "A" });
   });
 });

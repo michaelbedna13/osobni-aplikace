@@ -14,7 +14,7 @@ import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 import { upcomingOccasions, usePeople } from "../modules/lide/data";
 import { computeTrainingStats, useWorkouts } from "../modules/trenink/data";
 import { useActiveWorkout } from "../modules/trenink/active";
-import { computeCornholeStats, useGames } from "../modules/cornhole/data";
+import { useGames } from "../modules/cornhole/data";
 import { useActiveGame } from "../modules/cornhole/active";
 import { useActiveDarts } from "../modules/skore/active";
 import { computeDartStats, useDartGames } from "../modules/skore/data";
@@ -155,15 +155,13 @@ function TreninkCard() {
 
 function CornholeCard() {
   const { data: games = [] } = useGames();
-  const stats = useMemo(() => computeCornholeStats(games), [games]);
   const { active } = useActiveGame();
   const navigate = useNavigate();
-  const leader = stats.teams[0];
   return (
     <Card
       moduleKey="cornhole"
-      num={String(stats.games)}
-      sub={active ? "hra běží" : leader?.wins ? `${plural(stats.games, ["hra", "hry", "her"])}, vede ${leader.name}` : plural(stats.games, ["hra", "hry", "her"])}
+      num={String(games.length)}
+      sub={active ? "hra běží" : plural(games.length, ["hra", "hry", "her"])}
       quick={{ label: active ? "Pokračovat ve hře" : "Nová hra", text: <Icon name="i-play" size={20} />, run: () => navigate(active ? "/m/cornhole/hra" : "/m/cornhole?hra=1") }}
     />
   );
