@@ -864,14 +864,30 @@ a.btn-hero { text-decoration: none; }
 .money.minus { color: var(--danger); }
 .list-btn.soon { background: color-mix(in srgb, var(--accent) 14%, var(--paper)); }
 .list-btn.inactive { opacity: 0.55; }
-.exp-bar { display: flex; gap: 3px; height: 12px; border: var(--line); background: var(--edge); }
-.exp-bar i { flex-basis: 0; min-width: 3px; background: var(--deep); }
-.exp-legend { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--slate); }
-.exp-legend li { display: inline-flex; align-items: center; gap: 6px; }
-.exp-legend i { width: 10px; height: 10px; border-radius: 50%; background: var(--deep); }
-.exp-legend b { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
-/* rozpad měsíční částky v hlavičce Financí: každá část na svém řádku */
-.fin-split span { display: block; }
+/* grafy Financí (src/modules/finance/Charts.tsx): značky v tmavém zlatě (kontrast se světlou kartou nad 3 : 1),
+   popisky v barvě textu; zaplacené platby prázdným kroužkem (stav, ne další barva) */
+.fin-chart { --fin-mark: #A87A10; margin-top: 16px; }
+.fin-chart + .fin-chart { margin-top: 16px; }
+.fin-bars { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 2px; }
+.fin-bar { width: 100%; display: grid; gap: 6px; padding: 8px 0; border: 0; background: none; color: var(--ink); text-align: left; }
+.fin-bar-head { display: flex; justify-content: space-between; gap: 12px; font-size: 16px; }
+.fin-bar-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fin-bar-val { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fin-bar-track { height: 8px; border-radius: var(--pill); background: color-mix(in srgb, var(--fin-mark) 10%, transparent); overflow: hidden; }
+.fin-bar-track i { display: block; height: 100%; border-radius: var(--pill); background: var(--fin-mark); }
+.fin-time-left { margin: 2px 0 0; color: var(--slate); }
+.fin-time-left b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.fin-axis { position: relative; height: 96px; margin: 8px 10px 0; }
+.fin-axis-line { position: absolute; left: 0; right: 0; bottom: 22px; height: 2px; border-radius: var(--pill); background: var(--edge); }
+.fin-today { position: absolute; bottom: 16px; top: 0; width: 0; border-left: 2px dashed color-mix(in srgb, var(--ink) 35%, transparent); }
+.fin-today small { position: absolute; top: -2px; left: 6px; font-size: 14px; line-height: 1; color: var(--slate); }
+.fin-dot { position: absolute; width: 32px; height: 32px; margin: 0 0 -8px -16px; padding: 0; border: 0; background: none; display: grid; place-items: center; }
+.fin-dot i { width: 14px; height: 14px; border-radius: 50%; background: var(--fin-mark); box-shadow: 0 0 0 2px var(--paper); }
+.fin-dot.paid i { background: var(--paper); box-shadow: inset 0 0 0 2px var(--slate); }
+.fin-dot.on i { transform: scale(1.3); }
+.fin-tick { position: absolute; bottom: -2px; transform: translateX(-50%); font-size: 14px; line-height: 1; color: var(--slate); font-variant-numeric: tabular-nums; }
+.fin-time-pick { margin: 8px 0 0; font-size: 16px; }
+.fin-time-pick b { font-weight: 600; }
 .goal-card { width: 100%; display: grid; gap: 6px; text-align: left; color: var(--ink); }
 .goal-card b { font-family: var(--font-ui); font-size: 16px; font-weight: 400; }
 
@@ -1049,6 +1065,5 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .kind-tag, .wait-tag, .idea-cat, .meaning-kind, .sh-check { border: 0; border-radius: var(--r-xs); }
 .nk-box, .bag, .stack-blocks i, .mosaic i, .sh-swatch { border-radius: 6px; }
 .col-track i { border-radius: 6px 6px 0 0; }
-.hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .exp-bar, .ch-power, .rest-bar button, .idea-given { border-radius: var(--pill); }
+.hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .ch-power, .rest-bar button, .idea-given { border-radius: var(--pill); }
 .ring-seg, .orb, .unread-dot, .sc-legs i, .ch-pips i, .week-block i { border-radius: 50%; }
-.exp-bar { overflow: hidden; border: 0; }

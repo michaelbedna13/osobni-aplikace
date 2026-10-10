@@ -40,6 +40,7 @@ colors:
   last-move: "rgba(244, 211, 94, 0.5)"
   selected-square: "rgba(244, 211, 94, 0.85)"
   bag-shade: "rgba(0, 0, 0, 0.12)"
+  finance-mark: "#A87A10"
   piva: "#FEAE34"
   piva-deep: "#F77622"
   hlaskomat: "#0099DB"
@@ -332,13 +333,15 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   body zájmu. Značky (`.map-dot`) jsou kulaté body s tmavým okrajem: „chci“ v barvě modulu, navštívené menší
   šedomodré, vybrané větší se světelným kruhem a jmenovkou („ťukni pro detail“; první ťuknutí vybírá, druhé otevře detail), nový bod a moje poloha pulzují.
   Zdroj dat je schovaný pod malým „i“ v rohu.
-- **Výdaje** (Finance): pruh podílů (`.exp-bar`, dílky v tmavším odstínu modulu `--deep` podle měsíční částky, odstíny
-  se střídají) a pod ním legenda (`.exp-legend`: tečka ve stejném odstínu jako díl pruhu, název, procento tučně, až 4
-  položky); výdaj se splatností do 3 dnů je zvýrazněný (`.list-btn.soon`). Řádek ukazuje měsíční částku jen vpravo,
-  podtitulek jen to, co tam není (jiná perioda, splatnost „platí se 8. · za 29 dní“, poznámka). V hlavičce je rozpad
-  na dvou řádcích (`.fin-split`: výdaje + předplatné, pod tím za rok), aby se nelámal uprostřed částky.
-- **Jednotka u čísla** (`.unit`): „Kč“ stojí hned za velkým číslem na stejném účaří, menší (0,42 em v hlavičce,
-  0,56 em ve skóre); popisek pod číslem pak jednotku neopakuje (Finance: „21 892 Kč“ + „měsíčně“).
+- **Finance**: hlavička je jen velké číslo s „Kč“ (měsíčně pravidelně dohromady), bez popisků. Pod souhrnem dva grafy
+  (`src/modules/finance/Charts.tsx`, značky v tmavém zlatě `finance-mark`, protože světlá barva modulu má na bílé
+  kartě kontrast jen 2,2 : 1; popisky a částky v barvě textu):
+  „Kam jdou peníze“ – vodorovné pruhy všech výdajů i předplatného v měsíčním přepočtu, od největšího, částka u každého,
+  nad 6 položek „Ostatní (n)“, ťuknutí otevře položku, v rohu „za rok“; „Platby tento měsíc“ – osa dnů 1 až konec
+  měsíce, dnešek přerušovanou čárou, zaplacené prázdným kroužkem (stav, ne další barva), nadcházející plnou tečkou,
+  víc plateb v jeden den nad sebou, nad osou „Do konce měsíce ještě … Kč“, pod osou vybraná platba (výchozí nejbližší).
+  V seznamu výdajů a předplatného ukazuje řádek měsíční částku jen vpravo, podtitulek jen to, co tam není (jiná
+  perioda, splatnost „platí se 8. · za 29 dní“, poznámka); splatnost do 3 dnů je zvýrazněná (`.list-btn.soon`).
 - **Řádky seznamů** (`.list-btn`): aspoň 60 px, okraje 12 × 18 px, podtitulek 3 px pod názvem s řádkováním 1,35.
 - **Částky** (`.money`) polotučně s tabulkovými číslicemi; „dluží mi“ v `lime-ink`, „dlužím“ v barvě `danger`. Předplatné, které se
   obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.

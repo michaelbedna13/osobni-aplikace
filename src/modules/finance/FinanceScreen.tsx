@@ -9,6 +9,7 @@ import { MODULE_BY_KEY } from "../../lib/modules";
 import { useSettings } from "../../lib/settings";
 import { usePeople } from "../lide/data";
 import { useBeers } from "../piva/data";
+import { PaymentTimeline, SpendBars, type Payment, type SpendItem } from "./Charts";
 import {
   EXPENSE_PERIODS, EXPENSE_PRESETS, PERIOD_NAMES, balancesByPerson, computeFinanceStats, dayKey, daysUntil, debts, expenseMonthly, expenses, formatKc, monthly,
   nextDue, nextRenewal, parseAmount, roundKc, savings, subscriptions,
@@ -50,6 +51,17 @@ export function FinanceScreen() {
   const addCurrent = () =>
     setSheet(tab === "vydaje" ? { kind: "exp", item: null } : tab === "predplatne" ? { kind: "sub", item: null } : tab === "dluhy" ? { kind: "debt", item: null } : { kind: "goal", item: null });
   const activeExps = exps.filter((e) => e.active).sort((a, b) => expenseMonthly(b) - expenseMonthly(a));
+  // grafy: všechno pravidelné v měsíčním přepočtu a platby, které padnou na tento měsíc
+  const spend: SpendItem[] = [
+    ...activeExps.map((e) => ({ key: `e${e.id}`, name: e.name, value: expenseMonthly(e), onOpen: () => setSheet({ kind: "exp", item: e }) })),
+    ...upcoming.map(({ s }) => ({ key: `s${s.id}`, name: s.name, value: monthly(s), onOpen: () => setSheet({ kind: "sub", item: s }) })),
+  ];
+  const now = new Date();
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const payments: Payment[] = [
+    ...activeExps.filter((e) => e.period === "mesic" && e.due_day).map((e) => ({ key: `e${e.id}`, name: e.name, day: Math.min(e.due_day!, lastDay), amount: e.amount })),
+    ...upcoming.filter(({ next }) => next.getFullYear() === now.getFullYear() && next.getMonth() === now.getMonth()).map(({ s, next }) => ({ key: `s${s.id}`, name: s.name, day: next.getDate(), amount: s.price })),
+  ];
 
   return (
     <div className="screen module" style={{ "--accent": MODULE.color, "--deep": MODULE.deep } as CSSProperties}>
@@ -57,15 +69,7 @@ export function FinanceScreen() {
         <Topbar title="Finance" />
         <div className="hero hero-long">
           <span className="icon-slot"><Icon name="finance" size={96} /></span>
-          <span className="hero-num">{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}<span className="unit">Kč</span></span>
-          <span className="hero-cap">měsíčně</span>
-          {/* rozpad po řádcích, aby se nelámal uprostřed částky */}
-          <p className="hero-line fin-split">
-            {stats.monthlyExpenses > 0 && stats.monthlySubs > 0
-              ? <span>výdaje {roundKc(stats.monthlyExpenses)} + předplatné {roundKc(stats.monthlySubs)}</span>
-              : <span>{stats.monthlySubs > 0 ? "jen předplatné" : stats.monthlyExpenses > 0 ? "jen výdaje, žádné předplatné" : "zatím nic pravidelného"}</span>}
-            <span>{roundKc(stats.yearlyTotal)} za rok</span>
-          </p>
+          <span className="hero-num" aria-label={`${roundKc(stats.monthlyTotal)} měsíčně`}>{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}<span className="unit">Kč</span></span>
         </div>
         <button className="btn-hero" onClick={addCurrent}>
           <Icon name="i-plus" size={24} /> {tab === "vydaje" ? "Přidat výdaj" : tab === "predplatne" ? "Přidat předplatné" : tab === "dluhy" ? "Zapsat dluh" : "Nový spořicí cíl"}
@@ -88,25 +92,25 @@ export function FinanceScreen() {
         </span>
       </button>
 
+      {spend.length > 0 && (
+        <section className="panel fin-chart">
+          <div className="row-between"><h3>Kam jdou peníze</h3><span className="small muted">za rok {roundKc(stats.yearlyTotal)}</span></div>
+          <SpendBars items={spend} />
+        </section>
+      )}
+      {payments.length > 0 && (
+        <section className="panel fin-chart">
+          <h3>Platby tento měsíc</h3>
+          <PaymentTimeline payments={payments} now={now} />
+        </section>
+      )}
+
       <Tabs label="Část" value={tab} onChange={setTab} items={[{ id: "vydaje", label: "Výdaje" }, { id: "predplatne", label: "Předplatné" }, { id: "dluhy", label: "Dluhy" }, { id: "sporeni", label: "Spoření" }]} />
 
       {tab === "vydaje" && (
         <div className="tab-panel">
           {exps.length === 0 ? <p className="empty">Žádné výdaje. Zapiš nájem, internet, energie… a uvidíš, kolik tě měsíčně stojí bydlení a provoz.</p> : (
             <>
-              {activeExps.length > 1 && (
-                <div className="panel exp-share" aria-label="Podíl výdajů">
-                  <div className="exp-bar">
-                    {activeExps.map((e, i) => <i key={e.id} style={{ flexGrow: expenseMonthly(e), opacity: 1 - (i % 4) * 0.2 }} title={e.name} />)}
-                  </div>
-                  {/* legenda: tečka má stejný odstín jako její díl pruhu */}
-                  <ul className="exp-legend">
-                    {activeExps.slice(0, 4).map((e, i) => (
-                      <li key={e.id}><i style={{ opacity: 1 - (i % 4) * 0.2 }} />{e.name} <b>{Math.round((expenseMonthly(e) / stats.monthlyExpenses) * 100)} %</b></li>
-                    ))}
-                  </ul>
-                </div>
-              )}
               <ul className="list">
                 {activeExps.map((e) => {
                   const due = e.period === "mesic" && e.due_day ? daysUntil(nextDue(e.due_day)) : null;
