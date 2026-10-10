@@ -16,9 +16,9 @@ export function DebtsToday() {
   const owed = balances.filter((b) => b.balance > 0);
   const owe = balances.filter((b) => b.balance < 0);
   return (
-    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.finance.color } as CSSProperties}>
+    <section className="sec sec-tab" style={{ "--accent": MODULE_BY_KEY.finance.color, "--deep": MODULE_BY_KEY.finance.deep } as CSSProperties}>
       <div className="sec-head">
-        <h2>Dluhy</h2>
+        <h2><Icon name="finance" size={26} />Dluhy</h2>
         <Link to="/m/finance?tab=dluhy" className="link">Vše</Link>
       </div>
       <div className="debt-grid">

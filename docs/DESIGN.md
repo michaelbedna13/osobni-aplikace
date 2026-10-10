@@ -359,8 +359,9 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   (oko mrkne, znak se zvětší, obrazovka prolne), až nic nenačítá (`src/lib/splash.ts`: aspoň 1,3 s, nejdéle 4,5 s,
   počasí se nečeká), takže na Dnes neproblikají nuly. Appka se pod ní vykresluje skrytá (`html.splashing`), aby přes ni na iOS neproblikla skleněná lišta. Tvar lístků kreslí `scripts/draw-splash.mjs`. Při omezeném
   pohybu bez animace.
-- **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
-  Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, pás modulů nemá nadpis.
+- **Sekce na Dnes** (`.sec-tab`): nadpis s ikonou svého modulu (26 px, tmavý odstín modulu `--deep`), obsah v kartě
+  s jemným nádechem barvy modulu (`--glass` uvnitř sekce = 11 % barvy modulu do bílé); mezi sekcemi 30 px. Čisté, ale
+  na první pohled poznáš, čí sekce to je (Brzy slaví dárek, Vděčnost srdce, Dluhy mince, Na později odkaz…).
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.
