@@ -135,11 +135,9 @@ input, textarea { caret-color: var(--ink); }
 .sec-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
 .sec-head h2, .sec > h2 { font-size: 24px; }
 .sec > h2 { margin-bottom: 12px; }
-/* sekce na Dnes: nadpis s ikonou modulu v jeho tmavém odstínu, obsah v kartě s nádechem barvy modulu – čisté,
-   ale na první pohled poznáš, čí sekce to je */
-.sec-tab { --glass: color-mix(in srgb, var(--accent) 11%, #FFFFFF); }
+/* sekce na Dnes: nadpis s tečkou v barvě modulu, obsah v bílé kartě */
 .sec-tab > h2, .sec-tab .sec-head h2 { display: inline-flex; align-items: center; gap: 10px; }
-.sec-tab h2 .icon { color: var(--deep); }
+.sec-tab > h2::before, .sec-tab .sec-head h2::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
 .link { background: none; border: 0; padding: 8px 0; font-family: var(--font-ui); font-size: 16px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; color: inherit; }
 
 /* ---------- tlačítka a bloky ---------- */
