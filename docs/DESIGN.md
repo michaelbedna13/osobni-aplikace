@@ -366,7 +366,9 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
   přechod jako ikona, uprostřed jen znak untrois (bez nápisu). Animace: střed vyskočí,
   13 lístků se rozvine jeden po druhém dokola, oko se otevře, zornička se rozhlíží a květ se pomalu otáčí. Zmizí
   (oko mrkne, znak se zvětší, obrazovka prolne), až nic nenačítá (`src/lib/splash.ts`: aspoň 1,3 s, nejdéle 4,5 s,
-  počasí se nečeká), takže na Dnes neproblikají nuly. Appka se pod ní vykresluje skrytá (`html.splashing`), aby přes ni na iOS neproblikla skleněná lišta. Tvar lístků kreslí `scripts/draw-splash.mjs`. Při omezeném
+  počasí se nečeká), takže na Dnes neproblikají nuly. Appka se pod ní vykresluje skrytá (`html.splashing`), aby přes ni na iOS neproblikla skleněná lišta. Stránka i tělo mají při
+  spuštění barvu spodku úvodní obrazovky (#E6F5C0, stejně jako `background_color` v manifestu) a úvodní obrazovka sahá
+  120 px pod spodní okraj: iPhone při spuštění z plochy dorovnává výšku okna a jinak by tam problikl světlý pruh. Tvar lístků kreslí `scripts/draw-splash.mjs`. Při omezeném
   pohybu bez animace.
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
   Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, pás modulů nemá nadpis.

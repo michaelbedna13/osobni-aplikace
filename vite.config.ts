@@ -21,7 +21,8 @@ export default defineConfig({
         lang: "cs",
         description: "untrois – osobní appka: hlášky, piva, meditace, tréninky, lidé a další.",
         theme_color: "#A9C29A",
-        background_color: "#F4F3EE",
+        // barva při spuštění appky = spodní barva úvodní obrazovky (index.html), ať při otevření nic nepřebliká
+        background_color: "#E6F5C0",
         display: "standalone",
         start_url: base,
         scope: base,
