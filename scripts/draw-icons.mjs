@@ -92,16 +92,14 @@ const ICONS = {
     I(blob([[56, 34], [70, 26], [82, 36], [88, 58], [86, 82], [72, 88], [58, 80], [54, 60]], 1.6, 0.55)),
     C(blob([[38, 46], [34, 58], [28, 70], [26, 68], [31, 56], [35, 46]], 0.4, 0.4)), C(blob([[62, 46], [66, 58], [72, 70], [74, 68], [69, 56], [65, 46]], 0.4, 0.4)),
   ],
-  // černá deska v perspektivě s dírou nahoře a na ní pytlík ve světlém odstínu modulu se švem
+  // černá deska v perspektivě s dírou nahoře a na ní pytlík ve světlém odstínu modulu (velikost jako ve skutečnosti: asi čtvrtina šířky desky)
   cornhole: () => {
     const saved = seed;
     const pillow = (cx, cy, w, h, deg) => rot([[cx - w / 2 + 3, cy - h / 2], [cx, cy - h / 2 - 1.5], [cx + w / 2 - 3, cy - h / 2], [cx + w / 2 + 1, cy], [cx + w / 2 - 3, cy + h / 2], [cx, cy + h / 2 + 1.5], [cx - w / 2 + 3, cy + h / 2], [cx - w / 2 - 1, cy]], deg, cx, cy);
     const out = [
       I(blob([[32, 12], [50, 11.5], [68, 12], [78, 50], [88, 88], [50, 89], [12, 88], [22, 50]], 1.2, 0.12)),
       C(blob(ell(50, 29, 10.5, 8.5, 14), 0.5, 0.6)),
-      A(blob(pillow(52, 64, 38, 28, -14), 0.5, 0.55)),
-      K(blob(pillow(52, 64, 29, 19, -14), 0.4, 0.55)),
-      A(blob(pillow(52, 64, 25.5, 15.5, -14), 0.3, 0.55)),
+      A(blob(rot(rect(30, 59, 52, 78, 4), -18, 41, 68.5), 0.3, 0.35)),
     ];
     // ostatní ikony kreslí se stejnou náhodností jako dřív (tvar ostatních ikon se nemění)
     seed = saved;
