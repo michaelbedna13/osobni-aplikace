@@ -1,5 +1,4 @@
-// Vygeneruje drobné textury do src/assets/tex: zrno přes obrazovku, jemnější zrno do karet a bílé jiskření.
-// Pozadí obrazovek kreslí scripts/generate-backgrounds.mjs.
+// Vygeneruje drobné textury do src/assets/tex: film přes obrazovku, zrno do tmavých ploch a tlačítek, bílé jiskření.
 // Spuštění: node scripts/generate-textures.mjs (bez závislostí, výstup je pokaždé stejný)
 import { mkdirSync, writeFileSync } from "node:fs";
 
@@ -17,10 +16,9 @@ const noise = (name, alpha, freq = 0.85) => svg(name, 200, 200,
   `<filter id="n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 ${alpha} 0"/></filter>`);
 noise("grain", 0.5);
 noise("grain-soft", 0.16);
-// sprej: jemné světlé i tmavé tečky jako u zrnitého barevného přechodu (tlumené, aby nepůsobily ostře) (pozadí obrazovek a karet)
-svg("spray", 180, 180, `<rect width="100%" height="100%" filter="url(#w)"/><rect width="100%" height="100%" filter="url(#k)"/>`,
-  `<filter id="w" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="2" stitchTiles="stitch" seed="11"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.6 -0.86"/></filter>` +
-  `<filter id="k" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="2" stitchTiles="stitch" seed="29"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 -0.7"/></filter>`);
+// film: jemný šedý šum přes celou obrazovku, kreslí se v režimu soft-light (zesvětlí i ztmaví, ale barvu nešpiní)
+svg("film", 200, 200, `<rect width="100%" height="100%" filter="url(#n)"/>`,
+  `<filter id="n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" stitchTiles="stitch" seed="7"/><feColorMatrix values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1"/></filter>`);
 // bílé jiskření do barevných karet
 svg("sparkle", 200, 200, `<rect width="100%" height="100%" filter="url(#n)"/>`,
   `<filter id="n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch" seed="4"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.75"/></filter>`);

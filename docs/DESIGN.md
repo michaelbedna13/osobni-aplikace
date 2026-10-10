@@ -170,7 +170,7 @@ components:
 # Design – čistý styl s texturami (v3)
 
 Zdroj pravdy v kódu: `src/styles/app.css` (tokeny jako CSS proměnné), `src/styles/fonts.css` (písma),
-`scripts/generate-textures.mjs` (zrno a sprej), `scripts/draw-icons.mjs` →
+`scripts/generate-textures.mjs` (film, zrno a jiskření), `scripts/draw-icons.mjs` →
 `src/lib/icons.ts` (ikony a šachové figurky), `src/lib/modules.ts`
 (barvy modulů), `src/lib/copy.ts` (hlas appky). Product truth je v `PRODUCT.md`.
 
@@ -198,15 +198,16 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 
 Všechny obrazovky mají **stejné pozadí: zrnitý barevný přechod** a mění se jen barva podle modulu (`--accent`,
 `--deep`; Dnes, Moduly a Profil mají šalvěj `sage` a tmavě zelenou). Nahoře je barva modulu, vlevo prosvětlená,
-v pravém horním rohu tmavší odstín, směrem dolů slábne do téměř bílé. Přes přechod je tlumený **sprej** (`spray.svg`, dlaždice 150 px:
-světlé i tmavé tečky jako u stříkané barvy). Definice je jedna proměnná `--grad` v CSS, bez obrázků.
+v pravém horním rohu tmavší odstín, směrem dolů slábne do téměř bílé. Definice je jedna proměnná `--grad` v CSS, bez obrázků.
+Zrnitost dělá jen jemný **film** přes celou obrazovku (tmavé tečky a tmavé zrno s násobením působily špinavě).
 
 - `.screen::before` (pevně pod obsahem, při posouvání stojí): `--grad`;
-- `.screen::after` (nad obsahem): jemné zrno `grain.svg`, krytí 7 %, režim `multiply`;
+- `.screen::after` (nad obsahem): film `film.svg` (šedý šum, dlaždice 200 px), krytí 32 %, režim `soft-light` – barvu
+  oživí, zesvětlí i ztmaví, ale nešpiní; při švihu zpět se schová;
 - **karty modulů na Dnes** (`.fav`) mají hladký přechod v barvě svého modulu **bez zrna** a jemnou světlou hranu:
   pozadí je zrnité, karta čistá, takže se oddělí sama, bez stínu.
 
-Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; výstup je pokaždé stejný).
+Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých ploch a tlačítek, jiskření; výstup je pokaždé stejný).
 
 ## Typography
 

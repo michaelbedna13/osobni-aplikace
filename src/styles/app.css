@@ -87,7 +87,6 @@ input, textarea { caret-color: var(--ink); }
      aby byly bílé hodiny čitelné */
   --grad:
     linear-gradient(180deg, color-mix(in srgb, var(--deep) 55%, var(--accent)) 0, transparent 110px),
-    url("../assets/tex/spray.svg") 0 0 / 150px 150px,
     radial-gradient(75% 45% at 100% 0%, color-mix(in srgb, var(--deep) 62%, var(--accent)) 0%, transparent 75%),
     radial-gradient(70% 40% at 0% 26%, color-mix(in srgb, var(--accent) 45%, #FFFFFF) 0%, transparent 72%),
     linear-gradient(180deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 70%, #FFFFFF) 34%, color-mix(in srgb, var(--accent) 16%, #F7F7F4) 58%, #F7F7F4 78%);
@@ -95,14 +94,15 @@ input, textarea { caret-color: var(--ink); }
 /* švih zpět (src/lib/swipeBack.ts): obrazovka jede s prstem, pozadí s ní (jinak je pevné k displeji), stín na levé hraně */
 .screen.swiping { will-change: transform; box-shadow: -10px 0 28px rgba(35, 33, 31, 0.16); }
 .screen.swiping::before, .screen.swiping::after { position: absolute; top: var(--swipe-top, 0px); bottom: auto; height: 100lvh; }
-/* zrno s násobením by se při pohybu přepočítávalo každý snímek; při švihu se jen položí navrch */
-.screen.swiping::after { mix-blend-mode: normal; opacity: 0.05; }
+/* film se při pohybu přepočítává každý snímek; při švihu se schová (je jemný, změna není vidět) */
+.screen.swiping::after { opacity: 0; }
 /* podklad: obrazovka, kam se švih vrací, mírně vlevo a ztmavená; s tahem se srovná (src/lib/swipeBack.ts) */
 .swipe-under { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: var(--app-bg); transform: translate3d(-28%, 0, 0); will-change: transform; }
 .swipe-under-in { max-width: 520px; margin: 0 auto; min-height: 100%; }
 .swipe-dim { position: absolute; inset: 0; background: rgba(35, 33, 31, 0.22); }
-/* zrno přes celou obrazovku, aby plochy nepůsobily sterilně */
-.screen::after { z-index: 40; background: url("../assets/tex/grain.svg") 0 0 / 200px 200px; opacity: 0.07; mix-blend-mode: multiply; }
+/* jemný film přes celou obrazovku, aby plochy nepůsobily sterilně; soft-light barvu oživí, ale nešpiní (dřív tmavé zrno
+   s násobením a tmavé tečky v přechodu působily zaprášeně) */
+.screen::after { z-index: 40; background: url("../assets/tex/film.svg") 0 0 / 200px 200px; opacity: 0.32; mix-blend-mode: soft-light; }
 /* hlavička modulu: ikona, číslo a hlavní tlačítko stojí přímo na texturovaném pozadí */
 /* rytmus hlavičky: uvnitř skupiny (číslo, popisek, podtext) těsně, mezi skupinami (údaj → volby a akce → obsah) velkoryse */
 .band { padding-bottom: 14px; }
