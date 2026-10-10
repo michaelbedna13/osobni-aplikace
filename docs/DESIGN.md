@@ -238,12 +238,17 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   pozadí běží až pod hodiny, takže nikde není hrana. Hodiny jsou bílé, proto horní okraj `--grad` (110 px) jemně
   ztmavne do `--deep`. Obsah odsazuje `env(safe-area-inset-top)`, v režimu `display-mode: standalone` aspoň 50 px.
   `theme-color` sleduje barvu obrazovky (pro Safari). iOS si styl lišty pamatuje z doby přidání na plochu.
+- **Rytmus hlavičky modulu**: uvnitř skupiny údaje těsně (číslo → popisek 12 px → podtext 6 px, řádkování 1,45),
+  mezi skupinami velkoryse (údaj → volby a hlavní tlačítko 32 px, volby → tlačítko 20 px, hlavička → obsah 32 px).
+  Volby délky a podobné čipy jsou v plakátové hlavičce zarovnané vlevo s číslem; čipy mají 44 px na výšku.
+  Panely mají 20 px vnitřní okraj, mezi panely 16 px; buňky skóre 16 px nahoře.
 - **Spodní lišta**: plovoucí pilulka ze světlého skla (rozmazané pozadí prosvítá) uprostřed dole jen se třemi ikonami
   (Dnes, Moduly, Profil; popisky pro čtečku obrazovky). Aktivní položka je tmavá pilulka se světlou ikonou; obrazovky modulů patří pod Moduly.
 - **Švih zpět** (`src/lib/swipeBack.ts`): na obrazovkách se šipkou zpět švih od levého okraje (začátek do 28 px)
-  vrací zpět jako v nativní appce. Obrazovka jede s prstem (`.screen.swiping`, stín na levé hraně, pozadí jede s ní),
-  po přetažení přes třetinu šířky nebo rychlém švihu odjede a appka přejde tam, kam vede šipka; kdo přišel z Dnes,
-  vrátí se na Dnes. Jinak se obrazovka vrátí na místo. Nefunguje v otevřeném okně, na mapě a na hřišti Cornhole.
+  vrací zpět jako v nativní appce. Obrazovka jede s prstem (`.screen.swiping`, stín na levé hraně, pozadí jede s ní)
+  a pod ní je už vidět skutečná obrazovka, kam se švih vrací (`.swipe-under`: stejné trasy z `src/routes.tsx`, na začátku
+  o 28 % vlevo a ztmavená, s tahem se srovná). Po přetažení přes třetinu šířky nebo rychlém švihu obrazovka dojede
+  (rychlost podle švihu) a appka přejde tam, kam vede šipka; kdo přišel z Dnes, vrátí se na Dnes. Jinak se vrátí na místo. Nefunguje v otevřeném okně, na mapě a na hřišti Cornhole.
 
 ## Elevation & Depth
 

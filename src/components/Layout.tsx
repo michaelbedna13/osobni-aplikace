@@ -1,8 +1,9 @@
-import { useEffect } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { useEffect, useLayoutEffect } from "react";
+import { NavLink, Outlet, Routes, UNSAFE_RouteContext, useLocation } from "react-router-dom";
 import { useKeyboardAware } from "../lib/keyboard";
 import { MODULE_BY_KEY, isModuleKey } from "../lib/modules";
-import { useSwipeBack } from "../lib/swipeBack";
+import { SwipeUnderContext, useSwipeBack, useSwipePeek } from "../lib/swipeBack";
+import { screenRoutes } from "../routes";
 import type { IconName } from "../lib/icons";
 import { Icon } from "./Icon";
 
@@ -32,9 +33,11 @@ export function Layout() {
   useKeyboardAware();
   useStatusBarColor(pathname);
   useSwipeBack();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  // ještě před vykreslením nové obrazovky, ať neproblikne na staré pozici
+  useLayoutEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return (
     <div className="app">
+      <SwipeUnder />
       <main className="app-main">
         <Outlet />
       </main>
@@ -52,6 +55,27 @@ export function Layout() {
           })}
         </div>
       </nav>
+    </div>
+  );
+}
+
+const NO_PARENT = { outlet: null, matches: [], isDataRoute: false };
+
+/** Podklad švihu zpět: obrazovka, kam se švih vrací, vykreslená pod tou, co odjíždí (jen ukázka, bez ovládání). */
+function SwipeUnder() {
+  const peek = useSwipePeek();
+  if (!peek) return null;
+  return (
+    <div className="swipe-under" aria-hidden="true">
+      <div className="swipe-under-in">
+        {/* vlastní kořen tras: podklad se vykreslí přesně jako obrazovka na té adrese */}
+        <UNSAFE_RouteContext.Provider value={NO_PARENT}>
+          <SwipeUnderContext.Provider value={true}>
+            <Routes location={peek}>{screenRoutes}</Routes>
+          </SwipeUnderContext.Provider>
+        </UNSAFE_RouteContext.Provider>
+      </div>
+      <div className="swipe-dim" />
     </div>
   );
 }
