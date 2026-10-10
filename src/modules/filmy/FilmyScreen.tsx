@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
 import { Icon } from "../../components/Icon";
 import { Tabs } from "../../components/Tabs";
+import { useToast } from "../../components/Toast";
 import { Topbar } from "../../components/Topbar";
 import { formatDate, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
@@ -41,6 +42,24 @@ export function FilmyScreen() {
   const [kind, setKind] = useState<Kind | "vse">("vse");
   const [sheet, setSheet] = useState<{ kind: "add" } | { kind: "detail"; id: string } | { kind: "goal" } | null>(null);
   const goal = settings.reading_goal;
+  const toast = useToast();
+  // právě přidaná položka: přepne na její záložku a na chvíli se v seznamu zvýrazní
+  const [justAdded, setJustAdded] = useState<string | null>(null);
+  useEffect(() => {
+    if (!justAdded) return;
+    // posunout k nové položce, ať je vidět (seznam je pod hlavičkou a výzvou)
+    // (až po zavření panelu, který při zavření vrací stránku na původní místo, a až je položka v seznamu)
+    const scroll = window.setTimeout(() => document.querySelector(".media-row.just-added")?.scrollIntoView({ block: "center", behavior: "smooth" }), 320);
+    const t = window.setTimeout(() => setJustAdded(null), 2400);
+    return () => { window.clearTimeout(scroll); window.clearTimeout(t); };
+  }, [justAdded]);
+  const onAdded = (item: MediaItem) => {
+    setSheet(null);
+    if (item.status !== "vzdano") setTab(item.status);
+    setKind("vse");
+    setJustAdded(item.id);
+    toast.show(`Přidáno: ${item.title}`, [{ label: "Přidat další", run: () => setSheet({ kind: "add" }) }]);
+  };
 
   useEffect(() => {
     if (!params.has("nova")) return;
@@ -92,7 +111,7 @@ export function FilmyScreen() {
         <ul className="list">
           {visible.map((m) => (
             <li key={m.id}>
-              <button className="list-btn media-row" onClick={() => setSheet({ kind: "detail", id: m.id })}>
+              <button className={`list-btn media-row${justAdded === m.id ? " just-added" : ""}`} onClick={() => setSheet({ kind: "detail", id: m.id })}>
                 <span className={`kind-tag kind-${m.kind}`}>{KIND_NAMES[m.kind].one}</span>
                 <span className="grow">
                   <b>{m.title}</b>
@@ -107,30 +126,29 @@ export function FilmyScreen() {
         </ul>
       )}
 
-      {sheet?.kind === "add" && <AddSheet items={items} onClose={() => setSheet(null)} />}
+      {sheet?.kind === "add" && <AddSheet items={items} onClose={() => setSheet(null)} onAdded={onAdded} />}
       {detail && <DetailSheet item={detail} onClose={() => setSheet(null)} />}
       {sheet?.kind === "goal" && <GoalSheet goal={goal} onClose={() => setSheet(null)} onSave={(g) => updateSettings({ reading_goal: g })} />}
+      {toast.element}
     </div>
   );
 }
 
-function AddSheet({ items, onClose }: { items: MediaItem[]; onClose: () => void }) {
+function AddSheet({ items, onClose, onAdded }: { items: MediaItem[]; onClose: () => void; onAdded: (item: MediaItem) => void }) {
   const [kind, setKind] = useState<Kind>("film");
   const [title, setTitle] = useState("");
   const [creator, setCreator] = useState("");
   const [status, setStatus] = useState<Status>("chci");
-  const [added, setAdded] = useState<string[]>([]);
   const add = useAddMedia();
   const duplicate = title.trim() && alreadyHave(items, { kind, title: title.trim(), source: "rucne", source_id: null });
 
-  // po přidání zůstane panel otevřený, ať jde zapsat víc věcí za sebou
+  // po přidání se panel zavře, seznam přepne na záložku položky a potvrzení dole nabídne „Přidat další“
   const save = () => {
     const t = title.trim();
     if (!t) return;
-    add.mutate(withStatus(newMedia({ kind, title: t, creator: creator.trim() || null }), status));
-    setAdded((list) => [t, ...list]);
-    setTitle("");
-    setCreator("");
+    const item = withStatus(newMedia({ kind, title: t, creator: creator.trim() || null }), status);
+    add.mutate(item);
+    onAdded(item);
   };
 
   return (
@@ -153,7 +171,6 @@ function AddSheet({ items, onClose }: { items: MediaItem[]; onClose: () => void 
         </div>
         <button className="btn dark tap wide" type="submit" disabled={!title.trim()}>Přidat</button>
       </form>
-      {added.length > 0 && <p className="small muted added-note">Přidáno: {added.slice(0, 3).join(", ")}{added.length > 3 ? "…" : ""}</p>}
     </Sheet>
   );
 }

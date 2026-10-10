@@ -850,7 +850,9 @@ a.btn-hero { text-decoration: none; }
 .kind-tag.kind-kniha { color: var(--lime-ink); }
 .kind-tag.kind-serial { color: var(--ink); }
 .media-row { min-height: 60px; }
-.added-note { margin-top: 10px; }
+/* právě přidaná položka se na chvíli podbarví akcentem a pak vybledne */
+.media-row.just-added { animation: just-added 2.4s ease-out both; }
+@keyframes just-added { 0%, 35% { background: color-mix(in srgb, var(--accent) 38%, transparent); } 100% { background: transparent; } }
 .media-head > div { display: grid; gap: 6px; }
 .status-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 

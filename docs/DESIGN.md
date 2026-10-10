@@ -398,7 +398,7 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
 - **Záložky** (`Tabs`): bílá pilulka přes celou šířku, aktivní položka tmavá.
 - **Místo pro ikonu** (`.icon-slot`): bez podkladu, silueta stojí přímo na pozadí. V hlavičce modulu je plakátová ilustrace
   (viz Layout); souhrny po hře a tréninku (`.summary-hero`) zůstávají na střed s menší ikonou.
-- **Okno s formulářem** (`Sheet` → `FormWindow`): uprostřed obrazovky, nadpis a křížek, drží se nad klávesnicí, pozadí se neposouvá; **potvrzení** (`useToast`, tmavá pilulka s limetkovou akcí „Vrátit“).
+- **Okno s formulářem** (`Sheet` → `FormWindow`): uprostřed obrazovky, nadpis a křížek, drží se nad klávesnicí, pozadí se neposouvá; **potvrzení** (`useToast`, tmavá pilulka s limetkovou akcí „Vrátit“). Po přidání se okno zavře a potvrzení to řekne („Přidáno: …“ s akcí „Přidat další“); seznam přepne na záložku nové položky, posune se k ní a na chvíli ji podbarví (Filmy / Knihy).
 
 ### Pohyb
 
