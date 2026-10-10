@@ -385,8 +385,10 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
 - **Zámek untrois** (`UntroisLock`, `.lock`): před otevřením modulu ikona zámku, „Nastav si heslo“ (poprvé, dvakrát)
   nebo „Zamčeno“, pole hesla a hlavní tlačítko. Ukládá se jen otisk PBKDF2 se solí (`user_settings.untrois_lock`,
   bez sloupce v prohlížeči); odemčení platí, dokud appka neodejde do pozadí.
-- **Nástěnka untrois** (`.board`): dva sloupce dlaždic různé výšky; fotka v původním poměru stran nahoře, pod ní
-  štítek kategorie, popisek, poznámka a web odkazu. Ve „Co je 13“ má štítek jen výklad (obrys `idle`), fakta žádný.
+- **Nástěnka untrois** (`.board`): mřížka 3 × stejných čtverců (zaoblení `r-sm`, mezera 6 px) jako moodboard. Fotka
+  nebo náhled odkazu vyplní celý čtverec bez textu; nápad bez obrázku ukáže jen název (a web odkazu). Kategorie jsou
+  v čipech nad mřížkou, popisek a poznámka v detailu. Hvězdička Top v bílém kolečku v rohu. (Dřív dva sloupce
+  různé výšky: sloupce se nevyrovnávaly a velké dlaždice s popisky působily nepřehledně.) Ve „Co je 13“ má štítek jen výklad (obrys `idle`), fakta žádný.
 - **Vděčnost**: políčko + hlavní tlačítko „Zapsat“ (`.thanks-form`), seznam s odrážkami v akcentu
   (`.thanks-list`), **mozaika** 12 týdnů × 7 dní (`.mosaic`: nic / 1 zápis / 2 a víc), série s plamínkem.
 - **Pódium** (Síň slávy): 2.–1.–3. místo, vítěz s korunkou.

@@ -129,20 +129,21 @@ export function UntroisScreen() {
   );
 }
 
-/** Dlaždice nástěnky: fotka nebo náhled odkazu nahoře, pod ní text. */
+/** Dlaždice nástěnky: čtverec s fotkou (nebo náhledem odkazu); nápad bez obrázku ukáže název (zbytek je v detailu). */
 function BoardTile({ note, src, onOpen }: { note: UntroisNote; src: string | null; onOpen: () => void }) {
   const [broken, setBroken] = useState(false);
   const image = src && !broken;
   return (
     <button className={`board-tile${image ? " has-image" : ""}`} onClick={onOpen} aria-label={noteLabel(note)}>
-      {image && <img src={src} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setBroken(true)} />}
-      <span className="board-text">
-        <span className="idea-cat">{note.category}</span>
-        {note.title && <b>{note.title}</b>}
-        {note.body && <span className="idea-body">{note.body}</span>}
-        {note.url && <span className="board-site">{note.site ?? domainOf(note.url)}</span>}
-      </span>
-      {note.starred && <span className="idea-star"><Icon name="star" size={20} /></span>}
+      {image ? (
+        <img src={src} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setBroken(true)} />
+      ) : (
+        <span className="board-text">
+          {note.title ? <b>{note.title}</b> : note.body && <b>{note.body}</b>}
+          {note.url && <span className="board-site">{note.site ?? domainOf(note.url)}</span>}
+        </span>
+      )}
+      {note.starred && <span className="idea-star"><Icon name="star" size={16} /></span>}
     </button>
   );
 }
