@@ -243,7 +243,7 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   Čipy mají 44 px na výšku.
 - **Volba hodnoty vs. přepínač obrazovek**: záložky (`.tabs`) a filtry jsou bílé pilulky s tmavou vybranou položkou.
   Hodnota pro hlavní akci (délka meditace) tak vypadat nesmí: je to stupnice (`.dur-scale`, `role="radiogroup"`) –
-  velká čísla v Antonu s malou jednotkou pod sebou, ostatní tlumeně, vybraná plně s tmavou čárkou; hlavní tlačítko
+  velká čísla v Antonu s malou jednotkou pod sebou, ostatní tlumeně, vybraná v tmavém odstínu modulu (`--deep`) s čárkou; hlavní tlačítko
   pod ní vybranou hodnotu opakuje („Začít · 15 min“).
   Panely mají 20 px vnitřní okraj, mezi panely 16 px; buňky skóre 16 px nahoře.
 - **Spodní lišta**: plovoucí pilulka ze světlého skla (rozmazané pozadí prosvítá) uprostřed dole jen se třemi ikonami
