@@ -10,7 +10,7 @@ import { quoteSaved } from "../../lib/copy";
 import { formatDate, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import {
-  authorRanking, countThisMonth, matches, suggestions, useAddQuote, useDeleteQuote, useQuotes, useUpdateQuote, type Quote,
+  authorRanking, matches, suggestions, useAddQuote, useDeleteQuote, useQuotes, useUpdateQuote, type Quote,
 } from "./data";
 
 const MODULE = MODULE_BY_KEY.hlaskomat;
@@ -58,7 +58,6 @@ export function HlaskomatScreen() {
         <Burst trigger={jump} />
         <span className="hero-num">{quotes.length}</span>
         <span className="hero-cap">{plural(quotes.length, HLASEK)} v archivu</span>
-        <p className="hero-line">Tento měsíc přibylo {countThisMonth(quotes)}</p>
       </div>
 
       <button className="btn-hero" onClick={() => setEditing("new")}>
