@@ -316,6 +316,11 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
   návrh zavření (`.sc-checkout`), přepínač Po šipkách / Součtem. Po šipkách: tři políčka náhozu (`.sc-dart`), Double /
   Triple (`.sc-mult`, platí pro jednu šipku), čísla 1–20 v mřížce 5×4, 25 / Bull a Vedle. Součtem: číselník a rychlé
   náhozy (`.sc-quick`); když by součet zavřel, zeptá se na double (`.sc-confirm`). Výhra = panel „Game shot!“.
+- **Cornhole – nová hra** (`NewGameSheet`): nahoře „Hrají (v pořadí házení)“ – týmy ve hře s úchytem vlevo (`.gt-handle`,
+  přetažením se mění pořadí, šipkami z klávesnice taky), tužkou (upravit) a křížkem (vyřadit z téhle hry, tým zůstane);
+  pod tím „Další týmy“ (ťuknutím přidat do hry, tužkou upravit) a „Nový tým“. Okno týmu se otevře nad oknem hry a po
+  uložení se do něj vrátí, nový tým je rovnou ve hře; smazat tým jde v okně týmu. Výchozí výběr = týmy minulé hry
+  v jejich pořadí (jinak oba, když jsou jen dva). Escape zavře jen horní okno.
 - **Cornhole v mobilu** (`.ch-mobile`): hra pro 2–6 hráčů na jednom telefonu. Hřiště (`.ch-arena`) je zaoblená
   plocha; plátno se kreslí vektorově v rozlišení displeje (hladké hrany, herní souřadnice 1 bod = 2 px): světlá
   šalvějová tráva v pruzích, do dálky zesvětlá (`grass`, `grass-stripe`), dřevěná deska s prkny a měkkým stínem

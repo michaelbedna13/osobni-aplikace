@@ -570,8 +570,18 @@ a.btn-hero { text-decoration: none; }
 .swatch { width: 44px; height: 44px; border: var(--line); }
 .swatch.on { outline: 3px solid var(--ink); outline-offset: 2px; }
 .player-chips { flex-wrap: wrap; overflow: visible; margin: 0 0 6px; padding: 0; }
-.team-pick.on { background: color-mix(in srgb, var(--accent) 20%, var(--paper)); }
-.pick-order { width: 28px; font-family: var(--font-ui); font-size: 16px; text-align: right; }
+/* nová hra Cornhole: týmy ve hře (přetažení za úchyt, upravit, vyřadit) a další týmy (ťuknutím přidat) */
+.gt-list { margin-bottom: 4px; }
+.gt-list li { position: relative; background: var(--glass); }
+.gt-list li.dragging { z-index: 2; box-shadow: 0 10px 24px rgba(35, 33, 31, 0.16); border-radius: var(--r-sm); }
+.gt-row { display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 6px 8px 6px 4px; }
+.gt-row .grow b { display: block; font-family: var(--font-ui); font-size: 16px; font-weight: 400; line-height: 1.15; }
+.gt-handle { flex: none; display: grid; align-content: center; gap: 4px; width: 40px; height: 44px; padding: 0 11px; border: 0; background: none; touch-action: none; cursor: grab; }
+.gt-handle i { display: block; height: 2px; border-radius: var(--pill); background: var(--slate); }
+.gt-btn { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--surface-2); color: var(--ink); font-family: var(--font-ui); font-size: 20px; line-height: 1; }
+.gt-add { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 0 0 12px; border: 0; background: none; color: var(--ink); text-align: left; }
+.gt-add .gt-btn.plus { background: var(--dark); color: var(--on-ink); }
+.gt-empty { margin: 4px 0 12px; }
 .seg-wide { display: flex; width: 100%; }
 .seg-wide .seg-btn { flex: 1; min-height: 44px; font-size: 16px; }
 .mode-hint { margin-top: 6px; }

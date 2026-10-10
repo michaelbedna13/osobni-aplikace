@@ -177,7 +177,7 @@ export function CornholeScreen() {
       )}
 
       {sheet?.kind === "game" && (
-        <NewGameSheet teams={teams} onClose={() => setSheet(null)} onStart={begin} onNewTeam={() => setSheet({ kind: "team", team: null })} />
+        <NewGameSheet teams={teams} initial={games[0]?.teams.map((t) => t.team_id) ?? []} onClose={() => setSheet(null)} onStart={begin} />
       )}
       {sheet?.kind === "team" && <TeamSheet team={sheet.team} teams={teams} onClose={() => setSheet(null)} />}
       {detail && <GameDetail game={detail} onClose={() => setDetail(null)} />}

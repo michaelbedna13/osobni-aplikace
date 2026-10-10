@@ -2,6 +2,8 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 let openCount = 0;
+// otevřená okna od spodního po horní: Escape zavře jen to nahoře (okno týmu nad oknem nové hry)
+const stack: object[] = [];
 
 /**
  * Společné chování oken: Escape zavře, pozadí se neposouvá a pole, do kterého se píše,
@@ -9,9 +11,14 @@ let openCount = 0;
  */
 function useDialog(box: React.RefObject<HTMLDivElement | null>, onClose: () => void) {
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const me = {};
+    stack.push(me);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && stack[stack.length - 1] === me && onClose();
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      stack.splice(stack.indexOf(me), 1);
+    };
   }, [onClose]);
 
   useEffect(() => {
