@@ -14,7 +14,7 @@ interface Props {
 }
 
 /** Ikona jako vystřižená z papíru: plocha v barvě textu, výstřižky jsou průhledné a prosvítá jimi podklad.
- *  Barevné kousky navrch („a“, třeba pytlík na desce Cornhole) mají světlý odstín svého modulu. */
+ *  Barevné kousky navrch („a“, třeba pytlík na desce Cornhole) mají světlý odstín svého modulu, jejich stín („s“) tmavší. */
 export const Icon = memo(function Icon({ name, size = 48, tone, anim, className, label }: Props) {
   // useId vrací dvojtečky, které v url(#…) nefungují všude
   const id = `ic${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
@@ -35,7 +35,9 @@ export const Icon = memo(function Icon({ name, size = 48, tone, anim, className,
         {layers.map(([kind, d], i) => (kind === "i" || kind === "c") && <path key={i} d={d} fill={kind === "i" ? "#FFFFFF" : "#000000"} />)}
       </mask>
       <rect x="-10" y="-10" width="120" height="120" fill="currentColor" mask={`url(#${id})`} />
-      {layers.map(([kind, d], i) => (kind === "a" || kind === "k") && <path key={i} d={d} fill={kind === "a" ? accent : "currentColor"} />)}
+      {layers.map(([kind, d], i) => (kind === "a" || kind === "s") && (
+        <path key={i} d={d} fill={kind === "a" ? accent : `color-mix(in srgb, ${accent} 78%, #23211F)`} />
+      ))}
     </svg>
   );
 });
