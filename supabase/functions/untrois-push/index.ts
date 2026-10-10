@@ -264,7 +264,7 @@ async function runTest(req: Request) {
   const { data: { user }, error } = await db.auth.getUser(token);
   if (error || !user) return json({ error: "neplatné přihlášení" }, 401);
   const { data: subs } = await db.from("push_subscriptions").select("id, endpoint, p256dh, auth").eq("user_id", user.id);
-  const sent = await deliver(subs ?? [], { title: "untrois", body: "Upozornění fungují 🎉", url: "/profil" }, "test");
+  const sent = await deliver(subs ?? [], { title: "Zkušební upozornění 🎉", body: "Funguje to. Takhle budou chodit připomínky.", url: "/profil" }, "test");
   return json({ sent });
 }
 
