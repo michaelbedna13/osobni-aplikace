@@ -59,7 +59,10 @@ const ICONS = {
       const a = (i / 7) * Math.PI * 2 - Math.PI / 2 + (rnd() - 0.5) * 0.15, w = 0.32 + rnd() * 0.08, R = 40 + rnd() * 6;
       pts.push([50 + Math.cos(a - 0.42) * 15, 52 + Math.sin(a - 0.42) * 15], [50 + Math.cos(a - w) * R, 52 + Math.sin(a - w) * R], [50 + Math.cos(a) * (R + 4), 52 + Math.sin(a) * (R + 4)], [50 + Math.cos(a + w) * R, 52 + Math.sin(a + w) * R]);
     }
-    return [I(blob(pts, 1.2, 0.45)), C(blob([[30, 52], [40, 44], [50, 42], [60, 44], [70, 52], [60, 59], [50, 61], [40, 59]], 0.6, 0.45)), I(blob(ell(50, 52, 6.5, 6.5, 10), 0.4, 0.6))];
+    // záplata: boky zářezu vlevo dole se u dna kříží a nechávaly u oka nesmyslnou štěrbinku (pevný tvar, bez rnd,
+    // aby se nezměnily ostatní ikony)
+    const patch = "M33.5 64.6L36.4 60.4L40.2 59.6L39.6 62.6L35.6 65.4Z";
+    return [I(blob(pts, 1.2, 0.45)), I(patch), C(blob([[30, 52], [40, 44], [50, 42], [60, 44], [70, 52], [60, 59], [50, 61], [40, 59]], 0.6, 0.45)), I(blob(ell(50, 52, 6.5, 6.5, 10), 0.4, 0.6))];
   },
   trenink: () => {
     const plate = (x) => blob([[x - 9, 26], [x + 9, 25], [x + 10, 50], [x + 9, 75], [x - 9, 76], [x - 10, 50]], 1.4, 0.3);
