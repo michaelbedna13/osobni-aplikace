@@ -283,6 +283,9 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
 
 - **Hlavní tlačítko** (`.btn-hero`): pilulka v barvě modulu (přechod a zrno, barevný stín), tmavý text a ikona, 60 px. Tmavé (off-black) jsou jen aktivní přepínače, aby se s akcí nepletly; ikona + akce („1 pivo“, „Zapsat hlášku“, „Začít“).
 - **Tlačítko / čip / segment**: bílá pilulka bez obrysu; aktivní stav tmavá pilulka se světlým textem.
+- **Přepínač** (`.switch`, `role="switch"`): pilulka 52 × 32, vypnutý `surface-2`, zapnutý tmavý (`dark`) s bílým
+  kolečkem. Řádek upozornění (`.notify-list`): přepínač, název s šedou nápovědou, vpravo výběr hodiny; vypnutý druh
+  má šedý název a ztlumený výběr.
 - **Skóre** (`.score`): tři pole vedle sebe s velkým číslem a popiskem.
 - **Kostičkový graf** (`BlockStacks`): jedna kostička = jeden kus; při větších číslech uvede měřítko.
 - **Vodorovné pruhy** (`HBars`): dny v týdnu, vítěz v barvě modulu s korunkou; řeší i remízu.

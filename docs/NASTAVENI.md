@@ -45,6 +45,22 @@ V appce: **Profil → Import ze zálohy → Vybrat soubor** a pak **Importovat**
 Funguje pro zálohu piv (`piva-….json`) i Hláškomatu (`hlaskomat-zaloha-….json`).
 Import jde spustit opakovaně, nic se nezdvojí.
 
+## 5. Upozornění (push)
+
+Upozornění posílá funkce Supabase `untrois-push`, kterou každou celou hodinu spustí `pg_cron`. Klíče VAPID si funkce
+vytvoří sama při prvním volání a drží je v tabulce `push_vapid` (čte ji jen service role). Žádné tajné klíče se nikam nezadávají.
+
+1. **SQL Editor** → vlož celý soubor `supabase/migrations/20261010120000_upozorneni.sql` → **Run**
+   (tabulky `push_subscriptions`, `notification_log`, `push_vapid`, sloupec `user_settings.notification_prefs`, hodinový job).
+2. **Edge Functions** → **Deploy a new function** → **Via Editor**, název `untrois-push`,
+   obsah nahradit souborem `supabase/functions/untrois-push/index.ts` → **Deploy**.
+3. V detailu funkce → **Details** vypnout **Enforce JWT verification** (volá ji pg_cron bez přihlášení;
+   každé upozornění odejde nejvýš jednou za den, takže cizí volání nic nepokazí) → **Save**.
+4. V iPhonu: appka z plochy → **Profil → Upozornění → Zapnout upozornění** → Povolit. Pak **Poslat zkušební**.
+
+Funguje od iOS 16.4 a jen v appce přidané na plochu. Co a v kolik se posílá, se nastavuje v Profilu
+(platí pro všechna zařízení, časy jsou v Europe/Prague).
+
 ## Vývoj na počítači (volitelné)
 
 ```bash

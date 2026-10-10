@@ -20,12 +20,15 @@ src/
   lib/supabase.ts     klient Supabase (bez nastavení = ukázkový režim)
   lib/auth.tsx        přihlášení
   lib/settings.ts     uživatelská nastavení (připnuté moduly)
+  lib/push.ts         upozornění: odběr zařízení, co a kdy posílat, odznak na ikoně
   components/         lišta, rychlé přidání, symboly, ikony
   screens/            Dnes, Moduly, stránka modulu, Profil, Přihlášení
   lib/icons.ts        ikony a šachové figurky jako vystřižené z papíru (generuje scripts/draw-icons.mjs)
   lib/copy.ts         hlas appky (vtipné texty)
   styles/app.css      design tokeny a styly
+public/push-sw.js     příjem upozornění v service workeru (workbox.importScripts)
 supabase/migrations/  struktura databáze (SQL)
+supabase/functions/   untrois-push: posílá upozornění, každou hodinu ji volá pg_cron
 .github/workflows/    kontrola, nasazení na Pages, migrace Supabase
 ```
 

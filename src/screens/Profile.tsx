@@ -4,6 +4,7 @@ import { MODULES, MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
 import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
 import { ImportSection } from "./ImportSection";
+import { NotifySection } from "./NotifySection";
 
 export function Profile() {
   const { session } = useAuth();
@@ -69,6 +70,7 @@ export function Profile() {
         </div>
       </section>
 
+      <NotifySection />
 
       <ImportSection />
 

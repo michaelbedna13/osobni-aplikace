@@ -35,7 +35,9 @@ export default defineConfig({
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,png,webp,woff2}"],
         // Písma pro azbuku a další abecedy se stáhnou jen v případě potřeby.
-        globIgnores: ["**/*cyrillic*", "**/*greek*", "**/*vietnamese*"],
+        globIgnores: ["**/*cyrillic*", "**/*greek*", "**/*vietnamese*", "push-sw.js"],
+        // příjem upozornění a ťuknutí na ně (public/push-sw.js)
+        importScripts: ["push-sw.js"],
       },
     }),
   ],

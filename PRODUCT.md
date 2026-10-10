@@ -56,12 +56,17 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   a roční součet všeho pravidelného, kdo komu dluží, spořicí cíle, útrata za piva).
 - Obrazovka Dnes: datum a kdo má svátek, počasí v jednom řádku (Open-Meteo), dluhy (bilance po lidech), pás připnutých modulů s rychlou akcí, kdo brzy slaví (7 dní), „Za co jsem dnes
   vděčný?“, jeden odkaz „Na později“. Pořadí připnutých modulů se upravuje jen v Profilu.
+- Upozornění (Web Push, appka z plochy, iOS 16.4+): ráno kdo dnes a zítra slaví i s nápady na dárek, den předem
+  platby a obnovy předplatného, odpoledne nákupní seznam, večer meditace a vděčnost (jen když dnes chybí), den předem
+  pátek 13. Každý druh jde v Profilu vypnout a posunout na jinou hodinu; ťuknutí otevře příslušný modul,
+  nepřečtená upozornění ukazuje odznak na ikoně a otevření appky ho smaže.
 
 ## Capabilities and Constraints
 
 - React + TypeScript + Vite, plain CSS (`src/styles/app.css`), bez UI knihovny.
 - Data jen přihlášeného uživatele (Supabase RLS); ukázkový režim bez Supabase v prohlížeči.
-- iOS PWA omezení: žádné widgety, zvuk až po ťuknutí, při zamčeném displeji neběží JS.
+- iOS PWA omezení: žádné widgety, zvuk až po ťuknutí, při zamčeném displeji neběží JS. Upozornění proto posílá
+  server (funkce Supabase `untrois-push`, každou hodinu přes `pg_cron`), povolení se musí vyžádat ťuknutím.
 - Čeština všude, včetně tvarů slov (1 pivo, 2 piva, 5 piv).
 
 ## Brand Commitments
