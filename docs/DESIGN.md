@@ -361,10 +361,9 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   pohybu bez animace.
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
   Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, pás modulů nemá nadpis.
-  Podoba podle funkce: **Brzy slaví** (`.celebrate`) jsou lidé s iniciálami v kolečku v barvě modulu (`.initials`;
-  kdo slaví dnes, má kolečko plné a štítek tmavý), pod jménem co a kdy slaví a nápady na dárek, pokud nějaké jsou
-  (`.gift-hint`), vpravo štítek Dnes / Zítra / za n dní (`.when-pill`). **Dluhy** jsou bilance po lidech: jedna
-  pilulka na člověka (`.debt-chip`: iniciály, jméno, částka zeleně s plus = dluží mně, červeně s minus = dlužím já).
+  Podoba podle funkce: **Brzy slaví** (`.celebrate`): jméno, pod ním co a kdy slaví a nápady na dárek, pokud nějaké jsou
+  (`.gift-hint`), vpravo štítek Dnes / Zítra / za n dní (`.when-pill`, kdo slaví dnes, má štítek tmavý). **Dluhy** jsou bilance po lidech: jedna
+  pilulka na člověka (`.debt-chip`: jméno, částka zeleně s plus = dluží mně, červeně s minus = dlužím já).
 - **Nákup** (`.nk-*`): pole „Co koupit?“ s tlačítkem + v pásu, pod ním návrhy „Často kupuješ“ (chipy). Seznam po
   odděleních v pořadí obchodu (nadpis oddělení v akcentu), řádek = čtverec k odškrtnutí, název, množství, tužka.
   Odškrtnuté jdou do „V košíku“ (přeškrtnuté, čtverec v akcentu), „Vyčistit košík“ je schová s možností Vrátit.

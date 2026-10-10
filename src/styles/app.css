@@ -1058,17 +1058,13 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .ch-power, .rest-bar button, .idea-given { border-radius: var(--pill); }
 .ring-seg, .orb, .unread-dot, .sc-legs i, .ch-pips i, .week-block i { border-radius: 50%; }
 
-/* Dnes – Brzy slaví: lidé s iniciálami v barvě modulu, kdy slaví vpravo, nápady na dárek pod jménem */
-.initials { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; font-family: var(--font-display); font-size: 18px; line-height: 1; letter-spacing: 0.02em; background: var(--surface-2); color: var(--ink); }
-.celebrate .initials { background: color-mix(in srgb, var(--accent) 28%, #FFFFFF); color: var(--deep); }
-.celebrate .today .initials { background: var(--accent); color: #FFFFFF; }
+/* Dnes – Brzy slaví: kdy slaví vpravo, nápady na dárek pod jménem */
 .gift-hint { display: inline-flex; align-items: center; gap: 5px; margin-top: 4px; font-size: 14px; color: var(--deep); }
 .when-pill { flex: none; padding: 5px 12px; border-radius: var(--pill); background: var(--surface-2); font-family: var(--font-ui); font-size: 14px; white-space: nowrap; }
 .celebrate .today .when-pill { background: var(--dark); color: var(--on-ink); }
-/* Dnes – Dluhy: jedna pilulka na člověka, plus zeleně (dluží mně), minus červeně (dlužím já) */
+/* Dnes – Dluhy: jedna pilulka na člověka (jméno a částka), plus zeleně (dluží mně), minus červeně (dlužím já) */
 .debt-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-.debt-chip { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 16px 6px 6px; border-radius: var(--pill); background: var(--glass); box-shadow: var(--card-shadow); color: var(--ink); text-decoration: none; font-size: 16px; }
-.debt-chip .initials { width: 40px; height: 40px; font-size: 16px; }
+.debt-chip { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 18px; border-radius: var(--pill); background: var(--glass); box-shadow: var(--card-shadow); color: var(--ink); text-decoration: none; font-size: 16px; }
 .debt-chip b { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .debt-chip.plus b { color: var(--lime-ink); }
 .debt-chip.minus b { color: var(--danger); }

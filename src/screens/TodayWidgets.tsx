@@ -6,7 +6,6 @@ import { MODULE_BY_KEY } from "../lib/modules";
 import { describe, loadPlace, savePlace, searchCity, useWeather, type Place } from "../lib/weather";
 import { balancesByPerson, debts, formatKc } from "../modules/finance/data";
 import { reverseName } from "../modules/mista/data";
-import { initials } from "./initials";
 
 // ---------- dluhy ----------
 
@@ -26,7 +25,6 @@ export function DebtsToday() {
           <li key={b.person}>
             <Link to="/m/finance?tab=dluhy" className={`debt-chip ${b.balance > 0 ? "plus" : "minus"}`}
               aria-label={`${b.person} ${b.balance > 0 ? "ti dluží" : "– dlužíš"} ${formatKc(Math.abs(b.balance))}`}>
-              <span className="initials" aria-hidden="true">{initials(b.person)}</span>
               <span>{b.person}</span>
               <b>{b.balance > 0 ? "+" : "−"}{formatKc(Math.abs(b.balance))}</b>
             </Link>

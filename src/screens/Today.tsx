@@ -10,7 +10,6 @@ import { computeGratitudeStats, useGratitude } from "../modules/vdecnost/data";
 import { GratitudeForm } from "../modules/vdecnost/GratitudeForm";
 import { soonOccasions, useGiftIdeas, usePeople } from "../modules/lide/data";
 import { occasionLabel, whenLabel } from "../modules/lide/LideScreen";
-import { initials } from "./initials";
 import { useLinks } from "../modules/odkazy/data";
 import { domainOf } from "../modules/odkazy/util";
 import { groupByCategory, useShopping, useUpdateItems, type ShoppingItem } from "../modules/nakup/data";
@@ -63,7 +62,7 @@ function Shopping() {
   );
 }
 
-/** Kdo brzy slaví: lidé s iniciálami v barvě modulu, co a kdy slaví, a rovnou nápady na dárek, když nějaké jsou. */
+/** Kdo brzy slaví: co a kdy slaví a rovnou nápady na dárek, když nějaké jsou. */
 function SoonCelebrating() {
   const { data: people = [] } = usePeople();
   const { data: ideas = [] } = useGiftIdeas();
@@ -79,7 +78,6 @@ function SoonCelebrating() {
           return (
             <li key={`${o.person.id}-${o.kind}`}>
               <Link to={`/m/lide/${o.person.id}`} className={`list-btn${o.days === 0 ? " today" : ""}`}>
-                <span className="initials" aria-hidden="true">{initials(o.person.name)}</span>
                 <span className="grow">
                   <b>{o.person.name}</b>
                   <span className="occasion-kind">{occasionLabel(o)} · {o.date.toLocaleDateString("cs-CZ", { weekday: "short", day: "numeric", month: "numeric" })}</span>
