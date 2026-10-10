@@ -327,8 +327,12 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   body zájmu. Značky (`.map-dot`) jsou kulaté body s tmavým okrajem: „chci“ v barvě modulu, navštívené menší
   šedomodré, vybrané větší se světelným kruhem a jmenovkou („ťukni pro detail“; první ťuknutí vybírá, druhé otevře detail), nový bod a moje poloha pulzují.
   Zdroj dat je schovaný pod malým „i“ v rohu.
-- **Výdaje** (Finance): pruh podílů (`.exp-bar`, dílky v barvě modulu podle měsíční částky, odstíny se střídají) a pod ním
-  tři největší položky v procentech; výdaj se splatností do 3 dnů je zvýrazněný (`.list-btn.soon`).
+- **Výdaje** (Finance): pruh podílů (`.exp-bar`, dílky v tmavším odstínu modulu `--deep` podle měsíční částky, odstíny
+  se střídají) a pod ním legenda (`.exp-legend`: tečka ve stejném odstínu jako díl pruhu, název, procento tučně, až 4
+  položky); výdaj se splatností do 3 dnů je zvýrazněný (`.list-btn.soon`). Řádek ukazuje měsíční částku jen vpravo,
+  podtitulek jen to, co tam není (jiná perioda, splatnost „platí se 8. · za 29 dní“, poznámka). V hlavičce je rozpad
+  na dvou řádcích (`.fin-split`: výdaje + předplatné, pod tím za rok), aby se nelámal uprostřed částky.
+- **Řádky seznamů** (`.list-btn`): aspoň 60 px, okraje 12 × 18 px, podtitulek 3 px pod názvem s řádkováním 1,35.
 - **Částky** (`.money`) polotučně s tabulkovými číslicemi; „dluží mi“ v `lime-ink`, „dlužím“ v barvě `danger`. Předplatné, které se
   obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.
 - **Dechový kruh** (`.orb`): kruh v akcentu, při nádechu se plynule zvětšuje, při výdechu zmenšuje,

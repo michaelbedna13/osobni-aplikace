@@ -59,7 +59,13 @@ export function FinanceScreen() {
           <span className="icon-slot"><Icon name="finance" size={96} /></span>
           <span className="hero-num">{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}</span>
           <span className="hero-cap">Kč měsíčně pravidelně</span>
-          <p className="hero-line">výdaje {roundKc(stats.monthlyExpenses)} · předplatné {roundKc(stats.monthlySubs)} · za rok {roundKc(stats.yearlyTotal)}</p>
+          {/* rozpad po řádcích, aby se nelámal uprostřed částky */}
+          <p className="hero-line fin-split">
+            {stats.monthlyExpenses > 0 && stats.monthlySubs > 0
+              ? <span>výdaje {roundKc(stats.monthlyExpenses)} + předplatné {roundKc(stats.monthlySubs)}</span>
+              : <span>{stats.monthlySubs > 0 ? "jen předplatné" : stats.monthlyExpenses > 0 ? "jen výdaje, žádné předplatné" : "zatím nic pravidelného"}</span>}
+            <span>{roundKc(stats.yearlyTotal)} za rok</span>
+          </p>
         </div>
         <button className="btn-hero" onClick={addCurrent}>
           <Icon name="i-plus" size={24} /> {tab === "vydaje" ? "Přidat výdaj" : tab === "predplatne" ? "Přidat předplatné" : tab === "dluhy" ? "Zapsat dluh" : "Nový spořicí cíl"}
@@ -93,7 +99,12 @@ export function FinanceScreen() {
                   <div className="exp-bar">
                     {activeExps.map((e, i) => <i key={e.id} style={{ flexGrow: expenseMonthly(e), opacity: 1 - (i % 4) * 0.2 }} title={e.name} />)}
                   </div>
-                  <span className="small muted">{activeExps.slice(0, 3).map((e) => `${e.name} ${Math.round((expenseMonthly(e) / stats.monthlyExpenses) * 100)} %`).join(" · ")}</span>
+                  {/* legenda: tečka má stejný odstín jako její díl pruhu */}
+                  <ul className="exp-legend">
+                    {activeExps.slice(0, 4).map((e, i) => (
+                      <li key={e.id}><i style={{ opacity: 1 - (i % 4) * 0.2 }} />{e.name} <b>{Math.round((expenseMonthly(e) / stats.monthlyExpenses) * 100)} %</b></li>
+                    ))}
+                  </ul>
                 </div>
               )}
               <ul className="list">
@@ -104,8 +115,13 @@ export function FinanceScreen() {
                       <button className={`list-btn${due !== null && due <= 3 ? " soon" : ""}`} onClick={() => setSheet({ kind: "exp", item: e })}>
                         <span className="grow">
                           <b>{e.name}</b>
+                          {/* měsíční částka je vpravo; tady jen to, co tam není (jiná perioda, splatnost, poznámka) */}
                           <span className="occasion-kind">
-                            {EXPENSE_PERIODS[e.period].adj} {formatKc(e.amount)}{e.due_day && e.period === "mesic" ? ` · platí se ${e.due_day}. (${when(due ?? 0)})` : ""}{e.note ? ` · ${e.note}` : ""}
+                            {[
+                              e.period !== "mesic" ? `${EXPENSE_PERIODS[e.period].adj.toLowerCase()} ${formatKc(e.amount)}` : null,
+                              e.due_day && e.period === "mesic" ? `platí se ${e.due_day}. · ${when(due ?? 0)}` : null,
+                              e.note,
+                            ].filter(Boolean).join(" · ") || "měsíčně"}
                           </span>
                         </span>
                         <span className="money">{roundKc(expenseMonthly(e))}<small>/měs</small></span>
@@ -135,7 +151,7 @@ export function FinanceScreen() {
                 return (
                   <li key={s.id}>
                     <button className={`list-btn${d <= 3 ? " soon" : ""}`} onClick={() => setSheet({ kind: "sub", item: s })}>
-                      <span className="grow"><b>{s.name}</b><span className="occasion-kind">{PERIOD_NAMES[s.period].adj} {formatKc(s.price)} · obnova {formatDate(next)} ({when(d)})</span></span>
+                      <span className="grow"><b>{s.name}</b><span className="occasion-kind">{s.period !== "mesic" ? `${PERIOD_NAMES[s.period].adj.toLowerCase()} ${formatKc(s.price)} · ` : ""}obnova {formatDate(next)} · {when(d)}</span></span>
                       <span className="money">{roundKc(monthly(s))}<small>/měs</small></span>
                     </button>
                   </li>
