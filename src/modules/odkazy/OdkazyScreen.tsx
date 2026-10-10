@@ -283,7 +283,7 @@ function ShareSheet({ onClose, onCopied }: { onClose: () => void; onCopied: () =
           <ol className="steps">
             <li>Otevři appku <b>Zkratky</b> → <b>+</b> → pojmenuj ji <b>Uložit do appky</b>.</li>
             <li>Dole ťukni na ikonu <b>Podrobnosti</b> a zapni <b>Zobrazit v listu sdílení</b>. Typy vstupu nech <b>Adresy URL</b> a <b>Text</b>.</li>
-            <li>Přidej akci <b>Získat obsah URL</b>. Do URL vlož adresu níže.</li>
+            <li>Přidej akci <b>Načíst obsah URL</b> (zelená ikona). Do URL vlož adresu níže.</li>
             <li>V akci rozbal <b>Zobrazit více</b>: Metoda <b>POST</b>. Hlavičky: <b>apikey</b> = klíč appky, <b>Content-Type</b> = <b>application/json</b>.</li>
             <li>Tělo požadavku <b>JSON</b>, dvě položky typu Text: <b>p_token</b> = tvůj klíč, <b>p_url</b> = proměnná <b>Vstup zkratky</b>.</li>
             <li>Přidej akci <b>Zobrazit oznámení</b> s textem „Uloženo do appky“. Hotovo.</li>
