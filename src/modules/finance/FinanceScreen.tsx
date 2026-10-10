@@ -57,8 +57,8 @@ export function FinanceScreen() {
         <Topbar title="Finance" />
         <div className="hero hero-long">
           <span className="icon-slot"><Icon name="finance" size={96} /></span>
-          <span className="hero-num">{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}</span>
-          <span className="hero-cap">Kč měsíčně pravidelně</span>
+          <span className="hero-num">{Math.round(stats.monthlyTotal).toLocaleString("cs-CZ")}<span className="unit">Kč</span></span>
+          <span className="hero-cap">měsíčně</span>
           {/* rozpad po řádcích, aby se nelámal uprostřed částky */}
           <p className="hero-line fin-split">
             {stats.monthlyExpenses > 0 && stats.monthlySubs > 0
@@ -75,9 +75,9 @@ export function FinanceScreen() {
       {error && <p className="error">Nepodařilo se načíst finance. Zkontroluj připojení.</p>}
 
       <div className="score">
-        <div><b>{Math.round(stats.owedToMe).toLocaleString("cs-CZ")}</b><span>Kč dluží mně</span></div>
-        <div><b>{Math.round(stats.iOwe).toLocaleString("cs-CZ")}</b><span>Kč dlužím já</span></div>
-        <div><b>{Math.round(stats.savedTotal).toLocaleString("cs-CZ")}</b><span>Kč naspořeno</span></div>
+        <div><b>{Math.round(stats.owedToMe).toLocaleString("cs-CZ")}<span className="unit">Kč</span></b><span>dluží mně</span></div>
+        <div><b>{Math.round(stats.iOwe).toLocaleString("cs-CZ")}<span className="unit">Kč</span></b><span>dlužím já</span></div>
+        <div><b>{Math.round(stats.savedTotal).toLocaleString("cs-CZ")}<span className="unit">Kč</span></b><span>naspořeno</span></div>
       </div>
 
       <button className="panel beer-panel" onClick={() => setSheet({ kind: "beer" })}>

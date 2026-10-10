@@ -323,6 +323,9 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
 .hero:not(.summary-hero) .hero-line { max-width: 34ch; }
 .hero-num { font-family: var(--font-display); font-size: 96px; line-height: 0.95; font-variant-numeric: tabular-nums; }
 .hero-cap { font-family: var(--font-ui); font-size: 18px; }
+/* jednotka u velkého čísla (Kč): menší, na stejné účaří jako číslo, kousek odsazená */
+.unit { margin-left: 0.14em; font-size: 0.42em; }
+.score b .unit { font-size: 0.56em; margin-left: 0.18em; }
 .hero-line { margin-top: 6px; color: var(--slate); line-height: 1.45; min-height: 24px; }
 .score {
   display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 22px;

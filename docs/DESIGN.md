@@ -332,6 +332,8 @@ Textury generuje `node scripts/generate-textures.mjs` (zrno, sprej, jiskření; 
   položky); výdaj se splatností do 3 dnů je zvýrazněný (`.list-btn.soon`). Řádek ukazuje měsíční částku jen vpravo,
   podtitulek jen to, co tam není (jiná perioda, splatnost „platí se 8. · za 29 dní“, poznámka). V hlavičce je rozpad
   na dvou řádcích (`.fin-split`: výdaje + předplatné, pod tím za rok), aby se nelámal uprostřed částky.
+- **Jednotka u čísla** (`.unit`): „Kč“ stojí hned za velkým číslem na stejném účaří, menší (0,42 em v hlavičce,
+  0,56 em ve skóre); popisek pod číslem pak jednotku neopakuje (Finance: „21 892 Kč“ + „měsíčně“).
 - **Řádky seznamů** (`.list-btn`): aspoň 60 px, okraje 12 × 18 px, podtitulek 3 px pod názvem s řádkováním 1,35.
 - **Částky** (`.money`) polotučně s tabulkovými číslicemi; „dluží mi“ v `lime-ink`, „dlužím“ v barvě `danger`. Předplatné, které se
   obnoví do 3 dnů, má podklad v akcentu; zrušené je zašedlé.
