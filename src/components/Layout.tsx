@@ -4,6 +4,7 @@ import { useKeyboardAware } from "../lib/keyboard";
 import { MODULE_BY_KEY, isModuleKey } from "../lib/modules";
 import { SwipeUnderContext, useSwipeBack, useSwipePeek } from "../lib/swipeBack";
 import { screenRoutes } from "../routes";
+import { THEMES } from "../lib/theme";
 import type { IconName } from "../lib/icons";
 import { Icon } from "./Icon";
 
@@ -20,7 +21,9 @@ const SAGE = "#A9C29A";
 function useStatusBarColor(pathname: string) {
   useEffect(() => {
     const key = pathname.match(/^\/m\/([a-z]+)/)?.[1];
-    const color = isModuleKey(key) ? MODULE_BY_KEY[key].color : SAGE;
+    // tmavé vzhledy: lišta v barvě podkladu
+    const dark = THEMES.find((t) => t.id === document.documentElement.dataset.theme);
+    const color = dark ? dark.bg : isModuleKey(key) ? MODULE_BY_KEY[key].color : SAGE;
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", color);
   }, [pathname]);
 }

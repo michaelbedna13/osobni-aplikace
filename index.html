@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#A9C29A" />
+    <meta name="theme-color" content="#1C1B19" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -13,7 +13,7 @@
     <title>untrois</title>
     <script>
       // vzhled (Profil → Vzhled, src/lib/theme.ts) hned při načtení, ať nic nepřebliká
-      try { var t = localStorage.getItem("theme"); if (t === "duo-black" || t === "duo-green") document.documentElement.dataset.theme = t; } catch (e) {}
+      try { var t = localStorage.getItem("theme"); if (t === null || t === "noir") t = "noir"; if (t === "noir" || t === "duo-black" || t === "duo-green") document.documentElement.dataset.theme = t; } catch (e) {}
     </script>
     <style>
       /* úvodní obrazovka: znak untrois se rozvine, dokud se nenačtou data (skrývá ji src/lib/splash.ts) */
@@ -56,6 +56,12 @@
       html[data-theme^="duo"] #splash::after { mix-blend-mode: soft-light; }
       html[data-theme^="duo"] .splash-flower .bloom, html[data-theme^="duo"] .splash-flower .pupil { fill: #F3EADB; }
       html[data-theme^="duo"] .splash-flower .eye { fill: var(--duo-bg); }
+      /* vzhled Černý: krémová květina na skoro černé se zrnem */
+      html[data-theme="noir"] { --duo-bg: #1C1B19; }
+      html[data-theme="noir"].splashing, html[data-theme="noir"].splashing body, html[data-theme="noir"] #splash { background: var(--duo-bg); }
+      html[data-theme="noir"] #splash::after { mix-blend-mode: overlay; opacity: 0.6; }
+      html[data-theme="noir"] .splash-flower .bloom, html[data-theme="noir"] .splash-flower .pupil { fill: #F3EADB; }
+      html[data-theme="noir"] .splash-flower .eye { fill: var(--duo-bg); }
     </style>
   </head>
   <body>

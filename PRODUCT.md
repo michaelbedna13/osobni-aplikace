@@ -58,7 +58,8 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   vděčný?“, jeden odkaz „Na později“. Pořadí připnutých modulů se upravuje jen v Profilu.
 - Zvuky (gong, pípnutí, zvonky) hrají i v tichém režimu iPhonu (Profil → Zvuky, jde vypnout; daň: hudba z jiné appky
   se při zvuku zastaví).
-- Vzhled v Profilu: barevný (moduly ve svých barvách), nebo duotone jako logo – krémová na off-black nebo na lesní
+- Vzhled v Profilu: Černý (výchozí – tmavý, barva modulu jen jemně v ikonách a přechodu), barevný (moduly ve svých
+  barvách), nebo duotone jako logo – krémová na off-black nebo na lesní
   zelené. Platí pro zařízení.
 - Upozornění (Web Push, appka z plochy, iOS 16.4+): ráno kdo dnes a zítra slaví i s nápady na dárek, den předem
   platby a obnovy předplatného, odpoledne nákupní seznam, večer meditace a vděčnost (jen když dnes chybí), den předem

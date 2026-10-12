@@ -448,12 +448,12 @@ a.quote-card { display: grid; gap: 10px; padding: 16px; }
 .pin-list li + li { border-top: 1px solid var(--edge); }
 
 /* Profil → Vzhled: tři vzorky (podklad + znak v barvě popředí), vybraný s rámečkem v barvě textu */
-.theme-pick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.theme-pick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .theme-opt { display: grid; justify-items: center; gap: 8px; padding: 10px 6px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); font-family: var(--font-ui); font-size: 16px; }
 .theme-opt.on { box-shadow: inset 0 0 0 2px var(--ink); }
 .theme-swatch { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--edge); }
 /* vzorek ukazuje svůj vzhled, ne aktuální: ikona v barvě popředí vzorku, bez přepisu z duotone */
-html[data-theme^="duo"] .theme-swatch .icon { color: currentColor !important; }
+html[data-theme^="duo"] .theme-swatch .icon, html[data-theme="noir"] .theme-swatch .icon { color: currentColor !important; }
 .theme-swatch .icon { color: inherit; }
 .theme-note { margin-top: 12px; }
 
@@ -1116,12 +1116,12 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .list li + li, .pin-list li + li { border-top: 1px solid var(--edge); }
 
 /* Profil → Vzhled: tři vzorky (podklad + znak v barvě popředí), vybraný s rámečkem v barvě textu */
-.theme-pick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.theme-pick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .theme-opt { display: grid; justify-items: center; gap: 8px; padding: 10px 6px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink); font-family: var(--font-ui); font-size: 16px; }
 .theme-opt.on { box-shadow: inset 0 0 0 2px var(--ink); }
 .theme-swatch { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--edge); }
 /* vzorek ukazuje svůj vzhled, ne aktuální: ikona v barvě popředí vzorku, bez přepisu z duotone */
-html[data-theme^="duo"] .theme-swatch .icon { color: currentColor !important; }
+html[data-theme^="duo"] .theme-swatch .icon, html[data-theme="noir"] .theme-swatch .icon { color: currentColor !important; }
 .theme-swatch .icon { color: inherit; }
 .theme-note { margin-top: 12px; }
 
@@ -1214,3 +1214,40 @@ html[data-theme^="duo"] .map-box { background: var(--duo-card); }
 /* na krémové ploše (zaškrtnuto, vybráno) má ikona barvu podkladu */
 html[data-theme^="duo"] .nk-row.done .nk-box, html[data-theme^="duo"] .wx-check.on { color: var(--duo-bg); }
 html[data-theme^="duo"] .toast-action { background: var(--duo-bg); color: var(--duo-cream); }
+
+/* ---------- vzhled „Černý“ (výchozí; Profil → Vzhled, src/lib/theme.ts) ----------
+   Prémiově tmavý: skoro černý podklad se zrnem, karty o odstín světlejší, krémový text. Barva modulu jen jemně:
+   ikony, lehký přechod v pravém horním rohu obrazovky a karet a tónované hlavní tlačítko. */
+html[data-theme="noir"] {
+  --noir-bg: #1C1B19; --noir-card: #262422; --noir-cream: #F3EADB;
+  --ink: var(--noir-cream); --ink-2: #FFF8EC; --on-ink: var(--noir-bg); --on-accent: var(--noir-bg);
+  --paper: var(--noir-card); --glass: var(--noir-card);
+  --surface-2: color-mix(in srgb, var(--noir-cream) 8%, var(--noir-card)); --idle: color-mix(in srgb, var(--noir-cream) 16%, var(--noir-bg));
+  --edge: rgba(243, 234, 219, 0.1); --slate: color-mix(in srgb, var(--noir-cream) 58%, var(--noir-bg));
+  --app-bg: var(--noir-bg); --desk: var(--noir-bg); --lime-ink: var(--lime);
+  --card-shadow: inset 0 0 0 1px rgba(243, 234, 219, 0.06); --shadow: none; --shadow-big: 0 14px 36px rgba(0, 0, 0, 0.45);
+  --dark: url("../assets/tex/grain.svg") 0 0 / 200px 200px, linear-gradient(180deg, #FFF8EC, var(--noir-cream));
+  color-scheme: dark;
+}
+/* pozadí: lehký přechod barvy modulu z rohu, zrno navrch (film je na tmavé výraznější než soft-light, proto overlay) */
+html[data-theme="noir"] .screen {
+  --grad:
+    radial-gradient(120% 36% at 100% 0%, color-mix(in srgb, var(--accent) 17%, var(--noir-bg)), transparent 72%),
+    radial-gradient(80% 30% at 0% 0%, color-mix(in srgb, var(--accent) 7%, var(--noir-bg)), transparent 70%),
+    var(--noir-bg);
+}
+html[data-theme="noir"] .screen::after { opacity: 0.5; mix-blend-mode: overlay; }
+html[data-theme="noir"] .fav { --module-card: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, radial-gradient(110% 70% at 100% 0%, color-mix(in srgb, var(--accent) 15%, var(--noir-card)), var(--noir-card) 70%); box-shadow: inset 0 0 0 1px rgba(243, 234, 219, 0.07); color: var(--noir-cream); }
+html[data-theme="noir"] .tiles .tile { background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, radial-gradient(110% 70% at 100% 0%, color-mix(in srgb, var(--accent) 13%, var(--noir-card)), var(--noir-card) 70%); box-shadow: inset 0 0 0 1px rgba(243, 234, 219, 0.07); color: var(--noir-cream); }
+html[data-theme="noir"] .fav-quick { background: color-mix(in srgb, var(--noir-cream) 10%, var(--noir-card)); color: var(--noir-cream); box-shadow: none; }
+html[data-theme="noir"] .fav .icon-slot, html[data-theme="noir"] .tile .icon-slot, html[data-theme="noir"] .hero .icon-slot { color: var(--accent); }
+html[data-theme="noir"] .btn-hero {
+  background: url("../assets/tex/grain-soft.svg") 0 0 / 200px 200px, linear-gradient(180deg, color-mix(in srgb, var(--accent) 28%, var(--noir-card)), color-mix(in srgb, var(--accent) 18%, var(--noir-card)));
+  color: var(--noir-cream); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 42%, transparent);
+}
+html[data-theme="noir"] .btn-hero:active { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent); }
+html[data-theme="noir"] .tabbar-glass { background: color-mix(in srgb, var(--noir-card) 80%, transparent); box-shadow: inset 0 0 0 1px rgba(243, 234, 219, 0.1), 0 12px 32px rgba(0, 0, 0, 0.45); }
+html[data-theme="noir"] .icon > path[fill^="color-mix"] { fill: color-mix(in srgb, var(--accent) 60%, var(--noir-bg)); }
+html[data-theme="noir"] .nk-row.done .nk-box, html[data-theme="noir"] .wx-check.on { color: var(--noir-bg); }
+html[data-theme="noir"] .sh-paused { background: color-mix(in srgb, var(--noir-bg) 88%, transparent); }
+html[data-theme="noir"] .map-box { background: var(--noir-card); }

@@ -1,11 +1,13 @@
 import { useCallback, useState } from "react";
 
-// Vzhled appky: barevný (každý modul má svou barvu) nebo duotone jako logo – krémová na off-black / lesní zelené.
+// Vzhled appky: černý (výchozí – tmavý, barva modulu jen jemně), barevný (každý modul ve své barvě) nebo duotone jako
+// logo – krémová na off-black / lesní zelené.
 // Ukládá se jen v zařízení (localStorage) a nastavuje se jako html[data-theme]; při načtení ho čte skript v index.html.
 
-export type Theme = "barevny" | "duo-black" | "duo-green";
+export type Theme = "noir" | "barevny" | "duo-black" | "duo-green";
 
 export const THEMES: { id: Theme; name: string; bg: string; fg: string }[] = [
+  { id: "noir", name: "Černý", bg: "#1C1B19", fg: "#F3EADB" },
   { id: "barevny", name: "Barevný", bg: "#CEF17B", fg: "#23211F" },
   { id: "duo-black", name: "Tmavý", bg: "#23211F", fg: "#F3EADB" },
   { id: "duo-green", name: "Zelený", bg: "#2F4A36", fg: "#F3EADB" },
@@ -17,9 +19,9 @@ const isTheme = (v: unknown): v is Theme => THEMES.some((t) => t.id === v);
 export function readTheme(): Theme {
   try {
     const v = localStorage.getItem(KEY);
-    return isTheme(v) ? v : "barevny";
+    return isTheme(v) ? v : "noir";
   } catch {
-    return "barevny";
+    return "noir";
   }
 }
 

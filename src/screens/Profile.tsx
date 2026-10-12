@@ -54,7 +54,7 @@ export function Profile() {
               </button>
             ))}
           </div>
-          <p className="small muted theme-note">{theme === "barevny" ? "Každý modul má svou barvu." : "Jen dvě barvy jako logo. Platí pro tohle zařízení."}</p>
+          <p className="small muted theme-note">{theme === "noir" ? "Tmavý, barva modulu jen jemně v ikonách a přechodu." : theme === "barevny" ? "Každý modul má svou barvu." : "Jen dvě barvy jako logo."} Platí pro tohle zařízení.</p>
         </div>
       </section>
 

@@ -42,6 +42,8 @@ colors:
   bag-shade: "rgba(0, 0, 0, 0.12)"
   finance-mark: "#A87A10"
   duo-cream: "#F3EADB"
+  noir-bg: "#1C1B19"
+  noir-card: "#262422"
   duo-cream-hi: "#FFF8EC"
   duo-black: "#23211F"
   duo-black-card: "#2E2B28"
@@ -204,6 +206,13 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 - **Limetka** `lime` jen jako plocha (akce „Vrátit“, nová položka, odškrtnutá série); jako text je nečitelná,
   proto „dluží mi“, autor hlášky apod. používají tmavší `lime-ink`. Hvězdy a oblíbené `gold`, chyby `danger`.
 - **Zamčené moduly**: šedá dlaždice, ikona v odstínech šedi.
+
+## Vzhled „Černý“ (výchozí)
+
+Profil → Vzhled → **Černý**: prémiově tmavý. Podklad `#1C1B19` se zrnem (film přes `overlay`, 50 %), karty `#262422`
+s jemnou krémovou linkou, text krémový `#F3EADB`. Barva modulu jen jemně: ikony, lehký přechod z pravého horního rohu
+obrazovky (17 %) a karet modulů (13–15 %), hlavní tlačítko tónované barvou modulu s tenkým obrysem. Úvodní obrazovka:
+krémová květina na skoro černé se zrnem; lišta s hodinami i barva spuštění (manifest) jsou `#1C1B19`.
 
 ## Vzhled „duotone“
 
