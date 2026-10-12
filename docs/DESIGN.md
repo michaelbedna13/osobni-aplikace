@@ -209,11 +209,12 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 
 ## Vzhled „Černý“ (výchozí)
 
-Profil → Vzhled → **Černý**: prémiově tmavý. Podklad `#1C1B19` se zrnem (film přes `overlay`, 50 %), karty `#262422`
+Profil → Vzhled → **Černý**: prémiově tmavý. Podklad `#1C1B19` s filmovým zrnem po jednom pixelu displeje
+(`noise.png` z `scripts/generate-textures.mjs`, 128 px, `overlay` 22 %; ne mraky z feTurbulence, ty působily jako levný papír), karty `#262422`
 s jemnou krémovou linkou, text krémový `#F3EADB`. Barva modulu jen jemně: ikony, lehký přechod z rohu obrazovky za
 velkou ikonou (16 %), hlavní tlačítko tónované barvou modulu s tenkým obrysem. Karty modulů: světlo vychází z ikony
 (hladký vícebodový radiální přechod v `oklab` s průhledností – žádná tvrdá hrana ani hnědnutí barev), shora slabý nádech
-barvy a tenká barevná hrana nahoře jako odlesk; zrno navrch rozbije pruhy v přechodu. Úvodní obrazovka:
+barvy a tenká barevná hrana nahoře jako odlesk; pruhy v přechodu rozbije zrno obrazovky. Úvodní obrazovka:
 krémová květina na skoro černé se zrnem; lišta s hodinami i barva spuštění (manifest) jsou `#1C1B19`.
 
 ## Vzhled „duotone“
