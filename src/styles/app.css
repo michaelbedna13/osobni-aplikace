@@ -1160,6 +1160,8 @@ html[data-theme^="duo"] .theme-swatch .icon { color: currentColor !important; }
 .nk-box, .bag, .stack-blocks i, .mosaic i, .sh-swatch { border-radius: 6px; }
 .col-track i { border-radius: 6px 6px 0 0; }
 .hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .ch-power, .rest-bar button, .idea-given { border-radius: var(--pill); }
+/* tlačítko na konci řádku seznamu (Upravit, Dáno): plný pruh přes výšku řádku, roh kopíruje kartu (ořízne ji .list) */
+.idea-row .idea-given { border-radius: 0; padding: 0 18px; }
 .ring-seg, .orb, .unread-dot, .sc-legs i, .ch-pips i, .week-block i { border-radius: 50%; }
 
 /* Dnes – Brzy slaví: kdy slaví vpravo, nápady na dárek pod jménem */
