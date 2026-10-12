@@ -8,8 +8,8 @@ import { MODULE_BY_KEY } from "../../lib/modules";
 import { playSound, unlockAudio } from "../../lib/sound";
 import { soundPrefs } from "../../lib/soundPrefs";
 import { useWakeLock } from "../../lib/wakeLock";
-import { addSet, moveExercise, removeExercise, removeSet, setField, toggleDone, useActiveWorkout, type ActiveWorkout } from "./active";
-import { doneSetCount, formatSet, lastSetsFor, newRecords, prefillSets, useAddWorkout, useExercises, useWorkouts, workoutVolume, type SetEntry, type Workout } from "./data";
+import { addSet, finishWork, moveExercise, removeExercise, removeSet, setField, startWork, toggleDone, useActiveWorkout, type ActiveWorkout } from "./active";
+import { doneSetCount, formatSet, lastSetsFor, newRecords, prefillSets, setMode, useAddWorkout, useExercises, useWorkouts, workoutVolume, type SetEntry, type Workout } from "./data";
 import { ExercisePicker } from "./ExercisePicker";
 import type { Exercise } from "./exercises";
 
@@ -78,16 +78,20 @@ export function WorkoutScreen() {
       {active.exercises.length === 0 && <p className="empty">Přidej první cvik.</p>}
       {active.exercises.map((we, ex) => {
         const exercise = byId.get(we.exercise_id);
+        const rest = we.rest_s ?? exercise?.rest_s ?? 90;
         return (
           <ExerciseCard
             key={`${we.exercise_id}-${ex}`}
             exercise={exercise}
+            mode={setMode(we.mode, exercise)}
+            running={active.work?.ex === ex ? active.work.set : null}
+            onStart={(set) => { unlockAudio(); update((w) => startWork(w, ex, set, w.exercises[ex].sets[set].seconds || 60)); }}
             sets={we.sets}
             last={lastSetsFor(we.exercise_id, workouts)}
             isFirst={ex === 0}
             isLast={ex === active.exercises.length - 1}
             onChange={(set, patch) => update((w) => setField(w, ex, set, patch))}
-            onToggle={(set) => { unlockAudio(); update((w) => toggleDone(w, ex, set, we.rest_s ?? exercise?.rest_s ?? 90)); }}
+            onToggle={(set) => { unlockAudio(); update((w) => toggleDone(w, ex, set, rest)); }}
             onAddSet={() => update((w) => addSet(w, ex))}
             onRemoveSet={() => update((w) => removeSet(w, ex))}
             onMove={(dir) => update((w) => moveExercise(w, ex, dir))}
@@ -102,6 +106,7 @@ export function WorkoutScreen() {
         if (window.confirm("Zrušit trénink bez uložení?")) { clear(); navigate("/m/trenink", { replace: true }); }
       }}>Zrušit bez uložení</button>
 
+      <WorkBar active={active} update={update} restFor={(ex) => active.exercises[ex]?.rest_s ?? byId.get(active.exercises[ex]?.exercise_id)?.rest_s ?? 90} />
       <RestBar active={active} update={update} />
       {picking && <ExercisePicker onClose={() => setPicking(false)} onPick={addExercise} exclude={active.exercises.map((e) => e.exercise_id)} />}
     </div>
@@ -111,6 +116,33 @@ export function WorkoutScreen() {
 function Elapsed({ since }: { since: string }) {
   const now = useNow(1000);
   return <span className="elapsed" aria-label="Doba tréninku">{clock(now - new Date(since).getTime())}</span>;
+}
+
+/** Série na čas: odpočet nad spodní lištou, na konci pípne, odškrtne sérii a spustí pauzu. */
+function WorkBar({ active, update, restFor }: { active: ActiveWorkout; update: (fn: (w: ActiveWorkout) => ActiveWorkout) => void; restFor: (ex: number) => number }) {
+  const now = useNow(250);
+  const work = active.work;
+  const left = work ? work.until - now : 0;
+
+  useEffect(() => {
+    if (work && left <= 0) {
+      if (left > -5000) {
+        playSound(soundPrefs().restEnd);
+        navigator.vibrate?.(200);
+      }
+      update((w) => finishWork(w, restFor(work.ex)));
+    }
+  }, [work, left, update, restFor]);
+
+  if (!work || left <= 0) return null;
+  return (
+    <div className="rest-bar work-bar" role="timer" aria-label="Série na čas">
+      <span className="rest-fill" style={{ width: `${Math.min(100, 100 - (left / (work.total * 1000)) * 100)}%` }} />
+      <span className="rest-time">Cvič {clock(left + 999)}</span>
+      <button onClick={() => update((w) => ({ ...w, work: null }))} aria-label="Zrušit sérii">×</button>
+      <button onClick={() => update((w) => finishWork(w, restFor(work.ex)))}>Hotovo</button>
+    </div>
+  );
 }
 
 /** Pauza po sérii: odpočet nad spodní lištou, na konci pípne. */
@@ -129,7 +161,7 @@ function RestBar({ active, update }: { active: ActiveWorkout; update: (fn: (w: A
     }
   }, [active.rest_until, left, update]);
 
-  if (!active.rest_until || left <= 0) return null;
+  if (!active.rest_until || left <= 0 || active.work) return null;
   const shift = (s: number) => update((w) => (w.rest_until ? { ...w, rest_until: w.rest_until + s * 1000, rest_total: Math.max(1, w.rest_total + s) } : w));
   return (
     <div className="rest-bar" role="timer" aria-label="Pauza">
@@ -142,8 +174,13 @@ function RestBar({ active, update }: { active: ActiveWorkout; update: (fn: (w: A
   );
 }
 
-function ExerciseCard({ exercise, sets, last, isFirst, isLast, onChange, onToggle, onAddSet, onRemoveSet, onMove, onRemove }: {
+function ExerciseCard({ exercise, mode, running, onStart, sets, last, isFirst, isLast, onChange, onToggle, onAddSet, onRemoveSet, onMove, onRemove }: {
   exercise: Exercise | undefined;
+  /** Série na opakování, nebo na čas (s odpočtem). */
+  mode: "reps" | "time";
+  /** Která série právě běží na čas. */
+  running: number | null;
+  onStart: (set: number) => void;
   sets: SetEntry[];
   last: SetEntry[];
   isFirst: boolean;
@@ -156,8 +193,10 @@ function ExerciseCard({ exercise, sets, last, isFirst, isLast, onChange, onToggl
   onRemove: () => void;
 }) {
   const kind = exercise?.kind ?? "weight_reps";
+  const kg = kind === "weight_reps";
+  const timed = mode === "time";
   return (
-    <section className={`panel wx wx-${kind}`}>
+    <section className={`panel wx${kg ? "" : " wx-narrow"}${timed ? " wx-timed" : ""}`}>
       <div className="wx-head">
         <div className="grow">
           <h3>{exercise?.name ?? "Smazaný cvik"}</h3>
@@ -171,17 +210,24 @@ function ExerciseCard({ exercise, sets, last, isFirst, isLast, onChange, onToggl
       </div>
       <div className="wx-row wx-labels" aria-hidden="true">
         <span>#</span>
-        {kind === "weight_reps" && <span>kg</span>}
-        {kind !== "time" ? <span>opak.</span> : <span>sekund</span>}
+        {kg && <span>kg</span>}
+        {timed ? <span>sekund</span> : <span>opak.</span>}
+        {timed && <span />}
         <span />
       </div>
       {sets.map((s, i) => (
         <div key={i} className={`wx-row${s.done ? " done" : ""}`}>
           <span className="wx-n">{i + 1}</span>
-          {kind === "weight_reps" && <NumInput label={`Série ${i + 1}, kg`} value={s.weight} decimal onChange={(v) => onChange(i, { weight: v })} />}
-          {kind !== "time"
-            ? <NumInput label={`Série ${i + 1}, opakování`} value={s.reps} onChange={(v) => onChange(i, { reps: v })} />
-            : <NumInput label={`Série ${i + 1}, sekund`} value={s.seconds} onChange={(v) => onChange(i, { seconds: v })} />}
+          {kg && <NumInput label={`Série ${i + 1}, kg`} value={s.weight} decimal onChange={(v) => onChange(i, { weight: v })} />}
+          {timed
+            ? <NumInput label={`Série ${i + 1}, sekund`} value={s.seconds} onChange={(v) => onChange(i, { seconds: v })} />
+            : <NumInput label={`Série ${i + 1}, opakování`} value={s.reps} onChange={(v) => onChange(i, { reps: v })} />}
+          {timed && (
+            // na čas: ▶ spustí odpočet, po doběhnutí se série odškrtne sama (odškrtnout jde i ručně)
+            <button className={`wx-play${running === i ? " running" : ""}`} aria-label={`Série ${i + 1}: spustit odpočet`} disabled={s.done || (running !== null && running !== i)} onClick={() => onStart(i)}>
+              <Icon name="i-play" size={18} />
+            </button>
+          )}
           <button className={`wx-check${s.done ? " on" : ""}`} aria-pressed={s.done} aria-label={`Série ${i + 1} hotová`} onClick={() => onToggle(i)}>
             {s.done ? <Icon name="check" size={24} /> : null}
           </button>

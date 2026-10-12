@@ -570,6 +570,7 @@ select.input { background-image: linear-gradient(45deg, transparent 50%, var(--i
 .tpl-step { display: inline-flex; align-items: center; gap: 4px; justify-self: end; }
 .tpl-step b { min-width: 64px; text-align: center; font-family: var(--font-ui); font-size: 16px; font-weight: 600; }
 .tpl-step b.muted { font-weight: 400; color: var(--slate); }
+.tpl-mode { justify-self: end; }
 .tpl-select.input { justify-self: end; width: auto; min-height: 40px; padding: 4px 30px 4px 12px; font-size: 16px; }
 .elapsed { font-family: var(--font-display); font-size: 24px; font-variant-numeric: tabular-nums; }
 .workout .wx { margin-top: 14px; }
@@ -578,7 +579,11 @@ select.input { background-image: linear-gradient(45deg, transparent 50%, var(--i
 .wx-tools { display: flex; gap: 4px; }
 .wx-tools .icon-btn { width: 34px; height: 34px; font-family: var(--font-ui); font-size: 16px; }
 .wx-row { display: grid; grid-template-columns: 28px 1fr 1fr 52px; gap: 8px; align-items: center; margin-top: 6px; }
-.wx-reps .wx-row, .wx-time .wx-row { grid-template-columns: 28px 1fr 52px; }
+.wx-narrow .wx-row { grid-template-columns: 28px 1fr 52px; }
+.wx-timed .wx-row { grid-template-columns: 28px 1fr 1fr 44px 52px; }
+.wx-narrow.wx-timed .wx-row { grid-template-columns: 28px 1fr 44px 52px; }
+.wx-play { height: 44px; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--surface-2); color: var(--ink); }
+.wx-play.running { background: var(--accent); color: var(--on-accent); opacity: 1; }
 .wx-labels { margin-top: 0; font-family: var(--font-ui); font-size: 14px; color: var(--slate); text-align: center; }
 .wx-labels span:first-child { text-align: left; }
 .wx-n { font-family: var(--font-ui); font-size: 16px; }
@@ -593,6 +598,7 @@ select.input { background-image: linear-gradient(45deg, transparent 50%, var(--i
   max-width: 496px; margin: 0 auto; display: flex; align-items: center; gap: 6px; padding: 6px 6px 6px 14px;
   background: var(--paper); border: var(--line); box-shadow: var(--shadow); overflow: hidden;
 }
+.work-bar .rest-time { color: var(--ink); }
 .rest-fill { position: absolute; left: 0; top: 0; bottom: 0; background: color-mix(in srgb, var(--accent) 30%, transparent); }
 .rest-time { position: relative; flex: 1; font-family: var(--font-display); font-size: 24px; font-variant-numeric: tabular-nums; }
 .rest-bar button { position: relative; min-width: 52px; min-height: 44px; border: var(--line); background: var(--surface-2); color: var(--ink); font-family: var(--font-ui); font-size: 16px; }

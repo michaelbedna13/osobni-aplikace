@@ -16,6 +16,8 @@ export interface WorkoutExercise {
   sets: SetEntry[];
   /** Pauza po sérii podle tréninku (jinak výchozí pauza cviku). */
   rest_s?: number;
+  /** Série na čas místo opakování (přenese se ze šablony). */
+  mode?: SetMode;
 }
 
 export interface Workout {
@@ -33,9 +35,15 @@ export interface TemplateItem {
   sets: number;
   /** Pauza mezi sériemi; když chybí, platí výchozí pauza cviku. */
   rest_s?: number;
-  /** Cíl jedné série: počet opakování, u výdrže sekundy. Předvyplní se, když cvik ještě nemá historii. */
+  /** Jak se série měří: opakování, nebo čas (třeba minuta kliků). Když chybí, podle druhu cviku. */
+  mode?: SetMode;
+  /** Cíl jedné série: počet opakování, na čas sekundy. Předvyplní se, když cvik ještě nemá historii. */
   target?: number;
 }
+
+export type SetMode = "reps" | "time";
+/** Jak se měří série cviku: volba v tréninku / šabloně, jinak podle druhu cviku. */
+export const setMode = (mode: SetMode | undefined, e: Exercise | undefined): SetMode => mode ?? (e?.kind === "time" ? "time" : "reps");
 
 export interface WorkoutTemplate {
   id: string;
@@ -129,15 +137,17 @@ export function lastSetsFor(exerciseId: string, workouts: Workout[]): SetEntry[]
 }
 
 /** Nové série pro cvik: čísla z minula, chybějící série zopakují tu poslední. */
-export function prefillSets(exerciseId: string, count: number, workouts: Workout[], target?: { kind: string; value?: number }): SetEntry[] {
+export function prefillSets(exerciseId: string, count: number, workouts: Workout[], target?: { mode: SetMode; value?: number }): SetEntry[] {
   const last = lastSetsFor(exerciseId, workouts);
   const goal = target?.value && target.value > 0 ? target.value : null;
+  const timed = target?.mode === "time";
   return Array.from({ length: Math.max(1, count) }, (_, i) => {
     const src = last[Math.min(i, last.length - 1)];
+    // na čas se berou jen sekundy z minula, na opakování jen opakování (cvik mohl být minule měřený jinak)
     return {
       weight: src?.weight ?? null,
-      reps: src?.reps ?? (goal && target?.kind !== "time" ? goal : null),
-      seconds: src?.seconds ?? (goal && target?.kind === "time" ? goal : null),
+      reps: target && timed ? null : src?.reps ?? goal,
+      seconds: target && !timed ? null : src?.seconds ?? (timed ? goal : null),
       done: false,
     };
   });
@@ -259,9 +269,10 @@ const REP_SET_S = 40;
 
 /** Doba jedné série: u výdrže cíl, jinak podle posledního tréninku (jinak 45 s); s opakováním ~3 s na opakování
  *  podle cíle, jinak ~40 s. */
-export function setSeconds(e: Exercise | undefined, workouts: Workout[], target?: number): number {
-  if (e?.kind !== "time") return target ? Math.min(120, Math.max(15, target * 3)) : REP_SET_S;
+export function setSeconds(e: Exercise | undefined, workouts: Workout[], target?: number, mode?: SetMode): number {
+  if (setMode(mode, e) === "reps") return target ? Math.min(120, Math.max(15, target * 3)) : REP_SET_S;
   if (target) return target;
+  if (!e) return 45;
   const last = lastSetsFor(e.id, workouts).map((s) => s.seconds ?? 0).filter(Boolean);
   return last.length ? Math.round(last.reduce((a, b) => a + b, 0) / last.length) : 45;
 }
@@ -274,7 +285,7 @@ export function estimateTemplate(items: TemplateItem[], byId: Map<string, Exerci
   let rest = 0;
   items.forEach((it, i) => {
     const e = byId.get(it.exercise_id);
-    work += it.sets * setSeconds(e, workouts, it.target);
+    work += it.sets * setSeconds(e, workouts, it.target, it.mode);
     rest += Math.max(0, it.sets - 1) * (it.rest_s ?? e?.rest_s ?? 90);
     if (i < items.length - 1) rest += restBetween;
   });

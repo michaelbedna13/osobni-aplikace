@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addSet, toggleDone, type ActiveWorkout } from "./active";
+import { addSet, finishWork, startWork, toggleDone, type ActiveWorkout } from "./active";
 import { computeTrainingStats, newRecords, oneRepMax, personalRecords, prefillSets, workoutVolume, type SetEntry, type Workout } from "./data";
 
 const set = (weight: number | null, reps: number | null, done = true, seconds: number | null = null): SetEntry => ({ weight, reps, seconds, done });
@@ -21,9 +21,11 @@ describe("trénink", () => {
     expect(prefillSets("b-db-bench", 3, history).map((s) => `${s.weight}×${s.reps}`)).toEqual(["22×8", "22×7", "22×7"]);
     expect(prefillSets("b-squat", 2, history)).toEqual([set(null, null, false), set(null, null, false)]);
     // cíl ze šablony doplní jen to, co chybí v historii
-    expect(prefillSets("b-squat", 1, history, { kind: "reps", value: 15 })[0].reps).toBe(15);
-    expect(prefillSets("b-plank", 1, history, { kind: "time", value: 40 })[0].seconds).toBe(40);
-    expect(prefillSets("b-db-bench", 1, history, { kind: "weight_reps", value: 12 })[0].reps).toBe(8);
+    expect(prefillSets("b-squat", 1, history, { mode: "reps", value: 15 })[0].reps).toBe(15);
+    expect(prefillSets("b-plank", 1, history, { mode: "time", value: 40 })[0].seconds).toBe(40);
+    expect(prefillSets("b-db-bench", 1, history, { mode: "reps", value: 12 })[0].reps).toBe(8);
+    // cvik na opakování přepnutý na čas: opakování z minula se nepřenesou, platí cíl v sekundách
+    expect(prefillSets("b-db-bench", 1, history, { mode: "time", value: 60 })[0]).toMatchObject({ weight: 22, reps: null, seconds: 60 });
   });
 
   it("osobní rekordy a nové rekordy", () => {
@@ -54,6 +56,19 @@ describe("trénink", () => {
     expect(done.exercises[0].sets[0].done).toBe(true);
     expect(done.rest_until).toBe(91_000);
     expect(addSet(done, 0).exercises[0].sets[1]).toEqual(set(20, 10, false));
+  });
+
+  it("série na čas: odpočet, po doběhnutí zapíše sekundy, odškrtne a spustí pauzu", () => {
+    const a: ActiveWorkout = { name: "X", template_id: null, started_at: "", exercises: [{ exercise_id: "b-pushup", mode: "time", sets: [{ weight: null, reps: null, seconds: 60, done: false }] }], rest_until: 5, rest_total: 0 };
+    const running = startWork(a, 0, 0, 60, 0);
+    expect(running.rest_until).toBeNull();
+    expect(running.work).toEqual({ ex: 0, set: 0, until: 60_000, total: 60 });
+    const full = finishWork(running, 45, 60_000);
+    expect(full.work).toBeNull();
+    expect(full.exercises[0].sets[0]).toMatchObject({ seconds: 60, done: true });
+    expect(full.rest_until).toBe(105_000);
+    // „Hotovo“ dřív: zapíše, kolik se opravdu cvičilo
+    expect(finishWork(running, 45, 42_400).exercises[0].sets[0].seconds).toBe(42);
   });
 });
 

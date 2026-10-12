@@ -14,7 +14,7 @@ import { soundPrefs, useSoundPrefs } from "../../lib/soundPrefs";
 import { SoundPicker } from "../../components/SoundPicker";
 import { useActiveWorkout } from "./active";
 import {
-  computeTrainingStats, doneSetCount, estimateTemplate, formatMinutes, formatKg, formatSeconds, formatSet, personalRecords, prefillSets, useDeleteWorkout, useExercises,
+  computeTrainingStats, doneSetCount, estimateTemplate, formatMinutes, formatKg, formatSeconds, formatSet, personalRecords, prefillSets, setMode, useDeleteWorkout, useExercises,
   useTemplates, useWorkouts, workoutVolume, type Workout, type WorkoutTemplate,
 } from "./data";
 
@@ -58,7 +58,15 @@ export function TreninkScreen() {
       name: t?.name ?? "Trénink",
       template_id: t?.id ?? null,
       started_at: new Date().toISOString(),
-      exercises: t ? t.items.map((it) => ({ exercise_id: it.exercise_id, sets: prefillSets(it.exercise_id, it.sets, workouts, { kind: byId.get(it.exercise_id)?.kind ?? "reps", value: it.target }), ...(it.rest_s !== undefined ? { rest_s: it.rest_s } : {}) })) : [],
+      exercises: t ? t.items.map((it) => {
+        const mode = setMode(it.mode, byId.get(it.exercise_id));
+        return {
+          exercise_id: it.exercise_id,
+          sets: prefillSets(it.exercise_id, it.sets, workouts, { mode, value: it.target }),
+          ...(it.rest_s !== undefined ? { rest_s: it.rest_s } : {}),
+          ...(it.mode ? { mode } : {}),
+        };
+      }) : [],
       rest_until: null,
       rest_total: 0,
     });

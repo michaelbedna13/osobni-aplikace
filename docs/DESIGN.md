@@ -320,8 +320,12 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
 - **Spodní panel a potvrzení** se vykreslují do `<body>` (portál), protože `.screen` má kvůli textuře
   vlastní vrstvení (`isolation: isolate`) a jinak by skončily pod spodní lištou.
 - **Editor tréninku** (`.tpl-item`): karta cviku s hlavičkou (pořadové číslo v akcentu, název, „s váhou / bez váhy /
-  na čas · ≈ čas“, posun ↑↓ a koš) a pod čarou tři řádky popisek – ovládání: Série (−/+), Opakování nebo Délka série
-  jako cíl (−/+, „volně“ = bez cíle) a Pauza mezi sériemi. Nad seznamem jedna věta, jak trénink probíhá.
+  výdrž · ≈ čas“, posun ↑↓ a koš) a pod čarou řádky popisek – ovládání: Série měřím (segment Opakování / Na čas, jen
+  u cviků na opakování), Série (−/+), Opakování nebo Délka série jako cíl (−/+, „volně“ = bez cíle) a Pauza mezi
+  sériemi. Nad seznamem jedna věta, jak trénink probíhá.
+- **Série na čas v tréninku**: u série je kulaté ▶ (vedle odškrtnutí); spustí odpočet v liště nad spodní navigací
+  („Cvič 0:59“, výplň roste, × zrušit, Hotovo = zapíše skutečně odcvičené sekundy). Po doběhnutí pípne, sérii odškrtne
+  a spustí pauzu.
 - **Trénink – cvik** (`.wx`): panel s názvem, „Minule: …“, řádky sérií (číslo, kg, opakování nebo sekundy,
   odškrtávací čtverec). Odškrtnutá série má limetkový čtverec s fajfkou. Pod lištou se drží **pauza**
   (`.rest-bar`): odpočet s ubývající výplní v akcentu, −15 / +15 / Dál, na konci pípne.
