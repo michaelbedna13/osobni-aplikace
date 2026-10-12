@@ -210,8 +210,10 @@ Zápis má odměnu (ikona poskočí, vyletí „+1“ a konfety, appka řekne vt
 ## Vzhled „Černý“ (výchozí)
 
 Profil → Vzhled → **Černý**: prémiově tmavý. Podklad `#1C1B19` se zrnem (film přes `overlay`, 50 %), karty `#262422`
-s jemnou krémovou linkou, text krémový `#F3EADB`. Barva modulu jen jemně: ikony, lehký přechod z pravého horního rohu
-obrazovky (17 %) a karet modulů (13–15 %), hlavní tlačítko tónované barvou modulu s tenkým obrysem. Úvodní obrazovka:
+s jemnou krémovou linkou, text krémový `#F3EADB`. Barva modulu jen jemně: ikony, lehký přechod z rohu obrazovky za
+velkou ikonou (16 %), hlavní tlačítko tónované barvou modulu s tenkým obrysem. Karty modulů: světlo vychází z ikony
+(hladký vícebodový radiální přechod v `oklab` s průhledností – žádná tvrdá hrana ani hnědnutí barev), shora slabý nádech
+barvy a tenká barevná hrana nahoře jako odlesk; zrno navrch rozbije pruhy v přechodu. Úvodní obrazovka:
 krémová květina na skoro černé se zrnem; lišta s hodinami i barva spuštění (manifest) jsou `#1C1B19`.
 
 ## Vzhled „duotone“
