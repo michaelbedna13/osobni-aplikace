@@ -319,6 +319,9 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
 - **Nápad na dárek** (`.idea-row`): text (+ doména odkazu), odkaz, tlačítko „Dáno“ vpravo.
 - **Spodní panel a potvrzení** se vykreslují do `<body>` (portál), protože `.screen` má kvůli textuře
   vlastní vrstvení (`isolation: isolate`) a jinak by skončily pod spodní lištou.
+- **Editor tréninku** (`.tpl-item`): karta cviku s hlavičkou (pořadové číslo v akcentu, název, „s váhou / bez váhy /
+  na čas · ≈ čas“, posun ↑↓ a koš) a pod čarou tři řádky popisek – ovládání: Série (−/+), Opakování nebo Délka série
+  jako cíl (−/+, „volně“ = bez cíle) a Pauza mezi sériemi. Nad seznamem jedna věta, jak trénink probíhá.
 - **Trénink – cvik** (`.wx`): panel s názvem, „Minule: …“, řádky sérií (číslo, kg, opakování nebo sekundy,
   odškrtávací čtverec). Odškrtnutá série má limetkový čtverec s fajfkou. Pod lištou se drží **pauza**
   (`.rest-bar`): odpočet s ubývající výplní v akcentu, −15 / +15 / Dál, na konci pípne.

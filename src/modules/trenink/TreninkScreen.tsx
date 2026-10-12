@@ -58,7 +58,7 @@ export function TreninkScreen() {
       name: t?.name ?? "Trénink",
       template_id: t?.id ?? null,
       started_at: new Date().toISOString(),
-      exercises: t ? t.items.map((it) => ({ exercise_id: it.exercise_id, sets: prefillSets(it.exercise_id, it.sets, workouts), ...(it.rest_s !== undefined ? { rest_s: it.rest_s } : {}) })) : [],
+      exercises: t ? t.items.map((it) => ({ exercise_id: it.exercise_id, sets: prefillSets(it.exercise_id, it.sets, workouts, { kind: byId.get(it.exercise_id)?.kind ?? "reps", value: it.target }), ...(it.rest_s !== undefined ? { rest_s: it.rest_s } : {}) })) : [],
       rest_until: null,
       rest_total: 0,
     });

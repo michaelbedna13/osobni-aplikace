@@ -3,7 +3,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
-import { DEFAULT_REST_BETWEEN, estimateTemplate, formatMinutes, setSeconds, useAddTemplate, useDeleteTemplate, useExercises, useTemplates, useUpdateTemplate, useWorkouts, type TemplateItem, type WorkoutTemplate } from "./data";
+import { DEFAULT_REST_BETWEEN, estimateTemplate, formatMinutes, formatSeconds, setSeconds, useAddTemplate, useDeleteTemplate, useExercises, useTemplates, useUpdateTemplate, useWorkouts, type TemplateItem, type WorkoutTemplate } from "./data";
 import { ExercisePicker } from "./ExercisePicker";
 
 const MODULE = MODULE_BY_KEY.trenink;
@@ -57,32 +57,52 @@ function Editor({ initial }: { initial: WorkoutTemplate | null }) {
       <input id="tpl-name" className="input" maxLength={80} placeholder="Třeba Horní polovina" value={name} onChange={(e) => setName(e.target.value)} />
 
       <h2 className="sec-title">Cviky</h2>
+      <p className="small muted tpl-how">
+        Cviky jdou popořadě. U každého odcvičíš všechny série za sebou (mezi nimi pauza), pak pauza mezi cviky a další cvik.
+        Série = jedno kolo cviku, třeba 10 kliků. Kolik opakování nebo vteřin jsi zvládl, zapisuješ během tréninku.
+      </p>
       {items.length === 0 ? <p className="empty">Zatím žádné cviky.</p> : (
         <ol className="tpl-list">
-          {items.map((it, i) => (
-            <li key={`${it.exercise_id}-${i}`} className="tpl-item">
-              <div className="tpl-order">
-                <button className="icon-btn" aria-label="Posunout nahoru" disabled={i === 0} onClick={() => move(i, -1)}><Icon name="i-up" size={16} /></button>
-                <button className="icon-btn" aria-label="Posunout dolů" disabled={i === items.length - 1} onClick={() => move(i, 1)}><Icon name="i-down" size={16} /></button>
-              </div>
-              <div className="grow">
-                <b>{byId.get(it.exercise_id)?.name ?? "Smazaný cvik"}</b>
-                <div className="tpl-sets">
-                  <button className="icon-btn" aria-label="Méně sérií" disabled={it.sets <= 1} onClick={() => change(i, { sets: it.sets - 1 })}>−</button>
-                  <span>{it.sets} {it.sets === 1 ? "série" : it.sets < 5 ? "série" : "sérií"}</span>
-                  <button className="icon-btn" aria-label="Více sérií" disabled={it.sets >= 10} onClick={() => change(i, { sets: it.sets + 1 })}>+</button>
+          {items.map((it, i) => {
+            const ex = byId.get(it.exercise_id);
+            const timed = ex?.kind === "time";
+            const rest = it.rest_s ?? ex?.rest_s ?? 90;
+            const target = it.target;
+            const step = timed ? 5 : 1;
+            const kindNote = !ex ? "" : timed ? "na čas" : ex.kind === "weight_reps" ? "s váhou" : "bez váhy";
+            return (
+              <li key={`${it.exercise_id}-${i}`} className="tpl-item">
+                <div className="tpl-head">
+                  <span className="tpl-num">{i + 1}</span>
+                  <span className="grow">
+                    <b>{ex?.name ?? "Smazaný cvik"}</b>
+                    <small>{kindNote}{kindNote && " · "}≈ {formatMinutes(it.sets * setSeconds(ex, workouts, target) + Math.max(0, it.sets - 1) * rest)}</small>
+                  </span>
+                  <button className="icon-btn sm" aria-label="Posunout nahoru" disabled={i === 0} onClick={() => move(i, -1)}><Icon name="i-up" size={14} /></button>
+                  <button className="icon-btn sm" aria-label="Posunout dolů" disabled={i === items.length - 1} onClick={() => move(i, 1)}><Icon name="i-down" size={14} /></button>
+                  <button className="icon-btn sm" aria-label={`Odebrat ${ex?.name ?? "cvik"}`} onClick={() => setItems((list) => list.filter((_, j) => j !== i))}><Icon name="i-trash" size={16} /></button>
                 </div>
-                <label className="tpl-rest">
-                  <span>Pauza</span>
-                  <select className="input" value={it.rest_s ?? byId.get(it.exercise_id)?.rest_s ?? 90} onChange={(e) => change(i, { rest_s: Number(e.target.value) })}>
-                    {REST_OPTIONS.map((s) => <option key={s} value={s}>{restLabel(s)}</option>)}
+                <div className="tpl-rows">
+                  <span className="tpl-label">Série</span>
+                  <span className="tpl-step">
+                    <button className="icon-btn sm" aria-label="Méně sérií" disabled={it.sets <= 1} onClick={() => change(i, { sets: it.sets - 1 })}>−</button>
+                    <b>{it.sets}×</b>
+                    <button className="icon-btn sm" aria-label="Více sérií" disabled={it.sets >= 10} onClick={() => change(i, { sets: it.sets + 1 })}>+</button>
+                  </span>
+                  <span className="tpl-label">{timed ? "Délka série (cíl)" : "Opakování (cíl)"}</span>
+                  <span className="tpl-step">
+                    <button className="icon-btn sm" aria-label={timed ? "Kratší" : "Méně opakování"} disabled={!target} onClick={() => change(i, { target: target && target - step >= step ? target - step : undefined })}>−</button>
+                    <b className={target ? undefined : "muted"}>{target ? (timed ? formatSeconds(target) : `${target}×`) : "volně"}</b>
+                    <button className="icon-btn sm" aria-label={timed ? "Delší" : "Více opakování"} onClick={() => change(i, { target: target ? target + step : timed ? 30 : 10 })}>+</button>
+                  </span>
+                  <span className="tpl-label">Pauza mezi sériemi</span>
+                  <select className="input tpl-select" value={rest} onChange={(e) => change(i, { rest_s: Number(e.target.value) })}>
+                    {REST_OPTIONS.map((sec) => <option key={sec} value={sec}>{restLabel(sec)}</option>)}
                   </select>
-                </label>
-                <span className="small muted">≈ {formatMinutes(it.sets * setSeconds(byId.get(it.exercise_id), workouts) + Math.max(0, it.sets - 1) * (it.rest_s ?? byId.get(it.exercise_id)?.rest_s ?? 90))}</span>
-              </div>
-              <button className="link" onClick={() => setItems((list) => list.filter((_, j) => j !== i))}>Odebrat</button>
-            </li>
-          ))}
+                </div>
+              </li>
+            );
+          })}
         </ol>
       )}
       <button className="btn tap wide" onClick={() => setPicking(true)}><Icon name="i-plus" size={20} /> Přidat cvik</button>

@@ -555,13 +555,22 @@ select.input { background-image: linear-gradient(45deg, transparent 50%, var(--i
 
 /* ---------- Trénink ---------- */
 .sec-title { font-size: 24px; margin: 24px 0 12px; }
+.tpl-how { margin: -2px 0 14px; line-height: 1.4; }
 .tpl-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 10px; }
-.tpl-item { display: flex; align-items: center; gap: 10px; background: var(--paper); border: var(--line); padding: 10px 12px; }
-.tpl-item b { display: block; font-family: var(--font-ui); font-size: 16px; font-weight: 400; line-height: 1.1; }
-.tpl-order { display: grid; gap: 4px; }
-.tpl-order .icon-btn { width: 36px; height: 30px; }
-.tpl-sets { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-family: var(--font-ui); font-size: 16px; }
-.tpl-sets .icon-btn { width: 36px; height: 36px; font-family: var(--font-ui); font-size: 16px; }
+/* karta cviku: hlavička (pořadí, název, druh a odhad času, posun a odebrání), pod ní tři řádky popisek – ovládání */
+.tpl-item { display: grid; gap: 12px; padding: 14px 14px 16px; background: var(--paper); }
+.tpl-head { display: flex; align-items: center; gap: 8px; }
+.tpl-head .grow { min-width: 0; }
+.tpl-head b { display: block; font-family: var(--font-ui); font-size: 18px; font-weight: 600; line-height: 1.15; overflow-wrap: anywhere; }
+.tpl-head small { display: block; margin-top: 2px; font-size: 14px; color: var(--slate); }
+.tpl-num { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-family: var(--font-display); font-size: 16px; }
+.icon-btn.sm { width: 36px; height: 36px; font-family: var(--font-ui); font-size: 18px; }
+.tpl-rows { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 12px; padding-top: 12px; border-top: 1px solid var(--edge); }
+.tpl-label { font-family: var(--font-ui); font-size: 14px; color: var(--slate); }
+.tpl-step { display: inline-flex; align-items: center; gap: 4px; justify-self: end; }
+.tpl-step b { min-width: 64px; text-align: center; font-family: var(--font-ui); font-size: 16px; font-weight: 600; }
+.tpl-step b.muted { font-weight: 400; color: var(--slate); }
+.tpl-select.input { justify-self: end; width: auto; min-height: 40px; padding: 4px 30px 4px 12px; font-size: 16px; }
 .elapsed { font-family: var(--font-display); font-size: 24px; font-variant-numeric: tabular-nums; }
 .workout .wx { margin-top: 14px; }
 .wx-head { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px; }

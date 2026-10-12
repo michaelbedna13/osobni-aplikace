@@ -20,6 +20,10 @@ describe("trénink", () => {
   it("předvyplnění z minula a opakování poslední série", () => {
     expect(prefillSets("b-db-bench", 3, history).map((s) => `${s.weight}×${s.reps}`)).toEqual(["22×8", "22×7", "22×7"]);
     expect(prefillSets("b-squat", 2, history)).toEqual([set(null, null, false), set(null, null, false)]);
+    // cíl ze šablony doplní jen to, co chybí v historii
+    expect(prefillSets("b-squat", 1, history, { kind: "reps", value: 15 })[0].reps).toBe(15);
+    expect(prefillSets("b-plank", 1, history, { kind: "time", value: 40 })[0].seconds).toBe(40);
+    expect(prefillSets("b-db-bench", 1, history, { kind: "weight_reps", value: 12 })[0].reps).toBe(8);
   });
 
   it("osobní rekordy a nové rekordy", () => {
