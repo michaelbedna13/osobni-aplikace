@@ -6,6 +6,7 @@ import { useSplash } from "./lib/splash";
 import { isDemo } from "./lib/supabase";
 import { Login } from "./screens/Login";
 import { screenRoutes } from "./routes";
+import { SaveErrors } from "./lib/saveErrors";
 
 export function App() {
   const { session, loading } = useAuth();
@@ -17,6 +18,7 @@ export function App() {
 
   return (
     <HashRouter>
+      <SaveErrors />
       <Routes>
         <Route element={<Layout />}>
           {screenRoutes}

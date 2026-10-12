@@ -24,7 +24,8 @@ export function createStore<T extends { id: string }>(table: string, column: key
       },
       async insert(row) {
         const { error } = await db.from(table).insert(row);
-        if (error) throw error;
+        // 23505 = řádek s tímhle id už je uložený (opakovaný pokus po výpadku sítě, první se ve skutečnosti povedl)
+        if (error && error.code !== "23505") throw error;
       },
       async insertMissing(rows) {
         for (let i = 0; i < rows.length; i += 500) {

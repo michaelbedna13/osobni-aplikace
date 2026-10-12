@@ -5,6 +5,7 @@ import "./styles/fonts.css";
 import "./styles/app.css";
 import { App } from "./App";
 import { AuthProvider } from "./lib/auth";
+import { mutationCache } from "./lib/saveErrors";
 
 // chová se jako appka: přechody nevytvářejí historii, takže švih od okraje nevrátí ani neposune obrazovku
 // (navigace jen přes lištu a tlačítka; žádné tlačítko v appce nepoužívá history.back)
@@ -19,7 +20,12 @@ document.addEventListener("gesturechange", stopZoom, { passive: false });
 document.addEventListener("touchmove", (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 60_000, retry: 1 } },
+  mutationCache,
+  defaultOptions: {
+    queries: { staleTime: 60_000, retry: 1 },
+    // uložení se při výpadku sítě (třeba po návratu z pozadí) zkusí znovu, než se ukáže chyba
+    mutations: { retry: 3, retryDelay: (n) => Math.min(8000, 1000 * 2 ** n) },
+  },
 });
 
 createRoot(document.getElementById("root")!).render(
