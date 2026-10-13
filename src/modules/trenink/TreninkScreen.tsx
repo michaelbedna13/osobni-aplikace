@@ -286,13 +286,13 @@ function TemplatePreview({ template, workouts, lastDone, onClose, onStart, onEdi
   const estimate = estimateTemplate(template.items, byId, workouts, template.rest_between_s);
   const count = template.items.length;
   return (
-    <Sheet title={template.name} onClose={onClose}>
+    <Sheet title={template.name} onClose={onClose} scrollList>
       <p className="small muted">
         {count} {plural(count, ["cvik", "cviky", "cviků"])} · ≈ {formatMinutes(estimate.total)}
         {lastDone ? ` · naposledy ${relativeTime(new Date(lastDone.started_at)).toLowerCase()}` : ""}
       </p>
       {count > 0 ? (
-        <ol className="tpl-preview">
+        <ol className="tpl-preview window-list">
           {template.items.map((it, i) => {
             const exercise = byId.get(it.exercise_id);
             const mode = setMode(it.mode, exercise);

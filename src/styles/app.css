@@ -994,7 +994,7 @@ a.btn-hero { text-decoration: none; }
 html.dialog-open, html.dialog-open body { overflow: hidden; }
 .modal-backdrop {
   position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-h, 100dvh); z-index: 25;
-  display: grid; place-items: center; background: rgba(35, 33, 31, 0.35);
+  display: grid; place-items: center; background: rgba(35, 33, 31, calc(0.35 * var(--dim, 1)));
   /* okno nesmí pod hodiny a výřez nahoře ani pod domovskou čáru dole */
   padding: calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 16px);
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
@@ -1043,8 +1043,15 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
 .modal-row .btn { width: 100%; }
 /* okno s formulářem */
-.form-window { padding: 0; display: flex; flex-direction: column; }
-.form-window-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 12px 10px 16px; background: var(--paper); border-bottom: 1px solid var(--edge); }
+.form-window { position: relative; padding: 0; display: flex; flex-direction: column; }
+/* táhlo: okno jde stáhnout dolů */
+.grabber { position: absolute; z-index: 2; top: 6px; left: 50%; width: 36px; height: 5px; margin-left: -18px; border-radius: var(--pill); background: color-mix(in srgb, var(--ink) 22%, transparent); pointer-events: none; }
+/* okno s dlouhým seznamem: nepřeroste obrazovku, roluje se jen seznam */
+.form-window.scroll-list { overflow: hidden; }
+.scroll-list .form-window-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.scroll-list .form-window-body > * { flex: none; }
+.scroll-list .window-list { flex: 0 1 auto; min-height: 96px; overflow-y: auto; overscroll-behavior: contain; }
+.form-window-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 18px 12px 10px 16px; background: var(--paper); border-bottom: 1px solid var(--edge); }
 .form-window-head .sheet-title { margin: 0; font-size: 24px; line-height: 1.05; }
 .close-btn { flex: none; font-family: var(--font-ui); font-size: 18px; line-height: 1; }
 .form-window-body { padding: 4px 16px 18px; }
