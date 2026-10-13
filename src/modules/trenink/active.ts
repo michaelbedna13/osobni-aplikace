@@ -10,8 +10,10 @@ export interface ActiveWorkout {
   /** Konec pauzy (ms od epochy), nebo null. */
   rest_until: number | null;
   rest_total: number;
-  /** Běžící série na čas: který cvik a série, konec (ms od epochy) a délka v s. */
-  work?: { ex: number; set: number; until: number; total: number } | null;
+  /** Běžící série na čas: který cvik a série, konec (ms od epochy) a délka v s; `starts` = konec přípravy. */
+  work?: { ex: number; set: number; until: number; total: number; starts?: number } | null;
+  /** Naposledy odškrtnutá série (pro „Zpět o sérii“). */
+  last?: { ex: number; set: number } | null;
 }
 
 const KEY = "trenink:active";
@@ -66,13 +68,14 @@ export function setField(w: ActiveWorkout, ex: number, set: number, patch: Parti
 /** Odškrtnutí série; při odškrtnutí se spustí pauza. */
 export function toggleDone(w: ActiveWorkout, ex: number, set: number, restSeconds: number, now = Date.now()): ActiveWorkout {
   const done = !w.exercises[ex].sets[set].done;
-  const next = setField(w, ex, set, { done });
+  const next = { ...setField(w, ex, set, { done }), last: done ? { ex, set } : null };
   return done && restSeconds > 0 ? { ...next, rest_until: now + restSeconds * 1000, rest_total: restSeconds } : next;
 }
 
-/** Spustí odpočet série na čas (zruší případnou pauzu). */
-export function startWork(w: ActiveWorkout, ex: number, set: number, seconds: number, now = Date.now()): ActiveWorkout {
-  return { ...w, rest_until: null, work: { ex, set, until: now + seconds * 1000, total: seconds } };
+/** Spustí odpočet série na čas (zruší případnou pauzu); `prep` = sekundy přípravy před začátkem. */
+export function startWork(w: ActiveWorkout, ex: number, set: number, seconds: number, now = Date.now(), prep = 0): ActiveWorkout {
+  const starts = now + prep * 1000;
+  return { ...w, rest_until: null, work: { ex, set, until: starts + seconds * 1000, total: seconds, ...(prep ? { starts } : {}) } };
 }
 
 /** Konec série na čas (doběhla nebo „Hotovo“): zapíše odcvičené sekundy, odškrtne a spustí pauzu. */
@@ -133,4 +136,20 @@ export function setProgress(w: ActiveWorkout): { done: number; total: number } {
     done += we.sets.filter((s) => s.done).length;
   }
   return { done, total };
+}
+
+/** Vrátí poslední odškrtnutou sérii (omylem ťuknuté Hotovo) a zruší pauzu. */
+export function undoLast(w: ActiveWorkout): ActiveWorkout {
+  const last = w.last;
+  if (!last || !w.exercises[last.ex]?.sets[last.set]?.done) return w;
+  return { ...setField(w, last.ex, last.set, { done: false }), rest_until: null, work: null, last: null };
+}
+
+/** Přeskočí zbytek cviku: neodcvičené série zmizí, cvik bez jediné odcvičené série z tréninku vypadne. */
+export function skipExercise(w: ActiveWorkout, ex: number): ActiveWorkout {
+  const kept = w.exercises[ex]?.sets.filter((s) => s.done) ?? [];
+  const exercises = kept.length
+    ? w.exercises.map((we, i) => (i === ex ? { ...we, sets: kept } : we))
+    : w.exercises.filter((_, i) => i !== ex);
+  return { ...w, exercises, work: null, rest_until: null, last: null };
 }

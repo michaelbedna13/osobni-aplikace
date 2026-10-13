@@ -338,17 +338,18 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
 - **Spuštění tréninku**: ťuknutí na trénink nic nespustí, otevře **náhled** (`TemplatePreview`): počet cviků,
   odhad času, kdy naposledy, seznam cviků se sériemi a plánem z minula (`3 série · 22 × 8`, `· na čas`), pod tím
   „Začít“ a „Upravit trénink“. Stejně jako u Dechu. Hned startuje jen „Prázdný trénink“.
-- **Série na čas v tréninku**: u série je kulaté ▶ (vedle odškrtnutí), nebo „Start“ v panelu Teď; spustí odpočet
-  (výplň roste, × zrušit, Hotovo = zapíše skutečně odcvičené sekundy). Po doběhnutí pípne, sérii odškrtne
-  a spustí pauzu.
-- **Trénink – cvik** (`.wx`): panel s názvem, „Minule: …“, řádky sérií (číslo, kg, opakování nebo sekundy,
-  odškrtávací čtverec). Odškrtnutá série má limetkový čtverec s fajfkou. Cvik na řadě má obrys
-  v akcentu a „Teď · 1 z 3“, odcvičený ustoupí (průhlednost) s „✓ Hotovo“; po dokončení cviku se obrazovka
-  posune na další (ne když se píše do políčka). Během tréninku se spodní navigace schová a dole se drží
-  **panel Teď** (`.now-dock`): průběh po cvicích (jeden dílek na cvik, plní se odškrtnutými sériemi, aktuální má obrys),
-  „Cvik 2 z 4 · 3 z 10 sérií“ a stav: *na řadě* (cvik, série, plán, Hotovo / Start), *pauza* (velký odpočet
-  s ubývající výplní, „Další: série 2 z 3“ nebo název dalšího cviku; pod tím −15 s / +15 s / Dál), *cvič* (odpočet
-  série na čas, × / Hotovo), *vše odcvičeno* (Dokončit). Na konci pauzy i série pípne.
+- **Vedený trénink** (`WorkoutPlayer`, `src/modules/trenink/Player.tsx`, `.wp`): během tréninku jen jedna věc přes celou
+  obrazovku, jako přehrávač u Dechu, bez spodní navigace. Nahoře průběh (jeden dílek na cvik, plní se odškrtnutými
+  sériemi) a „Cvik 2 z 3 · 5 z 7 sérií“. Uprostřed fáze (Série 1 z 3 / Pauza / Připrav se / Cvič), kruh s cílem série
+  („22 kg × 8“) nebo s odpočtem (pauza ubývá, série na čas přibývá), velký název cviku a „Minule …“ / „Další: série 2 z 3“.
+  Dole jedno velké tlačítko na dosah palce (Hotovo / Přeskočit pauzu, při pauze ještě −15 s / +15 s), „Pak: další cvik“
+  a malé odkazy Zpět o sérii · Přeskočit cvik · Upravit · Ukončit (nabídka Uložit a ukončit / Zahodit / Pokračovat).
+  Po Hotovo se sama spustí pauza, po pauze je na řadě další série; série na čas se rozběhne sama po 5 s přípravě
+  (poslední 3 s tiknou, start pípne), na konci pípne a pokračuje pauzou. Nic se nespouští ručně.
+  V Barevném je kruh, průběh a popisky v barvě písma (pozadí je v barvě modulu).
+- **Úpravy během tréninku** (odkaz Upravit; prázdný trénink začíná rovnou tady): seznam cviků (`.wx`) s váhou,
+  opakováním nebo sekundami a odškrtnutím, přidání, posun a odebrání cviku, nahoře „Zpět k tréninku“.
+  Cvik na řadě má obrys v akcentu, odcvičený ustoupí s „✓ Hotovo“.
 - **Šablona tréninku** (`.tpl-item`): pořadí šipkami, počet sérií − / +.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře

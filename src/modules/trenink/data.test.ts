@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addSet, finishWork, nextUp, setProgress, startWork, toggleDone, type ActiveWorkout } from "./active";
+import { addSet, finishWork, nextUp, setProgress, skipExercise, startWork, toggleDone, undoLast, type ActiveWorkout } from "./active";
 import { computeTrainingStats, newRecords, oneRepMax, personalRecords, prefillSets, workoutVolume, type SetEntry, type Workout } from "./data";
 
 const set = (weight: number | null, reps: number | null, done = true, seconds: number | null = null): SetEntry => ({ weight, reps, seconds, done });
@@ -114,5 +114,34 @@ describe("průběh tréninku", () => {
     expect(nextUp(active([{ exercise_id: "a", sets: [set(20, 8)] }]))).toBeNull();
     expect(nextUp(active([]))).toBeNull();
     expect(setProgress(active([]))).toEqual({ done: 0, total: 0 });
+  });
+});
+
+describe("vedený trénink", () => {
+  const base = (exercises: ActiveWorkout["exercises"]): ActiveWorkout => ({
+    name: "T", template_id: null, started_at: "2026-10-13T18:00:00Z", exercises, rest_until: null, rest_total: 0,
+  });
+
+  it("série na čas s přípravou začne až po ní", () => {
+    const w = startWork(base([{ exercise_id: "b-plank", sets: [set(null, null, false, 45)] }]), 0, 0, 45, 1000, 5);
+    expect(w.work).toEqual({ ex: 0, set: 0, starts: 6000, until: 51000, total: 45 });
+  });
+
+  it("Zpět o sérii vrátí poslední odškrtnutí a zruší pauzu", () => {
+    const w = toggleDone(base([{ exercise_id: "a", sets: [set(20, 8, false), set(20, 8, false)] }]), 0, 0, 90, 0);
+    expect(w.rest_until).toBe(90000);
+    const back = undoLast(w);
+    expect(back.exercises[0].sets[0].done).toBe(false);
+    expect(back.rest_until).toBeNull();
+    expect(undoLast(back)).toBe(back);
+  });
+
+  it("přeskočený cvik si nechá jen odcvičené série, bez nich zmizí", () => {
+    const w = base([
+      { exercise_id: "a", sets: [set(20, 8), set(20, 8, false)] },
+      { exercise_id: "b", sets: [set(null, 10, false)] },
+    ]);
+    expect(skipExercise(w, 0).exercises[0].sets).toHaveLength(1);
+    expect(skipExercise(w, 1).exercises.map((e) => e.exercise_id)).toEqual(["a"]);
   });
 });

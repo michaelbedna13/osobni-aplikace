@@ -584,10 +584,6 @@ select.input { background-image: linear-gradient(45deg, transparent 50%, var(--i
 .wx-tools .icon-btn { width: 34px; height: 34px; font-family: var(--font-ui); font-size: 16px; }
 .wx-row { display: grid; grid-template-columns: 28px 1fr 1fr 52px; gap: 8px; align-items: center; margin-top: 6px; }
 .wx-narrow .wx-row { grid-template-columns: 28px 1fr 52px; }
-.wx-timed .wx-row { grid-template-columns: 28px 1fr 1fr 44px 52px; }
-.wx-narrow.wx-timed .wx-row { grid-template-columns: 28px 1fr 44px 52px; }
-.wx-play { height: 44px; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--surface-2); color: var(--ink); }
-.wx-play.running { background: var(--accent); color: var(--on-accent); opacity: 1; }
 .wx-labels { margin-top: 0; font-family: var(--font-ui); font-size: 14px; color: var(--slate); text-align: center; }
 .wx-labels span:first-child { text-align: left; }
 .wx-n { font-family: var(--font-ui); font-size: 16px; }
@@ -596,32 +592,38 @@ select.input { background-image: linear-gradient(45deg, transparent 50%, var(--i
 .wx-check.on { background: var(--lime); }
 .wx-row.done .wx-input { color: var(--slate); }
 .wx-sets { display: flex; gap: 18px; margin-top: 6px; }
-/* panel „Teď“: co je na řadě, pauza nebo odpočet a průběh tréninku; palcem na dosah, spodní lišta se schová */
-.now-dock {
-  position: fixed; z-index: 12; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom) + 10px);
-  max-width: 496px; margin: 0 auto; padding: 12px 12px 10px; display: grid; gap: 8px;
-  border-radius: var(--r); background: var(--paper); box-shadow: var(--shadow-big), var(--card-shadow);
-}
-.now-track { display: flex; gap: 3px; height: 6px; }
-.now-track span { flex: 1 1 0; min-width: 6px; position: relative; overflow: hidden; border-radius: var(--pill); background: var(--surface-2); }
-.now-track span.current { box-shadow: 0 0 0 1.5px var(--accent); }
-.now-track i { position: absolute; inset: 0; background: var(--accent); border-radius: inherit; transform-origin: left; transition: transform 300ms var(--step); }
-.now-count { margin: 0; font-family: var(--font-ui); font-size: 14px; color: var(--slate); font-variant-numeric: tabular-nums; }
-.now-main { position: relative; display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 4px 4px 4px 14px; margin: 0 -4px; border-radius: var(--r-sm); background: var(--surface-2); overflow: hidden; }
-.now-fill { position: absolute; inset: 0; background: color-mix(in srgb, var(--accent) 34%, transparent); transform-origin: left; transition: transform 250ms linear; }
-.now-clock { position: relative; font-family: var(--font-display); font-size: 32px; line-height: 1; font-variant-numeric: tabular-nums; }
-.now-text { position: relative; flex: 1; min-width: 0; display: grid; }
-.now-text b { font-family: var(--font-ui); font-size: 18px; font-weight: 400; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.now-text span { font-size: 14px; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
-.now-work .now-text span, .now-rest .now-text span { color: var(--ink); }
-.now-btn { position: relative; flex: none; min-width: 48px; min-height: 48px; padding: 0 12px; border: 0; background: var(--paper); color: var(--ink); font-family: var(--font-ui); font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-.now-btn.primary { background: var(--accent); color: var(--on-accent); padding: 0 18px; }
-.now-btn.grow { flex: 1; }
-.now-actions { display: flex; gap: 8px; }
-.now-actions .now-btn { background: var(--surface-2); }
-.now-actions .now-btn.primary { background: var(--accent); }
-.now-btn:active { transform: scale(0.96); }
-.screen.workout { padding-bottom: calc(env(safe-area-inset-bottom) + 240px); }
+/* vedený trénink (přehrávač): jedna věc přes celou obrazovku, tlačítko dole na dosah palce */
+.screen.workout-play { display: flex; flex-direction: column; min-height: 100dvh; padding-bottom: calc(env(safe-area-inset-bottom) + 16px); }
+.wp { flex: 1; display: flex; flex-direction: column; text-align: center; }
+.wp-progress { display: flex; gap: 4px; height: 8px; margin-top: 8px; }
+.wp-progress span { flex: 1 1 0; min-width: 8px; position: relative; overflow: hidden; border-radius: var(--pill); background: var(--surface-2); }
+.wp-progress i { position: absolute; inset: 0; background: var(--accent); border-radius: inherit; transform-origin: left; transition: transform 300ms var(--step); }
+.wp-count { margin: 8px 0 0; font-family: var(--font-ui); font-size: 14px; color: var(--slate); font-variant-numeric: tabular-nums; }
+.wp-stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 0; }
+.wp-phase { margin: 0; font-family: var(--font-ui); font-size: 18px; color: var(--slate); }
+.wp-phase.rest { color: var(--ink); }
+.wp-ring { position: relative; width: min(64vw, 260px); aspect-ratio: 1; display: grid; place-items: center; margin: 6px 0 10px; }
+.wp-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.wp-ring-track { fill: none; stroke: color-mix(in srgb, var(--ink) 12%, transparent); stroke-width: 10; }
+.wp-ring-fill { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 200ms linear; }
+.wp-ring.done { border-radius: 50%; background: var(--accent); color: var(--on-accent); }
+.wp-ring-label { position: relative; padding: 0 24px; }
+.wp-ring-label b { display: block; font-family: var(--font-display); font-size: 96px; font-weight: 400; line-height: 1; font-variant-numeric: tabular-nums; }
+.wp-ring-label b.wp-target { font-size: 40px; line-height: 1.05; }
+.wp-name { margin: 0; font-size: 40px; line-height: 1; text-wrap: balance; max-width: 18ch; }
+.wp-sub { margin: 0; font-family: var(--font-ui); font-size: 16px; color: var(--slate); font-variant-numeric: tabular-nums; }
+.wp-actions { display: grid; gap: 10px; }
+.wp-actions .btn-hero { margin: 0; }
+.wp-shift { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.wp-shift .btn { width: 100%; }
+.wp-after { margin: 0; font-family: var(--font-ui); font-size: 14px; color: var(--slate); }
+.wp-links { display: flex; flex-wrap: wrap; justify-content: center; column-gap: 20px; }
+.wp-links .link { font-size: 14px; color: var(--slate); }
+.wx-back { margin: 4px 0 10px; }
+/* Barevný: pozadí je v barvě modulu, kruh a popisky proto v barvě písma */
+html:not([data-theme]) .wp-ring-fill { stroke: var(--ink); }
+html:not([data-theme]) .wp-progress i { background: var(--ink); }
+html:not([data-theme]) .wp-count, html:not([data-theme]) .wp-phase { color: var(--ink); }
 /* cvik na řadě: obrys v barvě modulu; odcvičený ustoupí */
 .workout .wx { transition: box-shadow 200ms var(--step), opacity 200ms var(--step); }
 .workout .wx.current { box-shadow: 0 0 0 2px var(--accent), var(--card-shadow); }
@@ -988,7 +990,7 @@ a.btn-hero { text-decoration: none; }
 .goal-card b { font-family: var(--font-ui); font-size: 16px; font-weight: 400; }
 
 /* ---------- klávesnice a okna ---------- */
-.kb-open .tabbar, .kb-open .now-dock, .focus-mode .tabbar, .dialog-open .tabbar { display: none; }
+.kb-open .tabbar, .focus-mode .tabbar, .dialog-open .tabbar { display: none; }
 html.dialog-open, html.dialog-open body { overflow: hidden; }
 .modal-backdrop {
   position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-h, 100dvh); z-index: 25;
@@ -1204,7 +1206,7 @@ html[data-theme^="duo"] .theme-swatch .icon, html[data-theme="noir"] .theme-swat
 .kind-tag, .wait-tag, .idea-cat, .meaning-kind, .sh-check { border: 0; border-radius: var(--r-xs); }
 .nk-box, .bag, .stack-blocks i, .mosaic i, .sh-swatch { border-radius: 6px; }
 .col-track i { border-radius: 6px 6px 0 0; }
-.hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .ch-power, .now-btn, .idea-given { border-radius: var(--pill); }
+.hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .ch-power, .idea-given { border-radius: var(--pill); }
 /* tlačítko na konci řádku seznamu (Upravit, Dáno): plný pruh přes výšku řádku, roh kopíruje kartu (ořízne ji .list) */
 .idea-row .idea-given { border-radius: 0; padding: 0 18px; }
 .ring-seg, .orb, .unread-dot, .sc-legs i, .ch-pips i, .week-block i { border-radius: 50%; }
