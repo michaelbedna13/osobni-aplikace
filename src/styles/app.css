@@ -994,8 +994,13 @@ a.btn-hero { text-decoration: none; }
 html.dialog-open, html.dialog-open body { overflow: hidden; }
 .modal-backdrop {
   position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-h, 100dvh); z-index: 25;
-  display: grid; place-items: center; padding: 16px; background: rgba(35, 33, 31, 0.35);
+  display: grid; place-items: center; background: rgba(35, 33, 31, 0.35);
+  /* okno nesmí pod hodiny a výřez nahoře ani pod domovskou čáru dole */
+  padding: calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 16px);
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+@media (display-mode: standalone) {
+  .modal-backdrop { padding-top: calc(max(env(safe-area-inset-top), 50px) + 8px); padding-bottom: calc(max(env(safe-area-inset-bottom), 20px) + 12px); }
 }
 .modal {
   width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; overscroll-behavior: contain; outline: none;
@@ -1043,6 +1048,13 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .form-window-head .sheet-title { margin: 0; font-size: 24px; line-height: 1.05; }
 .close-btn { flex: none; font-family: var(--font-ui); font-size: 18px; line-height: 1; }
 .form-window-body { padding: 4px 16px 18px; }
+/* náhled tréninku: cvik na řádek, plán vpravo */
+.tpl-preview { list-style: none; margin: 12px 0 18px; padding: 0; counter-reset: tp; }
+.tpl-preview li { counter-increment: tp; display: flex; align-items: baseline; gap: 12px; padding: 9px 0; border-top: 1px solid var(--edge); }
+.tpl-preview li:last-child { border-bottom: 1px solid var(--edge); }
+.tpl-preview li::before { content: counter(tp); flex: none; width: 18px; font-family: var(--font-ui); font-size: 14px; color: var(--slate); font-variant-numeric: tabular-nums; }
+.tpl-preview-name { flex: 1; min-width: 0; font-family: var(--font-ui); font-size: 16px; line-height: 1.2; }
+.tpl-preview-plan { flex: none; font-size: 14px; color: var(--slate); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .form-window-body > :first-child, .form-window-body > form > :first-child { margin-top: 14px; }
 .tpl-rest { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; font-size: 14px; color: var(--slate); }
 .tpl-rest select.input { width: auto; min-height: 40px; padding: 4px 30px 4px 10px; font-size: 16px; }

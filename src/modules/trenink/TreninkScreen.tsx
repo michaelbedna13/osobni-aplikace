@@ -292,16 +292,21 @@ function TemplatePreview({ template, workouts, lastDone, onClose, onStart, onEdi
         {lastDone ? ` · naposledy ${relativeTime(new Date(lastDone.started_at)).toLowerCase()}` : ""}
       </p>
       {count > 0 ? (
-        <ol className="detail-list tpl-preview">
+        <ol className="tpl-preview">
           {template.items.map((it, i) => {
             const exercise = byId.get(it.exercise_id);
             const mode = setMode(it.mode, exercise);
             const first = prefillSets(it.exercise_id, 1, workouts, { mode, value: it.target })[0];
-            const plan = first && (first.weight || first.reps || first.seconds) ? ` · ${formatSet(first)}` : "";
+            // „3 × 8 · 22 kg“, „2 × 1:00“; bez cíle jen počet sérií
+            const value = mode === "time"
+              ? first?.seconds ? formatSeconds(first.seconds) : null
+              : first?.reps ? `${first.reps}${first.weight ? ` · ${formatKg(first.weight)}` : ""}` : null;
             return (
               <li key={`${it.exercise_id}-${i}`}>
-                <b>{exercise?.name ?? "Smazaný cvik"}</b>
-                <span>{it.sets} {plural(it.sets, ["série", "série", "sérií"])}{plan}{mode === "time" ? " · na čas" : ""}</span>
+                <span className="tpl-preview-name">{exercise?.name ?? "Smazaný cvik"}</span>
+                <span className="tpl-preview-plan">
+                  {value ? `${it.sets} × ${value}` : `${it.sets} ${plural(it.sets, ["série", "série", "sérií"])}`}
+                </span>
               </li>
             );
           })}
