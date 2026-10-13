@@ -11,6 +11,7 @@ import { isDemo } from "../../lib/supabase";
 import { normalize } from "../hlaskomat/data";
 import { fetchPreview, newLink, uploadImage, useAddLink, useDeleteLink, useLinks, useShareToken, useSignedUrls, useUpdateLink, type Link } from "./data";
 import { domainOf, extractUrl } from "./util";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.odkazy;
 const ODKAZU: [string, string, string] = ["odkaz", "odkazy", "odkazů"];
@@ -245,8 +246,8 @@ function DetailSheet({ link, src, collections, onClose }: { link: Link; src: str
         update.mutate({ ...link, title: title.trim() || null, collection: collection.trim() || null, note: note.trim() || null });
         onClose();
       }}>Uložit změny</button>
-      <button className="btn tap wide" onClick={() => {
-        if (!window.confirm("Smazat?")) return;
+      <button className="btn tap wide" onClick={async () => {
+        if (!(await confirmAction("Smazat?"))) return;
         remove.mutate(link);
         onClose();
       }}>Smazat</button>
@@ -293,8 +294,8 @@ function ShareSheet({ onClose, onCopied }: { onClose: () => void; onCopied: () =
           {token ? <Row label="Tvůj klíč (p_token) – nikomu neposílej" value={token} /> : <p className="small muted">Načítám tvůj klíč…</p>}
           {error && <p className="error">Klíč se nepodařilo načíst. Je nasazená nová databáze?</p>}
           {token && (
-            <button className="link" onClick={() => {
-              if (window.confirm("Vyměnit klíč? Starou Zkratku pak musíš upravit novým klíčem.")) regenerate();
+            <button className="link" onClick={async () => {
+              if (await confirmAction("Vyměnit klíč? Starou Zkratku pak musíš upravit novým klíčem.", "Vyměnit klíč")) regenerate();
             }}>Vyměnit klíč</button>
           )}
         </>

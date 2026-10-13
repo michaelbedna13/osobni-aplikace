@@ -5,6 +5,7 @@ import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { DEFAULT_REST_BETWEEN, estimateTemplate, formatMinutes, formatSeconds, setMode, setSeconds, useAddTemplate, useDeleteTemplate, useExercises, useTemplates, useUpdateTemplate, useWorkouts, type TemplateItem, type WorkoutTemplate } from "./data";
 import { ExercisePicker } from "./ExercisePicker";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.trenink;
 
@@ -134,8 +135,8 @@ function Editor({ initial }: { initial: WorkoutTemplate | null }) {
       )}
       <button className="btn-hero" disabled={!valid} onClick={save}>Uložit trénink</button>
       {initial && (
-        <button className="btn tap wide" onClick={() => {
-          if (!window.confirm(`Smazat trénink ${initial.name}? Historie zůstane.`)) return;
+        <button className="btn tap wide" onClick={async () => {
+          if (!(await confirmAction(`Smazat trénink ${initial.name}? Historie zůstane.`, "Smazat trénink"))) return;
           remove.mutate(initial.id);
           navigate("/m/trenink", { replace: true });
         }}>Smazat trénink</button>

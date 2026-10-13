@@ -14,6 +14,7 @@ import {
   type UntroisNote,
 } from "./data";
 import { MEANINGS, MEANING_CATEGORIES } from "./meanings";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.untrois;
 const NAPADU: [string, string, string] = ["věc", "věci", "věcí"];
@@ -258,7 +259,7 @@ function NoteSheet({ note, kind, src, onClose }: { note: UntroisNote | null; kin
       <button className="btn dark tap wide" disabled={!canSave || !!busy || (!!urlText.trim() && !url)} onClick={() => void save()}>
         {busy === "save" ? "Ukládám…" : note ? "Uložit" : "Přidat"}
       </button>
-      {note && <button className="btn tap wide" disabled={!!busy} onClick={() => { if (window.confirm("Smazat?")) { remove.mutate(note); close(); } }}>Smazat</button>}
+      {note && <button className="btn tap wide" disabled={!!busy} onClick={async () => { if (await confirmAction("Smazat?")) { remove.mutate(note); close(); } }}>Smazat</button>}
     </Sheet>
   );
 }

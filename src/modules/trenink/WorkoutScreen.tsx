@@ -4,6 +4,7 @@ import { Burst } from "../../components/Burst";
 import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { formatNumber, plural } from "../../lib/format";
+import { haptic } from "../../lib/haptic";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { playSound, unlockAudio } from "../../lib/sound";
 import { soundPrefs } from "../../lib/soundPrefs";
@@ -12,6 +13,7 @@ import { addSet, finishWork, moveExercise, removeExercise, removeSet, setField, 
 import { doneSetCount, formatSet, lastSetsFor, newRecords, prefillSets, setMode, useAddWorkout, useExercises, useWorkouts, workoutVolume, type SetEntry, type Workout } from "./data";
 import { ExercisePicker } from "./ExercisePicker";
 import type { Exercise } from "./exercises";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.trenink;
 
@@ -49,12 +51,12 @@ export function WorkoutScreen() {
   if (summary) return <SummaryView summary={summary} />;
   if (!active) return <Navigate to="/m/trenink" replace />;
 
-  const finish = () => {
+  const finish = async () => {
     const exercises = active.exercises
       .map((we) => ({ ...we, sets: we.sets.filter((s) => s.done) }))
       .filter((we) => we.sets.length > 0);
     if (exercises.length === 0) {
-      if (window.confirm("Žádná série není odškrtnutá. Zahodit trénink?")) { clear(); navigate("/m/trenink", { replace: true }); }
+      if (await confirmAction("Žádná série není odškrtnutá. Zahodit trénink?", "Zahodit trénink")) { clear(); navigate("/m/trenink", { replace: true }); }
       return;
     }
     const workout: Workout = {
@@ -91,19 +93,19 @@ export function WorkoutScreen() {
             isFirst={ex === 0}
             isLast={ex === active.exercises.length - 1}
             onChange={(set, patch) => update((w) => setField(w, ex, set, patch))}
-            onToggle={(set) => { unlockAudio(); update((w) => toggleDone(w, ex, set, rest)); }}
+            onToggle={(set) => { unlockAudio(); haptic(); update((w) => toggleDone(w, ex, set, rest)); }}
             onAddSet={() => update((w) => addSet(w, ex))}
             onRemoveSet={() => update((w) => removeSet(w, ex))}
             onMove={(dir) => update((w) => moveExercise(w, ex, dir))}
-            onRemove={() => window.confirm(`Odebrat ${exercise?.name ?? "cvik"} z tréninku?`) && update((w) => removeExercise(w, ex))}
+            onRemove={() => void confirmAction(`Odebrat ${exercise?.name ?? "cvik"} z tréninku?`, "Odebrat").then((ok) => ok && update((w) => removeExercise(w, ex)))}
           />
         );
       })}
 
       <button className="btn tap wide" onClick={() => setPicking(true)}><Icon name="i-plus" size={20} /> Přidat cvik</button>
       <button className="btn-hero" onClick={finish}><Icon name="check" size={32} /> Dokončit trénink</button>
-      <button className="link timer-cancel" onClick={() => {
-        if (window.confirm("Zrušit trénink bez uložení?")) { clear(); navigate("/m/trenink", { replace: true }); }
+      <button className="link timer-cancel" onClick={async () => {
+        if (await confirmAction("Zrušit trénink bez uložení?", "Zrušit trénink", "Pokračovat")) { clear(); navigate("/m/trenink", { replace: true }); }
       }}>Zrušit bez uložení</button>
 
       <WorkBar active={active} update={update} restFor={(ex) => active.exercises[ex]?.rest_s ?? byId.get(active.exercises[ex]?.exercise_id)?.rest_s ?? 90} />

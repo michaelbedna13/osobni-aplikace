@@ -4,6 +4,7 @@ import { Sheet } from "../../components/Sheet";
 import { Icon } from "../../components/Icon";
 import { Topbar } from "../../components/Topbar";
 import { MODULE_BY_KEY } from "../../lib/modules";
+import { confirmAction } from "../../components/Confirm";
 import {
   distanceKm, formatKm, navLinks, newPlace, reverseName, searchPlaces, useAddPlace, useDeletePlace, usePlaces, useUpdatePlace,
   type FoundPlace, type Place,
@@ -275,8 +276,8 @@ function DetailSheet({ place, me, lists, onClose }: { place: Place; me: Spot | n
       <label htmlFor="place-edit-note" className="field-label">Poznámka</label>
       <textarea id="place-edit-note" className="input" rows={2} maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} />
       <button className="btn dark tap wide" disabled={!changed || !name.trim()} onClick={() => { update.mutate({ ...place, name: name.trim(), list: list.trim() || null, note: note.trim() || null }); onClose(); }}>Uložit změny</button>
-      <button className="btn tap wide" onClick={() => {
-        if (!window.confirm(`Smazat ${place.name}?`)) return;
+      <button className="btn tap wide" onClick={async () => {
+        if (!(await confirmAction(`Smazat ${place.name}?`))) return;
         remove.mutate(place.id);
         onClose();
       }}>Smazat</button>

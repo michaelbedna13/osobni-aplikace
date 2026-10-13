@@ -13,6 +13,7 @@ import { SOUND_NAMES, playSound, unlockAudio } from "../../lib/sound";
 import { soundPrefs, useSoundPrefs } from "../../lib/soundPrefs";
 import { SoundPicker } from "../../components/SoundPicker";
 import { useActiveWorkout } from "./active";
+import { confirmAction } from "../../components/Confirm";
 import {
   computeTrainingStats, doneSetCount, estimateTemplate, formatMinutes, formatKg, formatSeconds, formatSet, personalRecords, prefillSets, setMode, useDeleteWorkout, useExercises,
   useTemplates, useWorkouts, workoutVolume, type Workout, type WorkoutTemplate,
@@ -50,9 +51,10 @@ export function TreninkScreen() {
     else setStarting(true);
   }, [params, setParams, active, navigate]);
 
-  const begin = (t: WorkoutTemplate | null) => {
-    if (active && !window.confirm("Už máš rozdělaný trénink. Zahodit ho a začít nový?")) return;
+  const begin = async (t: WorkoutTemplate | null) => {
+    // zvuk odemknout ještě v ťuknutí, po potvrzení už iOS nemusí dovolit
     unlockAudio();
+    if (active && !(await confirmAction("Už máš rozdělaný trénink. Zahodit ho a začít nový?", "Zahodit a začít nový"))) return;
     playSound(soundPrefs().workoutStart);
     start({
       name: t?.name ?? "Trénink",
@@ -272,8 +274,8 @@ function WorkoutDetail({ workout, onClose }: { workout: Workout; onClose: () => 
           <li key={i}><b>{byId.get(we.exercise_id)?.name ?? "Smazaný cvik"}</b><span>{we.sets.map(formatSet).join(" · ")}</span></li>
         ))}
       </ul>
-      <button className="btn tap wide" onClick={() => {
-        if (!window.confirm("Smazat tenhle trénink?")) return;
+      <button className="btn tap wide" onClick={async () => {
+        if (!(await confirmAction("Smazat tenhle trénink?", "Smazat trénink"))) return;
         remove.mutate(workout.id);
         onClose();
       }}>Smazat trénink</button>

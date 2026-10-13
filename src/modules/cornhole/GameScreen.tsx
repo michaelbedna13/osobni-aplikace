@@ -8,6 +8,7 @@ import { MODULE_BY_KEY } from "../../lib/modules";
 import { useActiveGame, type ActiveGame } from "./active";
 import { useAddGame, type Game } from "./data";
 import { BAGS, MODE_NAMES, rawPoints, roundScores, runningTotals, standings, totals, winnerOf, type Throw } from "./scoring";
+import { confirmAction, choose } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.cornhole;
 const empty = (n: number): Throw[] => Array.from({ length: n }, () => ({ board: 0, hole: 0 }));
@@ -112,14 +113,14 @@ export function GameScreen() {
       <div className="game-actions">
         {active.rounds.length > 0 && winner === null && <button className="link" onClick={undo}>Vrátit poslední kolo</button>}
         {winner === null && (
-          <button className="link" onClick={() => {
+          <button className="link" onClick={async () => {
             if (active.rounds.length === 0) { clear(); navigate("/m/cornhole", { replace: true }); return; }
-            const choice = window.confirm("Ukončit hru a uložit ji bez vítěze? (Zrušit = hrát dál)");
+            const choice = await choose("Ukončit hru bez vítěze?", [{ label: "Uložit bez vítěze", value: true }], "Hrát dál");
             if (choice) save(active, null);
           }}>Ukončit hru</button>
         )}
-        <button className="link" onClick={() => {
-          if (window.confirm("Zahodit tuhle hru bez uložení?")) { clear(); navigate("/m/cornhole", { replace: true }); }
+        <button className="link" onClick={async () => {
+          if (await confirmAction("Zahodit tuhle hru bez uložení?", "Zahodit hru")) { clear(); navigate("/m/cornhole", { replace: true }); }
         }}>Zahodit</button>
       </div>
     </div>

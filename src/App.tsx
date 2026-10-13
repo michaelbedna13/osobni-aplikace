@@ -7,6 +7,7 @@ import { isDemo } from "./lib/supabase";
 import { Login } from "./screens/Login";
 import { screenRoutes } from "./routes";
 import { SaveErrors } from "./lib/saveErrors";
+import { ConfirmHost } from "./components/Confirm";
 
 export function App() {
   const { session, loading } = useAuth();
@@ -19,6 +20,7 @@ export function App() {
   return (
     <HashRouter>
       <SaveErrors />
+      <ConfirmHost />
       <Routes>
         <Route element={<Layout />}>
           {screenRoutes}

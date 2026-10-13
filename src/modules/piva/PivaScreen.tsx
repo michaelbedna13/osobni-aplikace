@@ -7,6 +7,7 @@ import { useToast } from "../../components/Toast";
 import { Tabs } from "../../components/Tabs";
 import { Topbar } from "../../components/Topbar";
 import { beerCheer, beerHeadline } from "../../lib/copy";
+import { haptic } from "../../lib/haptic";
 import { relativeTime, toLocalInput, WEEKDAYS_SHORT } from "../../lib/dates";
 import { formatDate, formatNumber, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
@@ -24,6 +25,7 @@ export function useBeerCounter() {
 
   const addOne = (todayBefore: number) => {
     const beer = newBeer();
+    haptic();
     add.mutate(beer);
     toast.show(`${todayBefore + 1}. pivo dnes zapsáno`, [{ label: "Vrátit", run: () => remove.mutate(beer.id) }]);
   };

@@ -10,6 +10,7 @@ import { useSettings } from "../../lib/settings";
 import { usePeople } from "../lide/data";
 import { useBeers } from "../piva/data";
 import { PaymentTimeline, SpendBars, type Payment, type SpendItem } from "./Charts";
+import { confirmAction } from "../../components/Confirm";
 import {
   EXPENSE_PERIODS, EXPENSE_PRESETS, PERIOD_NAMES, balancesByPerson, computeFinanceStats, dayKey, daysUntil, debts, expenseMonthly, expenses, formatKc, monthly,
   nextDue, nextRenewal, parseAmount, roundKc, savings, subscriptions,
@@ -293,7 +294,7 @@ function ExpenseSheet({ item, existing, onClose }: { item: Expense | null; exist
       {item && (
         <>
           <button className="btn tap wide" onClick={() => { update.mutate({ ...item, active: !item.active }); onClose(); }}>{item.active ? "Už neplatím" : "Zase platím"}</button>
-          <button className="link" onClick={() => { if (window.confirm(`Smazat ${item.name}?`)) { remove.mutate(item.id); onClose(); } }}>Smazat</button>
+          <button className="link" onClick={async () => { if (await confirmAction(`Smazat ${item.name}?`)) { remove.mutate(item.id); onClose(); } }}>Smazat</button>
         </>
       )}
     </Sheet>
@@ -336,7 +337,7 @@ function SubSheet({ item, onClose }: { item: Subscription | null; onClose: () =>
       {item && (
         <>
           <button className="btn tap wide" onClick={() => { update.mutate({ ...item, active: !item.active }); onClose(); }}>{item.active ? "Zrušil(a) jsem ho" : "Zase platím"}</button>
-          <button className="link" onClick={() => { if (window.confirm(`Smazat ${item.name}?`)) { remove.mutate(item.id); onClose(); } }}>Smazat</button>
+          <button className="link" onClick={async () => { if (await confirmAction(`Smazat ${item.name}?`)) { remove.mutate(item.id); onClose(); } }}>Smazat</button>
         </>
       )}
     </Sheet>
@@ -384,7 +385,7 @@ function DebtSheet({ item, onClose }: { item: Debt | null; onClose: () => void }
           <button className="btn tap wide" onClick={() => { update.mutate({ ...item, settled_at: item.settled_at ? null : new Date().toISOString() }); onClose(); }}>
             {item.settled_at ? "Ještě není vyrovnáno" : "Vyrovnáno"}
           </button>
-          <button className="link" onClick={() => { if (window.confirm("Smazat dluh?")) { remove.mutate(item.id); onClose(); } }}>Smazat</button>
+          <button className="link" onClick={async () => { if (await confirmAction("Smazat dluh?")) { remove.mutate(item.id); onClose(); } }}>Smazat</button>
         </>
       )}
     </Sheet>
@@ -438,7 +439,7 @@ function GoalSheet({ item: opened, onClose }: { item: SavingsGoal | null; onClos
       <label htmlFor="goal-deadline" className="field-label">Do kdy (nepovinné)</label>
       <input id="goal-deadline" className="input" type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
       <button className="btn tap wide" disabled={!valid} onClick={save}>{item ? "Uložit změny" : "Vytvořit cíl"}</button>
-      {item && <button className="link" onClick={() => { if (window.confirm(`Smazat cíl ${item.name}?`)) { remove.mutate(item.id); onClose(); } }}>Smazat</button>}
+      {item && <button className="link" onClick={async () => { if (await confirmAction(`Smazat cíl ${item.name}?`)) { remove.mutate(item.id); onClose(); } }}>Smazat</button>}
     </Sheet>
   );
 }

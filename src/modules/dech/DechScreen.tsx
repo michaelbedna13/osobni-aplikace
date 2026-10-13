@@ -13,6 +13,7 @@ import { unlockAudio } from "../../lib/sound";
 import { computeBreathStats, useAddBreathSession, useBreathSessions, useDeleteBreathSession, type BreathSession } from "./data";
 import { EXERCISES, EXERCISE_BY_KEY, type BreathExercise } from "./exercises";
 import { RhythmPlayer, WimHofPlayer, type Result } from "./Player";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.dech;
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
@@ -122,7 +123,7 @@ function HistoryRow({ s }: { s: BreathSession }) {
   const ex = EXERCISE_BY_KEY[s.exercise];
   return (
     <li>
-      <button className="list-btn" onClick={() => window.confirm("Smazat záznam?") && remove.mutate(s.id)}>
+      <button className="list-btn" onClick={() => void confirmAction("Smazat záznam?").then((ok) => ok && remove.mutate(s.id))}>
         <span className="grow">
           <b>{ex?.name ?? s.exercise}</b>
           <span className="occasion-kind">{relativeTime(new Date(s.started_at))} · {clock(s.duration_s)}{s.holds?.length ? ` · zadržení ${s.holds.map(clock).join(", ")}` : ""}</span>

@@ -9,6 +9,7 @@ import { Topbar } from "../../components/Topbar";
 import { quoteSaved } from "../../lib/copy";
 import { formatDate, plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
+import { confirmAction } from "../../components/Confirm";
 import {
   authorRanking, matches, suggestions, useAddQuote, useDeleteQuote, useQuotes, useUpdateQuote, type Quote,
 } from "./data";
@@ -244,8 +245,8 @@ function QuoteModal({ quote, quotes, onClose, onSaved }: { quote: Quote | null; 
             <button onClick={() => void copy()}><Icon name="i-copy" size={20} />Kopie</button>
             <button onClick={() => void share()}><Icon name="i-share" size={20} />Sdílet</button>
             <button onClick={() => setMode("edit")}><Icon name="i-edit" size={20} />Upravit</button>
-            <button className="danger" onClick={() => {
-              if (!window.confirm("Smazat hlášku?")) return;
+            <button className="danger" onClick={async () => {
+              if (!(await confirmAction("Smazat hlášku?"))) return;
               remove.mutate(quote.id);
               onSaved("Hláška smazána", false);
               onClose();

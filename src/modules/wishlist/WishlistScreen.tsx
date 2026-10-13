@@ -8,6 +8,7 @@ import { plural } from "../../lib/format";
 import { MODULE_BY_KEY } from "../../lib/modules";
 import { fetchPreview } from "../odkazy/data";
 import { domainOf, extractUrl } from "../odkazy/util";
+import { confirmAction } from "../../components/Confirm";
 import {
   PRIORITY_NAMES, closeWish, computeWishStats, daysToWait, formatKc, newWish, parsePrice, sortWishes, useAddWish, useDeleteWish, useUpdateWish, useWishes,
   type Wish,
@@ -205,8 +206,8 @@ function DetailSheet({ wish, onClose }: { wish: Wish; onClose: () => void }) {
         set({ title: title.trim(), price: priceNum, note: note.trim() || null });
         onClose();
       }}>Uložit změny</button>
-      <button className="btn tap wide" onClick={() => {
-        if (!window.confirm(`Smazat ${wish.title}?`)) return;
+      <button className="btn tap wide" onClick={async () => {
+        if (!(await confirmAction(`Smazat ${wish.title}?`))) return;
         remove.mutate(wish.id);
         onClose();
       }}>Smazat</button>

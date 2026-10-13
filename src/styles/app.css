@@ -138,7 +138,7 @@ input, textarea { caret-color: var(--ink); }
 /* sekce na Dnes: nadpis s tečkou v barvě modulu, obsah v bílé kartě */
 .sec-tab > h2, .sec-tab .sec-head h2 { display: inline-flex; align-items: center; gap: 10px; }
 .sec-tab > h2::before, .sec-tab .sec-head h2::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
-.link { background: none; border: 0; padding: 8px 0; font-family: var(--font-ui); font-size: 16px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; color: inherit; }
+.link { background: none; border: 0; padding: 10px 0; font-family: var(--font-ui); font-size: 16px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; color: inherit; }
 
 /* ---------- tlačítka a bloky ---------- */
 .tap { box-shadow: var(--shadow); transition: transform 120ms var(--step), box-shadow 120ms var(--step); }
@@ -288,6 +288,8 @@ textarea.input { resize: vertical; min-height: 96px; line-height: 1.4; }
   display: grid; place-items: center;
 }
 .fav-quick .icon { width: 16px; height: 16px; }
+/* malá pilulka, ale ťuknutí chytí 48 × 48, ať se netrefíš do dlaždice pod ní */
+.fav-quick::before { content: ""; position: absolute; inset: -6px; border-radius: inherit; }
 .fav-quick:active { transform: scale(0.94); }
 .fav-name { font-family: var(--font-ui); font-size: 18px; margin-top: auto; }
 /* jen velké číslo bez popisku (popisek je v aria-label odkazu karty) */
@@ -979,6 +981,25 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 @keyframes modal-in { from { transform: scale(0.96); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .modal { animation: none; } }
 .modal-screen { background: var(--app-bg); border: var(--line); padding: 16px; }
+
+/* potvrzení nevratné akce: nabídka zespodu jako action sheet v iOS, palcem na dosah */
+.confirm-backdrop {
+  position: fixed; inset: 0; z-index: 30; display: flex; align-items: flex-end; justify-content: center;
+  padding: 0 8px calc(env(safe-area-inset-bottom) + 8px); background: rgba(35, 33, 31, 0.35);
+  animation: fade-in 180ms var(--step);
+}
+.confirm { width: 100%; max-width: 480px; display: grid; gap: 8px; outline: none; animation: confirm-in 260ms var(--step); }
+.confirm-group, .confirm-cancel { border-radius: 18px; background: var(--paper); box-shadow: var(--shadow-big); overflow: hidden; }
+.confirm-msg { margin: 0; padding: 16px 20px 14px; text-align: center; font-size: 14px; color: var(--slate); }
+.confirm button { display: block; width: 100%; min-height: 56px; border: 0; background: none; color: var(--ink); font-family: var(--font-ui); font-size: 18px; }
+.confirm-group button { border-top: 1px solid var(--edge); }
+.confirm button.danger { color: var(--danger); }
+.confirm button:active { background: var(--surface-2); }
+.confirm .confirm-cancel { background: var(--paper); font-weight: 600; }
+.confirm .confirm-cancel:active { background: var(--surface-2); }
+@keyframes confirm-in { from { transform: translateY(24px); opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .confirm, .confirm-backdrop { animation: none; } }
 .modal-head { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid var(--edge); font-family: var(--font-ui); font-size: 14px; color: var(--slate); }
 .modal-quote { font-family: var(--font-ui); font-size: 18px; line-height: 1.1; word-break: break-word; }
 .modal-meta { margin-top: 14px; display: grid; gap: 4px; font-size: 14px; color: var(--slate); }
@@ -1071,7 +1092,7 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 .weather-temp { font-family: var(--font-display); font-size: 20px; font-weight: 400; line-height: 1; }
 .weather-desc { min-width: 0; font-size: 14px; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .weather-place { flex: none; padding: 0; font-size: 16px; color: var(--slate); }
-.weather-empty { display: inline-flex; align-items: center; gap: 8px; padding: 0; }
+.weather-empty { display: inline-flex; align-items: center; gap: 8px; padding: 12px 0; margin: -12px 0; }
 .weather-extra { font-size: 14px; color: var(--slate); }
 .weather-change { margin-top: 10px; }
 .weather-hours { list-style: none; margin: 14px 0 0; padding: 10px 0 0; border-top: 1px solid var(--edge); display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; }

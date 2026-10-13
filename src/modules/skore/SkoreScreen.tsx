@@ -12,6 +12,7 @@ import { usePeople } from "../lide/data";
 import { useActiveDarts } from "./active";
 import { DEFAULT_SETTINGS, LEG_OPTIONS, OUT_HINTS, OUT_NAMES, STARTS, play, ranking, settingsLabel, type DartSettings, type OutMode } from "./darts";
 import { MAX_PLAYERS, computeDartStats, normalize, playerColor, useDartGames, useDeleteDartGame, type ScoreGame } from "./data";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.skore;
 const ODEHRANO: [string, string, string] = ["hra odehrána", "hry odehrány", "her odehráno"];
@@ -256,8 +257,8 @@ function GameDetail({ game, onClose }: { game: ScoreGame; onClose: () => void })
           );
         })}
       </ol>
-      <button className="btn tap wide" onClick={() => {
-        if (!window.confirm("Smazat tuhle hru?")) return;
+      <button className="btn tap wide" onClick={async () => {
+        if (!(await confirmAction("Smazat tuhle hru?", "Smazat hru"))) return;
         remove.mutate(game.id);
         onClose();
       }}>Smazat hru</button>

@@ -13,6 +13,7 @@ import {
   type ChessGame,
 } from "./game";
 import { Piece } from "./Pieces";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.sachy;
 const FILES = "abcdefgh";
@@ -192,7 +193,7 @@ export function PlayScreen() {
           <button className="btn tap wide" onClick={() => end(null, "dohoda")}>Remíza dohodou</button>
           <button className="btn tap wide" onClick={() => end("b", "vzdal")}>Vzdává {game.white} (bílý)</button>
           <button className="btn tap wide" onClick={() => end("w", "vzdal")}>Vzdává {game.black} (černý)</button>
-          <button className="link" onClick={() => { if (window.confirm("Zrušit partii? Nic se neuloží.")) { set(null); navigate("/m/sachy"); } }}>Zrušit partii bez uložení</button>
+          <button className="link" onClick={async () => { if (await confirmAction("Zrušit partii? Nic se neuloží.", "Zrušit partii", "Hrát dál")) { set(null); navigate("/m/sachy"); } }}>Zrušit partii bez uložení</button>
         </Sheet>
       )}
     </div>

@@ -15,6 +15,7 @@ import {
 import { drawScene, makeView, type View } from "./render";
 import { MODE_HINTS, MODE_NAMES, rawPoints, roundScores, standings, totals, winnerOf, type Mode } from "./scoring";
 import { BAGS_EACH, MAX_PLAYERS, countRound, launch, settled, step, throwerAt, throwsFor, type Bag, type Player, type SimEvent } from "./sim";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.cornhole;
 const DT = 1 / 120;
@@ -447,7 +448,7 @@ function Play({ initial, onRematch, onQuit }: { initial: MobileMatch; onRematch:
       </div>
 
       {phase !== "over" && (
-        <button className="link ch-quit" onClick={() => { if (window.confirm("Ukončit rozehranou hru?")) onQuit(); }}>Ukončit hru</button>
+        <button className="link ch-quit" onClick={async () => { if (await confirmAction("Ukončit rozehranou hru?", "Ukončit hru", "Hrát dál")) onQuit(); }}>Ukončit hru</button>
       )}
     </>
   );

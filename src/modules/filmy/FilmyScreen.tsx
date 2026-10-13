@@ -14,6 +14,7 @@ import {
   type MediaItem, type Status,
 } from "./data";
 import type { Kind } from "./search";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.filmy;
 const KINDS: Kind[] = ["film", "serial", "kniha"];
@@ -222,8 +223,8 @@ function DetailSheet({ item, onClose }: { item: MediaItem; onClose: () => void }
       <textarea id="media-note" className="input" rows={2} maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} onBlur={saveText} />
 
       <button className="btn dark tap wide" onClick={() => { saveText(); onClose(); }}>Hotovo</button>
-      <button className="btn tap wide" onClick={() => {
-        if (!window.confirm(`Smazat ${item.title}?`)) return;
+      <button className="btn tap wide" onClick={async () => {
+        if (!(await confirmAction(`Smazat ${item.title}?`))) return;
         remove.mutate(item.id);
         onClose();
       }}>Smazat</button>

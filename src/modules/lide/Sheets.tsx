@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sheet } from "../../components/Sheet";
 import { authorRanking, normalize, useQuotes } from "../hlaskomat/data";
+import { confirmAction } from "../../components/Confirm";
 import {
   namedayFor, newIdea, newPerson, useAddIdea, useAddPerson, useDeleteIdea, useDeletePerson, useUpdateIdea, useUpdatePerson,
   type GiftIdea, type Person,
@@ -112,8 +113,8 @@ export function PersonSheet({ person, people, onClose, onSaved }: {
 
       <button className="btn dark tap wide" disabled={!valid} onClick={save}>{person ? "Uložit" : "Přidat"}</button>
       {person && (
-        <button className="btn tap wide" onClick={() => {
-          if (!window.confirm(`Smazat ${person.name} i s nápady na dárky?`)) return;
+        <button className="btn tap wide" onClick={async () => {
+          if (!(await confirmAction(`Smazat ${person.name} i s nápady na dárky?`))) return;
           remove.mutate(person.id);
           onClose();
           navigate("/m/lide", { replace: true });

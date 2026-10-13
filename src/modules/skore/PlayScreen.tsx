@@ -10,6 +10,7 @@ import {
   type Dart, type DartState, type VisitInfo,
 } from "./darts";
 import { playerColor, useAddDartGame } from "./data";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.skore;
 const QUICK = [26, 41, 45, 60, 81, 85, 100, 140, 180];
@@ -92,8 +93,8 @@ export function PlayScreen() {
     clear();
     navigate("/m/skore");
   };
-  const cancel = () => {
-    if (!window.confirm(turns.length ? "Zrušit rozehranou hru? Nic se neuloží." : "Zrušit hru?")) return;
+  const cancel = async () => {
+    if (!(await confirmAction(turns.length ? "Zrušit rozehranou hru? Nic se neuloží." : "Zrušit hru?", "Zrušit hru", "Hrát dál"))) return;
     clear();
     navigate("/m/skore");
   };

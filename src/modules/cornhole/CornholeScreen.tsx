@@ -12,6 +12,7 @@ import { computeCornholeStats, useDeleteGame, useGames, type Game, type GameTeam
 import { RoundsTable } from "./GameScreen";
 import { MODE_NAMES, totals, type Mode } from "./scoring";
 import { NewGameSheet } from "./Sheets";
+import { confirmAction } from "../../components/Confirm";
 
 const MODULE = MODULE_BY_KEY.cornhole;
 const ODEHRANO: [string, string, string] = ["hra odehrána", "hry odehrány", "her odehráno"];
@@ -159,8 +160,8 @@ function GameDetail({ game, onClose }: { game: Game; onClose: () => void }) {
     <Sheet title={game.winner !== null ? `Vyhrává ${game.teams[game.winner].name}` : "Hra bez vítěze"} onClose={onClose}>
       <p className="small muted">{relativeTime(new Date(game.started_at))} · {MODE_NAMES[game.mode]} do {game.target}</p>
       <RoundsTable game={game} />
-      <button className="btn tap wide" onClick={() => {
-        if (!window.confirm("Smazat tuhle hru?")) return;
+      <button className="btn tap wide" onClick={async () => {
+        if (!(await confirmAction("Smazat tuhle hru?", "Smazat hru"))) return;
         remove.mutate(game.id);
         onClose();
       }}>Smazat hru</button>
