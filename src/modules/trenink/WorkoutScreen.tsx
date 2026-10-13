@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Burst } from "../../components/Burst";
 import { Icon } from "../../components/Icon";
@@ -9,7 +9,7 @@ import { MODULE_BY_KEY } from "../../lib/modules";
 import { playSound, unlockAudio } from "../../lib/sound";
 import { soundPrefs } from "../../lib/soundPrefs";
 import { useWakeLock } from "../../lib/wakeLock";
-import { addSet, finishWork, moveExercise, removeExercise, removeSet, setField, startWork, toggleDone, useActiveWorkout, type ActiveWorkout } from "./active";
+import { addSet, finishWork, moveExercise, nextUp, removeExercise, removeSet, setField, setProgress, startWork, toggleDone, useActiveWorkout, type ActiveWorkout } from "./active";
 import { doneSetCount, formatSet, lastSetsFor, newRecords, prefillSets, setMode, useAddWorkout, useExercises, useWorkouts, workoutVolume, type SetEntry, type Workout } from "./data";
 import { ExercisePicker } from "./ExercisePicker";
 import type { Exercise } from "./exercises";
@@ -47,6 +47,23 @@ export function WorkoutScreen() {
   const [picking, setPicking] = useState(false);
   const [summary, setSummary] = useState<Summary | null>(null);
   useWakeLock(!!active);
+  const current = active ? nextUp(active)?.ex ?? null : null;
+
+  // během tréninku bez spodní lišty: dole je panel „Teď“
+  useEffect(() => {
+    document.documentElement.classList.toggle("focus-mode", !!active && !summary);
+    return () => document.documentElement.classList.remove("focus-mode");
+  }, [active, summary]);
+
+  // po dokončení cviku posunout na další (ne když se zrovna píše do políčka)
+  const lastCurrent = useRef(current);
+  useEffect(() => {
+    if (current === null || lastCurrent.current === current) return;
+    const first = lastCurrent.current === null;
+    lastCurrent.current = current;
+    if (first || document.activeElement?.matches("input, textarea")) return;
+    document.getElementById(`wx-${current}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [current]);
 
   if (summary) return <SummaryView summary={summary} />;
   if (!active) return <Navigate to="/m/trenink" replace />;
@@ -70,6 +87,8 @@ export function WorkoutScreen() {
     setSummary({ workout, records });
   };
 
+  const restFor = (ex: number) => active.exercises[ex]?.rest_s ?? byId.get(active.exercises[ex]?.exercise_id)?.rest_s ?? 90;
+
   const addExercise = (e: Exercise) =>
     update((w) => ({ ...w, exercises: [...w.exercises, { exercise_id: e.id, sets: prefillSets(e.id, 3, workouts) }] }));
 
@@ -80,10 +99,12 @@ export function WorkoutScreen() {
       {active.exercises.length === 0 && <p className="empty">Přidej první cvik.</p>}
       {active.exercises.map((we, ex) => {
         const exercise = byId.get(we.exercise_id);
-        const rest = we.rest_s ?? exercise?.rest_s ?? 90;
+        const rest = restFor(ex);
         return (
           <ExerciseCard
             key={`${we.exercise_id}-${ex}`}
+            id={`wx-${ex}`}
+            current={current === ex}
             exercise={exercise}
             mode={setMode(we.mode, exercise)}
             running={active.work?.ex === ex ? active.work.set : null}
@@ -108,8 +129,7 @@ export function WorkoutScreen() {
         if (await confirmAction("Zrušit trénink bez uložení?", "Zrušit trénink", "Pokračovat")) { clear(); navigate("/m/trenink", { replace: true }); }
       }}>Zrušit bez uložení</button>
 
-      <WorkBar active={active} update={update} restFor={(ex) => active.exercises[ex]?.rest_s ?? byId.get(active.exercises[ex]?.exercise_id)?.rest_s ?? 90} />
-      <RestBar active={active} update={update} />
+      <NowDock active={active} update={update} byId={byId} restFor={restFor} onFinish={finish} />
       {picking && <ExercisePicker onClose={() => setPicking(false)} onPick={addExercise} exclude={active.exercises.map((e) => e.exercise_id)} />}
     </div>
   );
@@ -120,63 +140,132 @@ function Elapsed({ since }: { since: string }) {
   return <span className="elapsed" aria-label="Doba tréninku">{clock(now - new Date(since).getTime())}</span>;
 }
 
-/** Série na čas: odpočet nad spodní lištou, na konci pípne, odškrtne sérii a spustí pauzu. */
-function WorkBar({ active, update, restFor }: { active: ActiveWorkout; update: (fn: (w: ActiveWorkout) => ActiveWorkout) => void; restFor: (ex: number) => number }) {
+interface DockProps {
+  active: ActiveWorkout;
+  update: (fn: (w: ActiveWorkout) => ActiveWorkout) => void;
+  byId: Map<string, Exercise>;
+  restFor: (ex: number) => number;
+  onFinish: () => void;
+}
+
+/**
+ * Panel „Teď“ dole na obrazovce: co je na řadě, pauza nebo odpočet série a průběh celého tréninku.
+ * Na konci pauzy či série pípne; série na čas se po doběhnutí sama odškrtne a spustí pauzu.
+ */
+function NowDock({ active, update, byId, restFor, onFinish }: DockProps) {
   const now = useNow(250);
   const work = active.work;
-  const left = work ? work.until - now : 0;
+  const workLeft = work ? work.until - now : 0;
+  const restLeft = active.rest_until ? active.rest_until - now : 0;
 
   useEffect(() => {
-    if (work && left <= 0) {
-      if (left > -5000) {
+    if (work && workLeft <= 0) {
+      // po návratu do appky po dlouhé době už nepípat
+      if (workLeft > -5000) {
         playSound(soundPrefs().restEnd);
         navigator.vibrate?.(200);
       }
       update((w) => finishWork(w, restFor(work.ex)));
     }
-  }, [work, left, update, restFor]);
-
-  if (!work || left <= 0) return null;
-  return (
-    <div className="rest-bar work-bar" role="timer" aria-label="Série na čas">
-      <span className="rest-fill" style={{ width: `${Math.min(100, 100 - (left / (work.total * 1000)) * 100)}%` }} />
-      <span className="rest-time">Cvič {clock(left + 999)}</span>
-      <button onClick={() => update((w) => ({ ...w, work: null }))} aria-label="Zrušit sérii">×</button>
-      <button onClick={() => update((w) => finishWork(w, restFor(work.ex)))}>Hotovo</button>
-    </div>
-  );
-}
-
-/** Pauza po sérii: odpočet nad spodní lištou, na konci pípne. */
-function RestBar({ active, update }: { active: ActiveWorkout; update: (fn: (w: ActiveWorkout) => ActiveWorkout) => void }) {
-  const now = useNow(250);
-  const left = active.rest_until ? active.rest_until - now : 0;
+  }, [work, workLeft, update, restFor]);
 
   useEffect(() => {
-    if (active.rest_until && left <= 0) {
-      // po návratu do appky po dlouhé době už nepípat
-      if (left > -5000) {
+    if (active.rest_until && restLeft <= 0) {
+      if (restLeft > -5000) {
         playSound(soundPrefs().restEnd);
         navigator.vibrate?.(200);
       }
       update((w) => ({ ...w, rest_until: null }));
     }
-  }, [active.rest_until, left, update]);
+  }, [active.rest_until, restLeft, update]);
 
-  if (!active.rest_until || left <= 0 || active.work) return null;
-  const shift = (s: number) => update((w) => (w.rest_until ? { ...w, rest_until: w.rest_until + s * 1000, rest_total: Math.max(1, w.rest_total + s) } : w));
+  const next = nextUp(active);
+  const { done, total } = setProgress(active);
+  const nameOf = (ex: number) => byId.get(active.exercises[ex]?.exercise_id)?.name ?? "Cvik";
+  const setOf = (ex: number, set: number) => `Série ${set + 1} z ${active.exercises[ex].sets.length}`;
+  const target = (ex: number, set: number) => {
+    const s = active.exercises[ex].sets[set];
+    return s && (s.weight || s.reps || s.seconds) ? ` · ${formatSet(s)}` : "";
+  };
+
+  // ve kterém cviku byla série před pauzou (u stejného cviku stačí „série 2 z 3“)
+  const prevEx = next && next.set > 0 ? next.ex : -1;
+  const working = work && workLeft > 0;
+  const resting = !working && active.rest_until && restLeft > 0;
+  const state = working ? "work" : resting ? "rest" : next ? "next" : "done";
+  const fill = working ? 100 - (workLeft / (work.total * 1000)) * 100 : resting ? (restLeft / (active.rest_total * 1000)) * 100 : 0;
+  const shift = (sec: number) => update((w) => (w.rest_until ? { ...w, rest_until: w.rest_until + sec * 1000, rest_total: Math.max(1, w.rest_total + sec) } : w));
+
   return (
-    <div className="rest-bar" role="timer" aria-label="Pauza">
-      <span className="rest-fill" style={{ width: `${Math.min(100, (left / (active.rest_total * 1000)) * 100)}%` }} />
-      <span className="rest-time">Pauza {clock(left + 999)}</span>
-      <button onClick={() => shift(-15)} aria-label="O 15 sekund kratší">−15</button>
-      <button onClick={() => shift(15)} aria-label="O 15 sekund delší">+15</button>
-      <button onClick={() => update((w) => ({ ...w, rest_until: null }))}>Dál</button>
+    <div className={`now-dock now-${state}`} role="region" aria-label="Průběh tréninku">
+      {/* průběh: jeden dílek na cvik, plní se odškrtnutými sériemi */}
+      <div className="now-track" role="progressbar" aria-label="Odcvičené série" aria-valuemin={0} aria-valuemax={total} aria-valuenow={done} aria-valuetext={`${done} z ${total} sérií`}>
+        {active.exercises.map((we, i) => (
+          <span key={i} className={next?.ex === i ? "current" : undefined} style={{ flexGrow: we.sets.length }}>
+            <i style={{ transform: `scaleX(${we.sets.filter((x) => x.done).length / we.sets.length})` }} />
+          </span>
+        ))}
+      </div>
+      <p className="now-count">
+        {next ? `Cvik ${next.ex + 1} z ${active.exercises.length}` : "Všechny cviky"} · {done} z {total} {plural(total, ["série", "série", "sérií"])}
+      </p>
+
+      <div className="now-main">
+        {(working || resting) && <span className="now-fill" style={{ transform: `scaleX(${Math.max(0, Math.min(100, fill)) / 100})` }} />}
+        {working ? (
+          <>
+            <span className="now-clock" role="timer" aria-label="Zbývá do konce série">{clock(workLeft + 999)}</span>
+            <span className="now-text"><b>{nameOf(work.ex)}</b><span>Cvič · {setOf(work.ex, work.set).toLowerCase()}</span></span>
+          </>
+        ) : resting ? (
+          <>
+            <span className="now-clock" role="timer" aria-label="Zbývá z pauzy">{clock(restLeft + 999)}</span>
+            <span className="now-text">
+              <b>Pauza</b>
+              <span>{!next ? "Poslední série za tebou" : `Další: ${prevEx === next.ex ? "" : `${nameOf(next.ex)} · `}${setOf(next.ex, next.set).toLowerCase()}`}</span>
+            </span>
+          </>
+        ) : next ? (
+          <>
+            <span className="now-text"><b>{nameOf(next.ex)}</b><span>{setOf(next.ex, next.set)}{target(next.ex, next.set)}</span></span>
+            {setMode(active.exercises[next.ex].mode, byId.get(active.exercises[next.ex].exercise_id)) === "time" ? (
+              <button className="now-btn primary" onClick={() => { unlockAudio(); update((w) => startWork(w, next.ex, next.set, w.exercises[next.ex].sets[next.set].seconds || 60)); }}>
+                <Icon name="i-play" size={18} /> Start
+              </button>
+            ) : (
+              <button className="now-btn primary" onClick={() => { unlockAudio(); haptic(); update((w) => toggleDone(w, next.ex, next.set, restFor(next.ex))); }}>
+                <Icon name="check" size={20} /> Hotovo
+              </button>
+            )}
+          </>
+        ) : (
+          <>
+            <span className="now-text"><b>Všechno odcvičeno</b><span>{total ? "Ulož trénink a máš hotovo" : "Přidej první cvik"}</span></span>
+            {total > 0 && <button className="now-btn primary" onClick={onFinish}>Dokončit</button>}
+          </>
+        )}
+      </div>
+      {working && (
+        <div className="now-actions">
+          <button className="now-btn" aria-label="Zrušit odpočet" onClick={() => update((w) => ({ ...w, work: null }))}>×</button>
+          <button className="now-btn primary grow" onClick={() => update((w) => finishWork(w, restFor(work.ex)))}>Hotovo</button>
+        </div>
+      )}
+      {resting && (
+        <div className="now-actions">
+          <button className="now-btn" aria-label="O 15 sekund kratší" onClick={() => shift(-15)}>−15 s</button>
+          <button className="now-btn" aria-label="O 15 sekund delší" onClick={() => shift(15)}>+15 s</button>
+          <button className="now-btn primary grow" onClick={() => update((w) => ({ ...w, rest_until: null }))}>Dál</button>
+        </div>
+      )}
     </div>
   );
 }
 
-function ExerciseCard({ exercise, mode, running, onStart, sets, last, isFirst, isLast, onChange, onToggle, onAddSet, onRemoveSet, onMove, onRemove }: {
+function ExerciseCard({ id, current, exercise, mode, running, onStart, sets, last, isFirst, isLast, onChange, onToggle, onAddSet, onRemoveSet, onMove, onRemove }: {
+  id: string;
+  /** Cvik, který je právě na řadě. */
+  current: boolean;
   exercise: Exercise | undefined;
   /** Série na opakování, nebo na čas (s odpočtem). */
   mode: "reps" | "time";
@@ -197,11 +286,14 @@ function ExerciseCard({ exercise, mode, running, onStart, sets, last, isFirst, i
   const kind = exercise?.kind ?? "weight_reps";
   const kg = kind === "weight_reps";
   const timed = mode === "time";
+  const doneCount = sets.filter((s) => s.done).length;
+  const complete = doneCount === sets.length;
   return (
-    <section className={`panel wx${kg ? "" : " wx-narrow"}${timed ? " wx-timed" : ""}`}>
+    <section id={id} className={`panel wx${kg ? "" : " wx-narrow"}${timed ? " wx-timed" : ""}${current ? " current" : ""}${complete ? " complete" : ""}`} aria-current={current ? "step" : undefined}>
       <div className="wx-head">
         <div className="grow">
           <h3>{exercise?.name ?? "Smazaný cvik"}</h3>
+          <p className="wx-status">{complete ? <><Icon name="check" size={16} /> Hotovo</> : current ? `Teď · ${doneCount} z ${sets.length}` : `${doneCount} z ${sets.length}`}</p>
           <p className="small muted">{last.length ? `Minule: ${last.map(formatSet).join(", ")}` : "Poprvé – ať to stojí za to."}</p>
         </div>
         <div className="wx-tools">

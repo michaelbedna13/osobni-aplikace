@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addSet, finishWork, startWork, toggleDone, type ActiveWorkout } from "./active";
+import { addSet, finishWork, nextUp, setProgress, startWork, toggleDone, type ActiveWorkout } from "./active";
 import { computeTrainingStats, newRecords, oneRepMax, personalRecords, prefillSets, workoutVolume, type SetEntry, type Workout } from "./data";
 
 const set = (weight: number | null, reps: number | null, done = true, seconds: number | null = null): SetEntry => ({ weight, reps, seconds, done });
@@ -84,5 +84,35 @@ describe("odhad délky tréninku", () => {
     expect(est.total).toBe(540);
     expect(formatMinutes(est.total)).toBe("9 min");
     expect(formatMinutes(75 * 60)).toBe("1 h 15 min");
+  });
+});
+
+describe("průběh tréninku", () => {
+  const active = (exercises: ActiveWorkout["exercises"]): ActiveWorkout => ({
+    name: "T", template_id: null, started_at: "2026-10-13T18:00:00Z", exercises, rest_until: null, rest_total: 0,
+  });
+
+  it("na řadě je první neodškrtnutá série v pořadí cviků", () => {
+    const w = active([
+      { exercise_id: "a", sets: [set(20, 8), set(20, 8)] },
+      { exercise_id: "b", sets: [set(null, 10), set(null, 10, false), set(null, 10, false)] },
+      { exercise_id: "c", sets: [set(null, 5, false)] },
+    ]);
+    expect(nextUp(w)).toEqual({ ex: 1, set: 1 });
+    expect(setProgress(w)).toEqual({ done: 3, total: 6 });
+  });
+
+  it("přeskočený cvik zůstává na řadě, dokud není odcvičený", () => {
+    const w = active([
+      { exercise_id: "a", sets: [set(20, 8, false)] },
+      { exercise_id: "b", sets: [set(null, 10)] },
+    ]);
+    expect(nextUp(w)).toEqual({ ex: 0, set: 0 });
+  });
+
+  it("když je vše odškrtnuté, nic není na řadě", () => {
+    expect(nextUp(active([{ exercise_id: "a", sets: [set(20, 8)] }]))).toBeNull();
+    expect(nextUp(active([]))).toBeNull();
+    expect(setProgress(active([]))).toEqual({ done: 0, total: 0 });
   });
 });

@@ -32,7 +32,7 @@ Není to produktivní nástroj ani obecný tracker: je to osobní sbírka vlastn
   historie délek, týdenní cíl ve dnech s meditací), Vděčnost („Za co jsem dnes vděčný?“, série, mozaika, před rokem),
   Lidé a dárky (narozeniny, jmeniny podle jména, nápady na dárky, export do Kalendáře iPhonu).
   Trénink (doma s jednoručkami a s vlastní vahou: vlastní tréninky ze šablon, série × opakování × kg
-  předvyplněné z minula, pauza s pípnutím, rekordy, cíl týdně).
+  předvyplněné z minula, náhled před spuštěním, panel Teď s aktuálním cvikem, pauzou a průběhem, pauza s pípnutím, rekordy, cíl týdně).
   Cornhole (rodinné hry: týmy se zakládají jen pro danou hru, protože se pokaždé míchají jinak; 2 a víc týmů,
   nepovinně hráči, body sčítáním nebo rozdílem, zápis pytlíků na desce / v díře po kolech, do 21, zajímavosti
   (nejvíc bodů v kole, přetahovaná, obrat, nejtěsnější konec…) a výhry hráčů; k tomu hra Cornhole v mobilu

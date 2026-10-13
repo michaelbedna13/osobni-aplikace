@@ -335,12 +335,20 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
   výdrž · ≈ čas“, posun ↑↓ a koš) a pod čarou řádky popisek – ovládání: Série měřím (segment Opakování / Na čas, jen
   u cviků na opakování), Série (−/+), Opakování nebo Délka série jako cíl (−/+, „volně“ = bez cíle) a Pauza mezi
   sériemi. Nad seznamem jedna věta, jak trénink probíhá.
-- **Série na čas v tréninku**: u série je kulaté ▶ (vedle odškrtnutí); spustí odpočet v liště nad spodní navigací
-  („Cvič 0:59“, výplň roste, × zrušit, Hotovo = zapíše skutečně odcvičené sekundy). Po doběhnutí pípne, sérii odškrtne
+- **Spuštění tréninku**: ťuknutí na trénink nic nespustí, otevře **náhled** (`TemplatePreview`): počet cviků,
+  odhad času, kdy naposledy, seznam cviků se sériemi a plánem z minula (`3 série · 22 × 8`, `· na čas`), pod tím
+  „Začít“ a „Upravit trénink“. Stejně jako u Dechu. Hned startuje jen „Prázdný trénink“.
+- **Série na čas v tréninku**: u série je kulaté ▶ (vedle odškrtnutí), nebo „Start“ v panelu Teď; spustí odpočet
+  (výplň roste, × zrušit, Hotovo = zapíše skutečně odcvičené sekundy). Po doběhnutí pípne, sérii odškrtne
   a spustí pauzu.
 - **Trénink – cvik** (`.wx`): panel s názvem, „Minule: …“, řádky sérií (číslo, kg, opakování nebo sekundy,
-  odškrtávací čtverec). Odškrtnutá série má limetkový čtverec s fajfkou. Pod lištou se drží **pauza**
-  (`.rest-bar`): odpočet s ubývající výplní v akcentu, −15 / +15 / Dál, na konci pípne.
+  odškrtávací čtverec). Odškrtnutá série má limetkový čtverec s fajfkou. Cvik na řadě má obrys
+  v akcentu a „Teď · 1 z 3“, odcvičený ustoupí (průhlednost) s „✓ Hotovo“; po dokončení cviku se obrazovka
+  posune na další (ne když se píše do políčka). Během tréninku se spodní navigace schová a dole se drží
+  **panel Teď** (`.now-dock`): průběh po cvicích (jeden dílek na cvik, plní se odškrtnutými sériemi, aktuální má obrys),
+  „Cvik 2 z 4 · 3 z 10 sérií“ a stav: *na řadě* (cvik, série, plán, Hotovo / Start), *pauza* (velký odpočet
+  s ubývající výplní, „Další: série 2 z 3“ nebo název dalšího cviku; pod tím −15 s / +15 s / Dál), *cvič* (odpočet
+  série na čas, × / Hotovo), *vše odcvičeno* (Dokončit). Na konci pauzy i série pípne.
 - **Šablona tréninku** (`.tpl-item`): pořadí šipkami, počet sérií − / +.
 - **Cornhole – tým ve hře** (`.ch-team`): pruh v barvě pytlíků vlevo (vnitřní stín), pytlík (`.bag`),
   název a hráči, velké skóre (+ body z posledního kola), ukazatel k cíli, počítadla Na desce / V díře

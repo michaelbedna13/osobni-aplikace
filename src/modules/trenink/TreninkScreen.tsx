@@ -41,6 +41,7 @@ export function TreninkScreen() {
   const { prefs, update: updateSounds } = useSoundPrefs();
   const [goalOpen, setGoalOpen] = useState(false);
   const [detail, setDetail] = useState<Workout | null>(null);
+  const [preview, setPreview] = useState<WorkoutTemplate | null>(null);
   const goalDone = stats.weekCount >= goal;
 
   // ?start=1 z karty na obrazovce Dnes
@@ -121,7 +122,7 @@ export function TreninkScreen() {
                 const last = lastDone(t);
                 return (
                   <li key={t.id} className="idea-row">
-                    <button className="list-btn" onClick={() => begin(t)} aria-label={`Začít ${t.name}`}>
+                    <button className="list-btn" onClick={() => setPreview(t)} aria-label={`${t.name}: náhled a spuštění`}>
                       <span className="grow">
                         <b>{t.name}</b>
                         <span className="occasion-kind">
@@ -244,7 +245,7 @@ export function TreninkScreen() {
             <ul className="list">
               {templates.map((t) => (
                 <li key={t.id}>
-                  <button className="list-btn" onClick={() => begin(t)}>
+                  <button className="list-btn" onClick={() => { setStarting(false); setPreview(t); }}>
                     <span className="grow"><b>{t.name}</b><span className="occasion-kind">{t.items.map((it) => byId.get(it.exercise_id)?.name).filter(Boolean).join(", ")}</span></span>
                     <Icon name="i-play" size={20} />
                   </button>
@@ -256,9 +257,59 @@ export function TreninkScreen() {
           <button className="btn tap wide" onClick={() => navigate("/m/trenink/sablona/nova")}>Postavit nový trénink</button>
         </Sheet>
       )}
+      {preview && (
+        <TemplatePreview
+          template={preview}
+          workouts={workouts}
+          lastDone={lastDone(preview)}
+          onClose={() => setPreview(null)}
+          onStart={() => { setPreview(null); void begin(preview); }}
+          onEdit={() => navigate(`/m/trenink/sablona/${preview.id}`)}
+        />
+      )}
       {goalOpen && <GoalSheet goal={goal} onClose={() => setGoalOpen(false)} onSave={(g) => updateSettings({ workout_weekly_goal: g })} />}
       {detail && <WorkoutDetail workout={detail} onClose={() => setDetail(null)} />}
     </div>
+  );
+}
+
+/** Náhled tréninku před spuštěním: co se bude cvičit a jak dlouho to zhruba potrvá. Nic se nespustí bez „Začít“. */
+function TemplatePreview({ template, workouts, lastDone, onClose, onStart, onEdit }: {
+  template: WorkoutTemplate;
+  workouts: Workout[];
+  lastDone: Workout | undefined;
+  onClose: () => void;
+  onStart: () => void;
+  onEdit: () => void;
+}) {
+  const { byId } = useExercises();
+  const estimate = estimateTemplate(template.items, byId, workouts, template.rest_between_s);
+  const count = template.items.length;
+  return (
+    <Sheet title={template.name} onClose={onClose}>
+      <p className="small muted">
+        {count} {plural(count, ["cvik", "cviky", "cviků"])} · ≈ {formatMinutes(estimate.total)}
+        {lastDone ? ` · naposledy ${relativeTime(new Date(lastDone.started_at)).toLowerCase()}` : ""}
+      </p>
+      {count > 0 ? (
+        <ol className="detail-list tpl-preview">
+          {template.items.map((it, i) => {
+            const exercise = byId.get(it.exercise_id);
+            const mode = setMode(it.mode, exercise);
+            const first = prefillSets(it.exercise_id, 1, workouts, { mode, value: it.target })[0];
+            const plan = first && (first.weight || first.reps || first.seconds) ? ` · ${formatSet(first)}` : "";
+            return (
+              <li key={`${it.exercise_id}-${i}`}>
+                <b>{exercise?.name ?? "Smazaný cvik"}</b>
+                <span>{it.sets} {plural(it.sets, ["série", "série", "sérií"])}{plan}{mode === "time" ? " · na čas" : ""}</span>
+              </li>
+            );
+          })}
+        </ol>
+      ) : <p className="empty">Trénink zatím nemá žádné cviky.</p>}
+      <button className="btn-hero" disabled={count === 0} onClick={onStart}><Icon name="i-play" size={24} /> Začít</button>
+      <button className="btn tap wide" onClick={onEdit}>Upravit trénink</button>
+    </Sheet>
   );
 }
 

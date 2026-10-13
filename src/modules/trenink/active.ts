@@ -114,3 +114,23 @@ export const removeExercise = (w: ActiveWorkout, ex: number): ActiveWorkout => (
   exercises: w.exercises.filter((_, i) => i !== ex),
   work: !w.work || w.work.ex < ex ? w.work : w.work.ex === ex ? null : { ...w.work, ex: w.work.ex - 1 },
 });
+
+/** Co je na řadě: první cvik s neodškrtnutou sérií a v něm první taková série. Null = vše hotové. */
+export function nextUp(w: ActiveWorkout): { ex: number; set: number } | null {
+  for (let ex = 0; ex < w.exercises.length; ex++) {
+    const set = w.exercises[ex].sets.findIndex((s) => !s.done);
+    if (set >= 0) return { ex, set };
+  }
+  return null;
+}
+
+/** Odškrtnuté a všechny série celého tréninku. */
+export function setProgress(w: ActiveWorkout): { done: number; total: number } {
+  let done = 0;
+  let total = 0;
+  for (const we of w.exercises) {
+    total += we.sets.length;
+    done += we.sets.filter((s) => s.done).length;
+  }
+  return { done, total };
+}

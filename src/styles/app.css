@@ -594,18 +594,40 @@ select.input { background-image: linear-gradient(45deg, transparent 50%, var(--i
 .wx-input { min-height: 48px; text-align: center; font-family: var(--font-ui); font-size: 16px; padding: 6px; }
 .wx-check { height: 48px; border: var(--line); background: var(--surface-2); display: grid; place-items: center; }
 .wx-check.on { background: var(--lime); }
-.screen.workout { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 110px); }
 .wx-row.done .wx-input { color: var(--slate); }
 .wx-sets { display: flex; gap: 18px; margin-top: 6px; }
-.rest-bar {
-  position: fixed; z-index: 12; left: 12px; right: 12px; bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 6px);
-  max-width: 496px; margin: 0 auto; display: flex; align-items: center; gap: 6px; padding: 6px 6px 6px 14px;
-  background: var(--paper); border: var(--line); box-shadow: var(--shadow); overflow: hidden;
+/* panel „Teď“: co je na řadě, pauza nebo odpočet a průběh tréninku; palcem na dosah, spodní lišta se schová */
+.now-dock {
+  position: fixed; z-index: 12; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom) + 10px);
+  max-width: 496px; margin: 0 auto; padding: 12px 12px 10px; display: grid; gap: 8px;
+  border-radius: var(--r); background: var(--paper); box-shadow: var(--shadow-big), var(--card-shadow);
 }
-.work-bar .rest-time { color: var(--ink); }
-.rest-fill { position: absolute; left: 0; top: 0; bottom: 0; background: color-mix(in srgb, var(--accent) 30%, transparent); }
-.rest-time { position: relative; flex: 1; font-family: var(--font-display); font-size: 24px; font-variant-numeric: tabular-nums; }
-.rest-bar button { position: relative; min-width: 52px; min-height: 44px; border: var(--line); background: var(--surface-2); color: var(--ink); font-family: var(--font-ui); font-size: 16px; }
+.now-track { display: flex; gap: 3px; height: 6px; }
+.now-track span { flex: 1 1 0; min-width: 6px; position: relative; overflow: hidden; border-radius: var(--pill); background: var(--surface-2); }
+.now-track span.current { box-shadow: 0 0 0 1.5px var(--accent); }
+.now-track i { position: absolute; inset: 0; background: var(--accent); border-radius: inherit; transform-origin: left; transition: transform 300ms var(--step); }
+.now-count { margin: 0; font-family: var(--font-ui); font-size: 14px; color: var(--slate); font-variant-numeric: tabular-nums; }
+.now-main { position: relative; display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 4px 4px 4px 14px; margin: 0 -4px; border-radius: var(--r-sm); background: var(--surface-2); overflow: hidden; }
+.now-fill { position: absolute; inset: 0; background: color-mix(in srgb, var(--accent) 34%, transparent); transform-origin: left; transition: transform 250ms linear; }
+.now-clock { position: relative; font-family: var(--font-display); font-size: 32px; line-height: 1; font-variant-numeric: tabular-nums; }
+.now-text { position: relative; flex: 1; min-width: 0; display: grid; }
+.now-text b { font-family: var(--font-ui); font-size: 18px; font-weight: 400; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.now-text span { font-size: 14px; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.now-work .now-text span, .now-rest .now-text span { color: var(--ink); }
+.now-btn { position: relative; flex: none; min-width: 48px; min-height: 48px; padding: 0 12px; border: 0; background: var(--paper); color: var(--ink); font-family: var(--font-ui); font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.now-btn.primary { background: var(--accent); color: var(--on-accent); padding: 0 18px; }
+.now-btn.grow { flex: 1; }
+.now-actions { display: flex; gap: 8px; }
+.now-actions .now-btn { background: var(--surface-2); }
+.now-actions .now-btn.primary { background: var(--accent); }
+.now-btn:active { transform: scale(0.96); }
+.screen.workout { padding-bottom: calc(env(safe-area-inset-bottom) + 240px); }
+/* cvik na řadě: obrys v barvě modulu; odcvičený ustoupí */
+.workout .wx { transition: box-shadow 200ms var(--step), opacity 200ms var(--step); }
+.workout .wx.current { box-shadow: 0 0 0 2px var(--accent), var(--card-shadow); }
+.workout .wx.complete { opacity: 0.62; }
+.wx-status { margin: 0 0 2px; display: flex; align-items: center; gap: 4px; font-family: var(--font-ui); font-size: 14px; color: var(--slate); }
+.wx.current .wx-status { color: var(--ink); }
 .record-row { cursor: default; }
 .record-value { font-family: var(--font-ui); font-size: 16px; white-space: nowrap; }
 .detail-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
@@ -966,7 +988,7 @@ a.btn-hero { text-decoration: none; }
 .goal-card b { font-family: var(--font-ui); font-size: 16px; font-weight: 400; }
 
 /* ---------- klávesnice a okna ---------- */
-.kb-open .tabbar, .kb-open .rest-bar, .focus-mode .tabbar, .dialog-open .tabbar { display: none; }
+.kb-open .tabbar, .kb-open .now-dock, .focus-mode .tabbar, .dialog-open .tabbar { display: none; }
 html.dialog-open, html.dialog-open body { overflow: hidden; }
 .modal-backdrop {
   position: fixed; left: 0; right: 0; top: var(--vv-top, 0px); height: var(--vv-h, 100dvh); z-index: 25;
@@ -1128,10 +1150,10 @@ html.dialog-open, html.dialog-open body { overflow: hidden; }
 /* ---------- tvary: karty, zaoblení a měkké plochy (jednotně pro celou appku) ---------- */
 /* karty s obsahem: bílé, lehce průsvitné, bez obrysu */
 .list, .score, .quote-card, .link-card, .trophy, .tpl-item, .sc-row, .sh-player, .ch-team, .ch-slot, .ch-player,
-.breath-card, .board-tile, .meaning, .tile, .rest-bar, .map-banner, .sh-promo, .tpl-rest.between, .modal-screen {
+.breath-card, .board-tile, .meaning, .tile, .map-banner, .sh-promo, .tpl-rest.between, .modal-screen {
   border: 0; border-radius: var(--r); background-color: var(--glass); box-shadow: var(--card-shadow);
 }
-.list, .board-tile, .rest-bar { overflow: hidden; }
+.list, .board-tile { overflow: hidden; }
 .board .board-tile { border-radius: var(--r-sm); }
 .score > div + div { border-left: 1px solid var(--edge); }
 .list li + li, .pin-list li + li { border-top: 1px solid var(--edge); }
@@ -1182,7 +1204,7 @@ html[data-theme^="duo"] .theme-swatch .icon, html[data-theme="noir"] .theme-swat
 .kind-tag, .wait-tag, .idea-cat, .meaning-kind, .sh-check { border: 0; border-radius: var(--r-xs); }
 .nk-box, .bag, .stack-blocks i, .mosaic i, .sh-swatch { border-radius: 6px; }
 .col-track i { border-radius: 6px 6px 0 0; }
-.hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .ch-power, .rest-bar button, .idea-given { border-radius: var(--pill); }
+.hbar-track, .hbar-track i, .ch-progress, .ch-progress i, .breath-bar, .breath-bar i, .ch-power, .now-btn, .idea-given { border-radius: var(--pill); }
 /* tlačítko na konci řádku seznamu (Upravit, Dáno): plný pruh přes výšku řádku, roh kopíruje kartu (ořízne ji .list) */
 .idea-row .idea-given { border-radius: 0; padding: 0 18px; }
 .ring-seg, .orb, .unread-dot, .sc-legs i, .ch-pips i, .week-block i { border-radius: 50%; }
