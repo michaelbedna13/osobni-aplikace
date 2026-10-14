@@ -215,7 +215,7 @@ s jemnou krémovou linkou, text krémový `#F3EADB`. Barva modulu jen jemně: ik
 velkou ikonou (16 %), hlavní tlačítko tónované barvou modulu s tenkým obrysem. Karty modulů: světlo vychází z ikony
 (hladký vícebodový radiální přechod v `oklab` s průhledností – žádná tvrdá hrana ani hnědnutí barev), shora slabý nádech
 barvy a tenká barevná hrana nahoře jako odlesk; pruhy v přechodu rozbije zrno obrazovky. Úvodní obrazovka:
-krémová květina na skoro černé se zrnem; lišta s hodinami i barva spuštění (manifest) jsou `#1C1B19`.
+krémová květina s limetkovým okem a tmavou zornicí na skoro černé (tmavé oko by vypadalo jako díra a znak by se hůř četl); lišta s hodinami i barva spuštění (manifest) jsou `#1C1B19`.
 
 ## Vzhled „duotone“
 
@@ -422,8 +422,10 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
   spuštění barvu spodku úvodní obrazovky (#E6F5C0, stejně jako `background_color` v manifestu) a úvodní obrazovka sahá
   120 px pod spodní okraj: iPhone při spuštění z plochy dorovnává výšku okna a jinak by tam problikl světlý pruh. Ze stejného
   důvodu má znak pevnou polohu v pixelech (`--splash-y` podle výšky displeje, nastaví ji skript v `index.html`), ne střed
-  okna, jinak by při dorovnání poskočil. Appka se odkryje až s načtenými písmy, ať se text po zmizení nepřeskládá. Tvar lístků kreslí `scripts/draw-splash.mjs`. Při omezeném
-  pohybu bez animace.
+  okna, jinak by při dorovnání poskočil. Appka se odkryje až s načtenými písmy, ať se text po zmizení nepřeskládá. Tvar lístků kreslí `scripts/draw-splash.mjs`. Pod znakem
+  se střídají anglická slovesa v náhodném pořadí (`.splash-word`: breathe, meditate, train, drink, watch, read, laugh, remember,
+  save, play, wander, wish, thank, shop, share, rest), Outfit 20 px, 72 % krytí; první za 0,55 s, pak po 0,76 s, každé
+  vyjede zdola z rozostření a odjede nahoru. Při omezeném pohybu bez animace (jedno slovo stojí).
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
   Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, pás modulů nemá nadpis.
   Podoba podle funkce: **Brzy slaví** (`.celebrate`): jméno, pod ním co a kdy slaví a nápady na dárek, pokud nějaké jsou
