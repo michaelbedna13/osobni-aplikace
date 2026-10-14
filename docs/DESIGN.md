@@ -215,7 +215,7 @@ s jemnou krémovou linkou, text krémový `#F3EADB`. Barva modulu jen jemně: ik
 velkou ikonou (16 %), hlavní tlačítko tónované barvou modulu s tenkým obrysem. Karty modulů: světlo vychází z ikony
 (hladký vícebodový radiální přechod v `oklab` s průhledností – žádná tvrdá hrana ani hnědnutí barev), shora slabý nádech
 barvy a tenká barevná hrana nahoře jako odlesk; pruhy v přechodu rozbije zrno obrazovky. Úvodní obrazovka:
-krémová květina s limetkovým okem a tmavou zornicí na skoro černé (tmavé oko by vypadalo jako díra a znak by se hůř četl); lišta s hodinami i barva spuštění (manifest) jsou `#1C1B19`.
+krémová květina s lesně zeleným okem (#2E5A3F) a krémovou zornicí na skoro černé (oko v barvě pozadí by vypadalo jako díra a znak by se hůř četl); lišta s hodinami i barva spuštění (manifest) jsou `#1C1B19`.
 
 ## Vzhled „duotone“
 
@@ -417,14 +417,14 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
 - **Úvodní obrazovka** (`#splash` přímo v `index.html`, aby byla vidět hned, ještě před JS): stejný zrnitý limetkový
   přechod jako ikona, uprostřed jen znak untrois (bez nápisu). Animace: střed vyskočí,
   13 lístků se rozvine jeden po druhém dokola, oko se otevře, zornička se rozhlíží a květ se pomalu otáčí. Zmizí
-  (oko mrkne, znak se zvětší, obrazovka prolne), až nic nenačítá (`src/lib/splash.ts`: aspoň 1,3 s, nejdéle 4,5 s,
+  (oko mrkne, znak se zvětší, obrazovka prolne), až nic nenačítá (`src/lib/splash.ts`: aspoň 2,3 s, aby se prostřídala slova, nejdéle 4,5 s,
   počasí se nečeká), takže na Dnes neproblikají nuly. Appka se pod ní vykresluje skrytá (`html.splashing`), aby přes ni na iOS neproblikla skleněná lišta. Stránka i tělo mají při
   spuštění barvu spodku úvodní obrazovky (#E6F5C0, stejně jako `background_color` v manifestu) a úvodní obrazovka sahá
   120 px pod spodní okraj: iPhone při spuštění z plochy dorovnává výšku okna a jinak by tam problikl světlý pruh. Ze stejného
   důvodu má znak pevnou polohu v pixelech (`--splash-y` podle výšky displeje, nastaví ji skript v `index.html`), ne střed
   okna, jinak by při dorovnání poskočil. Appka se odkryje až s načtenými písmy, ať se text po zmizení nepřeskládá. Tvar lístků kreslí `scripts/draw-splash.mjs`. Pod znakem
   se střídají anglická slovesa v náhodném pořadí (`.splash-word`: breathe, meditate, train, drink, watch, read, laugh, remember,
-  save, play, wander, wish, thank, shop, share, rest), Outfit 20 px, 72 % krytí; první za 0,55 s, pak po 0,76 s, každé
+  save, play, wander, wish, thank, shop, share, rest), Outfit 20 px, 72 % krytí; první za 0,55 s, pak rychle po 0,22 s, každé
   vyjede zdola z rozostření a odjede nahoru. Při omezeném pohybu bez animace (jedno slovo stojí).
 - **Sekce na Dnes** (`.sec-tab`): nadpis s tečkou v barvě modulu, obsah v bílé kartě; mezi sekcemi 30 px. Nákup,
   Brzy slaví, Vděčnost, Dluhy a Na později mají tečku v barvě svého modulu, pás modulů nemá nadpis.

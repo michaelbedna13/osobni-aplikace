@@ -51,11 +51,11 @@
       /* pod znakem se střídají slovesa (co se v appce dělá); naskočí, až se květina rozvine */
       .splash-word { position: absolute; left: 0; right: 0; top: calc(var(--splash-y, 50vh) + min(25vw, 104px) + 40px); margin: 0;
         text-align: center; font: 500 20px/1.2 "Outfit UI", "Outfit", system-ui, sans-serif; letter-spacing: 0.04em; color: #23211F; opacity: 0; }
-      .splash-word.on { animation: splash-word 0.76s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+      .splash-word.on { animation: splash-word 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
       @keyframes splash-word {
-        0% { opacity: 0; transform: translateY(10px); filter: blur(4px); }
-        28%, 72% { opacity: 0.72; transform: none; filter: blur(0); }
-        100% { opacity: 0; transform: translateY(-10px); filter: blur(4px); }
+        0% { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+        25%, 80% { opacity: 0.72; transform: none; filter: blur(0); }
+        100% { opacity: 0; transform: translateY(-6px); filter: blur(2px); }
       }
       @media (prefers-reduced-motion: reduce) { #splash *, .splash-flower * { animation: none !important; } .splash-word.still { opacity: 0.72; } }
       /* vzhled duotone (Profil → Vzhled): úvodní obrazovka jen v krémové na podkladu vzhledu */
@@ -69,10 +69,9 @@
       html[data-theme="noir"] { --duo-bg: #1C1B19; }
       html[data-theme="noir"].splashing, html[data-theme="noir"].splashing body, html[data-theme="noir"] #splash { background: var(--duo-bg); }
       html[data-theme="noir"] #splash::after { display: none; }
-      /* oko plné limetkové s tmavou zornicí: tmavé oko by na tmavém podkladu působilo jako díra a znak by se hůř četl */
-      html[data-theme="noir"] .splash-flower .bloom { fill: #F3EADB; }
-      html[data-theme="noir"] .splash-flower .eye { fill: #CEF17B; }
-      html[data-theme="noir"] .splash-flower .pupil { fill: var(--duo-bg); }
+      /* oko lesní zelené s krémovou zornicí: dost světlé, aby nepůsobilo jako díra do tmavého podkladu */
+      html[data-theme="noir"] .splash-flower .bloom, html[data-theme="noir"] .splash-flower .pupil { fill: #F3EADB; }
+      html[data-theme="noir"] .splash-flower .eye { fill: #2E5A3F; }
       html[data-theme="noir"] .splash-word, html[data-theme^="duo"] .splash-word { color: #F3EADB; }
     </style>
   </head>
@@ -86,7 +85,7 @@
         var h = standalone ? Math.max(screen.height, innerHeight) : innerHeight;
         document.documentElement.style.setProperty("--splash-y", Math.round(h / 2) + "px");
       })();
-      // slovesa pod znakem: náhodné pořadí, jedno za druhým, dokud úvodní obrazovka nezmizí
+      // slovesa pod znakem: náhodné pořadí, rychle jedno za druhým (~4,5 za sekundu), dokud úvodní obrazovka nezmizí
       (function () {
         var el = document.querySelector(".splash-word");
         if (!el) return;
@@ -101,7 +100,7 @@
           el.classList.remove("on");
           void el.offsetWidth;
           el.classList.add("on");
-          setTimeout(next, 760);
+          setTimeout(next, 220);
         }
         // písmo načíst dřív, než se ukáže první slovo (jinak by naskočilo v náhradním písmu a přeskočilo)
         var font = document.fonts && document.fonts.load ? document.fonts.load('500 20px "Outfit"') : Promise.resolve();

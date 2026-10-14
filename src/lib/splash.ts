@@ -5,7 +5,8 @@ import { useIsFetching } from "@tanstack/react-query";
 // obrazovky, aby nikde neproblikly nuly. Drží se aspoň chvilku, aby animace doběhla, a nejdéle pár sekund,
 // kdyby byla síť pomalá. Počasí se nečeká (má vlastní stav načítání).
 
-const MIN_MS = 1300;
+// aspoň 2,3 s: znak se rozvine a pod ním se prostřídají slovesa
+const MIN_MS = 2300;
 const MAX_MS = 4500;
 const SETTLE_MS = 120;
 
