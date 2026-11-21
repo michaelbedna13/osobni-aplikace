@@ -1,5 +1,6 @@
 import { isDemo } from "../lib/supabase";
 import { NOTIFY_TYPES, useNotifyPrefs, usePushDevice } from "../lib/push";
+import { useModuleAccess } from "../lib/access";
 
 const HOURS = Array.from({ length: 18 }, (_, i) => i + 6); // 6:00–23:00
 
@@ -7,7 +8,9 @@ const HOURS = Array.from({ length: 18 }, (_, i) => i + 6); // 6:00–23:00
 export function NotifySection() {
   const { state, loading, enable, disable, test } = usePushDevice();
   const { prefs, set, error } = useNotifyPrefs();
+  const { can } = useModuleAccess();
   if (isDemo) return null;
+  const types = NOTIFY_TYPES.filter((t) => !t.module || can(t.module));
 
   const failure = enable.error ?? disable.error ?? test.error ?? error;
 
@@ -33,7 +36,7 @@ export function NotifySection() {
         ) : (
           <>
             <ul className="notify-list">
-              {NOTIFY_TYPES.map((t) => {
+              {types.map((t) => {
                 const p = prefs[t.key];
                 return (
                   <li key={t.key} className={p.on ? undefined : "off"}>

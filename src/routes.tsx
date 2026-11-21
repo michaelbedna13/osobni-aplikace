@@ -1,5 +1,6 @@
 import { Navigate, Route } from "react-router-dom";
 import { ModuleScreen } from "./screens/ModuleScreen";
+import { PrivateModule } from "./components/PrivateModule";
 import { PivaScreen } from "./modules/piva/PivaScreen";
 import { HlaskomatScreen } from "./modules/hlaskomat/HlaskomatScreen";
 import { MeditaceScreen } from "./modules/meditace/MeditaceScreen";
@@ -58,7 +59,7 @@ export const screenRoutes = (
     <Route path="m/mista" element={<MistaScreen />} />
     <Route path="m/finance" element={<FinanceScreen />} />
     <Route path="m/dech" element={<DechScreen />} />
-    <Route path="m/untrois" element={<UntroisLock><UntroisScreen /></UntroisLock>} />
+    <Route path="m/untrois" element={<PrivateModule module="untrois"><UntroisLock><UntroisScreen /></UntroisLock></PrivateModule>} />
     <Route path="m/denik" element={<Navigate to="/m/vdecnost" replace />} />
     <Route path="m/:key" element={<ModuleScreen />} />
     <Route path="mapa" element={<Navigate to="/m/mista" replace />} />

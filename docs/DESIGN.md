@@ -267,7 +267,7 @@ Textury generuje `node scripts/generate-textures.mjs` (film, zrno do tmavých pl
   pás **modulů** bez nadpisu (posun do boku, karty 160 px, úpravy jsou
   v Profilu); **Nákup** (jen když je co koupit); **„Za co jsem dnes vděčný?“** hned pod nákupem (bez nákupu jako první
   sekce); **Brzy slaví** (oslavy na 7 dní); **Dluhy**; **Na později** (jeden neotevřený odkaz denně). Hláška dne na Dnes není.
-- Moduly: mřížka 3 × N, jen ikona a název; každá dlaždice má hladký přechod v barvě svého modulu jako karty na Dnes
+- Moduly: mřížka 3 × N, jen ikona a název; každá dlaždice má hladký přechod v barvě svého modulu jako karty na Dnes Soukromý modul (untrois, `private` v `src/lib/modules.ts`) se ukáže jen účtu s příznakem v `app_metadata` (`src/lib/access.ts`); ostatním chybí v mřížce, v připnutých na Dnes, v Profilu, v upozorněních (Pátek 13.) a adresa `/m/untrois` je přesměruje na Moduly.
   (`--module-card`); bez značky připnutí (které moduly jsou na Dnes, se nastavuje v Profilu), zámek = zamčeno (zamčená dlaždice zůstává bílá).
 - Stavový řádek iOS je průhledný (`apple-mobile-web-app-status-bar-style: black-translucent`, `viewport-fit=cover`):
   pozadí běží až pod hodiny, takže nikde není hrana. Hodiny jsou bílé, proto horní okraj `--grad` (110 px) jemně

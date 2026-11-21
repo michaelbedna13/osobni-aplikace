@@ -1,15 +1,16 @@
 import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "../components/Icon";
-import { MODULES } from "../lib/modules";
+import { useModuleAccess } from "../lib/access";
 
 export function Modules() {
+  const { modules } = useModuleAccess();
   return (
     <div className="screen">
       {/* nadpis jen pro čtečku obrazovky: lišta dole už říká, kde jsi */}
       <h1 className="sr-only">Moduly</h1>
       <div className="tiles">
-        {MODULES.map((m) => (
+        {modules.map((m) => (
           <Link
             key={m.key}
             to={`/m/${m.key}`}

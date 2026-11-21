@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./supabase";
 import { useAuth } from "./auth";
+import type { ModuleKey } from "./modules";
 
 // Upozornění (Web Push). Na iPhonu fungují od iOS 16.4 a jen v appce přidané na plochu.
 // Odběr zařízení je v tabulce push_subscriptions, co a kdy posílat v user_settings.notification_prefs.
@@ -15,6 +16,8 @@ export interface NotifyType {
   hint: string;
   /** Výchozí hodina (Europe/Prague). */
   hour: number;
+  /** Patří k soukromému modulu: nabízí se jen účtu, který ho vidí. */
+  module?: ModuleKey;
 }
 
 /** Druhy upozornění v pořadí podle denní doby. Výchozí hodiny drží i funkce untrois-push. */
@@ -22,7 +25,7 @@ export const NOTIFY_TYPES: NotifyType[] = [
   { key: "narozeniny", name: "Narozeniny a svátky", hint: "Kdo dnes a zítra slaví, s nápady na dárek", hour: 8 },
   { key: "nakup", name: "Nákup", hint: "Když je něco na nákupním seznamu", hour: 16 },
   { key: "platby", name: "Platby", hint: "Den předem, výdaje i předplatné", hour: 18 },
-  { key: "patek13", name: "Pátek 13.", hint: "Den předem", hour: 19 },
+  { key: "patek13", name: "Pátek 13.", hint: "Den předem", hour: 19, module: "untrois" },
   { key: "meditace", name: "Meditace", hint: "Když dnes ještě nebyla", hour: 20 },
   { key: "vdecnost", name: "Vděčnost", hint: "Když dnes chybí zápis", hour: 21 },
 ];

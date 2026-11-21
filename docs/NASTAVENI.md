@@ -63,6 +63,22 @@ vytvoří sama při prvním volání a drží je v tabulce `push_vapid` (čte ji
 Funguje od iOS 16.4 a jen v appce přidané na plochu. Co a v kolik se posílá, se nastavuje v Profilu
 (platí pro všechna zařízení, časy jsou v Europe/Prague).
 
+## 6. Další člověk (třeba bratr)
+
+Každý účet má svoje data, ostatní je nevidí (Row Level Security u všech tabulek).
+
+1. Supabase → Authentication → Users → **Add user → Create new user**: e-mail, heslo, zaškrtnout **Auto Confirm User**.
+2. Poslat mu adresu appky a přihlašovací údaje; v Safari **Sdílet → Přidat na plochu**, přihlásit se.
+3. Doporučené: Authentication → Sign In / Providers → vypnout **Allow new users to sign up** (účty jen přes Add user)
+   a zapnout ochranu proti uniklým heslům.
+
+**Soukromý modul untrois** (a upozornění Pátek 13.) vidí jen účet s příznakem `untrois` v `app_metadata`
+(uživatel si ho z appky nezmění). Nový účet ho nemá, takže modul neuvidí. Přidání přístupu (SQL Editor):
+
+```sql
+update auth.users set raw_app_meta_data = raw_app_meta_data || '{"untrois": true}'::jsonb where email = 'e-mail účtu';
+```
+
 ## Vývoj na počítači (volitelné)
 
 ```bash

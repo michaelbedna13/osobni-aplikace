@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Icon } from "../components/Icon";
 import { signOut, useAuth } from "../lib/auth";
-import { MODULES, MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
+import { MODULE_BY_KEY, type ModuleKey } from "../lib/modules";
+import { useModuleAccess } from "../lib/access";
 import { usePinnedModules } from "../lib/settings";
 import { isDemo } from "../lib/supabase";
 import { ImportSection } from "./ImportSection";
@@ -14,7 +15,8 @@ export function Profile() {
   const { pinned, setPinned, error } = usePinnedModules();
   const { theme, setTheme } = useTheme();
   const [silent, setSilent] = useState(readPlayInSilent);
-  const unpinned = MODULES.filter((m) => !pinned.includes(m.key));
+  const { modules } = useModuleAccess();
+  const unpinned = modules.filter((m) => !pinned.includes(m.key));
 
   const move = (index: number, delta: number) => {
     const next = [...pinned];

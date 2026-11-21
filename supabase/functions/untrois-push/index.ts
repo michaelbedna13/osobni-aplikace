@@ -243,7 +243,11 @@ async function runCron(now = new Date()) {
     const { data: settings } = await db.from("user_settings").select("notification_prefs").eq("user_id", userId).maybeSingle();
     const prefs = normalizePrefs(settings?.notification_prefs);
     const ctx: Ctx = { userId, today, tomorrow };
+    // Pátek 13. patří k soukromému modulu untrois: jen účtům s app_metadata.untrois (viz src/lib/access.ts)
+    const { data: account } = await db.auth.admin.getUserById(userId);
+    const untrois = account?.user?.app_metadata?.untrois === true;
     for (const kind of Object.keys(BUILDERS) as Kind[]) {
+      if (kind === "patek13" && !untrois) continue;
       const p = prefs[kind];
       // ve svou hodinu, nebo hodinu potom, kdyby jedno spuštění vypadlo
       if (!p.on || hour < p.hour || hour > p.hour + 1) continue;

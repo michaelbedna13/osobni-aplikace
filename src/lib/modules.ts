@@ -16,6 +16,8 @@ export interface ModuleDef {
   phase: 1 | 2 | 3 | 4;
   /** Modul je hotový a má vlastní obrazovku. */
   ready?: boolean;
+  /** Soukromý modul: vidí ho jen účet s příznakem `app_metadata.<key> = true` v Supabase (viz src/lib/access.ts). */
+  private?: boolean;
   /** Rychlá akce na kartě v pásu „Moje moduly“ a v nabídce (+). */
   quickAction: string;
   /** Co modul bude umět – zobrazuje se, dokud se modul staví. */
@@ -24,7 +26,7 @@ export interface ModuleDef {
 
 export const MODULES: ModuleDef[] = [
   {
-    key: "untrois", name: "untrois", color: "#CEF17B", deep: "#7BA33A", light: "#EEFBC9", phase: 1, ready: true, quickAction: "Zapsat nápad",
+    key: "untrois", name: "untrois", color: "#CEF17B", deep: "#7BA33A", light: "#EEFBC9", phase: 1, ready: true, private: true, quickAction: "Zapsat nápad",
     plan: ["Nápady na brand", "Co všechno znamená číslo 13", "Odpočet do pátku 13."]
   },
   {

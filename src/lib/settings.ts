@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "./supabase";
 import { useAuth } from "./auth";
 import { DEFAULT_PINNED, isModuleKey, type ModuleKey } from "./modules";
+import { useModuleAccess } from "./access";
 
 export interface Settings {
   pinned_modules: ModuleKey[];
@@ -97,8 +98,10 @@ export function useSettings() {
 /** Moduly připnuté na obrazovce Dnes. */
 export function usePinnedModules() {
   const { settings, update, error } = useSettings();
+  const { can } = useModuleAccess();
   return {
-    pinned: settings.pinned_modules,
+    // soukromý modul účtu, který ho nevidí, se neukáže, i kdyby byl v nastavení
+    pinned: settings.pinned_modules.filter(can),
     setPinned: (keys: ModuleKey[]) => update({ pinned_modules: keys }),
     error,
   };
